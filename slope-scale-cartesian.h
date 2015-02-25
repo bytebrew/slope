@@ -27,7 +27,7 @@
 extern "C" {
 #endif
 
-slope_scale_t* slope_scale_cartesian_create(slope_chart_t *chart);
+slope_scale_t* slope_scale_cartesian_create (slope_chart_t *chart, const char *name);
 
 double slope_scale_cartesian_map_x1 (slope_scale_t *scale, double x);
 

@@ -26,6 +26,7 @@ extern "C" {
 
 struct _slope_scale
 {
+    char *name;
     slope_chart_t *chart;
     slope_list_t *plotables;
     slope_rect_t *chart_rect;

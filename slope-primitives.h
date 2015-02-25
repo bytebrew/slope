@@ -40,6 +40,32 @@ typedef struct
 }
 slope_rect_t;
 
+typedef enum
+{
+    SLOPE_BLACK,
+    SLOPE_WHITE,
+    SLOPE_RED,
+    SLOPE_GREEN,
+    SLOPE_BLUE
+}
+slope_color_name_t;
+
+typedef struct
+{
+    double red;
+    double green;
+    double blue;
+    double alpha;
+}
+slope_color_t;
+
+
+void slope_rect_set (slope_rect_t *rect, double x, double y, double w, double h);
+
+void slope_color_set (slope_color_t *color, double r, double g, double b, double a);
+
+void slope_color_set_by_name (slope_color_t *color, slope_color_name_t name);
+
 #ifdef __cplusplus
 }
 #endif

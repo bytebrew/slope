@@ -33,6 +33,8 @@ typedef struct _slope_plotable slope_plotable_t;
 typedef struct _slope_chart slope_chart_t;
 
 
+const char* slope_scale_name(slope_scale_t *scale);
+
 slope_iterator_t* slope_scale_first_plotable (slope_scale_t *scale);
 
 slope_list_t* slope_scale_plotable_list (slope_scale_t *scale);
