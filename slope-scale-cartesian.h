@@ -17,8 +17,8 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_H_
-#define _SLOPE_H_
+#ifndef _SLOPE_SCALE_CARTESIAN_H_
+#define _SLOPE_SCALE_CARTESIAN_H_
 
 #include "slope-scale.h"
 #include "slope-chart.h"
@@ -26,6 +26,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 slope_scale_t* slope_scale_cartesian_create (slope_chart_t *chart, const char *name);
 
@@ -37,4 +38,4 @@ double slope_scale_cartesian_map_x2 (slope_scale_t *scale, double x);
 }
 #endif
 
-#endif /*_SLOPE_H_*/
+#endif /*_SLOPE_SCALE_CARTESIAN_H_*/

@@ -17,17 +17,45 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_H_
-#define _SLOPE_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "slope-scale-cartesian.h"
+#include "slope-scale-cartesian_p.h"
+#include <stdlib.h>
+#include <string.h>
 
 
-
-#ifdef __cplusplus
+slope_scale_t* slope_scale_cartesian_create (slope_chart_t *chart, const char *name)
+{
+    slope_scale_t *scale = malloc(sizeof(slope_scale_cartesian_t));
+    scale->chart = chart;
+    scale->name = strdup(name);
+    scale->_update_fn = _slope_scale_cartesian_rescale;
+    scale->_cleanup_fn = _slope_scale_cartesian_cleanup;
 }
-#endif
 
-#endif /*_SLOPE_H_*/
+void _slope_scale_cartesian_cleanup (slope_scale_t *scale)
+{
+    free(scale->name);
+}
+
+double slope_scale_cartesian_map_x1 (slope_scale_t *scale, double x)
+{
+    slope_rect_t *rec = &scale->chart_rect;
+    slope_scale_cartesian_t *cscl = (slope_scale_cartesian_t*) scale;
+    double ret = (x - cscl->x_min)/ cscl->width;
+    return rec->x + ret*rec->width;
+}
+
+double slope_scale_cartesian_map_x2 (slope_scale_t *scale, double x)
+{
+    slope_rect_t *rec = &scale->chart_rect;
+    slope_scale_cartesian_t *cscl = (slope_scale_cartesian_t*) scale;
+    double ret = (x - cscl->y_min)/ cscl->height;
+    return rec->y + (1.0 - ret)*rec->height;
+}
+
+void _slope_scale_cartesian_rescale (slope_scale_t *scale)
+{
+    
+}
+
+/* slope-scale-cartesian.c */

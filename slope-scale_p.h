@@ -29,7 +29,7 @@ struct _slope_scale
     char *name;
     slope_chart_t *chart;
     slope_list_t *plotables;
-    slope_rect_t *chart_rect;
+    slope_rect_t chart_rect;
     void (*_update_fn) (struct _slope_scale*);
     void (*_cleanup_fn) (struct _slope_scale*);
 };

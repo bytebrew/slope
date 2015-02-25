@@ -17,8 +17,8 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_H_
-#define _SLOPE_H_
+#ifndef _SLOPE_SCALE_CARTESIAN_P_H_
+#define _SLOPE_SCALE_CARTESIAN_P_H_
 
 #include "slope-scale-cartesian.h"
 #include "slope-scale_p.h"
@@ -26,16 +26,24 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
+typedef struct _slope_scale_cartesian slope_scale_cartesian_t;
 
 struct _slope_scale_cartesian
 {
     struct _slope_scale parent;
+
+    double x_min, x_max;
+    double y_min, y_max;
+    double width, height;
 };
 
 void _slope_scale_cartesian_rescale (slope_scale_t *scale);
+
+void _slope_scale_cartesian_cleanup (slope_scale_t *scale);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*_SLOPE_H_*/
+#endif /*_SLOPE_SCALE_CARTESIAN_P_H_*/

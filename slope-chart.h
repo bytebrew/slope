@@ -21,7 +21,7 @@
 #define _SLOPE_CHART_H_
 
 #include "slope-scale.h"
-#include "cairo.h"
+#include <cairo.h>
 
 #ifdef __cplusplus
 extern "C" {

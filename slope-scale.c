@@ -19,6 +19,7 @@
 
 #include "slope-scale.h"
 #include "slope-scale_p.h"
+#include <stdlib.h>
 
 const char* slope_scale_name(slope_scale_t *scale)
 {
@@ -71,10 +72,10 @@ void slope_scale_get_chart_rect (slope_scale_t *scale, slope_rect_t *rect)
 
 void _slope_scale_set_chart_rect (slope_scale_t *scale, slope_rect_t *rect)
 {
-    scale->chart_rect.x = rect.x;
-    scale->chart_rect.y = rect.y;
-    scale->chart_rect.width = rect.width;
-    scale->chart_rect.height = rect.height;
+    scale->chart_rect.x = rect->x;
+    scale->chart_rect.y = rect->y;
+    scale->chart_rect.width = rect->width;
+    scale->chart_rect.height = rect->height;
 }
 
 void slope_scale_destroy (slope_scale_t *scale)
