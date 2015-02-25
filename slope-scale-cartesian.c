@@ -17,38 +17,17 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_SCALE_H_
-#define _SLOPE_SCALE_H_
-
-#include "slope-list.h"
-#include "slope-primitives.h"
+#ifndef _SLOPE_H_
+#define _SLOPE_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 
-typedef struct _slope_scale slope_scale_t;
-typedef struct _slope_plotable slope_plotable_t;
-typedef struct _slope_chart slope_chart_t;
-
-
-slope_iterator_t* slope_scale_first_plotable (slope_scale_t *scale);
-
-slope_list_t* slope_scale_plotable_list (slope_scale_t *scale);
-
-void slope_scale_append_plotable (slope_scale_t *scale, slope_plotable_t *plot);
-
-void slope_scale_get_chart_rect (slope_scale_t *scale, slope_rect_t *rect);
-
-slope_plotable_t* slope_scale_get_plotable (slope_scale_t *scale, const char *name);
-
-slope_chart_t* slope_scale_get_chart (slope_scale_t *scale);
-
-void slope_scale_destroy (slope_scale_t *scale);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*_SLOPE_SCALE_H_*/
+#endif /*_SLOPE_H_*/
