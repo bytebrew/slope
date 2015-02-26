@@ -55,7 +55,21 @@ double slope_scale_cartesian_map_x2 (slope_scale_t *scale, double x)
 
 void _slope_scale_cartesian_rescale (slope_scale_t *scale)
 {
-    
+    if (scale->plotables == NULL) {
+        scale->x_min = 0.0;
+        scale->x_max = 1.0;
+        scale->y_min = 0.0;
+        scale->y_max = 1.0;
+        return;
+    }
+    slope_iterator_t *iter = slope_list_first(scale->plotables);
+    slope_plotable_cartesian_t *plot =
+        (slope_plotable_cartesian_t*) slope_iterator_data(iter);
+    scale->x_min = plot->x_min;
+    scale->x_max = plot->x_max;
+    scale->y_min = plot->y_min;
+    scale->y_max = plot->y_max;
+
 }
 
 /* slope-scale-cartesian.c */
