@@ -21,7 +21,6 @@
 #define _SLOPE_PLOTABLE_H_
 
 #include "slope-primitives.h"
-#include <cairo.h>
 
 #ifdef __cplusplus
 extern "C" {

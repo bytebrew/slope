@@ -20,7 +20,6 @@
 #ifndef _SLOPE_LIST_H_
 #define _SLOPE_LIST_H_
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif

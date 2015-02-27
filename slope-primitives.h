@@ -24,6 +24,15 @@
 extern "C" {
 #endif
 
+
+/**
+ * slope's public headers doesn't include cairo
+ * so we define this symbol here to use in function
+ * declarations
+ */
+typedef struct _cairo cairo_t;
+
+
 typedef struct
 {
     double x;

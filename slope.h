@@ -17,28 +17,10 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_CHART_P_H_
-#define _SLOPE_CHART_P_H_
+#ifndef _SLOPE_H_
+#define _SLOPE_H_
 
-#include "slope-chart.h"
-#include "slope-list.h"
-#include "slope-primitives.h"
+#include "slope-scene.h"
+#include "slope-cartesian.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-struct _slope_chart
-{
-    slope_list_t *plotables;
-    slope_color_t back_color;
-    int fill_back;
-    double x_low_b, x_up_b;
-    double y_low_b, y_up_b;
-};
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /*_SLOPE_CHART_P_H_*/
+#endif /*_SLOPE_H_*/

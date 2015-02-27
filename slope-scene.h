@@ -27,40 +27,45 @@
 extern "C" {
 #endif
 
-typedef struct _slope_chart slope_chart_t;
+typedef struct _slope_scene slope_scene_t;
 
 /**
- * Creates a new chart
- * @return a new chart
+ * Creates a new scene
+ * @return a new scene
  */
-slope_chart_t* slope_chart_create ();
+slope_scene_t* slope_scene_create ();
 
 /**
- * Drestroys chart
- * @param chart the chart to be destroyed
+ * Drestroys scene
+ * @param scene the scene to be destroyed
  */
-void slope_chart_destroy (slope_chart_t *chart);
+void slope_scene_destroy (slope_scene_t *scene);
 
 /**
- * Draw the contents of charts to the surface targeted by cr
- * @param chart the chart to be drawn
- * @param cr the cairo context to draw the chart
+ * Draw the contents of scenes to the surface targeted by cr
+ * @param scene the scene to be drawn
+ * @param cr the cairo context to draw the scene
  * @param area the target rectangle int surface coordinates
  */
-void slope_chart_draw (slope_chart_t *chart, cairo_t *cr, slope_rect_t *area);
+void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
+                       slope_rect_t *area);
 
 /**
- * Writes the chart to a png file
- * @param chart the chart to be writen
+ * Writes the scene to a png file
+ * @param scene the scene to be writen
  * @param file name location for the output file
  * @param width width of the output image
  * @param height height of the output image
  */
-void slope_chart_write_to_png (slope_chart_t *chart,
-                               const char *filename, int width, int height);
+void slope_scene_write_to_png (slope_scene_t *scene,
+                               const char *filename,
+                               int width, int height);
 
-void slope_chart_set_back_color_by_name (slope_chart_t *chart,
+void slope_scene_set_back_color_by_name (slope_scene_t *scene,
                                          slope_color_name_t color);
+
+void slope_scene_add_plotable (slope_scene_t *scene,
+                               slope_plotable_t *plot);
 
 #ifdef __cplusplus
 }

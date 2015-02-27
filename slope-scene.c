@@ -17,62 +17,69 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope-chart.h"
-#include "slope-chart_p.h"
+#include "slope-scene.h"
+#include "slope-scene_p.h"
 #include "slope-plotable.h"
 #include <stdlib.h>
+#include <cairo.h>
 
 
 /**
- * Creates a new chart
+ * Creates a new scene
  */
-slope_chart_t* slope_chart_create ()
+slope_scene_t* slope_scene_create ()
 {
-    slope_chart_t *chart = malloc(sizeof(slope_chart_t));
-    chart->plotables = NULL;
-    chart->fill_back = 1;
-    slope_color_set_by_name(&chart->back_color, SLOPE_WHITE);
-    chart->x_low_b = chart->x_up_b = 20.0;
-    chart->y_low_b = chart->y_up_b = 20.0;
-    return chart;
+    slope_scene_t *scene = malloc(sizeof(slope_scene_t));
+    scene->plotables = NULL;
+    scene->fill_back = 1;
+    slope_color_set_by_name(&scene->back_color, SLOPE_WHITE);
+    scene->x_low_b = scene->x_up_b = 0.0;
+    scene->y_low_b = scene->y_up_b = 0.0;
+    return scene;
 }
 
 /**
- * Drestroys chart
+ * Drestroys scene
  */
-void slope_chart_destroy (slope_chart_t *chart)
+void slope_scene_destroy (slope_scene_t *scene)
 {
-    slope_list_destroy(chart->plotables);
-    free(chart);
-    chart = NULL;
+    slope_list_destroy(scene->plotables);
+    free(scene);
+    scene = NULL;
 }
 
 /**
- * Draw the contents of charts to the surface targeted by cr
+ * Draw the contents of scenes to the surface targeted by cr
  */
-void slope_chart_draw (slope_chart_t *chart, cairo_t *cr, slope_rect_t *area)
+void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
 {
-    cairo_stroke(cr);
-    if (chart->fill_back) {
-        cairo_set_source_rgba(cr,
-                              chart->back_color.red,
-                              chart->back_color.green,
-                              chart->back_color.blue,
-                              chart->back_color.alpha);
-        cairo_paint(cr);
-    }
     slope_rect_t scene_rect;
     slope_rect_set(&scene_rect,
-                   area->x + chart->x_low_b,
-                   area->y + chart->y_low_b,
-                   area->x + area->width - chart->x_up_b,
-                   area->y + area->height - chart->y_up_b);
+                   area->x + scene->x_low_b,
+                   area->y + scene->y_low_b,
+                   area->width - scene->x_low_b - scene->x_up_b,
+                   area->height - scene->y_low_b - scene->y_up_b);
+
+    /* paint the background if required */
+    cairo_save(cr);
+    cairo_stroke(cr);
+    if (scene->fill_back) {
+        cairo_set_source_rgba(cr,
+                              scene->back_color.red,
+                              scene->back_color.green,
+                              scene->back_color.blue,
+                              scene->back_color.alpha);
+        cairo_paint(cr);
+    }
+    cairo_restore(cr);
+    
+    /* draw contents */
+    cairo_save(cr);
     cairo_rectangle(cr, scene_rect.x, scene_rect.y,
                     scene_rect.width, scene_rect.height);
-    cairo_save(cr);
     cairo_clip(cr);
     slope_iterator_t *iter =
-        slope_list_first(chart->plotables);
+        slope_list_first(scene->plotables);
     while (iter) {
         slope_plotable_t *plot =
             (slope_plotable_t*) slope_iterator_data(iter);
@@ -85,9 +92,9 @@ void slope_chart_draw (slope_chart_t *chart, cairo_t *cr, slope_rect_t *area)
 }
 
 /*
- * Writes the chart to a png file
+ * Writes the scene to a png file
  */
-void slope_chart_write_to_png (slope_chart_t *chart,
+void slope_scene_write_to_png (slope_scene_t *scene,
                                const char *filename,
                                int width, int height)
 {
@@ -97,18 +104,25 @@ void slope_chart_write_to_png (slope_chart_t *chart,
     cairo_t *cr = cairo_create(image);
     slope_rect_t rect;
     slope_rect_set(&rect, 0.0, 0.0, width, height);
-    slope_chart_draw(chart, cr, &rect);
+    slope_scene_draw(scene, cr, &rect);
     cairo_surface_write_to_png(image, filename);
     cairo_surface_destroy(image);
     cairo_destroy(cr);
 }
 
 
-void slope_chart_set_back_color_by_name (slope_chart_t *chart,
+void slope_scene_set_back_color_by_name (slope_scene_t *scene,
                                          slope_color_name_t color_name)
 {
-    slope_color_set_by_name(&chart->back_color, color_name);
+    slope_color_set_by_name(&scene->back_color, color_name);
 }
 
 
-/* slope-chart.c */
+void slope_scene_add_plotable (slope_scene_t *scene,
+                               slope_plotable_t *plot)
+{
+    scene->plotables = slope_list_append(scene->plotables, plot);
+}
+
+
+/* slope-scene.c */
