@@ -17,17 +17,24 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_H_
-#define _SLOPE_H_
+#ifndef _SLOPE_PLOTABLE_P_H_
+#define _SLOPE_PLOTABLE_P_H_
+
+#include "slope-plotable_p.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-
+    
+struct _slope_plotable
+{
+    int visib;
+    void (*_cleanup_fn) (struct _slope_plotable*);
+    void (*_draw_fn) (struct _slope_plotable*, cairo_t*, slope_rect_t*);
+};
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*_SLOPE_H_*/
+#endif /*_SLOPE_PLOTABLE_P_H_*/

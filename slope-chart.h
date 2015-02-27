@@ -20,8 +20,8 @@
 #ifndef _SLOPE_CHART_H_
 #define _SLOPE_CHART_H_
 
-#include "slope-scale.h"
-#include <cairo.h>
+#include "slope-primitives.h"
+#include "slope-plotable.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,11 +29,38 @@ extern "C" {
 
 typedef struct _slope_chart slope_chart_t;
 
-slope_scale_t* slope_chart_default_scale (slope_chart_t *chart);
+/**
+ * Creates a new chart
+ * @return a new chart
+ */
+slope_chart_t* slope_chart_create ();
 
-slope_scale_t* slope_chart_get_scale (slope_chart_t *chart, const char *name);
+/**
+ * Drestroys chart
+ * @param chart the chart to be destroyed
+ */
+void slope_chart_destroy (slope_chart_t *chart);
 
+/**
+ * Draw the contents of charts to the surface targeted by cr
+ * @param chart the chart to be drawn
+ * @param cr the cairo context to draw the chart
+ * @param area the target rectangle int surface coordinates
+ */
 void slope_chart_draw (slope_chart_t *chart, cairo_t *cr, slope_rect_t *area);
+
+/**
+ * Writes the chart to a png file
+ * @param chart the chart to be writen
+ * @param file name location for the output file
+ * @param width width of the output image
+ * @param height height of the output image
+ */
+void slope_chart_write_to_png (slope_chart_t *chart,
+                               const char *filename, int width, int height);
+
+void slope_chart_set_back_color_by_name (slope_chart_t *chart,
+                                         slope_color_name_t color);
 
 #ifdef __cplusplus
 }

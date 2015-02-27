@@ -21,6 +21,8 @@
 #define _SLOPE_CHART_P_H_
 
 #include "slope-chart.h"
+#include "slope-list.h"
+#include "slope-primitives.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,10 +30,11 @@ extern "C" {
 
 struct _slope_chart
 {
-    slope_list_t *scales;
-    slope_rect_t scene_rect;
+    slope_list_t *plotables;
     slope_color_t back_color;
     int fill_back;
+    double x_low_b, x_up_b;
+    double y_low_b, y_up_b;
 };
 
 #ifdef __cplusplus

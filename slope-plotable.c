@@ -17,27 +17,35 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_SCALE_P_H_
-#define _SLOPE_SCALE_P_H_
+#include "slope-plotable.h"
+#include "slope-plotable_p.h"
+#include <stdlib.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
-struct _slope_scale
+void slope_plotable_destroy (slope_plotable_t *plot)
 {
-    char *name;
-    slope_chart_t *chart;
-    slope_list_t *plotables;
-    slope_rect_t chart_rect;
-    void (*_update_fn) (struct _slope_scale*);
-    void (*_cleanup_fn) (struct _slope_scale*);
-};
-
-void _slope_scale_set_chart_rect (slope_scale_t *scale, slope_rect_t *rect);
-
-#ifdef __cplusplus
+    if (plot == NULL) {
+        return;
+    }
+    if (plot->_cleanup_fn) {
+        (*plot->_cleanup_fn)(plot);
+    }
+    free(plot);
+    plot = NULL;
 }
-#endif
 
-#endif /*_SLOPE_SCALE_P_H_*/
+void slope_plotable_draw (slope_plotable_t *plot,
+                          cairo_t *cr,
+                          slope_rect_t *scene_rect)
+{
+    if (plot->_draw_fn) {
+        (*plot->_draw_fn)(plot, cr, scene_rect);
+    }
+}
+
+int slope_plotable_visible (slope_plotable_t *plot)
+{
+    return plot->visib;
+}
+
+/* slope-plotable.c */

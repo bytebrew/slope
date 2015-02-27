@@ -37,7 +37,7 @@ struct _slope_list
 };
 
 
-/**
+/*
  * Access the data pointed to by iter
  */
 void* slope_iterator_data (slope_iterator_t *iter)
@@ -45,7 +45,7 @@ void* slope_iterator_data (slope_iterator_t *iter)
     return iter->data;
 }
 
-/**
+/*
  * Moves the iterator to the next position
  */
 void slope_iterator_next (slope_iterator_t **iter)
@@ -53,7 +53,7 @@ void slope_iterator_next (slope_iterator_t **iter)
     *iter = (*iter)->next;
 }
 
-/**
+/*
  * Moves the iterator to the previous position
  */
 void slope_iterator_previous (slope_iterator_t **iter)
@@ -61,7 +61,7 @@ void slope_iterator_previous (slope_iterator_t **iter)
     *iter = (*iter)->prev;
 }
 
-/**
+/*
  * Appends an element to the end of the list
  */
 slope_list_t* slope_list_append (slope_list_t *list, void *data)
@@ -70,7 +70,6 @@ slope_list_t* slope_list_append (slope_list_t *list, void *data)
     iter->prev = NULL;
     iter->next = NULL;
     iter->data = data;
-    
     if (list == NULL) {
         list = malloc(sizeof(slope_list_t));
         list->first = iter;
@@ -86,7 +85,7 @@ slope_list_t* slope_list_append (slope_list_t *list, void *data)
     return list;
 }
 
-/**
+/*
  * Prepends an element to the begining of the list
  */
 slope_list_t* slope_list_prepend (slope_list_t *list, void *data)
@@ -95,7 +94,6 @@ slope_list_t* slope_list_prepend (slope_list_t *list, void *data)
     iter->prev = NULL;
     iter->next = NULL;
     iter->data = data;
-    
     if (list == NULL) {
         list = malloc(sizeof(slope_list_t));
         list->first = iter;
@@ -111,7 +109,7 @@ slope_list_t* slope_list_prepend (slope_list_t *list, void *data)
     return list;
 }
 
-/**
+/*
  * Destroys list
  */
 void slope_list_destroy (slope_list_t *list)
@@ -129,7 +127,7 @@ void slope_list_destroy (slope_list_t *list)
     list = NULL;
 }
 
-/**
+/*
  * Access the iterator for the first element
  */
 slope_iterator_t* slope_list_first (slope_list_t *list)
@@ -140,7 +138,7 @@ slope_iterator_t* slope_list_first (slope_list_t *list)
     return list->first;
 }
 
-/**
+/*
  * Access the iterator for the last element
  */
 slope_iterator_t* slope_list_last (slope_list_t *list)

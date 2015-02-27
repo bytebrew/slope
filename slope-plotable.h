@@ -17,33 +17,26 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_SCALE_CARTESIAN_P_H_
-#define _SLOPE_SCALE_CARTESIAN_P_H_
+#ifndef _SLOPE_PLOTABLE_H_
+#define _SLOPE_PLOTABLE_H_
 
-#include "slope-scale-cartesian.h"
-#include "slope-scale_p.h"
+#include "slope-primitives.h"
+#include <cairo.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
-typedef struct _slope_scale_cartesian slope_scale_cartesian_t;
 
-struct _slope_scale_cartesian
-{
-    struct _slope_scale parent;
+typedef struct _slope_plotable slope_plotable_t;
 
-    double x_min, x_max;
-    double y_min, y_max;
-    double width, height;
-};
+void slope_plotable_destroy (slope_plotable_t *plot);
 
-void _slope_scale_cartesian_rescale (slope_scale_t *scale);
+void slope_plotable_draw (slope_plotable_t *plot, cairo_t *cr, slope_rect_t *scene);
 
-void _slope_scale_cartesian_cleanup (slope_scale_t *scale);
+int slope_plotable_visible (slope_plotable_t *plot);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*_SLOPE_SCALE_CARTESIAN_P_H_*/
+#endif /*_SLOPE_PLOTABLE_H_*/

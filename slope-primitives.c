@@ -19,6 +19,7 @@
 
 #include "slope-primitives.h"
 
+
 void slope_rect_set (slope_rect_t *rect, double x, double y, double w, double h)
 {
     rect->x = x;
