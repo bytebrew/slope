@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (C) 2015  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
@@ -33,8 +33,8 @@ slope_scene_t* slope_scene_create ()
     scene->plotables = NULL;
     scene->fill_back = 1;
     slope_color_set_by_name(&scene->back_color, SLOPE_WHITE);
-    scene->x_low_b = scene->x_up_b = 0.0;
-    scene->y_low_b = scene->y_up_b = 0.0;
+    scene->x_low_b = scene->x_up_b = 1.0;
+    scene->y_low_b = scene->y_up_b = 1.0;
     return scene;
 }
 
@@ -72,7 +72,7 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
         cairo_paint(cr);
     }
     cairo_restore(cr);
-    
+
     /* draw contents */
     cairo_save(cr);
     cairo_rectangle(cr, scene_rect.x, scene_rect.y,

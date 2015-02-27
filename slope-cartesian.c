@@ -37,7 +37,8 @@ void _slope_cartesian_cleanup (slope_plotable_t *cartesian_base)
     slope_list_destroy(cartesian->scatters);
 }
 
-void _slope_cartesian_draw (slope_plotable_t *cartesian_base, cairo_t *cr, slope_rect_t *scene_rect)
+void _slope_cartesian_draw (slope_plotable_t *cartesian_base,
+                            cairo_t *cr, slope_rect_t *scene_rect)
 {
     cairo_set_source_rgb(cr, 0,0,0);
     cairo_rectangle(cr,
