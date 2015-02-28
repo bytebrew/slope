@@ -1,5 +1,0 @@
-build/
-build/*
-*.out
-*.exe
-*.o
