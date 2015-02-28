@@ -31,6 +31,7 @@ struct _slope_scatter
 {
     int visib;
     slope_scatter_symbol_t symb;
+    slope_color_t line_color;
     double *vx, *vy;
     unsigned long n;
     double x_min, x_max;
@@ -41,6 +42,8 @@ struct _slope_scatter
 void _slope_scatter_draw (slope_scatter_t *scatter,
                           slope_plotable_t *cartesian,
                           cairo_t *cr);
+
+void _slope_scatter_check_ranges(slope_scatter_t *scatter);
 
 #ifdef __cplusplus
 }

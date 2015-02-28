@@ -20,6 +20,7 @@
 #include "slope-cartesian_p.h"
 #include "slope-scatter_p.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 slope_plotable_t* slope_cartesian_create ()
 {
@@ -43,9 +44,11 @@ void _slope_cartesian_draw (slope_plotable_t *base,
                             cairo_t *cr, slope_rect_t *scene_rect)
 {
     slope_cartesian_t *cart = (slope_cartesian_t*) base;
+    _slope_cartesian_set_scene_rect(base, scene_rect);
     slope_iterator_t *iter = slope_list_first(cart->scatters);
     while (iter) {
-        slope_scatter_t *scat = (slope_scatter_t*) slope_iterator_data(iter);
+        slope_scatter_t *scat =
+            (slope_scatter_t*) slope_iterator_data(iter);
         if (slope_scatter_visible(scat)) {
             _slope_scatter_draw(scat, base, cr);
         }
@@ -100,6 +103,20 @@ void slope_cartesian_rescale (slope_plotable_t *base)
         if (scat->y_max > cart->y_max) cart->y_max = scat->y_max;
         slope_iterator_next(&iter);
     }
+    cart->width = cart->x_max - cart->x_min;
+    cart->height = cart->y_max - cart->y_min;
+}
+
+void _slope_cartesian_set_scene_rect (slope_plotable_t* base,
+                                      slope_rect_t *scene_rect)
+{
+    slope_cartesian_t *cart = (slope_cartesian_t*) base;
+    cart->x_min_scene = scene_rect->x;
+    cart->y_min_scene = scene_rect->y;
+    cart->width_scene = scene_rect->width;
+    cart->height_scene = scene_rect->height;
+    cart->x_max_scene = scene_rect->x + scene_rect->width;
+    cart->y_max_scene = scene_rect->y + scene_rect->height;
 }
 
 /* slope-cartesian.c */

@@ -35,8 +35,9 @@ typedef enum _slope_scatter_symbol
 }
 slope_scatter_symbol_t;
 
-slope_scatter_t* slope_scatter_create_for_data (double *vx, double *vy, unsigned long n,
-                                                slope_scatter_symbol_t symbol);
+slope_scatter_t* slope_scatter_create_simple (double *vx, double *vy, unsigned long n,
+                                              slope_scatter_symbol_t symbol,
+                                              slope_color_name_t color);
 
 void slope_scatter_destroy (slope_scatter_t *scatter);
 

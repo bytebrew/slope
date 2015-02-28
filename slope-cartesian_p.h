@@ -42,8 +42,9 @@ struct _slope_cartesian
     double width_scene, height_scene;
 };
 
-void _slope_cartesian_cleanup (slope_plotable_t *cartesian);
-void _slope_cartesian_draw (slope_plotable_t *cartesian_base, cairo_t *cr, slope_rect_t *scene_rect);
+void _slope_cartesian_cleanup (slope_plotable_t *base);
+void _slope_cartesian_draw (slope_plotable_t *base, cairo_t *cr, slope_rect_t *scene_rect);
+void _slope_cartesian_set_scene_rect (slope_plotable_t* base, slope_rect_t *scene_rect);
 
 #ifdef __cplusplus
 }

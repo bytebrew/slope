@@ -18,17 +18,22 @@
  */
 
 #include "slope-scatter_p.h"
+#include "slope-cartesian_p.h"
 #include <stdlib.h>
+#include <stdio.h>
 
-slope_scatter_t* slope_scatter_create_for_data (double *vx, double *vy, unsigned long n,
-                                                slope_scatter_symbol_t symbol)
+slope_scatter_t* slope_scatter_create_simple (double *vx, double *vy, unsigned long n,
+                                             slope_scatter_symbol_t symbol,
+                                             slope_color_name_t color)
 {
     slope_scatter_t *scat = malloc(sizeof(slope_scatter_t));
     scat->visib = 1;
     scat->symb = symbol;
+    slope_color_set_by_name(&scat->line_color, color);
     scat->vx = vx;
     scat->vy = vy;
     scat->n = n;
+    _slope_scatter_check_ranges(scat);
     return scat;
 }
 
@@ -50,7 +55,38 @@ void _slope_scatter_draw (slope_scatter_t *scatter,
                           slope_plotable_t *cartesian,
                           cairo_t *cr)
 {
-    //TODO
+    double *vx = scatter->vx;
+    double *vy = scatter->vy;
+    long k, n = scatter->n;
+    double x1 = slope_cartesian_map_x(cartesian, vx[0]);
+    double y1 = slope_cartesian_map_y(cartesian, vy[0]);
+    cairo_set_source_rgba(cr,
+                          scatter->line_color.red,
+                          scatter->line_color.green,
+                          scatter->line_color.blue,
+                          scatter->line_color.alpha);
+    cairo_move_to(cr, x1, y1);
+    for (k=1; k<n; k++) {
+        double x2 = slope_cartesian_map_x(cartesian, vx[k]);
+        double y2 = slope_cartesian_map_y(cartesian, vy[k]);
+        cairo_line_to(cr, x2, y2);
+    }
+    cairo_stroke(cr);
+}
+
+void _slope_scatter_check_ranges (slope_scatter_t *scatter)
+{
+    double *vx = scatter->vx;
+    double *vy = scatter->vy;
+    long k, n = scatter->n;
+    scatter->x_min = scatter->x_max = vx[0];
+    scatter->y_min = scatter->y_max = vy[0];
+    for (k=1; k<n; k++) {
+        if (vx[k] < scatter->x_min) scatter->x_min = vx[k];
+        if (vx[k] > scatter->x_max) scatter->x_max = vx[k];
+        if (vy[k] < scatter->y_min) scatter->y_min = vy[k];
+        if (vy[k] > scatter->y_max) scatter->y_max = vy[k];
+    }
 }
 
 /* slope-scatter.c */
