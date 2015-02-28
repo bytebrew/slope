@@ -20,11 +20,11 @@
 #include "slope-scatter_p.h"
 #include "slope-cartesian_p.h"
 #include <stdlib.h>
-#include <stdio.h>
 
-slope_scatter_t* slope_scatter_create_simple (double *vx, double *vy, unsigned long n,
-                                             slope_scatter_symbol_t symbol,
-                                             slope_color_name_t color)
+slope_scatter_t*
+slope_scatter_create_simple (double *vx, double *vy, unsigned long n,
+                             slope_color_name_t color,
+                             slope_scatter_symbol_t symbol)
 {
     slope_scatter_t *scat = malloc(sizeof(slope_scatter_t));
     scat->visib = 1;

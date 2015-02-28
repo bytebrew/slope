@@ -40,6 +40,8 @@ struct _slope_cartesian
     double x_min_scene, x_max_scene;
     double y_min_scene, y_max_scene;
     double width_scene, height_scene;
+    double x_low_b, x_up_b;
+    double y_low_b, y_up_b;
 };
 
 void _slope_cartesian_cleanup (slope_plotable_t *base);
