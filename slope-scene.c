@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2015  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
@@ -17,7 +17,6 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope-scene.h"
 #include "slope-scene_p.h"
 #include "slope-plotable.h"
 #include <stdlib.h>

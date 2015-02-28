@@ -17,34 +17,40 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope-plotable_p.h"
+#include "slope-scatter_p.h"
 #include <stdlib.h>
 
-
-void slope_plotable_destroy (slope_plotable_t *plot)
+slope_scatter_t* slope_scatter_create_for_data (double *vx, double *vy, unsigned long n,
+                                                slope_scatter_symbol_t symbol)
 {
-    if (plot == NULL) {
+    slope_scatter_t *scat = malloc(sizeof(slope_scatter_t));
+    scat->visib = 1;
+    scat->symb = symbol;
+    scat->vx = vx;
+    scat->vy = vy;
+    scat->n = n;
+    return scat;
+}
+
+void slope_scatter_destroy (slope_scatter_t *scatter)
+{
+    if (scatter == NULL) {
         return;
     }
-    if (plot->_cleanup_fn) {
-        (*plot->_cleanup_fn)(plot);
-    }
-    free(plot);
-    plot = NULL;
+    free(scatter);
+    scatter = NULL;
 }
 
-void slope_plotable_draw (slope_plotable_t *plot,
-                          cairo_t *cr,
-                          slope_rect_t *scene_rect)
+int slope_scatter_visible (slope_scatter_t *scatter)
 {
-    if (plot->_draw_fn) {
-        (*plot->_draw_fn)(plot, cr, scene_rect);
-    }
+    return scatter->visib;
 }
 
-int slope_plotable_visible (slope_plotable_t *plot)
+void _slope_scatter_draw (slope_scatter_t *scatter,
+                          slope_plotable_t *cartesian,
+                          cairo_t *cr)
 {
-    return plot->visib;
+    //TODO
 }
 
-/* slope-plotable.c */
+/* slope-scatter.c */

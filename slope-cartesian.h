@@ -26,11 +26,19 @@
 extern "C" {
 #endif
 
-typedef struct _slope_cartesian slope_cartesian_t;
+typedef struct _slope_scatter slope_scatter_t;
 
 slope_plotable_t* slope_cartesian_create ();
 
-    
+double slope_cartesian_map_x (slope_plotable_t *cart, double x);
+
+double slope_cartesian_map_y (slope_plotable_t *cart, double y);
+
+void slope_cartesian_add_scatter (slope_plotable_t *cart, slope_scatter_t *scatter);
+
+void slope_cartesian_rescale (slope_plotable_t *cart);
+
+
 #ifdef __cplusplus
 }
 #endif

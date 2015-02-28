@@ -17,36 +17,33 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_CARTESIAN_P_H_
-#define _SLOPE_CARTESIAN_P_H_
+#ifndef _SLOPE_SCATTER_H_
+#define _SLOPE_SCATTER_H_
 
 #include "slope-cartesian.h"
-#include "slope-plotable_p.h"
-#include "slope-list.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct _slope_cartesian slope_cartesian_t;
+typedef struct _slope_scatter slope_scatter_t;
 
-struct _slope_cartesian
+typedef enum _slope_scatter_symbol
 {
-    struct _slope_plotable base;
-    slope_list_t *scatters;
-    double x_min, x_max;
-    double y_min, y_max;
-    double width, height;
-    double x_min_scene, x_max_scene;
-    double y_min_scene, y_max_scene;
-    double width_scene, height_scene;
-};
+    SLOPE_LINE,
+    SLOPE_CIRCLES
+}
+slope_scatter_symbol_t;
 
-void _slope_cartesian_cleanup (slope_plotable_t *cartesian);
-void _slope_cartesian_draw (slope_plotable_t *cartesian_base, cairo_t *cr, slope_rect_t *scene_rect);
+slope_scatter_t* slope_scatter_create_for_data (double *vx, double *vy, unsigned long n,
+                                                slope_scatter_symbol_t symbol);
+
+void slope_scatter_destroy (slope_scatter_t *scatter);
+
+int slope_scatter_visible (slope_scatter_t *scatter);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*_SLOPE_CARTESIAN_P_H_*/
+#endif /*_SLOPE_SCATTER_H_*/
