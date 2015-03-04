@@ -60,8 +60,8 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
                    area->height - scene->y_low_b - scene->y_up_b);
 
     /* paint the background if required */
-    cairo_save(cr);
     cairo_stroke(cr);
+    cairo_save(cr);
     if (scene->fill_back) {
         cairo_set_source_rgba(cr,
                               scene->back_color.red,

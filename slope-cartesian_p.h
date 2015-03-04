@@ -21,6 +21,7 @@
 #define _SLOPE_CARTESIAN_P_H_
 
 #include "slope-cartesian.h"
+#include "slope-cartesian-axis_p.h"
 #include "slope-plotable_p.h"
 #include "slope-list.h"
 
@@ -34,6 +35,7 @@ struct _slope_cartesian
 {
     struct _slope_plotable base;
     slope_list_t *scatters;
+    slope_list_t *axis;
     double x_min, x_max;
     double y_min, y_max;
     double width, height;

@@ -12,6 +12,7 @@ SET(SLOPE_HDRS
     slope-plotable.h
     slope-cartesian.h
     slope-scatter.h
+    slope-cartesian-axis.h
 )
 
 SET(SLOPE_SRCS
@@ -21,6 +22,7 @@ SET(SLOPE_SRCS
     slope-plotable.c
     slope-cartesian.c
     slope-scatter.c
+    slope-cartesian-axis.c
 )
 
 ADD_LIBRARY(slope SHARED ${SLOPE_SRCS})

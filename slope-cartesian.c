@@ -26,12 +26,19 @@ slope_plotable_t* slope_cartesian_create ()
     slope_cartesian_t *cart = malloc(sizeof(slope_cartesian_t));
     slope_plotable_t *base = (slope_plotable_t*) cart;
     base->visib = 1;
-    cart->x_low_b = cart->x_up_b = 20.0;
-    cart->y_low_b = cart->y_up_b = 20.0;
+    cart->x_low_b = cart->x_up_b = 80.0;
+    cart->y_low_b = cart->y_up_b = 60.0;
     base->_cleanup_fn = _slope_cartesian_cleanup;
     base->_draw_fn = _slope_cartesian_draw;
     cart->scatters = NULL;
     slope_cartesian_rescale(base);
+    
+    /* create axis */
+    cart->axis = slope_list_append(cart->axis, slope_cartesian_axis_create(SLOPE_AXIS_TOP));
+    cart->axis = slope_list_append(cart->axis, slope_cartesian_axis_create(SLOPE_AXIS_BOTTOM));
+    cart->axis = slope_list_append(cart->axis, slope_cartesian_axis_create(SLOPE_AXIS_LEFT));
+    cart->axis = slope_list_append(cart->axis, slope_cartesian_axis_create(SLOPE_AXIS_RIGHT));
+    
     return base;
 }
 
@@ -39,6 +46,15 @@ void _slope_cartesian_cleanup (slope_plotable_t *base)
 {
     slope_cartesian_t *cartesian = (slope_cartesian_t*) base;
     slope_list_destroy(cartesian->scatters);
+    
+    slope_iterator_t *ax_iter = slope_list_first(cartesian->axis);
+    while (ax_iter) {
+        slope_cartesian_axis_t *axis =
+            (slope_cartesian_axis_t*) slope_iterator_data(ax_iter);
+        slope_cartesian_axis_destroy(axis);
+        slope_iterator_next(&ax_iter);
+    }
+    slope_list_destroy(cartesian->axis);
 }
 
 void _slope_cartesian_draw (slope_plotable_t *base,
@@ -51,16 +67,26 @@ void _slope_cartesian_draw (slope_plotable_t *base,
     cairo_rectangle(cr, cart->x_low_b+1.0, cart->y_low_b+1.0,
                     cart->width_scene, cart->height_scene);
     cairo_clip(cr);
-    slope_iterator_t *iter = slope_list_first(cart->scatters);
-    while (iter) {
+    slope_iterator_t *scat_iter = slope_list_first(cart->scatters);
+    while (scat_iter) {
         slope_scatter_t *scat =
-            (slope_scatter_t*) slope_iterator_data(iter);
+            (slope_scatter_t*) slope_iterator_data(scat_iter);
         if (slope_scatter_visible(scat)) {
             _slope_scatter_draw(scat, base, cr);
         }
-        slope_iterator_next(&iter);
+        slope_iterator_next(&scat_iter);
     }
     cairo_restore(cr);
+    
+    slope_iterator_t *ax_iter = slope_list_first(cart->axis);
+    while (ax_iter) {
+        slope_cartesian_axis_t *axis =
+            (slope_cartesian_axis_t*) slope_iterator_data(ax_iter);
+        if (slope_cartesian_axis_visible(axis)) {
+            _slope_cartesian_axis_draw(axis, base, cr);
+        }
+        slope_iterator_next(&ax_iter);
+    }
 }
 
 double slope_cartesian_map_x (slope_plotable_t *base, double x)
