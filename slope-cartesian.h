@@ -20,25 +20,25 @@
 #ifndef _SLOPE_CARTESIAN_H_
 #define _SLOPE_CARTESIAN_H_
 
-#include "slope-plotable.h"
-#include "slope-scatter.h"
-#include "slope-cartesian-axis.h"
+#include "slope-metrics.h"
+#include "slope-xyplot.h"
+#include "slope-xyaxis.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct _slope_scatter slope_scatter_t;
+typedef struct _slope_xyplot slope_xyplot_t;
 
-slope_plotable_t* slope_cartesian_create ();
+slope_metrics_t* slope_cartesian_create ();
 
-double slope_cartesian_map_x (slope_plotable_t *cart, double x);
+double slope_cartesian_map_x (slope_metrics_t *cart, double x);
 
-double slope_cartesian_map_y (slope_plotable_t *cart, double y);
+double slope_cartesian_map_y (slope_metrics_t *cart, double y);
 
-void slope_cartesian_add_scatter (slope_plotable_t *cart, slope_scatter_t *scatter);
+void slope_cartesian_add_xyplot (slope_metrics_t *cart, slope_xyplot_t *xyplot);
 
-void slope_cartesian_rescale (slope_plotable_t *cart);
+void slope_cartesian_rescale (slope_metrics_t *cart);
 
 
 #ifdef __cplusplus

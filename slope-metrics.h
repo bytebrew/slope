@@ -17,29 +17,25 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_CARTESIAN_AXIS_P_H_
-#define _SLOPE_CARTESIAN_AXIS_P_H_
+#ifndef _SLOPE_PLOTABLE_H_
+#define _SLOPE_PLOTABLE_H_
 
-#include "slope-cartesian-axis.h"
+#include "slope-primitives.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-struct _slope_cartesian_axis
-{
-    slope_cartesian_axis_type_t type;
-    int visib;
-    double length;
-};
+typedef struct _slope_metrics slope_metrics_t;
 
-void _slope_cartesian_axis_draw (slope_cartesian_axis_t *axis,
-                                 slope_plotable_t *cartesian,
-                                 cairo_t *cr);
+void slope_metrics_destroy (slope_metrics_t *plot);
 
+void slope_metrics_draw (slope_metrics_t *plot, cairo_t *cr, slope_rect_t *scene);
+
+int slope_metrics_visible (slope_metrics_t *plot);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*_SLOPE_CARTESIAN_AXIS_P_H_*/
+#endif /*_SLOPE_PLOTABLE_H_*/

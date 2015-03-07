@@ -18,46 +18,46 @@
  */
 
 #include "slope-cartesian_p.h"
-#include "slope-scatter_p.h"
+#include "slope-xyplot_p.h"
 #include <stdlib.h>
 
-slope_plotable_t* slope_cartesian_create ()
+slope_metrics_t* slope_cartesian_create ()
 {
     slope_cartesian_t *cart = malloc(sizeof(slope_cartesian_t));
-    slope_plotable_t *base = (slope_plotable_t*) cart;
+    slope_metrics_t *base = (slope_metrics_t*) cart;
     base->visib = 1;
     cart->x_low_b = cart->x_up_b = 80.0;
     cart->y_low_b = cart->y_up_b = 60.0;
     base->_cleanup_fn = _slope_cartesian_cleanup;
     base->_draw_fn = _slope_cartesian_draw;
-    cart->scatters = NULL;
+    cart->xyplots = NULL;
     slope_cartesian_rescale(base);
     
     /* create axis */
-    cart->axis = slope_list_append(cart->axis, slope_cartesian_axis_create(SLOPE_AXIS_TOP));
-    cart->axis = slope_list_append(cart->axis, slope_cartesian_axis_create(SLOPE_AXIS_BOTTOM));
-    cart->axis = slope_list_append(cart->axis, slope_cartesian_axis_create(SLOPE_AXIS_LEFT));
-    cart->axis = slope_list_append(cart->axis, slope_cartesian_axis_create(SLOPE_AXIS_RIGHT));
+    cart->axis = slope_list_append(cart->axis, slope_xyaxis_create(SLOPE_AXIS_TOP));
+    cart->axis = slope_list_append(cart->axis, slope_xyaxis_create(SLOPE_AXIS_BOTTOM));
+    cart->axis = slope_list_append(cart->axis, slope_xyaxis_create(SLOPE_AXIS_LEFT));
+    cart->axis = slope_list_append(cart->axis, slope_xyaxis_create(SLOPE_AXIS_RIGHT));
     
     return base;
 }
 
-void _slope_cartesian_cleanup (slope_plotable_t *base)
+void _slope_cartesian_cleanup (slope_metrics_t *base)
 {
     slope_cartesian_t *cartesian = (slope_cartesian_t*) base;
-    slope_list_destroy(cartesian->scatters);
+    slope_list_destroy(cartesian->xyplots);
     
     slope_iterator_t *ax_iter = slope_list_first(cartesian->axis);
     while (ax_iter) {
-        slope_cartesian_axis_t *axis =
-            (slope_cartesian_axis_t*) slope_iterator_data(ax_iter);
-        slope_cartesian_axis_destroy(axis);
+        slope_xyaxis_t *axis =
+            (slope_xyaxis_t*) slope_iterator_data(ax_iter);
+        slope_xyaxis_destroy(axis);
         slope_iterator_next(&ax_iter);
     }
     slope_list_destroy(cartesian->axis);
 }
 
-void _slope_cartesian_draw (slope_plotable_t *base,
+void _slope_cartesian_draw (slope_metrics_t *base,
                             cairo_t *cr, slope_rect_t *scene_rect)
 {
     slope_cartesian_t *cart = (slope_cartesian_t*) base;
@@ -67,12 +67,12 @@ void _slope_cartesian_draw (slope_plotable_t *base,
     cairo_rectangle(cr, cart->x_low_b+1.0, cart->y_low_b+1.0,
                     cart->width_scene, cart->height_scene);
     cairo_clip(cr);
-    slope_iterator_t *scat_iter = slope_list_first(cart->scatters);
+    slope_iterator_t *scat_iter = slope_list_first(cart->xyplots);
     while (scat_iter) {
-        slope_scatter_t *scat =
-            (slope_scatter_t*) slope_iterator_data(scat_iter);
-        if (slope_scatter_visible(scat)) {
-            _slope_scatter_draw(scat, base, cr);
+        slope_xyplot_t *scat =
+            (slope_xyplot_t*) slope_iterator_data(scat_iter);
+        if (slope_xyplot_visible(scat)) {
+            _slope_xyplot_draw(scat, base, cr);
         }
         slope_iterator_next(&scat_iter);
     }
@@ -80,56 +80,56 @@ void _slope_cartesian_draw (slope_plotable_t *base,
     
     slope_iterator_t *ax_iter = slope_list_first(cart->axis);
     while (ax_iter) {
-        slope_cartesian_axis_t *axis =
-            (slope_cartesian_axis_t*) slope_iterator_data(ax_iter);
-        if (slope_cartesian_axis_visible(axis)) {
-            _slope_cartesian_axis_draw(axis, base, cr);
+        slope_xyaxis_t *axis =
+            (slope_xyaxis_t*) slope_iterator_data(ax_iter);
+        if (slope_xyaxis_visible(axis)) {
+            _slope_xyaxis_draw(axis, base, cr);
         }
         slope_iterator_next(&ax_iter);
     }
 }
 
-double slope_cartesian_map_x (slope_plotable_t *base, double x)
+double slope_cartesian_map_x (slope_metrics_t *base, double x)
 {
     slope_cartesian_t *cart = (slope_cartesian_t*) base;
     double ret = (x - cart->x_min) /cart->width;
     return cart->x_min_scene + ret*cart->width_scene;
 }
 
-double slope_cartesian_map_y (slope_plotable_t *base, double y)
+double slope_cartesian_map_y (slope_metrics_t *base, double y)
 {
     slope_cartesian_t *cart = (slope_cartesian_t*) base;
     double ret = (y - cart->y_min) /cart->height;
     return cart->y_max_scene - ret*cart->height_scene;
 }
 
-void slope_cartesian_add_scatter (slope_plotable_t *base,
-                                  slope_scatter_t *scatter)
+void slope_cartesian_add_xyplot (slope_metrics_t *base,
+                                  slope_xyplot_t *xyplot)
 {
     slope_cartesian_t *cart = (slope_cartesian_t*) base;
-    cart->scatters = slope_list_append(cart->scatters, scatter);
+    cart->xyplots = slope_list_append(cart->xyplots, xyplot);
     slope_cartesian_rescale(base);
 }
 
-void slope_cartesian_rescale (slope_plotable_t *base)
+void slope_cartesian_rescale (slope_metrics_t *base)
 {
     slope_cartesian_t *cart = (slope_cartesian_t*) base;
-    if (cart->scatters == NULL) {
+    if (cart->xyplots == NULL) {
         cart->x_min = 0.0;
         cart->x_max = 1.0;
         cart->y_min = 0.0;
         cart->y_max = 1.0;
         return;
     }
-    slope_iterator_t *iter = slope_list_first(cart->scatters);
-    slope_scatter_t *scat = (slope_scatter_t*) slope_iterator_data(iter);
+    slope_iterator_t *iter = slope_list_first(cart->xyplots);
+    slope_xyplot_t *scat = (slope_xyplot_t*) slope_iterator_data(iter);
     cart->x_min = scat->x_min;
     cart->x_max = scat->x_max;
     cart->y_min = scat->y_min;
     cart->y_max = scat->y_max;
     slope_iterator_next(&iter);
     while (iter) {
-        scat = (slope_scatter_t*) slope_iterator_data(iter);
+        scat = (slope_xyplot_t*) slope_iterator_data(iter);
         if (scat->x_min < cart->x_min) cart->x_min = scat->x_min;
         if (scat->x_max > cart->x_max) cart->x_max = scat->x_max;
         if (scat->y_min < cart->y_min) cart->y_min = scat->y_min;
@@ -140,7 +140,7 @@ void slope_cartesian_rescale (slope_plotable_t *base)
     cart->height = cart->y_max - cart->y_min;
 }
 
-void _slope_cartesian_set_scene_rect (slope_plotable_t* base,
+void _slope_cartesian_set_scene_rect (slope_metrics_t* base,
                                       slope_rect_t *scene_rect)
 {
     slope_cartesian_t *cart = (slope_cartesian_t*) base;

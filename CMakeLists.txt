@@ -2,27 +2,27 @@ PROJECT(slope)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 FIND_PACKAGE(PkgConfig REQUIRED)
-PKG_CHECK_MODULES(CAIRO "cairo")
+PKG_CHECK_MODULES(CAIRO "gtk+-3.0")
 INCLUDE_DIRECTORIES(${CAIRO_INCLUDE_DIRS})
 
 SET(SLOPE_HDRS
     slope-list.h
     slope-primitives.h
     slope-scene.h
-    slope-plotable.h
+    slope-metrics.h
     slope-cartesian.h
-    slope-scatter.h
-    slope-cartesian-axis.h
+    slope-xyplot.h
+    slope-xyaxis.h
 )
 
 SET(SLOPE_SRCS
     slope-list.c
     slope-primitives.c
     slope-scene.c
-    slope-plotable.c
+    slope-metrics.c
     slope-cartesian.c
-    slope-scatter.c
-    slope-cartesian-axis.c
+    slope-xyplot.c
+    slope-xyaxis.c
 )
 
 ADD_LIBRARY(slope SHARED ${SLOPE_SRCS})

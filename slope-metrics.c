@@ -17,11 +17,11 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope-plotable_p.h"
+#include "slope-metrics_p.h"
 #include <stdlib.h>
 
 
-void slope_plotable_destroy (slope_plotable_t *plot)
+void slope_metrics_destroy (slope_metrics_t *plot)
 {
     if (plot == NULL) {
         return;
@@ -33,7 +33,7 @@ void slope_plotable_destroy (slope_plotable_t *plot)
     plot = NULL;
 }
 
-void slope_plotable_draw (slope_plotable_t *plot,
+void slope_metrics_draw (slope_metrics_t *plot,
                           cairo_t *cr,
                           slope_rect_t *scene_rect)
 {
@@ -42,9 +42,9 @@ void slope_plotable_draw (slope_plotable_t *plot,
     }
 }
 
-int slope_plotable_visible (slope_plotable_t *plot)
+int slope_metrics_visible (slope_metrics_t *plot)
 {
     return plot->visib;
 }
 
-/* slope-plotable.c */
+/* slope-metrics.c */

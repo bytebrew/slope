@@ -18,7 +18,7 @@
  */
 
 #include "slope-scene_p.h"
-#include "slope-plotable.h"
+#include "slope-metrics.h"
 #include <stdlib.h>
 #include <cairo.h>
 
@@ -29,7 +29,7 @@
 slope_scene_t* slope_scene_create ()
 {
     slope_scene_t *scene = malloc(sizeof(slope_scene_t));
-    scene->plotables = NULL;
+    scene->metricss = NULL;
     scene->fill_back = 1;
     slope_color_set_by_name(&scene->back_color, SLOPE_WHITE);
     scene->x_low_b = scene->x_up_b = 1.0;
@@ -42,7 +42,7 @@ slope_scene_t* slope_scene_create ()
  */
 void slope_scene_destroy (slope_scene_t *scene)
 {
-    slope_list_destroy(scene->plotables);
+    slope_list_destroy(scene->metricss);
     free(scene);
     scene = NULL;
 }
@@ -78,12 +78,12 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
                     scene_rect.width, scene_rect.height);
     cairo_clip(cr);
     slope_iterator_t *iter =
-        slope_list_first(scene->plotables);
+        slope_list_first(scene->metricss);
     while (iter) {
-        slope_plotable_t *plot =
-            (slope_plotable_t*) slope_iterator_data(iter);
-        if (slope_plotable_visible (plot)) {
-            slope_plotable_draw (plot, cr, &scene_rect);
+        slope_metrics_t *plot =
+            (slope_metrics_t*) slope_iterator_data(iter);
+        if (slope_metrics_visible (plot)) {
+            slope_metrics_draw (plot, cr, &scene_rect);
         }
         slope_iterator_next(&iter);
     }
@@ -117,10 +117,10 @@ void slope_scene_set_back_color_by_name (slope_scene_t *scene,
 }
 
 
-void slope_scene_add_plotable (slope_scene_t *scene,
-                               slope_plotable_t *plot)
+void slope_scene_add_metrics (slope_scene_t *scene,
+                               slope_metrics_t *plot)
 {
-    scene->plotables = slope_list_append(scene->plotables, plot);
+    scene->metricss = slope_list_append(scene->metricss, plot);
 }
 
 

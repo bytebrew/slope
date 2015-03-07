@@ -21,8 +21,8 @@
 #define _SLOPE_CARTESIAN_P_H_
 
 #include "slope-cartesian.h"
-#include "slope-cartesian-axis_p.h"
-#include "slope-plotable_p.h"
+#include "slope-xyaxis_p.h"
+#include "slope-metrics_p.h"
 #include "slope-list.h"
 
 #ifdef __cplusplus
@@ -33,8 +33,8 @@ typedef struct _slope_cartesian slope_cartesian_t;
 
 struct _slope_cartesian
 {
-    struct _slope_plotable base;
-    slope_list_t *scatters;
+    struct _slope_metrics base;
+    slope_list_t *xyplots;
     slope_list_t *axis;
     double x_min, x_max;
     double y_min, y_max;
@@ -46,9 +46,9 @@ struct _slope_cartesian
     double y_low_b, y_up_b;
 };
 
-void _slope_cartesian_cleanup (slope_plotable_t *base);
-void _slope_cartesian_draw (slope_plotable_t *base, cairo_t *cr, slope_rect_t *scene_rect);
-void _slope_cartesian_set_scene_rect (slope_plotable_t* base, slope_rect_t *scene_rect);
+void _slope_cartesian_cleanup (slope_metrics_t *base);
+void _slope_cartesian_draw (slope_metrics_t *base, cairo_t *cr, slope_rect_t *scene_rect);
+void _slope_cartesian_set_scene_rect (slope_metrics_t* base, slope_rect_t *scene_rect);
 
 #ifdef __cplusplus
 }

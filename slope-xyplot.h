@@ -17,36 +17,35 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_SCATTER_P_H_
-#define _SLOPE_SCATTER_P_H_
+#ifndef _SLOPE_XYPLOT_H_
+#define _SLOPE_XYPLOT_H_
 
-#include "slope-scatter.h"
+#include "slope-cartesian.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+typedef struct _slope_xyplot slope_xyplot_t;
 
-struct _slope_scatter
+typedef enum _slope_xyplot_symbol
 {
-    int visib;
-    slope_scatter_symbol_t symb;
-    slope_color_t line_color;
-    double *vx, *vy;
-    unsigned long n;
-    double x_min, x_max;
-    double y_min, y_max;
-};
+    SLOPE_LINE,
+    SLOPE_CIRCLES
+}
+slope_xyplot_symbol_t;
 
+slope_xyplot_t*
+slope_xyplot_create_simple (double *vx, double *vy, unsigned long n,
+                             slope_color_name_t color,
+                             slope_xyplot_symbol_t symbol);
 
-void _slope_scatter_draw (slope_scatter_t *scatter,
-                          slope_plotable_t *cartesian,
-                          cairo_t *cr);
+void slope_xyplot_destroy (slope_xyplot_t *xyplot);
 
-void _slope_scatter_check_ranges(slope_scatter_t *scatter);
+int slope_xyplot_visible (slope_xyplot_t *xyplot);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*_SLOPE_SCATTER_P_H_*/
+#endif /*_SLOPE_XYPLOT_H_*/

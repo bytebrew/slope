@@ -21,7 +21,7 @@
 #define _SLOPE_CHART_H_
 
 #include "slope-primitives.h"
-#include "slope-plotable.h"
+#include "slope-metrics.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -64,8 +64,8 @@ void slope_scene_write_to_png (slope_scene_t *scene,
 void slope_scene_set_back_color_by_name (slope_scene_t *scene,
                                          slope_color_name_t color);
 
-void slope_scene_add_plotable (slope_scene_t *scene,
-                               slope_plotable_t *plot);
+void slope_scene_add_metrics (slope_scene_t *scene,
+                               slope_metrics_t *plot);
 
 #ifdef __cplusplus
 }

@@ -30,7 +30,7 @@ extern "C" {
 
 struct _slope_scene
 {
-    slope_list_t *plotables;
+    slope_list_t *metricss;
     slope_color_t back_color;
     int fill_back;
     double x_low_b, x_up_b;

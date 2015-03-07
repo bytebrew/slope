@@ -17,16 +17,16 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_CARTESIAN_AXIS_H_
-#define _SLOPE_CARTESIAN_AXIS_H_
+#ifndef _SLOPE_XYAXIS_H_
+#define _SLOPE_XYAXIS_H_
 
-#include "slope-cartesian.h"
+#include "slope-xyaxis.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
     
-typedef struct _slope_cartesian_axis slope_cartesian_axis_t;
+typedef struct _slope_xyaxis slope_xyaxis_t;
 
 
 typedef enum
@@ -36,17 +36,17 @@ typedef enum
     SLOPE_AXIS_TOP,
     SLOPE_AXIS_RIGHT
 }
-slope_cartesian_axis_type_t;
+slope_xyaxis_type_t;
 
-slope_cartesian_axis_t* slope_cartesian_axis_create (slope_cartesian_axis_type_t type);
+slope_xyaxis_t* slope_xyaxis_create (slope_xyaxis_type_t type);
 
-void slope_cartesian_axis_destroy (slope_cartesian_axis_t *axis);
+void slope_xyaxis_destroy (slope_xyaxis_t *axis);
 
-int slope_cartesian_axis_visible (slope_cartesian_axis_t *axis);
+int slope_xyaxis_visible (slope_xyaxis_t *axis);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*_SLOPE_CARTESIAN_H_*/
+#endif /*_SLOPE_XYAXIS_H_*/

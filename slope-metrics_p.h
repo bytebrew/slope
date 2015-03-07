@@ -20,17 +20,17 @@
 #ifndef _SLOPE_PLOTABLE_P_H_
 #define _SLOPE_PLOTABLE_P_H_
 
-#include "slope-plotable.h"
+#include "slope-metrics.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
     
-struct _slope_plotable
+struct _slope_metrics
 {
     int visib;
-    void (*_cleanup_fn) (slope_plotable_t*);
-    void (*_draw_fn) (slope_plotable_t*, cairo_t*, slope_rect_t*);
+    void (*_cleanup_fn) (slope_metrics_t*);
+    void (*_draw_fn) (slope_metrics_t*, cairo_t*, slope_rect_t*);
 };
 
 #ifdef __cplusplus

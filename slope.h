@@ -22,6 +22,6 @@
 
 #include "slope-scene.h"
 #include "slope-cartesian.h"
-#include "slope-scatter.h"
+#include "slope-xyplot.h"
 
 #endif /*_SLOPE_H_*/

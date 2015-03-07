@@ -17,54 +17,54 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope-scatter_p.h"
+#include "slope-xyplot_p.h"
 #include "slope-cartesian_p.h"
 #include <stdlib.h>
 
-slope_scatter_t*
-slope_scatter_create_simple (double *vx, double *vy, unsigned long n,
+slope_xyplot_t*
+slope_xyplot_create_simple (double *vx, double *vy, unsigned long n,
                              slope_color_name_t color,
-                             slope_scatter_symbol_t symbol)
+                             slope_xyplot_symbol_t symbol)
 {
-    slope_scatter_t *scat = malloc(sizeof(slope_scatter_t));
+    slope_xyplot_t *scat = malloc(sizeof(slope_xyplot_t));
     scat->visib = 1;
     scat->symb = symbol;
     slope_color_set_by_name(&scat->line_color, color);
     scat->vx = vx;
     scat->vy = vy;
     scat->n = n;
-    _slope_scatter_check_ranges(scat);
+    _slope_xyplot_check_ranges(scat);
     return scat;
 }
 
-void slope_scatter_destroy (slope_scatter_t *scatter)
+void slope_xyplot_destroy (slope_xyplot_t *xyplot)
 {
-    if (scatter == NULL) {
+    if (xyplot == NULL) {
         return;
     }
-    free(scatter);
-    scatter = NULL;
+    free(xyplot);
+    xyplot = NULL;
 }
 
-int slope_scatter_visible (slope_scatter_t *scatter)
+int slope_xyplot_visible (slope_xyplot_t *xyplot)
 {
-    return scatter->visib;
+    return xyplot->visib;
 }
 
-void _slope_scatter_draw (slope_scatter_t *scatter,
-                          slope_plotable_t *cartesian,
+void _slope_xyplot_draw (slope_xyplot_t *xyplot,
+                          slope_metrics_t *cartesian,
                           cairo_t *cr)
 {
-    double *vx = scatter->vx;
-    double *vy = scatter->vy;
-    long k, n = scatter->n;
+    double *vx = xyplot->vx;
+    double *vy = xyplot->vy;
+    long k, n = xyplot->n;
     double x1 = slope_cartesian_map_x(cartesian, vx[0]);
     double y1 = slope_cartesian_map_y(cartesian, vy[0]);
     cairo_set_source_rgba(cr,
-                          scatter->line_color.red,
-                          scatter->line_color.green,
-                          scatter->line_color.blue,
-                          scatter->line_color.alpha);
+                          xyplot->line_color.red,
+                          xyplot->line_color.green,
+                          xyplot->line_color.blue,
+                          xyplot->line_color.alpha);
     cairo_move_to(cr, x1, y1);
     for (k=1; k<n; k++) {
         double x2 = slope_cartesian_map_x(cartesian, vx[k]);
@@ -74,19 +74,19 @@ void _slope_scatter_draw (slope_scatter_t *scatter,
     cairo_stroke(cr);
 }
 
-void _slope_scatter_check_ranges (slope_scatter_t *scatter)
+void _slope_xyplot_check_ranges (slope_xyplot_t *xyplot)
 {
-    double *vx = scatter->vx;
-    double *vy = scatter->vy;
-    long k, n = scatter->n;
-    scatter->x_min = scatter->x_max = vx[0];
-    scatter->y_min = scatter->y_max = vy[0];
+    double *vx = xyplot->vx;
+    double *vy = xyplot->vy;
+    long k, n = xyplot->n;
+    xyplot->x_min = xyplot->x_max = vx[0];
+    xyplot->y_min = xyplot->y_max = vy[0];
     for (k=1; k<n; k++) {
-        if (vx[k] < scatter->x_min) scatter->x_min = vx[k];
-        if (vx[k] > scatter->x_max) scatter->x_max = vx[k];
-        if (vy[k] < scatter->y_min) scatter->y_min = vy[k];
-        if (vy[k] > scatter->y_max) scatter->y_max = vy[k];
+        if (vx[k] < xyplot->x_min) xyplot->x_min = vx[k];
+        if (vx[k] > xyplot->x_max) xyplot->x_max = vx[k];
+        if (vy[k] < xyplot->y_min) xyplot->y_min = vy[k];
+        if (vy[k] > xyplot->y_max) xyplot->y_max = vy[k];
     }
 }
 
-/* slope-scatter.c */
+/* slope-xyplot.c */
