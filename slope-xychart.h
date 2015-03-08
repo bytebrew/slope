@@ -17,19 +17,27 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_H_
-#define _SLOPE_H_
+#ifndef _SLOPE_XYCHART_H_
+#define _SLOPE_XYCHART_H_
 
-#include "slope-xyplot.h"
+#include "slope-scene.h"
+#include "slope-cartesian.h"
 #include "slope-xyaxis.h"
-#include "slope-xychart.h"
+#include "slope-xyplot.h"
 
-#ifndef FALSE
-#define FALSE 0
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-#ifndef TRUE
-#define TRUE 1
+slope_scene_t* slope_xychart_create ();
+
+void slope_xychart_add_plot (slope_scene_t *chart,
+                             double *vx, double *vy, unsigned long n,
+                             slope_color_name_t color,
+                             slope_xyplot_symbol_t symbol);
+
+#ifdef __cplusplus
+}
 #endif
 
-#endif /*_SLOPE_H_*/
+#endif /*_SLOPE_XYCHART_H_*/

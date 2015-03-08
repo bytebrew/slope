@@ -20,10 +20,11 @@
 #include "slope-xyaxis_p.h"
 #include "slope-cartesian_p.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <cairo.h>
 
-
 #define TICKLEN 8
+#define DIVFORMAT "%2.2lf"
 
 
 slope_xyaxis_t* slope_xyaxis_create (slope_xyaxis_type_t type)
@@ -110,6 +111,7 @@ void _slope_xyaxis_draw_bottom(slope_xyaxis_t *axis,
     double x = cartesian->x_min_scene;
     double y = cartesian->y_max_scene;
     double coord = cartesian->x_min;
+    char txt[32];
     
     cairo_move_to(cr, x, y);
     cairo_line_to(cr, x+axis->length, y);
@@ -118,6 +120,11 @@ void _slope_xyaxis_draw_bottom(slope_xyaxis_t *axis,
     while (coord <= cartesian->x_max) {
         cairo_move_to(cr, x, y);
         cairo_line_to(cr, x, y - TICKLEN);
+        sprintf(txt, DIVFORMAT, coord);
+        cairo_text_extents_t txt_ext;
+        cairo_text_extents(cr, txt, &txt_ext);
+        cairo_move_to(cr, x-txt_ext.width/2.0, y+2.0*txt_ext.height);
+        cairo_show_text(cr,txt);
         coord += axis->divsiz;
         x = slope_cartesian_map_x(metrics, coord);
     }
@@ -133,6 +140,7 @@ void _slope_xyaxis_draw_left(slope_xyaxis_t *axis,
     double x = cartesian->x_min_scene;
     double y = cartesian->y_max_scene;
     double coord = cartesian->y_min;
+    char txt[32];
     
     cairo_move_to(cr, x, y);
     cairo_line_to(cr, x, y-axis->length);
@@ -141,6 +149,11 @@ void _slope_xyaxis_draw_left(slope_xyaxis_t *axis,
     while (coord <= cartesian->y_max) {
         cairo_move_to(cr, x, y);
         cairo_line_to(cr, x+TICKLEN, y);
+        sprintf(txt, DIVFORMAT, coord);
+        cairo_text_extents_t txt_ext;
+        cairo_text_extents(cr, txt, &txt_ext);
+        cairo_move_to(cr, x-txt_ext.width-txt_ext.height, y+txt_ext.height/2.0);
+        cairo_show_text(cr,txt);
         coord += axis->divsiz;
         y = slope_cartesian_map_y(metrics, coord);
     }
@@ -156,6 +169,7 @@ void _slope_xyaxis_draw_top(slope_xyaxis_t *axis,
     double x = cartesian->x_min_scene;
     double y = cartesian->y_min_scene;
     double coord = cartesian->x_min;
+    char txt[32];
     
     cairo_move_to(cr, x, y);
     cairo_line_to(cr, x+axis->length, y);
@@ -164,6 +178,11 @@ void _slope_xyaxis_draw_top(slope_xyaxis_t *axis,
     while (coord <= cartesian->x_max) {
         cairo_move_to(cr, x, y);
         cairo_line_to(cr, x, y + TICKLEN);
+        sprintf(txt, DIVFORMAT, coord);
+        cairo_text_extents_t txt_ext;
+        cairo_text_extents(cr, txt, &txt_ext);
+        cairo_move_to(cr, x-txt_ext.width/2.0, y-txt_ext.height);
+        cairo_show_text(cr,txt);
         coord += axis->divsiz;
         x = slope_cartesian_map_x(metrics, coord);
     }
@@ -179,6 +198,7 @@ void _slope_xyaxis_draw_right(slope_xyaxis_t *axis,
     double x = cartesian->x_max_scene;
     double y = cartesian->y_max_scene;
     double coord = cartesian->y_min;
+    char txt[32];
     
     cairo_move_to(cr, x, y);
     cairo_line_to(cr, x, y-axis->length);
@@ -187,6 +207,11 @@ void _slope_xyaxis_draw_right(slope_xyaxis_t *axis,
     while (coord <= cartesian->y_max) {
         cairo_move_to(cr, x, y);
         cairo_line_to(cr, x-TICKLEN, y);
+        sprintf(txt, DIVFORMAT, coord);
+        cairo_text_extents_t txt_ext;
+        cairo_text_extents(cr, txt, &txt_ext);
+        cairo_move_to(cr, x+txt_ext.height, y+txt_ext.height/2.0);
+        cairo_show_text(cr,txt);
         coord += axis->divsiz;
         y = slope_cartesian_map_y(metrics, coord);
     }
@@ -197,6 +222,18 @@ void _slope_xyaxis_draw_right(slope_xyaxis_t *axis,
 int slope_xyaxis_visible (slope_xyaxis_t *axis)
 {
     return axis->visib;
+}
+
+
+void slope_xyaxis_set_visible (slope_xyaxis_t *axis, int vis)
+{
+    axis->visib = vis;
+}
+
+
+slope_xyaxis_type_t slope_xyaxis_type (slope_xyaxis_t *axis)
+{
+    return axis->type;
 }
 
 /* slope-xyaxis.c */

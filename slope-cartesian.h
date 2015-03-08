@@ -23,6 +23,7 @@
 #include "slope-metrics.h"
 #include "slope-xyplot.h"
 #include "slope-xyaxis.h"
+#include "slope-list.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,6 +41,10 @@ void slope_cartesian_add_xyplot (slope_metrics_t *cart, slope_xyplot_t *xyplot);
 
 void slope_cartesian_rescale (slope_metrics_t *cart);
 
+slope_xyaxis_t* slope_cartesian_get_axis (slope_metrics_t *cart,
+                                          slope_xyaxis_type_t type);
+
+slope_list_t* slope_cartesian_plot_list (slope_metrics_t *cart);
 
 #ifdef __cplusplus
 }

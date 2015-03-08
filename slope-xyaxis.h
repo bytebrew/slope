@@ -44,6 +44,10 @@ void slope_xyaxis_destroy (slope_xyaxis_t *axis);
 
 int slope_xyaxis_visible (slope_xyaxis_t *axis);
 
+void slope_xyaxis_set_visible (slope_xyaxis_t *axis, int vis);
+
+slope_xyaxis_type_t slope_xyaxis_type (slope_xyaxis_t *axis);
+
 
 #ifdef __cplusplus
 }

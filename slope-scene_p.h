@@ -35,6 +35,8 @@ struct _slope_scene
     int fill_back;
     double x_low_b, x_up_b;
     double y_low_b, y_up_b;
+    
+    void (*_cleanup_fn) (slope_scene_t*);
 };
 
 #ifdef __cplusplus

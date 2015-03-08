@@ -34,6 +34,7 @@ slope_scene_t* slope_scene_create ()
     slope_color_set_by_name(&scene->back_color, SLOPE_WHITE);
     scene->x_low_b = scene->x_up_b = 1.0;
     scene->y_low_b = scene->y_up_b = 1.0;
+    scene->_cleanup_fn = NULL;
     return scene;
 }
 
@@ -42,6 +43,9 @@ slope_scene_t* slope_scene_create ()
  */
 void slope_scene_destroy (slope_scene_t *scene)
 {
+    if (scene->_cleanup_fn != NULL) {
+        (*scene->_cleanup_fn)(scene);
+    }
     slope_list_destroy(scene->metricss);
     free(scene);
     scene = NULL;
@@ -121,6 +125,12 @@ void slope_scene_add_metrics (slope_scene_t *scene,
                                slope_metrics_t *plot)
 {
     scene->metricss = slope_list_append(scene->metricss, plot);
+}
+
+
+slope_list_t* slope_scene_metrics_list (slope_scene_t *scene)
+{
+    return scene->metricss;
 }
 
 

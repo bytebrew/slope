@@ -67,14 +67,14 @@ void _slope_cartesian_draw (slope_metrics_t *base,
     cairo_rectangle(cr, cart->x_low_b+1.0, cart->y_low_b+1.0,
                     cart->width_scene, cart->height_scene);
     cairo_clip(cr);
-    slope_iterator_t *scat_iter = slope_list_first(cart->xyplots);
-    while (scat_iter) {
+    slope_iterator_t *xyplot = slope_list_first(cart->xyplots);
+    while (xyplot) {
         slope_xyplot_t *scat =
-            (slope_xyplot_t*) slope_iterator_data(scat_iter);
+            (slope_xyplot_t*) slope_iterator_data(xyplot);
         if (slope_xyplot_visible(scat)) {
             _slope_xyplot_draw(scat, base, cr);
         }
-        slope_iterator_next(&scat_iter);
+        slope_iterator_next(&xyplot);
     }
     cairo_restore(cr);
     
@@ -150,6 +150,30 @@ void _slope_cartesian_set_scene_rect (slope_metrics_t* base,
     cart->y_max_scene = scene_rect->y + scene_rect->height - cart->y_up_b;
     cart->width_scene = cart->x_max_scene - cart->x_min_scene;
     cart->height_scene = cart->y_max_scene - cart->y_min_scene;
+}
+
+
+slope_xyaxis_t* slope_cartesian_get_axis (slope_metrics_t *base, slope_xyaxis_type_t type)
+{
+    slope_cartesian_t *cart = (slope_cartesian_t*) base;
+    slope_iterator_t *ax_iter = slope_list_first(cart->axis);
+    while (ax_iter) {
+        slope_xyaxis_t *axis =
+            (slope_xyaxis_t*) slope_iterator_data(ax_iter);
+        if (slope_xyaxis_type(axis) == type) {
+            return axis;
+        }
+        slope_iterator_next(&ax_iter);
+    }
+    /* not found */
+    return NULL;
+}
+
+
+slope_list_t* slope_cartesian_plot_list (slope_metrics_t *base)
+{
+    slope_cartesian_t *cart = (slope_cartesian_t*) base;
+    return cart->xyplots;
 }
 
 /* slope-cartesian.c */

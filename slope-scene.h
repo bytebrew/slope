@@ -22,6 +22,7 @@
 
 #include "slope-primitives.h"
 #include "slope-metrics.h"
+#include "slope-list.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,6 +67,8 @@ void slope_scene_set_back_color_by_name (slope_scene_t *scene,
 
 void slope_scene_add_metrics (slope_scene_t *scene,
                                slope_metrics_t *plot);
+
+slope_list_t* slope_scene_metrics_list (slope_scene_t *scene);
 
 #ifdef __cplusplus
 }
