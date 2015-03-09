@@ -44,9 +44,13 @@ void slope_scene_destroy (slope_scene_t *scene)
  */
 void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
 {
+    /* affects only area */
     cairo_stroke(cr);
     cairo_save(cr);
+    cairo_rectangle(cr, area->x, area->y,
+                    area->width, area->height);
     cairo_clip(cr);
+    /* fill background if required */
     if (scene->fill_back) {
         cairo_set_source_rgba(cr,
                               scene->back_color.red,
@@ -57,6 +61,7 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
                         area->width, area->height);
         cairo_paint(cr);
     }
+    /* draw contents */
     slope_iterator_t *iter =
         slope_list_first(scene->metrics);
     while (iter) {
@@ -91,7 +96,7 @@ void slope_scene_write_to_png (slope_scene_t *scene,
 
 
 void slope_scene_set_back_color_name (slope_scene_t *scene,
-                                         slope_color_name_t color_name)
+                                      slope_color_name_t color_name)
 {
     slope_color_set_name(&scene->back_color, color_name);
 }
