@@ -76,15 +76,18 @@ slope_color_t;
  * @param width the width of rectangle
  * @param height the height of the rectangle
  */
-void slope_rect_set (slope_rect_t *rect, double x, double y, double w, double h);
+void slope_rect_set (slope_rect_t *rect, double x,
+                     double y, double w, double h);
 
 /**
  */
-void slope_color_set (slope_color_t *color, double r, double g, double b, double a);
+void slope_color_set (slope_color_t *color, double r,
+                      double g, double b, double a);
 
 /**
  */
-void slope_color_set_by_name (slope_color_t *color, slope_color_name_t name);
+void slope_color_set_name (slope_color_t *color,
+                           slope_color_name_t name);
 
 #ifdef __cplusplus
 }

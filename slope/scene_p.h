@@ -17,19 +17,28 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_H_
-#define _SLOPE_H_
+#ifndef _SLOPE_SCENE_P_H_
+#define _SLOPE_SCENE_P_H_
 
-#include "slope-xyplot.h"
-#include "slope-xyaxis.h"
-#include "slope-xychart.h"
+#include "slope/scene.h"
+#include "slope/list.h"
+#include "slope/primitives.h"
 
-#ifndef FALSE
-#define FALSE 0
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-#ifndef TRUE
-#define TRUE 1
+struct _slope_scene
+{
+    slope_list_t *metrics;
+    slope_color_t back_color;
+    int fill_back;
+
+    void (*_cleanup_fn) (slope_scene_t*);
+};
+
+#ifdef __cplusplus
+}
 #endif
 
-#endif /*_SLOPE_H_*/
+#endif /*_SLOPE_SCENE_P_H_*/

@@ -17,26 +17,31 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope-primitives.h"
+#include "slope/primitives.h"
 
 
-void slope_rect_set (slope_rect_t *rect, double x, double y, double w, double h)
+void slope_rect_set (slope_rect_t *rect, double x,
+                     double y, double w, double h)
 {
     rect->x = x;
     rect->y = y;
     rect->width = w;
     rect->height = h;
 }
-                                                            
-void slope_color_set (slope_color_t *color, double r, double g, double b, double a)
+
+
+void slope_color_set (slope_color_t *color, double r,
+                      double g, double b, double a)
 {
     color->red = r;
     color->green = g;
     color->blue = b;
     color->alpha = a;
 }
-                                                                             
-void slope_color_set_by_name (slope_color_t *color, slope_color_name_t name)
+
+
+void slope_color_set_name (slope_color_t *color,
+                           slope_color_name_t name)
 {
     color->alpha = 1.0;
     switch (name) {
@@ -68,4 +73,4 @@ void slope_color_set_by_name (slope_color_t *color, slope_color_name_t name)
     }
 }
 
-/* slope-primitives.c */
+/* slope/primitives.c */

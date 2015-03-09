@@ -17,24 +17,18 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_CHART_H_
-#define _SLOPE_CHART_H_
+#ifndef _SLOPE_SCENE_H_
+#define _SLOPE_SCENE_H_
 
-#include "slope-primitives.h"
-#include "slope-metrics.h"
-#include "slope-list.h"
+#include "slope/primitives.h"
+#include "slope/metrics.h"
+#include "slope/list.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 typedef struct _slope_scene slope_scene_t;
-
-/**
- * Creates a new scene
- * @return a new scene
- */
-slope_scene_t* slope_scene_create ();
 
 /**
  * Drestroys scene
@@ -62,11 +56,11 @@ void slope_scene_write_to_png (slope_scene_t *scene,
                                const char *filename,
                                int width, int height);
 
-void slope_scene_set_back_color_by_name (slope_scene_t *scene,
-                                         slope_color_name_t color);
+void slope_scene_set_back_color_name (slope_scene_t *scene,
+                                      slope_color_name_t color);
 
 void slope_scene_add_metrics (slope_scene_t *scene,
-                               slope_metrics_t *plot);
+                              slope_metrics_t *plot);
 
 slope_list_t* slope_scene_metrics_list (slope_scene_t *scene);
 
@@ -74,4 +68,4 @@ slope_list_t* slope_scene_metrics_list (slope_scene_t *scene);
 }
 #endif
 
-#endif /*_SLOPE_CHART_H_*/
+#endif /*_SLOPE_SCENE_H_*/

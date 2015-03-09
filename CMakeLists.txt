@@ -3,29 +3,26 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 FIND_PACKAGE(PkgConfig REQUIRED)
 PKG_CHECK_MODULES(CAIRO "cairo")
-INCLUDE_DIRECTORIES(${CAIRO_INCLUDE_DIRS})
+
+INCLUDE_DIRECTORIES(
+    ${CAIRO_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}
+)
 
 SET(SLOPE_HDRS
-    slope-list.h
-    slope-primitives.h
-    slope-scene.h
-    slope-metrics.h
-    slope-cartesian.h
-    slope-xyplot.h
-    slope-xyaxis.h
-    slope-xychart.h
-    slope.h
+    slope/list.h
+    slope/primitives.h
+    slope/scene.h
+    slope/metrics.h
+    slope/data.h
 )
 
 SET(SLOPE_SRCS
-    slope-list.c
-    slope-primitives.c
-    slope-scene.c
-    slope-metrics.c
-    slope-cartesian.c
-    slope-xyplot.c
-    slope-xyaxis.c
-    slope-xychart.c
+    slope/list.c
+    slope/primitives.c
+    slope/scene.c
+    slope/metrics.c
+    slope/data.c
 )
 
 ADD_LIBRARY(slope SHARED ${SLOPE_SRCS})

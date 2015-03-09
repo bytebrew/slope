@@ -17,36 +17,24 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope-scene_p.h"
-#include "slope-metrics.h"
+#include "slope/scene_p.h"
+#include "slope/metrics.h"
 #include <stdlib.h>
 #include <cairo.h>
 
-
-/**
- * Creates a new scene
- */
-slope_scene_t* slope_scene_create ()
-{
-    slope_scene_t *scene = malloc(sizeof(slope_scene_t));
-    scene->metricss = NULL;
-    scene->fill_back = 1;
-    slope_color_set_by_name(&scene->back_color, SLOPE_WHITE);
-    scene->x_low_b = scene->x_up_b = 1.0;
-    scene->y_low_b = scene->y_up_b = 1.0;
-    scene->_cleanup_fn = NULL;
-    return scene;
-}
 
 /**
  * Drestroys scene
  */
 void slope_scene_destroy (slope_scene_t *scene)
 {
-    if (scene->_cleanup_fn != NULL) {
+    if (scene == NULL) {
+        return;
+    }
+    if (scene->_cleanup_fn) {
         (*scene->_cleanup_fn)(scene);
     }
-    slope_list_destroy(scene->metricss);
+    slope_list_destroy(scene->metrics);
     free(scene);
     scene = NULL;
 }
@@ -56,38 +44,26 @@ void slope_scene_destroy (slope_scene_t *scene)
  */
 void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
 {
-    slope_rect_t scene_rect;
-    slope_rect_set(&scene_rect,
-                   area->x + scene->x_low_b,
-                   area->y + scene->y_low_b,
-                   area->width - scene->x_low_b - scene->x_up_b,
-                   area->height - scene->y_low_b - scene->y_up_b);
-
-    /* paint the background if required */
     cairo_stroke(cr);
     cairo_save(cr);
+    cairo_clip(cr);
     if (scene->fill_back) {
         cairo_set_source_rgba(cr,
                               scene->back_color.red,
                               scene->back_color.green,
                               scene->back_color.blue,
                               scene->back_color.alpha);
+        cairo_rectangle(cr, area->x, area->y,
+                        area->width, area->height);
         cairo_paint(cr);
     }
-    cairo_restore(cr);
-
-    /* draw contents */
-    cairo_save(cr);
-    cairo_rectangle(cr, scene_rect.x, scene_rect.y,
-                    scene_rect.width, scene_rect.height);
-    cairo_clip(cr);
     slope_iterator_t *iter =
-        slope_list_first(scene->metricss);
+        slope_list_first(scene->metrics);
     while (iter) {
-        slope_metrics_t *plot =
+        slope_metrics_t *metrics =
             (slope_metrics_t*) slope_iterator_data(iter);
-        if (slope_metrics_visible (plot)) {
-            slope_metrics_draw (plot, cr, &scene_rect);
+        if (slope_metrics_visible(metrics)) {
+            slope_metrics_draw(metrics, cr, &area);
         }
         slope_iterator_next(&iter);
     }
@@ -114,24 +90,24 @@ void slope_scene_write_to_png (slope_scene_t *scene,
 }
 
 
-void slope_scene_set_back_color_by_name (slope_scene_t *scene,
+void slope_scene_set_back_color_name (slope_scene_t *scene,
                                          slope_color_name_t color_name)
 {
-    slope_color_set_by_name(&scene->back_color, color_name);
+    slope_color_set_name(&scene->back_color, color_name);
 }
 
 
 void slope_scene_add_metrics (slope_scene_t *scene,
-                               slope_metrics_t *plot)
+                              slope_metrics_t *metrics)
 {
-    scene->metricss = slope_list_append(scene->metricss, plot);
+    scene->metrics = slope_list_append(scene->metrics, plot);
 }
 
 
 slope_list_t* slope_scene_metrics_list (slope_scene_t *scene)
 {
-    return scene->metricss;
+    return scene->metrics;
 }
 
 
-/* slope-scene.c */
+/* slope/scene.c */

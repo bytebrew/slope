@@ -17,7 +17,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope-list.h"
+#include "slope/list.h"
 #include <stdlib.h>
 
 
@@ -190,4 +190,4 @@ slope_iterator_t* slope_list_remove (slope_list_t *list,
     return next;
 }
 
-/* slope-list.c */
+/* slope/list.c */
