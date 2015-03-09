@@ -15,6 +15,8 @@ SET(SLOPE_HDRS
     slope/scene.h
     slope/metrics.h
     slope/data.h
+    slope/xymetrics.h
+    slope/xydata.h
 )
 
 SET(SLOPE_SRCS
@@ -23,6 +25,8 @@ SET(SLOPE_SRCS
     slope/scene.c
     slope/metrics.c
     slope/data.c
+    slope/xymetrics.c
+    slope/xydata.c
 )
 
 ADD_LIBRARY(slope SHARED ${SLOPE_SRCS})

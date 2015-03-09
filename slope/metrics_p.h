@@ -32,8 +32,12 @@ struct _slope_metrics
     int visible;
 
     void (*_cleanup_fn) (slope_metrics_t*);
+    void (*_update_fn) (slope_metrics_t*);
     void (*_draw_fn) (slope_metrics_t*, cairo_t*, slope_rect_t*);
 };
+
+void _slope_metrics_draw  (slope_metrics_t *metrics, cairo_t *cr,
+                           slope_rect_t *area);
 
 #ifdef __cplusplus
 }

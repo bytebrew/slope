@@ -18,9 +18,19 @@
  */
 
 #include "slope/scene_p.h"
-#include "slope/metrics.h"
+#include "slope/metrics_p.h"
 #include <stdlib.h>
 #include <cairo.h>
+
+
+slope_scene_t* slope_scene_create()
+{
+    slope_scene_t *scene = malloc(sizeof(slope_scene_t));
+    scene->metrics = NULL;
+    scene_color_set_name(&scene->back_color, SLOPE_WHITE);
+    scene->fill_back = 1;
+    // TODO
+}
 
 
 /**
@@ -68,7 +78,7 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
         slope_metrics_t *metrics =
             (slope_metrics_t*) slope_iterator_data(iter);
         if (slope_metrics_visible(metrics)) {
-            slope_metrics_draw(metrics, cr, &area);
+            _slope_metrics_draw(metrics, cr, &area);
         }
         slope_iterator_next(&iter);
     }

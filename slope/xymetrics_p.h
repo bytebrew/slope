@@ -17,32 +17,43 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_METRICS_H_
-#define _SLOPE_METRICS_H_
+#ifndef _SLOPE_XYMETRICS_P_H_
+#define _SLOPE_XYMETRICS_P_H_
 
-#include "slope/primitives.h"
-#include "slope/list.h"
+#include "slope/xymetrics.h"
+#include "slope/metrics_p.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct _slope_metrics slope_metrics_t;
+typedef struct _slope_xymetrics slope_xymetrics_t;
+
+struct _slope_xymetrics
+{
+    struct _slope_metrics parent;
+    
+    double x_low_bound, x_up_bound;
+    double y_low_bound, y_up_bound;
+    
+    double xmin, xmax;
+    double ymin, ymax;
+    double width, height;
+    
+    double xmin_scene, xmax_scene;
+    double ymin_scene, ymax_scene;
+    double width_scene, height_scene;
+};
 
 
-void slope_metrics_destroy (slope_metrics_t *metrics);
+void _slope_xymetrics_update (slope_metrics_t *metrics);
 
-void slope_metrics_add_data (slope_metrics_t *metrics,
-                             slope_data_t *data);
-
-slope_list_t* slope_metrics_data_list (slope_metrics_t *metrics);
-
-int slope_metrics_visible  (slope_metrics_t *metrics);
-
-void slope_metrics_update (slope_metrics_t *metrics);
+void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+                            slope_rect_t *area);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*_SLOPE_METRICS_H_*/
+#endif /*_SLOPE_XYMETRICS_P_H_*/
+

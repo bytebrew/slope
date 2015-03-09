@@ -30,6 +30,8 @@ extern "C" {
 
 typedef struct _slope_scene slope_scene_t;
 
+slope_scene_t* slope_scene_create();
+
 /**
  * Drestroys scene
  * @param scene the scene to be destroyed

@@ -17,32 +17,42 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_METRICS_H_
-#define _SLOPE_METRICS_H_
-
-#include "slope/primitives.h"
-#include "slope/list.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-typedef struct _slope_metrics slope_metrics_t;
+#include "slope/data_p.h"
+#include <stdlib.h>
 
 
-void slope_metrics_destroy (slope_metrics_t *metrics);
-
-void slope_metrics_add_data (slope_metrics_t *metrics,
-                             slope_data_t *data);
-
-slope_list_t* slope_metrics_data_list (slope_metrics_t *metrics);
-
-int slope_metrics_visible  (slope_metrics_t *metrics);
-
-void slope_metrics_update (slope_metrics_t *metrics);
-
-#ifdef __cplusplus
+void slope_data_destroy (slope_data_t *data)
+{
+    if (data == NULL) {
+        return;
+    }
+    if (data->_cleanup_fn) {
+        (*data->_cleanup_fn)(data);
+    }
+    if (data->name) {
+        free(data->name);
+    }
+    free(data);
+    data = NULL;
 }
-#endif
 
-#endif /*_SLOPE_METRICS_H_*/
+
+int slope_data_visible (slope_data_t *data)
+{
+    if (data == NULL) {
+        return 0;
+    }
+    return data->visible;
+}
+
+
+const char* slope_data_name (slope_data_t *data)
+{
+    if (data == NULL) {
+        return NULL;
+    }
+    return data->name;
+}
+
+/* slope/data.c */
+
