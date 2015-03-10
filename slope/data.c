@@ -54,5 +54,11 @@ const char* slope_data_name (slope_data_t *data)
     return data->name;
 }
 
-/* slope/data.c */
 
+void _slope_data_draw (slope_data_t *data, cairo_t *cr,
+                       slope_metrics_t *metrics)
+{
+    (*data->_draw_fn)(data,cr,metrics);
+}
+
+/* slope/data.c */

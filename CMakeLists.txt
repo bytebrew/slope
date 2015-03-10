@@ -10,6 +10,7 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(SLOPE_HDRS
+    slope/slope.h
     slope/list.h
     slope/primitives.h
     slope/scene.h
@@ -30,10 +31,10 @@ SET(SLOPE_SRCS
 )
 
 ADD_LIBRARY(slope SHARED ${SLOPE_SRCS})
-TARGET_LINK_LIBRARIES(slope ${CAIRO_LIBRARIES} -lm)
+TARGET_LINK_LIBRARIES(slope ${CAIRO_LIBRARIES})
 
 ADD_EXECUTABLE(app test.c)
-TARGET_LINK_LIBRARIES(app slope)
+TARGET_LINK_LIBRARIES(app slope -lm)
 
 INSTALL(TARGETS slope DESTINATION /usr/lib)
 INSTALL(FILES ${SLOPE_HDRS} DESTINATION /usr/include/slope)

@@ -21,6 +21,7 @@
 #define _SLOPE_METRICS_H_
 
 #include "slope/primitives.h"
+#include "slope/data.h"
 #include "slope/list.h"
 
 #ifdef __cplusplus

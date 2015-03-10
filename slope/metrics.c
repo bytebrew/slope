@@ -18,7 +18,7 @@
  */
 
 #include "slope/metrics_p.h"
-
+#include <stdlib.h>
 
 void slope_metrics_destroy (slope_metrics_t *metrics)
 {

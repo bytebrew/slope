@@ -27,9 +27,9 @@ slope_scene_t* slope_scene_create()
 {
     slope_scene_t *scene = malloc(sizeof(slope_scene_t));
     scene->metrics = NULL;
-    scene_color_set_name(&scene->back_color, SLOPE_WHITE);
+    slope_color_set_name(&scene->back_color, SLOPE_WHITE);
     scene->fill_back = 1;
-    // TODO
+    scene->_cleanup_fn = NULL;
 }
 
 
@@ -62,11 +62,9 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
     cairo_clip(cr);
     /* fill background if required */
     if (scene->fill_back) {
-        cairo_set_source_rgba(cr,
-                              scene->back_color.red,
-                              scene->back_color.green,
-                              scene->back_color.blue,
-                              scene->back_color.alpha);
+        cairo_set_source_rgba(
+            cr, scene->back_color.red, scene->back_color.green,
+            scene->back_color.blue, scene->back_color.alpha);
         cairo_rectangle(cr, area->x, area->y,
                         area->width, area->height);
         cairo_paint(cr);
@@ -78,7 +76,7 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
         slope_metrics_t *metrics =
             (slope_metrics_t*) slope_iterator_data(iter);
         if (slope_metrics_visible(metrics)) {
-            _slope_metrics_draw(metrics, cr, &area);
+            _slope_metrics_draw(metrics, cr, area);
         }
         slope_iterator_next(&iter);
     }
@@ -115,7 +113,7 @@ void slope_scene_set_back_color_name (slope_scene_t *scene,
 void slope_scene_add_metrics (slope_scene_t *scene,
                               slope_metrics_t *metrics)
 {
-    scene->metrics = slope_list_append(scene->metrics, plot);
+    scene->metrics = slope_list_append(scene->metrics, metrics);
 }
 
 

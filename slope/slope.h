@@ -17,42 +17,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_XYDATA_P_H_
-#define _SLOPE_XYDATA_P_H_
+#ifndef _SLOPE_SLOPE_H_
+#define _SLOPE_SLOPE_H_
 
+#include "slope/scene.h"
+#include "slope/metrics.h"
+#include "slope/data.h"
+#include "slope/xymetrics.h"
 #include "slope/xydata.h"
-#include "slope/data_p.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-typedef struct _slope_xydata slope_xydata_t;
-
-struct _slope_xydata
-{
-    struct _slope_data parent;
-    
-    double *vx, *vy;
-    int n;
-    double xmin, xmax;
-    double ymin, ymax;
-    
-    slope_color_t color;
-    slope_scatter_t scatter;
-};
-
-
-void _slope_xydata_check_ranges (slope_data_t *data);
-
-void _slope_xydata_draw (slope_data_t *data, cairo_t *cr,
-                         slope_metrics_t *metrics);
-
-void _slope_xydata_draw_line (slope_data_t *data, cairo_t *cr,
-                              slope_metrics_t *metrics);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /*_SLOPE_XYDATA_P_H_*/
+#endif /*_SLOPE_SLOPE_H_*/

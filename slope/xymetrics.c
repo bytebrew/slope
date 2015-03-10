@@ -25,7 +25,7 @@
 slope_metrics_t* slope_xymetrics_create()
 {
     slope_xymetrics_t *self = malloc(sizeof(slope_xymetrics_t));
-    sloep_metrics_t *parent = (sloep_metrics_t*) self;
+    slope_metrics_t *parent = (slope_metrics_t*) self;
     parent->data = NULL;
     parent->visible = 1;
     parent->_cleanup_fn = NULL;
@@ -99,12 +99,14 @@ void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
     
     /* draw contents */
     cairo_save(cr);
-    cairo_rectangle(cr, self->xmin_scene, self->ymin_scene,
-                    self->width_scene, self->height_scene);
+    cairo_rectangle(
+        cr, self->xmin_scene, self->ymin_scene,
+        self->width_scene, self->height_scene);
     cairo_clip(cr);
     slope_iterator_t *iter = slope_list_first(metrics->data);
     while (iter) {
-        slope_data_t *data = (slope_data_t*) slope_iterator_data(data);
+        slope_data_t *data =
+            (slope_data_t*) slope_iterator_data(iter);
         if (slope_data_visible(data)) {
             _slope_data_draw(data, cr, metrics);
         }
@@ -114,4 +116,3 @@ void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
 }
 
 /* slope/xymetrics.c */
-

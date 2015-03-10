@@ -59,6 +59,13 @@ typedef enum
 }
 slope_color_name_t;
 
+typedef enum
+{
+    SLOPE_LINE,
+    SLOPE_CIRCLES
+}
+slope_scatter_t;
+
 typedef struct
 {
     double red;

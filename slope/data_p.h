@@ -37,6 +37,8 @@ struct _slope_data
 };
 
 
+void _slope_data_draw (slope_data_t *data, cairo_t *cr, slope_metrics_t *metrics);
+
 #ifdef __cplusplus
 }
 #endif

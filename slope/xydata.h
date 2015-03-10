@@ -27,9 +27,16 @@
 extern "C" {
 #endif
 
-slope_data_t* slope_xydata_create_simple (double *vx, double *vy,
-                                          const int n, slope_color_name_t color,
-                                          slope_scatter_t *scatter);
+slope_data_t*
+slope_xydata_create_simple (double *vx, double *vy,
+                            const int n,
+                            const char *name,
+                            slope_color_name_t color,
+                            slope_scatter_t scatter);
+
+void slope_xydata_set (slope_data_t *data,
+                       double *vx, double *vy,
+                       const int n);
 
 double slope_xydata_x_max (slope_data_t *data);
 
@@ -44,4 +51,3 @@ double slope_xydata_y_min (slope_data_t *data);
 #endif
 
 #endif /*_SLOPE_XYDATA_H_*/
-
