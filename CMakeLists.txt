@@ -17,6 +17,7 @@ SET(SLOPE_HDRS
     slope/scene.h
     slope/metrics.h
     slope/data.h
+    slope/frame.h
     slope/xymetrics.h
     slope/xydata.h
 )
@@ -27,6 +28,7 @@ SET(SLOPE_SRCS
     slope/scene.c
     slope/metrics.c
     slope/data.c
+    slope/frame.c
     slope/xymetrics.c
     slope/xydata.c
 )
