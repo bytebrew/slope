@@ -69,7 +69,7 @@ void _slope_xymetrics_update (slope_metrics_t *metrics)
     self->xmax = dat->xmax;
     self->ymin = dat->ymin;
     self->ymax = dat->ymax;
-    
+
     slope_iterator_next(&iter);
     while (iter) {
         dat = (slope_xydata_t*) slope_iterator_data(iter);
@@ -88,7 +88,7 @@ void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                             slope_rect_t *area)
 {
     slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
-    
+
     /* get scene geometry */
     self->xmin_scene = area->x + self->x_low_bound;
     self->ymin_scene = area->y + self->y_low_bound;
@@ -96,7 +96,7 @@ void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
     self->ymax_scene = area->y + area->height - self->y_up_bound;
     self->width_scene = self->xmax_scene - self->xmin_scene;
     self->height_scene = self->ymax_scene - self->ymin_scene;
-    
+
     /* draw contents */
     cairo_save(cr);
     cairo_rectangle(

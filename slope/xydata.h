@@ -22,6 +22,7 @@
 
 #include "slope/data.h"
 #include "slope/primitives.h"
+#include "slope/xymetrics.h"
 
 #ifdef __cplusplus
 extern "C" {

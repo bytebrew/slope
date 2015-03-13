@@ -10,7 +10,6 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(SLOPE_HDRS
-    slope/slope.h
     slope/list.h
     slope/primitives.h
     slope/scene.h

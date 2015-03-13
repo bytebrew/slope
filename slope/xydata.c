@@ -31,7 +31,7 @@ slope_xydata_create_simple (double *vx, double *vy,
 {
     slope_xydata_t *self = malloc(sizeof(slope_xydata_t));
     slope_data_t *parent = (slope_data_t*) self;
-    
+
     slope_xydata_set(parent, vx, vy, n);
     slope_color_set_name(&self->color, color);
     self->scatter = SLOPE_LINE;
@@ -47,11 +47,11 @@ void _slope_xydata_draw (slope_data_t *data, cairo_t *cr,
                          slope_metrics_t *metrics)
 {
     slope_xydata_t *self = (slope_xydata_t*) data;
-    
+
     cairo_set_source_rgba(
         cr, self->color.red, self->color.green,
         self->color.blue, self->color.alpha);
-    
+
     switch (self->scatter) {
         case SLOPE_LINE:
             _slope_xydata_draw_line(data, cr, metrics);
@@ -66,15 +66,15 @@ void _slope_xydata_draw_line (slope_data_t *data, cairo_t *cr,
                               slope_metrics_t *metrics)
 {
     slope_xydata_t *self = (slope_xydata_t*) data;
-    
+
     const double *vx = self->vx;
     const double *vy = self->vy;
     const int n = self->n;
-    
+
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
     cairo_move_to(cr, x1, y1);
-    
+
     int k;
     for (k=1; k<n; k++) {
         double x2 = slope_xymetrics_map_x(metrics, vx[k]);
@@ -147,7 +147,7 @@ void _slope_xydata_check_ranges (slope_data_t *data)
     const int n = self->n;
     self->xmin = self->xmax = vx[0];
     self->ymin = self->ymax = vy[0];
-    
+
     int k;
     for (k=1; k<n; k++) {
         if (vx[k] < self->xmin) self->xmin = vx[k];
