@@ -24,7 +24,8 @@
 #include <stdio.h>
 #include <cairo.h>
 
-#define TICKLEN 6
+#define TICKLEN 8
+#define LITTLETICKLEN 4
 
 
 slope_frame_t* _slope_xyframe_create(slope_metrics_t *metrics)
@@ -43,6 +44,8 @@ slope_frame_t* _slope_xyframe_create(slope_metrics_t *metrics)
     parent->_draw_fn = _slope_xyframe_draw;
     slope_xyframe_set_visible(
         parent, SLOPE_XYFRAME_ALL, SLOPE_TRUE);
+    slope_xyframe_set_visible(
+        parent, SLOPE_XYFRAME_GRID, SLOPE_FALSE);
     slope_color_set_name(&self->color, SLOPE_BLACK);
     
     return parent;
@@ -137,9 +140,13 @@ void _slope_xyframe_setup_draw (slope_frame_t *frame)
     
     self->hdivnum = metrics->width_scene / 80.0;
     self->hdivlen = (metrics->xmax - metrics->xmin) / self->hdivnum;
+    self->hdivnum *= 5.0;
+    self->hdivlen /= 5.0;
     
     self->vdivnum = metrics->height_scene / 60.0;
     self->vdivlen = (metrics->ymax - metrics->ymin) / self->vdivnum;
+    self->vdivnum *= 5.0;
+    self->vdivlen /= 5.0;
 }
 
 
@@ -182,34 +189,46 @@ void _slope_xyframe_draw_bottom_top (slope_frame_t *frame, cairo_t *cr)
     /* draw coordinate ticks and grid */
     int k;
     for (k=0; k<=self->hdivnum; k++) {
-        sprintf(txt, "%2.2lf", coord);
-        cairo_text_extents(cr, txt, &txt_ext);
-        
-        if (self->visible_elements & SLOPE_XYFRAME_TOP) {
-            cairo_move_to(cr,x,yup);
-            cairo_line_to(cr,x,yup+TICKLEN);
-            cairo_move_to(cr,x-txt_ext.width/2.0,yup-txt_ext.height);
-            cairo_show_text(cr,txt);
+        if (k%5==0) {
+            sprintf(txt, "%2.2lf", coord);
+            cairo_text_extents(cr, txt, &txt_ext);
+            
+            if (self->visible_elements & SLOPE_XYFRAME_TOP) {
+                cairo_move_to(cr,x,yup);
+                cairo_line_to(cr,x,yup+TICKLEN);
+                cairo_move_to(cr,x-txt_ext.width/2.0,yup-txt_ext.height);
+                cairo_show_text(cr,txt);
+            }
+            if (self->visible_elements & SLOPE_XYFRAME_BOTTOM) {
+                cairo_move_to(cr,x,ydn);
+                cairo_line_to(cr,x,ydn-TICKLEN);
+                cairo_move_to(cr,x-txt_ext.width/2.0,ydn+2.0*txt_ext.height);
+                cairo_show_text(cr,txt);
+            }
+            if (self->visible_elements & SLOPE_XYFRAME_GRID) {
+                cairo_stroke(cr);
+                cairo_save(cr);
+                cairo_set_source_rgba(
+                    cr, self->color.red, self->color.green,
+                    self->color.blue, 0.20);
+                cairo_set_line_width(cr, 1.0);
+                double dash[] = { 4.0, 4.0 };
+                cairo_set_dash(cr, dash, 2, 0.0);
+                cairo_move_to(cr,x,ydn);
+                cairo_line_to(cr,x,ydn-metrics->height_scene);
+                cairo_stroke(cr);
+                cairo_restore(cr);
+            }
         }
-        if (self->visible_elements & SLOPE_XYFRAME_BOTTOM) {
-            cairo_move_to(cr,x,ydn);
-            cairo_line_to(cr,x,ydn-TICKLEN);
-            cairo_move_to(cr,x-txt_ext.width/2.0,ydn+2.0*txt_ext.height);
-            cairo_show_text(cr,txt);
-        }
-        if (self->visible_elements & SLOPE_XYFRAME_GRID) {
-            cairo_stroke(cr);
-            cairo_save(cr);
-            cairo_set_source_rgba(
-                cr, self->color.red, self->color.green,
-                self->color.blue, 0.20);
-            cairo_set_line_width(cr, 1.0);
-            double dash[] = { 4.0, 4.0 };
-            cairo_set_dash(cr, dash, 2, 0.0);
-            cairo_move_to(cr,x,ydn);
-            cairo_line_to(cr,x,ydn-metrics->height_scene);
-            cairo_stroke(cr);
-            cairo_restore(cr);
+        else {
+            if (self->visible_elements & SLOPE_XYFRAME_TOP) {
+                cairo_move_to(cr,x,yup);
+                cairo_line_to(cr,x,yup+LITTLETICKLEN);
+            }
+            if (self->visible_elements & SLOPE_XYFRAME_BOTTOM) {
+                cairo_move_to(cr,x,ydn);
+                cairo_line_to(cr,x,ydn-LITTLETICKLEN);
+            }
         }
         coord += self->hdivlen;
         x = slope_xymetrics_map_x(frame->metrics, coord);
@@ -234,36 +253,48 @@ void _slope_xyframe_draw_left_right (slope_frame_t *frame, cairo_t *cr)
     /* draw coordinate ticks and grid */
     int k;
     for (k=0; k<=self->vdivnum; k++) {
-        sprintf(txt, "%2.2lf", coord);
-        cairo_text_extents(cr, txt, &txt_ext);
-        if (txt_ext.width > bgtnumwidth) bgtnumwidth = txt_ext.width;
-        
-        if (self->visible_elements & SLOPE_XYFRAME_LEFT) {
-            cairo_move_to(cr,xlf,y);
-            cairo_line_to(cr,xlf+TICKLEN,y);
-            cairo_move_to(cr,xlf-txt_ext.height-txt_ext.width,
-                          y+txt_ext.height/2.0);
-            cairo_show_text(cr,txt);
+        if (k%5==0) {
+            sprintf(txt, "%2.2lf", coord);
+            cairo_text_extents(cr, txt, &txt_ext);
+            if (txt_ext.width > bgtnumwidth) bgtnumwidth = txt_ext.width;
+            
+            if (self->visible_elements & SLOPE_XYFRAME_LEFT) {
+                cairo_move_to(cr,xlf,y);
+                cairo_line_to(cr,xlf+TICKLEN,y);
+                cairo_move_to(cr,xlf-txt_ext.height-txt_ext.width,
+                            y+txt_ext.height/2.0);
+                cairo_show_text(cr,txt);
+            }
+            if (self->visible_elements & SLOPE_XYFRAME_RIGHT) {
+                cairo_move_to(cr,xrt,y);
+                cairo_line_to(cr,xrt-TICKLEN,y);
+                cairo_move_to(cr,xrt+txt_ext.height, y+txt_ext.height/2.0);
+                cairo_show_text(cr,txt);
+            }
+            if (self->visible_elements & SLOPE_XYFRAME_GRID) {
+                cairo_stroke(cr);
+                cairo_save(cr);
+                cairo_set_source_rgba(
+                    cr, self->color.red, self->color.green,
+                    self->color.blue, 0.20);
+                cairo_set_line_width(cr, 1.0);
+                double dash[] = { 4.0, 4.0 };
+                cairo_set_dash(cr, dash, 2, 0.0);
+                cairo_move_to(cr,xlf,y);
+                cairo_line_to(cr,xlf+metrics->width_scene,y);
+                cairo_stroke(cr);
+                cairo_restore(cr);
+            }
         }
-        if (self->visible_elements & SLOPE_XYFRAME_RIGHT) {
-            cairo_move_to(cr,xrt,y);
-            cairo_line_to(cr,xrt-TICKLEN,y);
-            cairo_move_to(cr,xrt+txt_ext.height, y+txt_ext.height/2.0);
-            cairo_show_text(cr,txt);
-        }
-        if (self->visible_elements & SLOPE_XYFRAME_GRID) {
-            cairo_stroke(cr);
-            cairo_save(cr);
-            cairo_set_source_rgba(
-                cr, self->color.red, self->color.green,
-                self->color.blue, 0.20);
-            cairo_set_line_width(cr, 1.0);
-            double dash[] = { 4.0, 4.0 };
-            cairo_set_dash(cr, dash, 2, 0.0);
-            cairo_move_to(cr,xlf,y);
-            cairo_line_to(cr,xlf+metrics->width_scene,y);
-            cairo_stroke(cr);
-            cairo_restore(cr);
+        else {
+            if (self->visible_elements & SLOPE_XYFRAME_LEFT) {
+                cairo_move_to(cr,xlf,y);
+                cairo_line_to(cr,xlf+LITTLETICKLEN,y);
+            }
+            if (self->visible_elements & SLOPE_XYFRAME_RIGHT) {
+                cairo_move_to(cr,xrt,y);
+                cairo_line_to(cr,xrt-LITTLETICKLEN,y);
+            }
         }
         coord += self->vdivlen;
         y = slope_xymetrics_map_y(frame->metrics, coord);
