@@ -1,15 +1,16 @@
 SLOPE
 =====
 
-Slope is a free (LGPL) **C** library that creates charts from numerical data. It's design
-principle is the following: **THE ONLY DEPENDENCY IS CAIRO**, and the **API** is
-familiar to the users of cairo. Of course, since you just have to pass a
+Slope is a free (LGPL) **C** library that creates charts from numerical data. It's
+design principle is the following: **THE ONLY DEPENDENCY IS CAIRO**, and the **API**
+is familiar to the users of cairo. Of course, since you just have to pass a
 **cairo_t** to slope to generate a chart, it is easy to embed slope's charts
 in a **GTK WIDGET**.
 
-Slope is in it's early stages of development and needs some optimization
-and polishing. But here's what we already have: The following chart is
-the output of the test.c program in de top level source repository.
+Slope is in it's early stages of development and still needs some optimization
+and polishing. Some accessor methods to objects properties are also absent.But here's
+what we already have: The following chart is the output of the test.c program in de
+top level source repository.
 
 ![](https://github.com/exocode/slope/blob/master/figure.png)
 

@@ -20,6 +20,7 @@
 #ifndef _SLOPE_XYFRAME_P_H_
 #define _SLOPE_XYFRAME_P_H_
 
+#include "slope/primitives.h"
 #include "slope/xyframe.h"
 #include "slope/frame_p.h"
 
@@ -36,10 +37,16 @@ struct _slope_xyframe
     int visible_elements;
     
     double hdivlen, vdivlen;
+    int hdivnum, vdivnum;
+    
+    char *top_label, *bottom_label;
+    char *left_label, *right_label;
 };
 
 
 slope_frame_t* _slope_xyframe_create (slope_metrics_t *metrics);
+
+void _slope_xyframe_cleanup (slope_frame_t *frame);
 
 void _slope_xyframe_setup_draw (slope_frame_t *frame);
 

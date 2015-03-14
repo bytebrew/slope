@@ -30,7 +30,8 @@ typedef struct _slope_data slope_data_t;
 typedef enum
 {
     SLOPE_LINE,
-    SLOPE_CIRCLES
+    SLOPE_CIRCLES,
+    SLOPE_TRIANGLES
 }
 slope_scatter_t;
 

@@ -20,6 +20,7 @@
 #include "slope/xyframe_p.h"
 #include "slope/xymetrics_p.h"
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include <cairo.h>
 
@@ -30,14 +31,31 @@ slope_frame_t* _slope_xyframe_create(slope_metrics_t *metrics)
 {
     slope_xyframe_t *self = malloc(sizeof(slope_xyframe_t));
     slope_frame_t *parent = (slope_frame_t*) self;
+    
+    self->top_label = strdup("Top Axis");
+    self->bottom_label = strdup("Bottom Axis");
+    self->left_label = strdup("Left Axis");
+    self->right_label = strdup("Right Axis");
+    
     parent->visible = 1;
     parent->metrics = metrics;
-    parent->_cleanup_fn = NULL;
+    parent->_cleanup_fn = _slope_xyframe_cleanup;
     parent->_draw_fn = _slope_xyframe_draw;
-    slope_xyframe_set_visible(parent, SLOPE_XYFRAME_ALL,
-                              SLOPE_TRUE);
+    slope_xyframe_set_visible(
+        parent, SLOPE_XYFRAME_ALL, SLOPE_TRUE);
     slope_color_set_name(&self->color, SLOPE_BLACK);
+    
     return parent;
+}
+
+
+void _slope_xyframe_cleanup (slope_frame_t *frame)
+{
+    slope_xyframe_t *self = (slope_xyframe_t*) frame;
+    if (self->top_label) free(self->top_label);
+    if (self->bottom_label) free(self->bottom_label);
+    if (self->left_label) free(self->left_label);
+    if (self->bottom_label) free(self->bottom_label);
 }
 
 
@@ -69,6 +87,34 @@ void slope_xyframe_set_visible (slope_frame_t *frame,
 }
 
 
+void slope_xyframe_set_label (slope_frame_t *frame,
+                              slope_xyframe_element_t element,
+                              const char *label)
+{
+    slope_xyframe_t *self = (slope_xyframe_t*) frame;
+    switch (element) {
+        case SLOPE_XYFRAME_TOP:
+            if (self->top_label) free(self->top_label);
+            self->top_label = strdup(label);
+            break;
+        case SLOPE_XYFRAME_BOTTOM:
+            if (self->bottom_label) free(self->bottom_label);
+            self->bottom_label = strdup(label);
+            break;
+        case SLOPE_XYFRAME_LEFT:
+            if (self->left_label) free(self->left_label);
+            self->left_label = strdup(label);
+            break;
+        case SLOPE_XYFRAME_RIGHT:
+            if (self->right_label) free(self->right_label);
+            self->right_label = strdup(label);
+            break;
+        default:
+            break;
+    }
+}
+
+
 void _slope_xyframe_draw (slope_frame_t *frame, cairo_t *cr)
 {
     slope_xyframe_t *self = (slope_xyframe_t*) frame;
@@ -89,11 +135,11 @@ void _slope_xyframe_setup_draw (slope_frame_t *frame)
     slope_xyframe_t *self = (slope_xyframe_t*) frame;
     slope_xymetrics_t *metrics = (slope_xymetrics_t*) frame->metrics;
     
-    double divnum = metrics->width_scene / 80.0;
-    self->hdivlen = (metrics->xmax - metrics->xmin) / divnum;
+    self->hdivnum = metrics->width_scene / 80.0;
+    self->hdivlen = (metrics->xmax - metrics->xmin) / self->hdivnum;
     
-    divnum = metrics->height_scene / 60.0;
-    self->vdivlen = (metrics->ymax - metrics->ymin) / divnum;
+    self->vdivnum = metrics->height_scene / 60.0;
+    self->vdivlen = (metrics->ymax - metrics->ymin) / self->vdivnum;
 }
 
 
@@ -107,20 +153,35 @@ void _slope_xyframe_draw_bottom_top (slope_frame_t *frame, cairo_t *cr)
     double ydn = metrics->ymax_scene;
     double coord = metrics->xmin;
     char txt[32];
+    cairo_text_extents_t txt_ext;
     
+    /* draw main line and label */
     if (self->visible_elements & SLOPE_XYFRAME_TOP) {
         cairo_move_to(cr,x,yup);
         cairo_line_to(cr,x+metrics->width_scene,yup);
+        if (self->top_label) {
+            cairo_text_extents(cr, self->top_label, &txt_ext);
+            cairo_move_to(cr, x + (metrics->width_scene - txt_ext.width)/2.0,
+                          yup - 3.0*txt_ext.height);
+            cairo_show_text(cr, self->top_label);
+        }
+        cairo_stroke(cr);
     }
     if (self->visible_elements & SLOPE_XYFRAME_BOTTOM) {
         cairo_move_to(cr,x,ydn);
         cairo_line_to(cr,x+metrics->width_scene,ydn);
+        if (self->bottom_label) {
+            cairo_text_extents(cr, self->bottom_label, &txt_ext);
+            cairo_move_to(cr, x + (metrics->width_scene - txt_ext.width)/2.0,
+                          ydn + 4.3*txt_ext.height);
+            cairo_show_text(cr, self->bottom_label);
+        }
+        cairo_stroke(cr);
     }
-    cairo_stroke(cr);
     
+    /* draw coordinate ticks and grid */
     while (coord <= metrics->xmax) {
         sprintf(txt, "%2.2lf", coord);
-        cairo_text_extents_t txt_ext;
         cairo_text_extents(cr, txt, &txt_ext);
         
         if (self->visible_elements & SLOPE_XYFRAME_TOP) {
@@ -142,6 +203,8 @@ void _slope_xyframe_draw_bottom_top (slope_frame_t *frame, cairo_t *cr)
                 cr, self->color.red, self->color.green,
                 self->color.blue, 0.20);
             cairo_set_line_width(cr, 1.0);
+            double dash[] = { 4.0, 4.0 };
+            cairo_set_dash(cr, dash, 2, 0.0);
             cairo_move_to(cr,x,ydn);
             cairo_line_to(cr,x,ydn-metrics->height_scene);
             cairo_stroke(cr);
@@ -164,22 +227,14 @@ void _slope_xyframe_draw_left_right (slope_frame_t *frame, cairo_t *cr)
     double y = metrics->ymax_scene;
     double coord = metrics->ymin;
     char txt[32];
+    cairo_text_extents_t txt_ext;
+    double bgtnumwidth = 0.0;
     
-    if (self->visible_elements & SLOPE_XYFRAME_LEFT) {
-        cairo_move_to(cr,xlf,y);
-        cairo_line_to(cr,xlf,y-metrics->height_scene);
-    }
-    if (self->visible_elements & SLOPE_XYFRAME_RIGHT) {
-        cairo_move_to(cr,xrt,y);
-        cairo_line_to(cr,xrt,y-metrics->height_scene);
-    }
-
-    cairo_stroke(cr);
-    
+    /* draw coordinate ticks and grid */
     while (coord <= metrics->ymax) {
         sprintf(txt, "%2.2lf", coord);
-        cairo_text_extents_t txt_ext;
         cairo_text_extents(cr, txt, &txt_ext);
+        if (txt_ext.width > bgtnumwidth) bgtnumwidth = txt_ext.width;
         
         if (self->visible_elements & SLOPE_XYFRAME_LEFT) {
             cairo_move_to(cr,xlf,y);
@@ -201,6 +256,8 @@ void _slope_xyframe_draw_left_right (slope_frame_t *frame, cairo_t *cr)
                 cr, self->color.red, self->color.green,
                 self->color.blue, 0.20);
             cairo_set_line_width(cr, 1.0);
+            double dash[] = { 4.0, 4.0 };
+            cairo_set_dash(cr, dash, 2, 0.0);
             cairo_move_to(cr,xlf,y);
             cairo_line_to(cr,xlf+metrics->width_scene,y);
             cairo_stroke(cr);
@@ -210,6 +267,38 @@ void _slope_xyframe_draw_left_right (slope_frame_t *frame, cairo_t *cr)
         y = slope_xymetrics_map_y(frame->metrics, coord);
     }
     cairo_stroke(cr);
+    
+    y = metrics->ymax_scene;
+    
+    /* draw main line and label */
+    if (self->visible_elements & SLOPE_XYFRAME_LEFT) {
+        cairo_move_to(cr,xlf,y);
+        cairo_line_to(cr,xlf,y-metrics->height_scene);
+        if (self->left_label) {
+            cairo_save(cr);
+            cairo_rotate(cr, -1.570797);
+            cairo_text_extents(cr, self->left_label, &txt_ext);
+            cairo_move_to(cr, -y + (metrics->height_scene - txt_ext.width)/2.0,
+                          xlf - 3.0*txt_ext.height - bgtnumwidth);
+            cairo_show_text(cr, self->left_label);
+            cairo_restore(cr);
+        }
+        cairo_stroke(cr);
+    }
+    if (self->visible_elements & SLOPE_XYFRAME_RIGHT) {
+        cairo_move_to(cr,xrt,y);
+        cairo_line_to(cr,xrt,y-metrics->height_scene);
+        if (self->right_label) {
+            cairo_save(cr);
+            cairo_rotate(cr, -1.570797);
+            cairo_text_extents(cr, self->right_label, &txt_ext);
+            cairo_move_to(cr, -y + (metrics->height_scene - txt_ext.width)/2.0,
+                          xrt + 3.0*txt_ext.height + bgtnumwidth);
+            cairo_show_text(cr, self->right_label);
+            cairo_restore(cr);
+        }
+        cairo_stroke(cr);
+    }
 }
 
 /* slope/xyframe.c */

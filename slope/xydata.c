@@ -24,7 +24,7 @@
 
 #define SYMBRAD 2.0
 #define SYMBRADSQR 4.0
-#define TWOSYMBRADSQR 16.0
+#define THREESYMBRADSQR 36.0
 
 
 slope_data_t*
@@ -40,9 +40,10 @@ slope_xydata_create_simple (double *vx, double *vy,
     parent->name = NULL;
     slope_xydata_set(parent, vx, vy, n,
                      name, color, scatter);
-    self->antialias = 1;
+    self->antialias = SLOPE_TRUE;
     self->line_width = 1.5;
-    parent->visible = 1;
+    self->fill_symbol = SLOPE_FALSE;
+    parent->visible = SLOPE_TRUE;
     parent->_cleanup_fn = NULL;
     parent->_draw_fn = _slope_xydata_draw;
     return parent;
@@ -73,6 +74,9 @@ void _slope_xydata_draw (slope_data_t *data, cairo_t *cr,
             break;
         case SLOPE_CIRCLES:
             _slope_xydata_draw_circles(data, cr, metrics);
+            break;
+        case SLOPE_TRIANGLES:
+            _slope_xydata_draw_triangles(data, cr, metrics);
             break;
     }
 }
@@ -123,7 +127,7 @@ void _slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
     cairo_move_to(cr, x1+SYMBRAD, y1);
     cairo_arc(cr, x1, y1, SYMBRAD, 0.0, 6.283185);
-    cairo_fill(cr);
+    if (self->fill_symbol) cairo_fill(cr);
     
     int k;
     for (k=1; k<n; k++) {
@@ -134,10 +138,50 @@ void _slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
         
-        if (distsqr >= TWOSYMBRADSQR) {
+        if (distsqr >= THREESYMBRADSQR) {
             cairo_move_to(cr, x2+SYMBRAD, y2);
             cairo_arc(cr, x2, y2, SYMBRAD, 0.0, 6.283185);
-            cairo_fill(cr);
+            if (self->fill_symbol) cairo_fill(cr);
+            x1 = x2;
+            y1 = y2;
+        }
+    }
+    cairo_stroke(cr);
+}
+
+
+void _slope_xydata_draw_triangles (slope_data_t *data, cairo_t *cr,
+                                 slope_metrics_t *metrics)
+{
+    slope_xydata_t *self = (slope_xydata_t*) data;
+    
+    const double *vx = self->vx;
+    const double *vy = self->vy;
+    const int n = self->n;
+    
+    double x1 = slope_xymetrics_map_x(metrics, vx[0]);
+    double y1 = slope_xymetrics_map_y(metrics, vy[0]);
+    cairo_move_to(cr, x1-SYMBRAD, y1+SYMBRAD);
+    cairo_line_to(cr, x1+SYMBRAD, y1+SYMBRAD);
+    cairo_line_to(cr, x1, y1-SYMBRAD);
+    cairo_close_path(cr);
+    if (self->fill_symbol) cairo_fill(cr);
+    
+    int k;
+    for (k=1; k<n; k++) {
+        double x2 = slope_xymetrics_map_x(metrics, vx[k]);
+        double y2 = slope_xymetrics_map_y(metrics, vy[k]);
+        
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double distsqr = dx*dx + dy*dy;
+        
+        if (distsqr >= THREESYMBRADSQR) {
+            cairo_move_to(cr, x2-SYMBRAD, y2+SYMBRAD);
+            cairo_line_to(cr, x2+SYMBRAD, y2+SYMBRAD);
+            cairo_line_to(cr, x2, y2-SYMBRAD);
+            cairo_close_path(cr);
+            if (self->fill_symbol) cairo_fill(cr);
             x1 = x2;
             y1 = y2;
         }

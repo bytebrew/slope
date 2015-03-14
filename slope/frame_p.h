@@ -20,6 +20,7 @@
 #ifndef _SLOPE_FRAME_P_H_
 #define _SLOPE_FRAME_P_H_
 
+#include "slope/primitives.h"
 #include "slope/frame.h"
 #include "slope/metrics_p.h"
 

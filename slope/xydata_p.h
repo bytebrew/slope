@@ -20,6 +20,7 @@
 #ifndef _SLOPE_XYDATA_P_H_
 #define _SLOPE_XYDATA_P_H_
 
+#include "slope/primitives.h"
 #include "slope/xydata.h"
 #include "slope/data_p.h"
 
@@ -40,6 +41,7 @@ struct _slope_xydata
     
     slope_color_t color;
     slope_scatter_t scatter;
+    int fill_symbol;
     int antialias;
     double line_width;
 };
@@ -55,6 +57,9 @@ void _slope_xydata_draw_line (slope_data_t *data, cairo_t *cr,
 
 void _slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,
                                  slope_metrics_t *metrics);
+
+void _slope_xydata_draw_triangles (slope_data_t *data, cairo_t *cr,
+                                   slope_metrics_t *metrics);
 
 #ifdef __cplusplus
 }

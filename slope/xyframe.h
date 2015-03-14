@@ -43,6 +43,9 @@ void slope_xyframe_set_visible (slope_frame_t *frame,
                                 slope_xyframe_element_t element,
                                 int visible);
 
+void slope_xyframe_set_label (slope_frame_t *frame,
+                              slope_xyframe_element_t element,
+                              const char *label);
 #ifdef __cplusplus
 }
 #endif

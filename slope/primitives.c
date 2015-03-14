@@ -73,4 +73,12 @@ void slope_color_set_name (slope_color_t *color,
     }
 }
 
+
+void slope_cairo_set_color(cairo_t *cr, slope_color_t *color)
+{
+    cairo_set_source_rgba(
+        cr, color->red, color->green, 
+        color->blue, color->alpha);
+}
+
 /* slope/primitives.c */

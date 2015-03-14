@@ -20,6 +20,7 @@
 #ifndef _SLOPE_DATA_P_H_
 #define _SLOPE_DATA_P_H_
 
+#include "slope/primitives.h"
 #include "slope/data.h"
 #include "slope/metrics.h"
 

@@ -20,17 +20,11 @@
 #ifndef _SLOPE_PRIMITIVES_H_
 #define _SLOPE_PRIMITIVES_H_
 
+#include <cairo.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-
-/**
- * slope's public headers doesn't include cairo
- * so we define this symbol here to use in function
- * declarations
- */
-typedef struct _cairo cairo_t;
 
 #define SLOPE_FALSE 0
 #define SLOPE_TRUE  1
@@ -90,6 +84,9 @@ void slope_color_set (slope_color_t *color, double r,
  */
 void slope_color_set_name (slope_color_t *color,
                            slope_color_name_t name);
+
+void slope_cairo_set_color(cairo_t *cr, slope_color_t *color);
+
 
 #ifdef __cplusplus
 }

@@ -20,6 +20,7 @@
 #ifndef _SLOPE_XYMETRICS_P_H_
 #define _SLOPE_XYMETRICS_P_H_
 
+#include "slope/primitives.h"
 #include "slope/xymetrics.h"
 #include "slope/metrics_p.h"
 #include "slope/xyframe_p.h"
@@ -53,8 +54,8 @@ void _slope_xymetrics_cleanup (slope_metrics_t *metrics);
 
 void _slope_xymetrics_update (slope_metrics_t *metrics);
 
-void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
-                            slope_rect_t *area);
+void _slope_xymetrics_draw (slope_metrics_t *metrics,
+                            cairo_t *cr, slope_rect_t *area);
 
 #ifdef __cplusplus
 }

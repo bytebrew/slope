@@ -20,10 +20,12 @@
 #ifndef _SLOPE_SLOPE_H_
 #define _SLOPE_SLOPE_H_
 
+#include "slope/primitives.h"
 #include "slope/scene.h"
 #include "slope/metrics.h"
 #include "slope/data.h"
 #include "slope/xymetrics.h"
 #include "slope/xydata.h"
+#include "slope/xyframe.h"
 
 #endif /*_SLOPE_SLOPE_H_*/
