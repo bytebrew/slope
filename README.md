@@ -14,5 +14,5 @@ the output of the test.c program in de top level source repository.
 ![](https://github.com/exocode/slope/blob/master/figure.png)
 
 Slope's basic usage is: create a **slope_scene_t**, add one or more **slope_metrics_t**
-to it and add some slope_data_t to the metrics, then use function **slope_scene_draw()**
+to it and add some **slope_data_t** to the metrics, then use function **slope_scene_draw()**
 to stroke the resulting chart to a **cairo_surface_t** via **cairo_t**.
