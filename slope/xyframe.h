@@ -33,14 +33,15 @@ typedef enum
     SLOPE_XYFRAME_BOTTOM = 1 << 1,
     SLOPE_XYFRAME_LEFT   = 1 << 2,
     SLOPE_XYFRAME_RIGHT  = 1 << 3,
-    SLOPE_XYFRAME_GRID   = 1 << 4
+    SLOPE_XYFRAME_GRID   = 1 << 4,
+    SLOPE_XYFRAME_ALL    = 1 << 5
 }
 slope_xyframe_element_t;
 
 
-void slope_xyframe_set_element_visibility(slope_frame_t *frame,
-                                          slope_xyframe_element_t element,
-                                          int visible);
+void slope_xyframe_set_visible (slope_frame_t *frame,
+                                slope_xyframe_element_t element,
+                                int visible);
 
 #ifdef __cplusplus
 }

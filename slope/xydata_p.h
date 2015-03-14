@@ -40,6 +40,8 @@ struct _slope_xydata
     
     slope_color_t color;
     slope_scatter_t scatter;
+    int antialias;
+    double line_width;
 };
 
 

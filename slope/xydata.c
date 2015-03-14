@@ -20,6 +20,7 @@
 #include "slope/xydata_p.h"
 #include <stdlib.h>
 #include <string.h>
+#include <cairo.h>
 
 
 slope_data_t*
@@ -35,6 +36,8 @@ slope_xydata_create_simple (double *vx, double *vy,
     slope_xydata_set(parent, vx, vy, n);
     slope_color_set_name(&self->color, color);
     self->scatter = SLOPE_LINE;
+    self->antialias = 1;
+    self->line_width = 1.0;
     parent->visible = 1;
     parent->name = strdup(name);
     parent->_cleanup_fn = NULL;
@@ -51,6 +54,15 @@ void _slope_xydata_draw (slope_data_t *data, cairo_t *cr,
     cairo_set_source_rgba(
         cr, self->color.red, self->color.green,
         self->color.blue, self->color.alpha);
+    if (self->antialias) {
+        cairo_set_antialias(
+            cr, CAIRO_ANTIALIAS_SUBPIXEL);
+    }
+    else {
+        cairo_set_antialias(
+            cr, CAIRO_ANTIALIAS_NONE);
+    }
+    cairo_set_line_width(cr,self->line_width);
 
     switch (self->scatter) {
         case SLOPE_LINE:
@@ -79,9 +91,16 @@ void _slope_xydata_draw_line (slope_data_t *data, cairo_t *cr,
     for (k=1; k<n; k++) {
         double x2 = slope_xymetrics_map_x(metrics, vx[k]);
         double y2 = slope_xymetrics_map_y(metrics, vy[k]);
-        cairo_line_to(cr, x2, y2);
-        x1 = x2;
-        y1 = y2;
+        
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double distsqr = dx*dx + dy*dy;
+        
+        if (distsqr >= 9.0) {
+            cairo_line_to(cr, x2, y2);
+            x1 = x2;
+            y1 = y2;
+        }
     }
     cairo_stroke(cr);
 }

@@ -31,19 +31,28 @@ slope_frame_t* _slope_xyframe_create(slope_metrics_t *metrics)
     parent->metrics = metrics;
     parent->_cleanup_fn = NULL;
     parent->_draw_fn = _slope_xyframe_draw;
-    self->visible_elements =
-        SLOPE_XYFRAME_TOP|SLOPE_XYFRAME_BOTTOM|
-        SLOPE_XYFRAME_LEFT|SLOPE_XYFRAME_RIGHT;
+    slope_xyframe_set_visible(parent, SLOPE_XYFRAME_ALL, 1);
     slope_color_set_name(&self->color, SLOPE_BLACK);
     return parent;
 }
 
 
-void slope_xyframe_set_element_visibility(slope_frame_t *frame,
-                                          slope_xyframe_element_t element,
-                                          int visible)
+void slope_xyframe_set_visible (slope_frame_t *frame,
+                                slope_xyframe_element_t element,
+                                int visible)
 {
     slope_xyframe_t *self = (slope_xyframe_t*) frame;
+    if (element == SLOPE_XYFRAME_ALL) {
+        if (visible) {
+            self->visible_elements =
+                SLOPE_XYFRAME_TOP|SLOPE_XYFRAME_BOTTOM|
+                SLOPE_XYFRAME_LEFT|SLOPE_XYFRAME_RIGHT;
+        }
+        else {
+            self->visible_elements = 0;
+        }
+        return;
+    }
     if (visible) {
         self->visible_elements = self->visible_elements|element;
     }
