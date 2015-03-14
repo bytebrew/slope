@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     gtk_widget_show_all(window);
     gtk_main();
 
-    slope_scene_write_to_png(scene, "figure.png", 600, 450);
+    slope_scene_write_to_png(scene, "figure.png", 450, 300);
     slope_data_destroy(sin_data);
     slope_data_destroy(cos_data);
     slope_metrics_destroy(metrics);
