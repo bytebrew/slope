@@ -22,6 +22,10 @@
 #include <string.h>
 #include <cairo.h>
 
+#define SYMBRAD 2.0
+#define SYMBRADSQR 4.0
+#define TWOSYMBRADSQR 16.0
+
 
 slope_data_t*
 slope_xydata_create_simple (double *vx, double *vy,
@@ -33,13 +37,12 @@ slope_xydata_create_simple (double *vx, double *vy,
     slope_xydata_t *self = malloc(sizeof(slope_xydata_t));
     slope_data_t *parent = (slope_data_t*) self;
 
-    slope_xydata_set(parent, vx, vy, n);
-    slope_color_set_name(&self->color, color);
-    self->scatter = SLOPE_LINE;
+    parent->name = NULL;
+    slope_xydata_set(parent, vx, vy, n,
+                     name, color, scatter);
     self->antialias = 1;
-    self->line_width = 1.0;
+    self->line_width = 1.5;
     parent->visible = 1;
-    parent->name = strdup(name);
     parent->_cleanup_fn = NULL;
     parent->_draw_fn = _slope_xydata_draw;
     return parent;
@@ -68,7 +71,8 @@ void _slope_xydata_draw (slope_data_t *data, cairo_t *cr,
         case SLOPE_LINE:
             _slope_xydata_draw_line(data, cr, metrics);
             break;
-        default:
+        case SLOPE_CIRCLES:
+            _slope_xydata_draw_circles(data, cr, metrics);
             break;
     }
 }
@@ -96,8 +100,44 @@ void _slope_xydata_draw_line (slope_data_t *data, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
         
-        if (distsqr >= 9.0) {
+        if (distsqr >= SYMBRADSQR) {
             cairo_line_to(cr, x2, y2);
+            x1 = x2;
+            y1 = y2;
+        }
+    }
+    cairo_stroke(cr);
+}
+
+
+void _slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,
+                                 slope_metrics_t *metrics)
+{
+    slope_xydata_t *self = (slope_xydata_t*) data;
+    
+    const double *vx = self->vx;
+    const double *vy = self->vy;
+    const int n = self->n;
+    
+    double x1 = slope_xymetrics_map_x(metrics, vx[0]);
+    double y1 = slope_xymetrics_map_y(metrics, vy[0]);
+    cairo_move_to(cr, x1+SYMBRAD, y1);
+    cairo_arc(cr, x1, y1, SYMBRAD, 0.0, 6.283185);
+    cairo_fill(cr);
+    
+    int k;
+    for (k=1; k<n; k++) {
+        double x2 = slope_xymetrics_map_x(metrics, vx[k]);
+        double y2 = slope_xymetrics_map_y(metrics, vy[k]);
+        
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double distsqr = dx*dx + dy*dy;
+        
+        if (distsqr >= TWOSYMBRADSQR) {
+            cairo_move_to(cr, x2+SYMBRAD, y2);
+            cairo_arc(cr, x2, y2, SYMBRAD, 0.0, 6.283185);
+            cairo_fill(cr);
             x1 = x2;
             y1 = y2;
         }
@@ -147,13 +187,22 @@ double slope_xydata_y_min (slope_data_t *data)
 
 
 void slope_xydata_set (slope_data_t *data,
-                        double *vx, double *vy,
-                        const int n)
+                       double *vx, double *vy,
+                       const int n,
+                       const char *name,
+                       slope_color_name_t color,
+                       slope_scatter_t scatter)
 {
     slope_xydata_t *self = (slope_xydata_t*) data;
     self->vx = vx;
     self->vy = vy;
     self->n = n;
+    if (data->name) {
+        free(data->name);
+    }
+    data->name = strdup(name);
+    slope_color_set_name(&self->color, color);
+    self->scatter = scatter;
     _slope_xydata_check_ranges(data);
 }
 

@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     slope_data_t *cos_data =
         slope_xydata_create_simple(
             x, y2, N, "Cossine",
-            SLOPE_RED, SLOPE_LINE);
+            SLOPE_RED, SLOPE_CIRCLES);
 
     slope_metrics_t *metrics = slope_xymetrics_create();
     slope_metrics_add_data(metrics, sin_data);
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     gtk_init(&argc,&argv);
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     GtkWidget *drawing_area = gtk_drawing_area_new();
-    gtk_widget_set_size_request(window, 600, 450);
+    gtk_window_set_default_size(GTK_WINDOW(window), 600, 450);
     gtk_container_add(GTK_CONTAINER(window), drawing_area);
     g_signal_connect(G_OBJECT(window), "delete-event",
                      G_CALLBACK(gtk_main_quit), NULL);
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     gtk_widget_show_all(window);
     gtk_main();
 
-    slope_scene_write_to_png(scene, "figure.png", 600, 450); 
+    slope_scene_write_to_png(scene, "figure.png", 600, 450);
     slope_data_destroy(sin_data);
     slope_data_destroy(cos_data);
     slope_metrics_destroy(metrics);

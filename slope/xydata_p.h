@@ -53,6 +53,9 @@ void _slope_xydata_draw (slope_data_t *data, cairo_t *cr,
 void _slope_xydata_draw_line (slope_data_t *data, cairo_t *cr,
                               slope_metrics_t *metrics);
 
+void _slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,
+                                 slope_metrics_t *metrics);
+
 #ifdef __cplusplus
 }
 #endif

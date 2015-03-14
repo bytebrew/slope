@@ -37,7 +37,10 @@ slope_xydata_create_simple (double *vx, double *vy,
 
 void slope_xydata_set (slope_data_t *data,
                        double *vx, double *vy,
-                       const int n);
+                       const int n,
+                       const char *name,
+                       slope_color_name_t color,
+                       slope_scatter_t scatter);
 
 double slope_xydata_x_max (slope_data_t *data);
 

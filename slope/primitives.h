@@ -32,6 +32,8 @@ extern "C" {
  */
 typedef struct _cairo cairo_t;
 
+#define SLOPE_FALSE 0
+#define SLOPE_TRUE  1
 
 typedef struct
 {
@@ -58,13 +60,6 @@ typedef enum
     SLOPE_BLUE
 }
 slope_color_name_t;
-
-typedef enum
-{
-    SLOPE_LINE,
-    SLOPE_CIRCLES
-}
-slope_scatter_t;
 
 typedef struct
 {

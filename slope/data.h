@@ -27,6 +27,14 @@ extern "C" {
 typedef struct _slope_data slope_data_t;
 
 
+typedef enum
+{
+    SLOPE_LINE,
+    SLOPE_CIRCLES
+}
+slope_scatter_t;
+
+
 void slope_data_destroy (slope_data_t *data);
 
 int slope_data_visible (slope_data_t *data);

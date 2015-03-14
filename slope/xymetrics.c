@@ -31,8 +31,8 @@ slope_metrics_t* slope_xymetrics_create()
     parent->_cleanup_fn = _slope_xymetrics_cleanup;
     parent->_update_fn = _slope_xymetrics_update;
     parent->_draw_fn = _slope_xymetrics_draw;
-    self->x_low_bound = self->x_up_bound = 30.0;
-    self->y_low_bound = self->y_up_bound = 30.0;
+    self->x_low_bound = self->x_up_bound = 80.0;
+    self->y_low_bound = self->y_up_bound = 50.0;
     self->frame = _slope_xyframe_create(parent);
     return parent;
 }

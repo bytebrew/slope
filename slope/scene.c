@@ -52,7 +52,8 @@ void slope_scene_destroy (slope_scene_t *scene)
 /**
  * Draw the contents of scenes to the surface targeted by cr
  */
-void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
+void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
+                       slope_rect_t *area)
 {
     /* affects only area */
     cairo_save(cr);
@@ -60,6 +61,11 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
     cairo_rectangle(cr, area->x, area->y,
                     area->width, area->height);
     cairo_clip(cr);
+    
+    /* area must be bigger than 250x250 */
+    if (area->width < 250.0) area->width = 250.0;
+    if (area->height < 250.0) area->height = 250.0;
+    
     /* fill background if required */
     if (scene->fill_back) {
         cairo_set_source_rgba(

@@ -34,10 +34,14 @@ struct _slope_xyframe
     slope_frame_t parent;
     slope_color_t color;
     int visible_elements;
+    
+    double hdivlen, vdivlen;
 };
 
 
 slope_frame_t* _slope_xyframe_create (slope_metrics_t *metrics);
+
+void _slope_xyframe_setup_draw (slope_frame_t *frame);
 
 void _slope_xyframe_draw (slope_frame_t *frame, cairo_t *cr);
 
