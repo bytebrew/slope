@@ -32,10 +32,10 @@ slope_frame_t* _slope_xyframe_create(slope_metrics_t *metrics)
     slope_xyframe_t *self = malloc(sizeof(slope_xyframe_t));
     slope_frame_t *parent = (slope_frame_t*) self;
     
-    self->top_label = strdup("Top Axis");
-    self->bottom_label = strdup("Bottom Axis");
-    self->left_label = strdup("Left Axis");
-    self->right_label = strdup("Right Axis");
+    self->top_label = NULL;
+    self->bottom_label = strdup("X");
+    self->left_label = strdup("Y");
+    self->right_label = NULL;
     
     parent->visible = 1;
     parent->metrics = metrics;
@@ -180,7 +180,8 @@ void _slope_xyframe_draw_bottom_top (slope_frame_t *frame, cairo_t *cr)
     }
     
     /* draw coordinate ticks and grid */
-    while (coord <= metrics->xmax) {
+    int k;
+    for (k=0; k<=self->hdivnum; k++) {
         sprintf(txt, "%2.2lf", coord);
         cairo_text_extents(cr, txt, &txt_ext);
         
@@ -231,7 +232,8 @@ void _slope_xyframe_draw_left_right (slope_frame_t *frame, cairo_t *cr)
     double bgtnumwidth = 0.0;
     
     /* draw coordinate ticks and grid */
-    while (coord <= metrics->ymax) {
+    int k;
+    for (k=0; k<=self->vdivnum; k++) {
         sprintf(txt, "%2.2lf", coord);
         cairo_text_extents(cr, txt, &txt_ext);
         if (txt_ext.width > bgtnumwidth) bgtnumwidth = txt_ext.width;

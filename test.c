@@ -6,7 +6,8 @@
 #define N 500
 
 
-static gboolean on_draw(GtkWidget *widget, cairo_t *cr, gpointer data)
+static gboolean on_draw(GtkWidget *widget,
+                        cairo_t *cr, gpointer data)
 {
     slope_rect_t rect;
     rect.x = 0.0;
@@ -51,7 +52,7 @@ int main(int argc, char *argv[])
     slope_metrics_add_data(metrics, model_data);
     slope_metrics_add_data(metrics, sample1_data);
     slope_metrics_add_data(metrics, sample2_data);
-    
+
     slope_frame_t *frame = slope_xymetrics_get_frame(metrics);
     slope_xyframe_set_label(frame, SLOPE_XYFRAME_TOP, "Samples and model");
     slope_xyframe_set_label(frame, SLOPE_XYFRAME_BOTTOM, "Phase (RADIANS)");
