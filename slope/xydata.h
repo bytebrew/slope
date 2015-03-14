@@ -42,6 +42,14 @@ void slope_xydata_set (slope_data_t *data,
                        slope_color_name_t color,
                        slope_scatter_t scatter);
 
+void slope_xydata_set_date (slope_data_t *data,
+                            double *vx, double *vy,
+                            const int n);
+
+void slope_xydata_update_date (slope_data_t *data,
+                               double *vx, double *vy,
+                               const int n);
+
 double slope_xydata_x_max (slope_data_t *data);
 
 double slope_xydata_x_min (slope_data_t *data);

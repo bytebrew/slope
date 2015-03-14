@@ -251,6 +251,29 @@ void slope_xydata_set (slope_data_t *data,
 }
 
 
+void slope_xydata_set_date (slope_data_t *data,
+                            double *vx, double *vy,
+                            const int n)
+{
+    slope_xydata_t *self = (slope_xydata_t*) data;
+    self->vx = vx;
+    self->vy = vy;
+    self->n = n;
+    _slope_xydata_check_ranges(data);
+}
+
+
+void slope_xydata_update_date (slope_data_t *data,
+                               double *vx, double *vy,
+                               const int n)
+{
+    slope_xydata_t *self = (slope_xydata_t*) data;
+    self->vx = vx;
+    self->vy = vy;
+    self->n = n;
+}
+
+
 void _slope_xydata_check_ranges (slope_data_t *data)
 {
     slope_xydata_t *self = (slope_xydata_t*) data;

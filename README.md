@@ -8,7 +8,7 @@ is familiar to the users of cairo. Of course, since you just have to pass a
 in a **GTK WIDGET**.
 
 Slope is in it's early stages of development and still needs some optimization
-and polishing. Some accessor methods to objects properties are also absent.But here's
+and polishing. Some accessor methods to objects properties are also absent. But here's
 what we already have: The following chart is the output of the test.c program in de
 top level source repository.
 

@@ -18,6 +18,7 @@
  */
 
 #include "slope/metrics_p.h"
+#include "slope/legend_p.h"
 #include <stdlib.h>
 
 void slope_metrics_destroy (slope_metrics_t *metrics)
@@ -27,6 +28,9 @@ void slope_metrics_destroy (slope_metrics_t *metrics)
     }
     if (metrics->_cleanup_fn) {
         (*metrics->_cleanup_fn)(metrics);
+    }
+    if (metrics->legend) {
+        _slope_legend_destroy(metrics->legend);
     }
     slope_list_destroy(metrics->data);
     free(metrics);
@@ -74,6 +78,15 @@ void slope_metrics_update (slope_metrics_t *metrics)
     if (metrics->_update_fn) {
         (*metrics->_update_fn)(metrics);
     }
+}
+
+
+slope_legend_t* slope_metrics_legend (slope_metrics_t *metrics)
+{
+    if (metrics == NULL) {
+        return NULL;
+    }
+    return metrics->legend;
 }
 
 /* slope/metrics.c */

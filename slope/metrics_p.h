@@ -30,6 +30,7 @@ extern "C" {
 struct _slope_metrics
 {
     slope_list_t *data;
+    slope_legend_t *legend;
     int visible;
 
     void (*_cleanup_fn) (slope_metrics_t*);

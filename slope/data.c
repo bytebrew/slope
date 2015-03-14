@@ -58,8 +58,21 @@ const char* slope_data_name (slope_data_t *data)
 void _slope_data_draw (slope_data_t *data, cairo_t *cr,
                        slope_metrics_t *metrics)
 {
-    if (data->visible) {
-        (*data->_draw_fn)(data,cr,metrics);
+    if (data->_draw_fn) {
+        if (data->visible) {
+            (*data->_draw_fn)(data,cr,metrics);
+        }
+    }
+}
+
+
+void _slope_data_draw_thumb (slope_data_t *data, cairo_t *cr,
+                             slope_point_t *point)
+{
+    if (data->_draw_thumb_fn) {
+        if (data->has_thumb) {
+            (*data->_draw_thumb_fn)(data,cr,point);
+        }
     }
 }
 
