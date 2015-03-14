@@ -22,6 +22,7 @@
 
 #include "slope/xymetrics.h"
 #include "slope/metrics_p.h"
+#include "slope/xyframe_p.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,6 +33,8 @@ typedef struct _slope_xymetrics slope_xymetrics_t;
 struct _slope_xymetrics
 {
     struct _slope_metrics parent;
+    
+    slope_frame_t *frame;
     
     double x_low_bound, x_up_bound;
     double y_low_bound, y_up_bound;
@@ -46,6 +49,8 @@ struct _slope_xymetrics
 };
 
 
+void _slope_xymetrics_cleanup (slope_metrics_t *metrics);
+
 void _slope_xymetrics_update (slope_metrics_t *metrics);
 
 void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
@@ -56,4 +61,3 @@ void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
 #endif
 
 #endif /*_SLOPE_XYMETRICS_P_H_*/
-

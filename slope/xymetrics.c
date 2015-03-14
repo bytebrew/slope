@@ -28,12 +28,27 @@ slope_metrics_t* slope_xymetrics_create()
     slope_metrics_t *parent = (slope_metrics_t*) self;
     parent->data = NULL;
     parent->visible = 1;
-    parent->_cleanup_fn = NULL;
+    parent->_cleanup_fn = _slope_xymetrics_cleanup;
     parent->_update_fn = _slope_xymetrics_update;
     parent->_draw_fn = _slope_xymetrics_draw;
     self->x_low_bound = self->x_up_bound = 30.0;
     self->y_low_bound = self->y_up_bound = 30.0;
+    self->frame = _slope_xyframe_create(parent);
     return parent;
+}
+
+
+void _slope_xymetrics_cleanup (slope_metrics_t *metrics)
+{
+    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
+    _slope_frame_destroy(self->frame);
+}
+
+
+slope_frame_t* slope_xymetrics_get_frame (slope_metrics_t *metrics)
+{
+    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
+    return self->frame;
 }
 
 
@@ -99,6 +114,7 @@ void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
 
     /* draw contents */
     cairo_save(cr);
+    cairo_stroke(cr);
     cairo_rectangle(
         cr, self->xmin_scene, self->ymin_scene,
         self->width_scene, self->height_scene);
@@ -107,12 +123,12 @@ void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
     while (iter) {
         slope_data_t *data =
             (slope_data_t*) slope_iterator_data(iter);
-        if (slope_data_visible(data)) {
-            _slope_data_draw(data, cr, metrics);
-        }
+        _slope_data_draw(data, cr, metrics);
         slope_iterator_next(&iter);
     }
     cairo_restore(cr);
+    /* draw frame */
+    _slope_xyframe_draw(self->frame,cr);
 }
 
 /* slope/xymetrics.c */

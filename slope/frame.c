@@ -17,10 +17,36 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/frame.h"
+#include "slope/frame_p.h"
+#include <stdlib.h>
+
+void _slope_frame_destroy (slope_frame_t *frame)
+{
+    if (frame == NULL) {
+        return;
+    }
+    if (frame->_cleanup_fn) {
+        (*frame->_cleanup_fn)(frame);
+    }
+    free(frame);
+    frame = NULL;
+}
 
 
+void slope_frame_set_visible(slope_frame_t *frame, int visible)
+{
+    if (frame == NULL) {
+        return;
+    }
+    frame->visible = visible;
+}
 
+
+void _slope_frame_draw (slope_frame_t *frame, cairo_t *cr)
+{
+    if (frame->visible) {
+        (*frame->_draw_fn)(frame, cr);
+    }
+}
 
 /* slope/frame.c */
-

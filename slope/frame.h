@@ -26,11 +26,10 @@ extern "C" {
 
 typedef struct _slope_frame slope_frame_t;
 
-void slope_frame_destroy (slope_frame_t *frame);
+void slope_frame_set_visible(slope_frame_t *frame, int visible);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /*_SLOPE_FRAME_H_*/
-

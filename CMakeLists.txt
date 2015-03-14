@@ -20,6 +20,7 @@ SET(SLOPE_HDRS
     slope/frame.h
     slope/xymetrics.h
     slope/xydata.h
+    slope/xyframe.h
 )
 
 SET(SLOPE_SRCS
@@ -31,6 +32,7 @@ SET(SLOPE_SRCS
     slope/frame.c
     slope/xymetrics.c
     slope/xydata.c
+    slope/xyframe.c
 )
 
 ADD_LIBRARY(slope SHARED ${SLOPE_SRCS})

@@ -63,7 +63,9 @@ int slope_metrics_visible  (slope_metrics_t *metrics)
 void _slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                           slope_rect_t *area)
 {
-    (*metrics->_draw_fn)(metrics, cr, area);
+    if (metrics->visible) {
+        (*metrics->_draw_fn)(metrics, cr, area);
+    }
 }
 
 

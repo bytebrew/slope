@@ -55,8 +55,8 @@ void slope_scene_destroy (slope_scene_t *scene)
 void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
 {
     /* affects only area */
-    cairo_stroke(cr);
     cairo_save(cr);
+    cairo_stroke(cr);
     cairo_rectangle(cr, area->x, area->y,
                     area->width, area->height);
     cairo_clip(cr);
@@ -75,9 +75,8 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr, slope_rect_t *area)
     while (iter) {
         slope_metrics_t *metrics =
             (slope_metrics_t*) slope_iterator_data(iter);
-        if (slope_metrics_visible(metrics)) {
-            _slope_metrics_draw(metrics, cr, area);
-        }
+        
+        _slope_metrics_draw(metrics, cr, area);
         slope_iterator_next(&iter);
     }
     cairo_restore(cr);

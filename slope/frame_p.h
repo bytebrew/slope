@@ -20,6 +20,9 @@
 #ifndef _SLOPE_FRAME_P_H_
 #define _SLOPE_FRAME_P_H_
 
+#include "slope/frame.h"
+#include "slope/metrics_p.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -27,10 +30,13 @@ extern "C" {
 struct _slope_frame
 {
     slope_metrics_t *metrics;
+    int visible;
 
     void (*_cleanup_fn)(slope_frame_t*);
     void (*_draw_fn)(slope_frame_t*, cairo_t*);
 };
+
+void _slope_frame_destroy (slope_frame_t *frame);
 
 void _slope_frame_draw (slope_frame_t *frame, cairo_t *cr);
 
@@ -39,4 +45,3 @@ void _slope_frame_draw (slope_frame_t *frame, cairo_t *cr);
 #endif
 
 #endif /*_SLOPE_FRAME_P_H_*/
-

@@ -17,27 +17,33 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_XYMETRICS_H_
-#define _SLOPE_XYMETRICS_H_
+#ifndef _SLOPE_XYFRAME_H_
+#define _SLOPE_XYFRAME_H_
 
+#include "slope/frame.h"
 #include "slope/metrics.h"
-#include "slope/xyframe.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-slope_metrics_t* slope_xymetrics_create();
+typedef enum
+{
+    SLOPE_XYFRAME_TOP    = 1 << 0,
+    SLOPE_XYFRAME_BOTTOM = 1 << 1,
+    SLOPE_XYFRAME_LEFT   = 1 << 2,
+    SLOPE_XYFRAME_RIGHT  = 1 << 3,
+    SLOPE_XYFRAME_GRID   = 1 << 4
+}
+slope_xyframe_element_t;
 
-slope_frame_t* slope_xymetrics_get_frame (slope_metrics_t *metrics);
 
-double slope_xymetrics_map_x (slope_metrics_t *metrics, double x);
-
-double slope_xymetrics_map_y (slope_metrics_t *metrics, double y);
+void slope_xyframe_set_element_visibility(slope_frame_t *frame,
+                                          slope_xyframe_element_t element,
+                                          int visible);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*_SLOPE_XYMETRICS_H_*/
-
+#endif /*_SLOPE_XYFRAME_H_*/
