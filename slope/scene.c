@@ -29,7 +29,7 @@ slope_scene_t* slope_scene_create()
     scene->metrics = NULL;
     slope_color_set_name(&scene->back_color, SLOPE_WHITE);
     scene->fill_back = 1;
-    scene->font_size = 11;
+    scene->font_size = 13;
     scene->_cleanup_fn = NULL;
 }
 
@@ -62,6 +62,11 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
     cairo_rectangle(cr, area->x, area->y,
                     area->width, area->height);
     cairo_clip(cr);
+    
+    /* font settings */
+    cairo_select_font_face(cr, "Times",
+                           CAIRO_FONT_SLANT_NORMAL,
+                           CAIRO_FONT_WEIGHT_NORMAL);
     cairo_set_font_size(cr, scene->font_size);
     
     /* area must be bigger than 250x250 */

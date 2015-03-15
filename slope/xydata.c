@@ -208,9 +208,9 @@ void _slope_xydata_draw_thumb (slope_data_t *data, cairo_t *cr,
     
     switch (self->scatter) {
         case SLOPE_LINE:
-            cairo_move_to(cr, point->x - 15.0, point->y);
-            cairo_line_to(cr, point->x + 15.0, point->y);
-            cairo_move_to(cr, point->x + 20, point->y + 3.0);
+            cairo_move_to(cr, point->x - 10.0, point->y);
+            cairo_line_to(cr, point->x + 10.0, point->y);
+            cairo_move_to(cr, point->x + 15, point->y + 3.0);
             cairo_show_text(cr, data->name);
             cairo_stroke(cr);
             break;
@@ -218,7 +218,7 @@ void _slope_xydata_draw_thumb (slope_data_t *data, cairo_t *cr,
             cairo_move_to(cr, point->x+SYMBRAD, point->y);
             cairo_arc(cr, point->x, point->y, SYMBRAD, 0.0, 6.283185);
             if (self->fill_symbol) cairo_fill(cr);
-            cairo_move_to(cr, point->x + 20, point->y + 3.0);
+            cairo_move_to(cr, point->x + 15, point->y + 3.0);
             cairo_show_text(cr, data->name);
             cairo_stroke(cr);
             break;
@@ -228,7 +228,7 @@ void _slope_xydata_draw_thumb (slope_data_t *data, cairo_t *cr,
             cairo_line_to(cr, point->x, point->y-SYMBRAD);
             cairo_close_path(cr);
             if (self->fill_symbol) cairo_fill(cr);
-            cairo_move_to(cr, point->x + 20, point->y + 3.0);
+            cairo_move_to(cr, point->x + 15, point->y + 3.0);
             cairo_show_text(cr, data->name);
             cairo_stroke(cr);
             break;

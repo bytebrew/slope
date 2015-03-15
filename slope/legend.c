@@ -51,7 +51,7 @@ void _slope_legend_guess_geometry (slope_legend_t *legend,
     legend->nlines = 0;
     double bgst_width = 0.0;
     slope_rect_set(
-        &legend->rect, point->x, point->y, 50.0, 25.0);
+        &legend->rect, point->x, point->y, 36.0, 12.0);
 
     slope_iterator_t *iter =
         slope_list_first(legend->metrics->data);
@@ -69,7 +69,7 @@ void _slope_legend_guess_geometry (slope_legend_t *legend,
         cairo_text_extents(cr, data->name, &txt_ext);
         if (txt_ext.width > bgst_width)
             bgst_width = txt_ext.width;
-        legend->rect.height += txt_ext.height;
+        legend->rect.height += txt_ext.height + 5.0;
         
         slope_iterator_next(&iter);
     }
@@ -101,13 +101,15 @@ void _slope_legend_draw (slope_legend_t *legend,
     
     /* draw data entries */
     int order = 1;
+    cairo_text_extents_t txt_ext;
+    cairo_text_extents(cr, "SAMPLE", &txt_ext);
     slope_point_t thumb_pos;
-    thumb_pos.x = legend->rect.x + 20.0;
+    thumb_pos.x = legend->rect.x + 15.0;
+    
     slope_iterator_t *iter =
         slope_list_first(legend->metrics->data);
     while (iter) {
         slope_data_t *data = slope_iterator_data(iter);
-        
         if (data->visible == SLOPE_FALSE ||
             data->has_thumb == SLOPE_FALSE)
         {
@@ -115,9 +117,7 @@ void _slope_legend_draw (slope_legend_t *legend,
             continue;
         }
         
-        cairo_text_extents_t txt_ext;
-        cairo_text_extents(cr, data->name, &txt_ext);
-        thumb_pos.y = legend->rect.y + 5.0 + (order-1)*3.0 + (order++)*txt_ext.height;
+        thumb_pos.y = legend->rect.y + (order++)*(txt_ext.height + 6.0);
         _slope_data_draw_thumb(data, cr, &thumb_pos);
         slope_iterator_next(&iter);
     }

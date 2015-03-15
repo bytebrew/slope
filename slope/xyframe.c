@@ -169,7 +169,7 @@ void _slope_xyframe_draw_bottom_top (slope_frame_t *frame, cairo_t *cr)
         if (self->top_label) {
             cairo_text_extents(cr, self->top_label, &txt_ext);
             cairo_move_to(cr, x + (metrics->width_scene - txt_ext.width)/2.0,
-                          yup - 3.0*txt_ext.height);
+                          yup - 2.6*txt_ext.height);
             cairo_show_text(cr, self->top_label);
         }
         cairo_stroke(cr);
@@ -312,7 +312,7 @@ void _slope_xyframe_draw_left_right (slope_frame_t *frame, cairo_t *cr)
             cairo_rotate(cr, -1.570797);
             cairo_text_extents(cr, self->left_label, &txt_ext);
             cairo_move_to(cr, -y + (metrics->height_scene - txt_ext.width)/2.0,
-                          xlf - 3.0*txt_ext.height - bgtnumwidth);
+                          xlf - 2.0*txt_ext.height - bgtnumwidth);
             cairo_show_text(cr, self->left_label);
             cairo_restore(cr);
         }
@@ -326,7 +326,7 @@ void _slope_xyframe_draw_left_right (slope_frame_t *frame, cairo_t *cr)
             cairo_rotate(cr, -1.570797);
             cairo_text_extents(cr, self->right_label, &txt_ext);
             cairo_move_to(cr, -y + (metrics->height_scene - txt_ext.width)/2.0,
-                          xrt + 3.0*txt_ext.height + bgtnumwidth);
+                          xrt + 2.0*txt_ext.height + bgtnumwidth);
             cairo_show_text(cr, self->right_label);
             cairo_restore(cr);
         }
