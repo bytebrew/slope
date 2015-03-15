@@ -30,6 +30,8 @@ typedef struct _slope_legend slope_legend_t;
 
 int slope_legend_visible (slope_legend_t *legend);
 
+int slope_legend_set_visible (slope_legend_t *legend, int visible);
+
 #ifdef __cplusplus
 }
 #endif

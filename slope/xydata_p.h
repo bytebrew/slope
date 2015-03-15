@@ -61,6 +61,9 @@ void _slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,
 void _slope_xydata_draw_triangles (slope_data_t *data, cairo_t *cr,
                                    slope_metrics_t *metrics);
 
+void _slope_xydata_draw_thumb (slope_data_t *data, cairo_t *cr,
+                               slope_point_t *point);
+
 #ifdef __cplusplus
 }
 #endif

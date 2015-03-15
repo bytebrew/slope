@@ -17,7 +17,9 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "slope/legend_p.h"
 #include "slope/xymetrics_p.h"
+#include "slope/xyframe_p.h"
 #include "slope/xydata_p.h"
 #include <stdlib.h>
 
@@ -28,6 +30,7 @@ slope_metrics_t* slope_xymetrics_create()
     slope_metrics_t *parent = (slope_metrics_t*) self;
     parent->data = NULL;
     parent->visible = 1;
+    parent->legend = _slope_legend_create(parent);
     parent->_cleanup_fn = _slope_xymetrics_cleanup;
     parent->_update_fn = _slope_xymetrics_update;
     parent->_draw_fn = _slope_xymetrics_draw;
@@ -38,9 +41,9 @@ slope_metrics_t* slope_xymetrics_create()
 }
 
 
-void _slope_xymetrics_cleanup (slope_metrics_t *metrics)
+void _slope_xymetrics_cleanup (slope_metrics_t *parent)
 {
-    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
+    slope_xymetrics_t *self = (slope_xymetrics_t*) parent;
     _slope_frame_destroy(self->frame);
 }
 
@@ -129,6 +132,11 @@ void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
     cairo_restore(cr);
     /* draw frame */
     _slope_xyframe_draw(self->frame,cr);
+    
+    slope_point_t legend_pos;
+    legend_pos.x = self->xmin_scene + 10.0;
+    legend_pos.y = self->ymin_scene + 10.0;
+    _slope_legend_draw(metrics->legend, cr, &legend_pos);
 }
 
 /* slope/xymetrics.c */

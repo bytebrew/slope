@@ -22,6 +22,7 @@
 
 #include "slope/primitives.h"
 #include "slope/metrics.h"
+#include "slope/legend_p.h"
 
 #ifdef __cplusplus
 extern "C" {

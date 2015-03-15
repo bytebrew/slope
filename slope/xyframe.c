@@ -334,4 +334,12 @@ void _slope_xyframe_draw_left_right (slope_frame_t *frame, cairo_t *cr)
     }
 }
 
+
+void slope_xyframe_set_color_name (slope_frame_t *frame,
+                                   slope_color_name_t color)
+{
+    slope_xyframe_t *self = (slope_xyframe_t*) frame;
+    slope_color_set_name(&self->color, color);
+}
+
 /* slope/xyframe.c */

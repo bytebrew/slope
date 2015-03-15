@@ -46,6 +46,10 @@ void slope_xyframe_set_visible (slope_frame_t *frame,
 void slope_xyframe_set_label (slope_frame_t *frame,
                               slope_xyframe_element_t element,
                               const char *label);
+
+void slope_xyframe_set_color_name (slope_frame_t *frame,
+                                   slope_color_name_t color);
+
 #ifdef __cplusplus
 }
 #endif

@@ -87,6 +87,8 @@ void slope_color_set_name (slope_color_t *color,
 
 void slope_cairo_set_color(cairo_t *cr, slope_color_t *color);
 
+void slope_cairo_rectangle(cairo_t *cr, slope_rect_t *rect);
+
 
 #ifdef __cplusplus
 }

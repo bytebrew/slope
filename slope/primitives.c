@@ -81,4 +81,11 @@ void slope_cairo_set_color(cairo_t *cr, slope_color_t *color)
         color->blue, color->alpha);
 }
 
+
+void slope_cairo_rectangle(cairo_t *cr, slope_rect_t *rect)
+{
+    cairo_rectangle(cr, rect->x, rect->y,
+                    rect->width, rect->height);
+}
+
 /* slope/primitives.c */

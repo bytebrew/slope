@@ -33,6 +33,7 @@ struct _slope_scene
     slope_list_t *metrics;
     slope_color_t back_color;
     int fill_back;
+    int font_size;
 
     void (*_cleanup_fn) (slope_scene_t*);
 };

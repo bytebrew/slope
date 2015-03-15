@@ -44,8 +44,11 @@ slope_xydata_create_simple (double *vx, double *vy,
     self->line_width = 1.5;
     self->fill_symbol = SLOPE_FALSE;
     parent->visible = SLOPE_TRUE;
+    parent->has_thumb = SLOPE_TRUE;
+    
     parent->_cleanup_fn = NULL;
     parent->_draw_fn = _slope_xydata_draw;
+    parent->_draw_thumb_fn = _slope_xydata_draw_thumb;
     return parent;
 }
 
@@ -54,10 +57,8 @@ void _slope_xydata_draw (slope_data_t *data, cairo_t *cr,
                          slope_metrics_t *metrics)
 {
     slope_xydata_t *self = (slope_xydata_t*) data;
-
-    cairo_set_source_rgba(
-        cr, self->color.red, self->color.green,
-        self->color.blue, self->color.alpha);
+    
+    slope_cairo_set_color(cr, &self->color);
     if (self->antialias) {
         cairo_set_antialias(
             cr, CAIRO_ANTIALIAS_SUBPIXEL);
@@ -190,43 +191,48 @@ void _slope_xydata_draw_triangles (slope_data_t *data, cairo_t *cr,
 }
 
 
-double slope_xydata_x_max (slope_data_t *data)
+void _slope_xydata_draw_thumb (slope_data_t *data, cairo_t *cr,
+                               slope_point_t *point)
 {
-    if (data == NULL) {
-        return -1.0;
-    }
     slope_xydata_t *self = (slope_xydata_t*) data;
-    return self->xmax;
-}
-
-
-double slope_xydata_x_min (slope_data_t *data)
-{
-    if (data == NULL) {
-        return -1.0;
+    slope_cairo_set_color(cr, &self->color);
+    if (self->antialias) {
+        cairo_set_antialias(
+            cr, CAIRO_ANTIALIAS_SUBPIXEL);
     }
-    slope_xydata_t *self = (slope_xydata_t*) data;
-    return self->xmin;
-}
-
-
-double slope_xydata_y_max (slope_data_t *data)
-{
-    if (data == NULL) {
-        return -1.0;
+    else {
+        cairo_set_antialias(
+            cr, CAIRO_ANTIALIAS_NONE);
     }
-    slope_xydata_t *self = (slope_xydata_t*) data;
-    return self->ymax;
-}
-
-
-double slope_xydata_y_min (slope_data_t *data)
-{
-    if (data == NULL) {
-        return -1.0;
+    cairo_set_line_width(cr, self->line_width);
+    
+    switch (self->scatter) {
+        case SLOPE_LINE:
+            cairo_move_to(cr, point->x - 15.0, point->y);
+            cairo_line_to(cr, point->x + 15.0, point->y);
+            cairo_move_to(cr, point->x + 20, point->y + 3.0);
+            cairo_show_text(cr, data->name);
+            cairo_stroke(cr);
+            break;
+        case SLOPE_CIRCLES:
+            cairo_move_to(cr, point->x+SYMBRAD, point->y);
+            cairo_arc(cr, point->x, point->y, SYMBRAD, 0.0, 6.283185);
+            if (self->fill_symbol) cairo_fill(cr);
+            cairo_move_to(cr, point->x + 20, point->y + 3.0);
+            cairo_show_text(cr, data->name);
+            cairo_stroke(cr);
+            break;
+        case SLOPE_TRIANGLES:
+            cairo_move_to(cr, point->x-SYMBRAD, point->y+SYMBRAD);
+            cairo_line_to(cr, point->x+SYMBRAD, point->y+SYMBRAD);
+            cairo_line_to(cr, point->x, point->y-SYMBRAD);
+            cairo_close_path(cr);
+            if (self->fill_symbol) cairo_fill(cr);
+            cairo_move_to(cr, point->x + 20, point->y + 3.0);
+            cairo_show_text(cr, data->name);
+            cairo_stroke(cr);
+            break;
     }
-    slope_xydata_t *self = (slope_xydata_t*) data;
-    return self->ymin;
 }
 
 
@@ -282,7 +288,7 @@ void _slope_xydata_check_ranges (slope_data_t *data)
     const int n = self->n;
     self->xmin = self->xmax = vx[0];
     self->ymin = self->ymax = vy[0];
-
+    
     int k;
     for (k=1; k<n; k++) {
         if (vx[k] < self->xmin) self->xmin = vx[k];
@@ -290,6 +296,46 @@ void _slope_xydata_check_ranges (slope_data_t *data)
         if (vy[k] < self->ymin) self->ymin = vy[k];
         if (vy[k] > self->ymax) self->ymax = vy[k];
     }
+}
+
+
+double slope_xydata_x_max (slope_data_t *data)
+{
+    if (data == NULL) {
+        return -1.0;
+    }
+    slope_xydata_t *self = (slope_xydata_t*) data;
+    return self->xmax;
+}
+
+
+double slope_xydata_x_min (slope_data_t *data)
+{
+    if (data == NULL) {
+        return -1.0;
+    }
+    slope_xydata_t *self = (slope_xydata_t*) data;
+    return self->xmin;
+}
+
+
+double slope_xydata_y_max (slope_data_t *data)
+{
+    if (data == NULL) {
+        return -1.0;
+    }
+    slope_xydata_t *self = (slope_xydata_t*) data;
+    return self->ymax;
+}
+
+
+double slope_xydata_y_min (slope_data_t *data)
+{
+    if (data == NULL) {
+        return -1.0;
+    }
+    slope_xydata_t *self = (slope_xydata_t*) data;
+    return self->ymin;
 }
 
 /* slope/xydata.c */
