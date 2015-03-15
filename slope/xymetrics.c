@@ -37,6 +37,7 @@ slope_metrics_t* slope_xymetrics_create()
     self->x_low_bound = self->x_up_bound = 80.0;
     self->y_low_bound = self->y_up_bound = 50.0;
     self->frame = _slope_xyframe_create(parent);
+    _slope_xymetrics_update(parent);
     return parent;
 }
 
@@ -74,11 +75,14 @@ double slope_xymetrics_map_y (slope_metrics_t *metrics, double y)
 void _slope_xymetrics_update (slope_metrics_t *metrics)
 {
     slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
+    
     if (metrics->data == NULL) {
         self->xmin = 0.0;
         self->xmax = 1.0;
         self->ymin = 0.0;
         self->ymax = 1.0;
+        self->width = self->xmax - self->xmin;
+        self->height = self->ymax - self->ymin;
         return;
     }
     slope_iterator_t *iter = slope_list_first(metrics->data);
@@ -97,6 +101,15 @@ void _slope_xymetrics_update (slope_metrics_t *metrics)
         if (dat->ymax > self->ymax) self->ymax = dat->ymax;
         slope_iterator_next(&iter);
     }
+    
+    double xbound = (self->xmax - self->xmin) /20.0;
+    self->xmin -= xbound;
+    self->xmax += xbound;
+    
+    double ybound = (self->ymax - self->ymin) /20.0;
+    self->ymin -= ybound;
+    self->ymax += ybound;
+    
     self->width = self->xmax - self->xmin;
     self->height = self->ymax - self->ymin;
 }
@@ -137,6 +150,26 @@ void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
     legend_pos.x = self->xmin_scene + 10.0;
     legend_pos.y = self->ymin_scene + 10.0;
     _slope_legend_draw(metrics->legend, cr, &legend_pos);
+}
+
+
+void slope_xymetrics_set_x_range (slope_metrics_t *metrics,
+                                  double xi, double xf)
+{
+    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
+    self->xmin = xi;
+    self->xmax = xf;
+    self->width = self->xmax - self->xmin;
+}
+
+
+void slope_xymetrics_set_y_range (slope_metrics_t *metrics,
+                                  double yi, double yf)
+{
+    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
+    self->ymin = yi;
+    self->ymax = yf;
+    self->height = self->ymax - self->ymin;
 }
 
 /* slope/xymetrics.c */

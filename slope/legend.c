@@ -51,7 +51,7 @@ void _slope_legend_guess_geometry (slope_legend_t *legend,
     legend->nlines = 0;
     double bgst_width = 0.0;
     slope_rect_set(
-        &legend->rect, point->x, point->y, 50.0, 20.0);
+        &legend->rect, point->x, point->y, 50.0, 25.0);
 
     slope_iterator_t *iter =
         slope_list_first(legend->metrics->data);
@@ -85,6 +85,9 @@ void _slope_legend_draw (slope_legend_t *legend,
 
     _slope_legend_guess_geometry(legend,cr,point);
     
+    if (legend->nlines == 0)
+        return;
+    
     /* draw the legend's frame */
     slope_cairo_set_color(cr, &legend->fill_color);
     /*cairo_move_to(cr,legend->rect.x, legend->rect.y);*/
@@ -114,7 +117,7 @@ void _slope_legend_draw (slope_legend_t *legend,
         
         cairo_text_extents_t txt_ext;
         cairo_text_extents(cr, data->name, &txt_ext);
-        thumb_pos.y = legend->rect.y + 5.0 + (order++)*txt_ext.height;
+        thumb_pos.y = legend->rect.y + 5.0 + (order-1)*3.0 + (order++)*txt_ext.height;
         _slope_data_draw_thumb(data, cr, &thumb_pos);
         slope_iterator_next(&iter);
     }

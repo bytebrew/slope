@@ -35,6 +35,10 @@ double slope_xymetrics_map_x (slope_metrics_t *metrics, double x);
 
 double slope_xymetrics_map_y (slope_metrics_t *metrics, double y);
 
+void slope_xymetrics_set_x_range (slope_metrics_t *metrics, double xi, double xf);
+
+void slope_xymetrics_set_y_range (slope_metrics_t *metrics, double yi, double yf);
+
 #ifdef __cplusplus
 }
 #endif
