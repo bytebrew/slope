@@ -24,13 +24,12 @@ static gboolean on_draw(GtkWidget *widget,
 
 int main(int argc, char *argv[])
 {
-    double x[N], y1[N], y2[N], y3[N];
+    double x[N], y1[N], y2[N];
     int k;
     for (k=0; k<N; k++) {
-        x[k] = (2.0*M_PI/N)*k;
-        y1[k] = sin(x[k]);
-        y2[k] = y1[k] + 0.3*cos(4.0*x[k]);
-        y3[k] = y1[k] + 0.3*sin(6.0*x[k]);
+        x[k] = -5.0 + (10.0/N)*k;
+        y1[k] = exp(-x[k]*x[k]);
+        y2[k] = y1[k] + 0.2*y1[k]*cos(10.0*x[k]);
     }
 
     slope_data_t *model_data =
@@ -38,24 +37,18 @@ int main(int argc, char *argv[])
             x, y1, N, "Model",
             SLOPE_BLUE, SLOPE_LINE);
 
-    slope_data_t *sample1_data =
+    slope_data_t *sample_data =
         slope_xydata_create_simple(
-            x, y2, N, "Sample1",
-            SLOPE_GREEN, SLOPE_CIRCLES);
-        
-    slope_data_t *sample2_data =
-        slope_xydata_create_simple(
-            x, y3, N, "Sample2",
-            SLOPE_RED, SLOPE_TRIANGLES);
+            x, y2, N, "Sample",
+            SLOPE_RED, SLOPE_CIRCLES);
 
     slope_metrics_t *metrics = slope_xymetrics_create();
     slope_metrics_add_data(metrics, model_data);
-    slope_metrics_add_data(metrics, sample1_data);
-    slope_metrics_add_data(metrics, sample2_data);
+    slope_metrics_add_data(metrics, sample_data);
 
     slope_frame_t *frame = slope_xymetrics_get_frame(metrics);
     slope_xyframe_set_label(frame, SLOPE_XYFRAME_TOP, "Samples and model");
-    slope_xyframe_set_label(frame, SLOPE_XYFRAME_BOTTOM, "Phase (RADIANS)");
+    slope_xyframe_set_label(frame, SLOPE_XYFRAME_BOTTOM, "Phase");
     slope_xyframe_set_label(frame, SLOPE_XYFRAME_LEFT, "Intensity");
     slope_xyframe_set_label(frame, SLOPE_XYFRAME_RIGHT, "Intensity");
 
@@ -74,10 +67,9 @@ int main(int argc, char *argv[])
     gtk_widget_show_all(window);
     gtk_main();
 
-    slope_scene_write_to_png(scene, "figure.png", 450, 300);
+    slope_scene_write_to_png(scene, "figure.png", 500, 350);
     slope_data_destroy(model_data);
-    slope_data_destroy(sample1_data);
-    slope_data_destroy(sample2_data);
+    slope_data_destroy(sample_data);
     slope_metrics_destroy(metrics);
     slope_scene_destroy(scene);
     return 0;
