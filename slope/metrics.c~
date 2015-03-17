@@ -75,9 +75,6 @@ void _slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
 
 void slope_metrics_update (slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return;
-    }
     if (metrics->_update_fn) {
         (*metrics->_update_fn)(metrics);
     }

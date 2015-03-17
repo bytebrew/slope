@@ -22,7 +22,6 @@ SET(SLOPE_HDRS
     slope/xydata.h
     slope/xyframe.h
     slope/legend.h
-    slope/slope.h
 )
 
 SET(SLOPE_SRCS

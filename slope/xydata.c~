@@ -28,7 +28,7 @@
 
 
 slope_data_t*
-slope_xydata_create_simple (const double *vx, const double *vy,
+slope_xydata_create_simple (double *vx, double *vy,
                             const int n,
                             const char *name,
                             slope_color_name_t color,
@@ -237,7 +237,7 @@ void _slope_xydata_draw_thumb (slope_data_t *data, cairo_t *cr,
 
 
 void slope_xydata_set (slope_data_t *data,
-                       const double *vx, const double *vy,
+                       double *vx, double *vy,
                        const int n,
                        const char *name,
                        slope_color_name_t color,
@@ -258,7 +258,7 @@ void slope_xydata_set (slope_data_t *data,
 
 
 void slope_xydata_set_date (slope_data_t *data,
-                            const double *vx, const double *vy,
+                            double *vx, double *vy,
                             const int n)
 {
     slope_xydata_t *self = (slope_xydata_t*) data;
@@ -270,7 +270,7 @@ void slope_xydata_set_date (slope_data_t *data,
 
 
 void slope_xydata_update_date (slope_data_t *data,
-                               const double *vx, const double *vy,
+                               double *vx, double *vy,
                                const int n)
 {
     slope_xydata_t *self = (slope_xydata_t*) data;

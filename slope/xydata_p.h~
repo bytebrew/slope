@@ -34,7 +34,7 @@ struct _slope_xydata
 {
     struct _slope_data parent;
     
-    const double *vx, *vy;
+    double *vx, *vy;
     int n;
     double xmin, xmax;
     double ymin, ymax;

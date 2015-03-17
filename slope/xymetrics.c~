@@ -37,7 +37,7 @@ slope_metrics_t* slope_xymetrics_create()
     self->x_low_bound = self->x_up_bound = 80.0;
     self->y_low_bound = self->y_up_bound = 50.0;
     self->frame = _slope_xyframe_create(parent);
-    slope_metrics_update(parent);
+    _slope_xymetrics_update(parent);
     return parent;
 }
 
@@ -170,23 +170,6 @@ void slope_xymetrics_set_y_range (slope_metrics_t *metrics,
     self->ymin = yi;
     self->ymax = yf;
     self->height = self->ymax - self->ymin;
-}
-
-
-void slope_xymetrics_set_x_bounds (slope_metrics_t *metrics,
-                                   double xi, double xf)
-{
-    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
-    self->x_low_bound = xi;
-    self->x_up_bound = xf;
-}
-
-void slope_xymetrics_set_y_bounds (slope_metrics_t *metrics,
-                                   double yi, double yf)
-{
-    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
-    self->y_low_bound = yi;
-    self->y_up_bound = yf;
 }
 
 /* slope/xymetrics.c */
