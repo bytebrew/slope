@@ -8,7 +8,7 @@ is familiar to the users of cairo. Of course, since you just have to pass a
 in a **GTK WIDGET**.
 
 If you use C++ and prefer a Qt-based solution, you should try QSL, SLOPE is an
-adaptation of QSL. <www.github.com/exocode/QSL>
+adaptation of QSL's chart classes. <www.github.com/exocode/QSL>
 
 Slope is in it's early stages of development and still needs some optimization
 and polishing. Some accessor methods to objects properties are also absent. But here's
