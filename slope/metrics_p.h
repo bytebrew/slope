@@ -22,7 +22,6 @@
 
 #include "slope/primitives.h"
 #include "slope/metrics.h"
-#include "slope/legend_p.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,7 +30,6 @@ extern "C" {
 struct _slope_metrics
 {
     slope_list_t *data;
-    slope_legend_t *legend;
     int visible;
 
     void (*_cleanup_fn) (slope_metrics_t*);
@@ -39,8 +37,8 @@ struct _slope_metrics
     void (*_draw_fn) (slope_metrics_t*, cairo_t*, slope_rect_t*);
 };
 
-void _slope_metrics_draw  (slope_metrics_t *metrics, cairo_t *cr,
-                           slope_rect_t *area);
+void _slope_metrics_draw  (slope_metrics_t *metrics,
+                           cairo_t *cr, slope_rect_t *area);
 
 #ifdef __cplusplus
 }

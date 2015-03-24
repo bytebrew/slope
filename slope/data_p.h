@@ -40,9 +40,11 @@ struct _slope_data
 };
 
 
-void _slope_data_draw (slope_data_t *data, cairo_t *cr, slope_metrics_t *metrics);
+void _slope_data_draw (slope_data_t *data, cairo_t *cr,
+                       slope_metrics_t *metrics);
 
-void _slope_data_draw_thumb (slope_data_t *data, cairo_t *cr, slope_point_t *point);
+void _slope_data_draw_thumb (slope_data_t *data, cairo_t *cr,
+                             slope_point_t *point);
 
 #ifdef __cplusplus
 }

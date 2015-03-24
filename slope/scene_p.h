@@ -23,6 +23,7 @@
 #include "slope/scene.h"
 #include "slope/list.h"
 #include "slope/primitives.h"
+#include "slope/legend_p.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,6 +33,7 @@ struct _slope_scene
 {
     slope_list_t *metrics;
     slope_color_t back_color;
+    slope_legend_t *legend;
     int fill_back;
     double font_size;
 

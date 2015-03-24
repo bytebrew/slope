@@ -44,8 +44,8 @@ slope_frame_t* _slope_xyframe_create(slope_metrics_t *metrics)
     parent->_draw_fn = _slope_xyframe_draw;
     slope_xyframe_set_visible(
         parent, SLOPE_XYFRAME_ALL, SLOPE_TRUE);
-    /* slope_xyframe_set_visible(
-        parent, SLOPE_XYFRAME_GRID, SLOPE_FALSE); */
+    slope_xyframe_set_visible(
+        parent, SLOPE_XYFRAME_GRID, SLOPE_FALSE);
     slope_color_set_name(&self->color, SLOPE_BLACK);
     
     return parent;
@@ -262,13 +262,13 @@ void _slope_xyframe_draw_left_right (slope_frame_t *frame, cairo_t *cr)
                 cairo_move_to(cr,xlf,y);
                 cairo_line_to(cr,xlf+TICKLEN,y);
                 cairo_move_to(cr,xlf-txt_ext.height-txt_ext.width,
-                            y+txt_ext.height/2.0);
+                            y+txt_ext.height*0.333);
                 cairo_show_text(cr,txt);
             }
             if (self->visible_elements & SLOPE_XYFRAME_RIGHT) {
                 cairo_move_to(cr,xrt,y);
                 cairo_line_to(cr,xrt-TICKLEN,y);
-                cairo_move_to(cr,xrt+txt_ext.height, y+txt_ext.height/2.0);
+                cairo_move_to(cr,xrt+txt_ext.height, y+txt_ext.height*0.333);
                 cairo_show_text(cr,txt);
             }
             if (self->visible_elements & SLOPE_XYFRAME_GRID) {

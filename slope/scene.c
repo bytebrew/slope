@@ -28,6 +28,7 @@ slope_scene_t* slope_scene_create()
     slope_scene_t *scene = malloc(sizeof(slope_scene_t));
     scene->metrics = NULL;
     slope_color_set_name(&scene->back_color, SLOPE_WHITE);
+    scene->legend = _slope_legend_create();
     scene->fill_back = 1;
     scene->font_size = 13;
     scene->_cleanup_fn = NULL;
@@ -45,6 +46,7 @@ void slope_scene_destroy (slope_scene_t *scene)
     if (scene->_cleanup_fn) {
         (*scene->_cleanup_fn)(scene);
     }
+    _slope_legend_destroy(scene->legend);
     slope_list_destroy(scene->metrics);
     free(scene);
     scene = NULL;
@@ -126,6 +128,15 @@ void slope_scene_add_metrics (slope_scene_t *scene,
                               slope_metrics_t *metrics)
 {
     scene->metrics = slope_list_append(scene->metrics, metrics);
+}
+
+
+slope_legend_t* slope_scene_legend (slope_scene_t *scene)
+{
+    if (scene == NULL)
+        return NULL;
+
+    return scene->legend;
 }
 
 

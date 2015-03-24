@@ -21,7 +21,6 @@
 #define _SLOPE_METRICS_H_
 
 #include "slope/primitives.h"
-#include "slope/legend.h"
 #include "slope/data.h"
 #include "slope/list.h"
 
@@ -42,8 +41,6 @@ slope_list_t* slope_metrics_data_list (slope_metrics_t *metrics);
 int slope_metrics_visible  (slope_metrics_t *metrics);
 
 void slope_metrics_update (slope_metrics_t *metrics);
-
-slope_legend_t* slope_metrics_legend (slope_metrics_t *metrics);
 
 #ifdef __cplusplus
 }
