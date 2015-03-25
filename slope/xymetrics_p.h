@@ -57,6 +57,9 @@ void _slope_xymetrics_update (slope_metrics_t *metrics);
 void _slope_xymetrics_draw (slope_metrics_t *metrics,
                             cairo_t *cr, slope_rect_t *area);
 
+void _slope_xymetrics_position_legend (slope_metrics_t *metrics,
+                                       slope_legend_t *legend);
+
 #ifdef __cplusplus
 }
 #endif

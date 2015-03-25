@@ -33,6 +33,7 @@ struct _slope_scene
 {
     slope_list_t *metrics;
     slope_color_t back_color;
+    slope_metrics_t *legend_manager;
     slope_legend_t *legend;
     int fill_back;
     double font_size;

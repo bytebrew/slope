@@ -28,10 +28,12 @@ slope_scene_t* slope_scene_create()
     slope_scene_t *scene = malloc(sizeof(slope_scene_t));
     scene->metrics = NULL;
     slope_color_set_name(&scene->back_color, SLOPE_WHITE);
-    scene->legend = _slope_legend_create();
     scene->fill_back = 1;
-    scene->font_size = 13;
+    scene->font_size = 15;
     scene->_cleanup_fn = NULL;
+    scene->legend = _slope_legend_create(scene);
+    scene->legend_manager = NULL;
+    return scene;
 }
 
 
@@ -94,6 +96,11 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
         _slope_metrics_draw(metrics, cr, area);
         slope_iterator_next(&iter);
     }
+    
+    if (scene->legend->visible && scene->legend_manager) {
+        _slope_metrics_position_legend(scene->legend_manager, scene->legend);
+        _slope_legend_draw(scene->legend, cr);
+    }
     cairo_restore(cr);
 }
 
@@ -128,6 +135,7 @@ void slope_scene_add_metrics (slope_scene_t *scene,
                               slope_metrics_t *metrics)
 {
     scene->metrics = slope_list_append(scene->metrics, metrics);
+    scene->legend_manager = metrics;
 }
 
 

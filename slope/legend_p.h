@@ -21,7 +21,7 @@
 #define _SLOPE_LEGEND_P_H_
 
 #include "slope/legend.h"
-#include "slope/metrics_p.h"
+#include "slope/scene.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,7 +29,7 @@ extern "C" {
 
 struct _slope_legend
 {
-    slope_metrics_t *metrics;
+    slope_scene_t *scene;
     slope_rect_t rect;
     slope_color_t stroke_color;
     slope_color_t fill_color;
@@ -38,15 +38,13 @@ struct _slope_legend
 };
 
 
-slope_legend_t* _slope_legend_create();
-
-void _slope_legend_destroy (slope_legend_t *legend);
+slope_legend_t* _slope_legend_create(slope_scene_t *metrics);
 
 void _slope_legend_guess_geometry (slope_legend_t *legend,
-                                   cairo_t *cr, slope_point_t *point);
+                                   cairo_t *cr);
 
 void _slope_legend_draw (slope_legend_t *legend,
-                         cairo_t *cr, slope_point_t *point);
+                         cairo_t *cr);
 
 #ifdef __cplusplus
 }

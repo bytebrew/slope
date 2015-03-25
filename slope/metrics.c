@@ -80,4 +80,13 @@ void slope_metrics_update (slope_metrics_t *metrics)
 }
 
 
+void _slope_metrics_position_legend (slope_metrics_t *metrics,
+                                     slope_legend_t *legend)
+{
+    if (metrics->_position_legend_fn) {
+        (*metrics->_position_legend_fn)(metrics,legend);
+    }
+}
+
+
 /* slope/metrics.c */

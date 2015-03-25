@@ -32,9 +32,10 @@ slope_metrics_t* slope_xymetrics_create()
     parent->visible = 1;
     parent->_cleanup_fn = _slope_xymetrics_cleanup;
     parent->_update_fn = _slope_xymetrics_update;
+    parent->_position_legend_fn = _slope_xymetrics_position_legend;
     parent->_draw_fn = _slope_xymetrics_draw;
-    self->x_low_bound = self->x_up_bound = 80.0;
-    self->y_low_bound = self->y_up_bound = 50.0;
+    self->x_low_bound = self->x_up_bound = 90.0;
+    self->y_low_bound = self->y_up_bound = 60.0;
     self->frame = _slope_xyframe_create(parent);
     slope_metrics_update(parent);
     return parent;
@@ -175,12 +176,22 @@ void slope_xymetrics_set_x_bounds (slope_metrics_t *metrics,
     self->x_up_bound = xf;
 }
 
+
 void slope_xymetrics_set_y_bounds (slope_metrics_t *metrics,
                                    double yi, double yf)
 {
     slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
     self->y_low_bound = yi;
     self->y_up_bound = yf;
+}
+
+
+void _slope_xymetrics_position_legend (slope_metrics_t *metrics,
+                                       slope_legend_t *legend)
+{
+    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
+    legend->rect.x = self->xmin_scene + 10.0;
+    legend->rect.y = self->ymin_scene + 10.0;
 }
 
 /* slope/xymetrics.c */
