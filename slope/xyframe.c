@@ -44,8 +44,6 @@ slope_frame_t* _slope_xyframe_create(slope_metrics_t *metrics)
     parent->_draw_fn = _slope_xyframe_draw;
     slope_xyframe_set_visible(
         parent, SLOPE_XYFRAME_ALL, SLOPE_TRUE);
-    slope_xyframe_set_visible(
-        parent, SLOPE_XYFRAME_GRID, SLOPE_FALSE);
     slope_color_set_name(&self->color, SLOPE_BLACK);
     
     return parent;
