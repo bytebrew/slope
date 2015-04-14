@@ -17,15 +17,14 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_SLOPE_H_
-#define _SLOPE_SLOPE_H_
+#ifndef __SLOPE_H
+#define __SLOPE_H
 
-#include "slope/primitives.h"
+/* for scene object */
 #include "slope/scene.h"
-#include "slope/metrics.h"
-#include "slope/data.h"
+/* for xy charts */
 #include "slope/xymetrics.h"
 #include "slope/xydata.h"
-#include "slope/xyframe.h"
+#include "slope/xyaxis.h"
 
-#endif /*_SLOPE_SLOPE_H_*/
+#endif /*__SLOPE_H */

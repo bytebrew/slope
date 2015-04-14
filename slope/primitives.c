@@ -18,6 +18,7 @@
  */
 
 #include "slope/primitives.h"
+#include <cairo.h>
 
 
 void slope_rect_set (slope_rect_t *rect, double x,
@@ -74,7 +75,8 @@ void slope_color_set_name (slope_color_t *color,
 }
 
 
-void slope_cairo_set_color(cairo_t *cr, slope_color_t *color)
+void slope_cairo_set_color(cairo_t *cr,
+                           const slope_color_t *color)
 {
     cairo_set_source_rgba(
         cr, color->red, color->green, 
@@ -82,7 +84,8 @@ void slope_cairo_set_color(cairo_t *cr, slope_color_t *color)
 }
 
 
-void slope_cairo_rectangle(cairo_t *cr, slope_rect_t *rect)
+void slope_cairo_rectangle(cairo_t *cr,
+                           const slope_rect_t *rect)
 {
     cairo_rectangle(cr, rect->x, rect->y,
                     rect->width, rect->height);

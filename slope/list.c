@@ -33,7 +33,7 @@ struct _slope_list
 {
     struct _slope_iterator *first;
     struct _slope_iterator *last;
-    unsigned long size;
+    int size;
 };
 
 
@@ -66,7 +66,8 @@ void slope_iterator_previous (slope_iterator_t **iter)
  */
 slope_list_t* slope_list_append (slope_list_t *list, void *data)
 {
-    slope_iterator_t *iter = malloc(sizeof(slope_iterator_t));
+    slope_iterator_t *iter =
+        malloc(sizeof(slope_iterator_t));
     iter->prev = NULL;
     iter->next = NULL;
     iter->data = data;
@@ -90,7 +91,8 @@ slope_list_t* slope_list_append (slope_list_t *list, void *data)
  */
 slope_list_t* slope_list_prepend (slope_list_t *list, void *data)
 {
-    slope_iterator_t *iter = malloc(sizeof(slope_iterator_t));
+    slope_iterator_t *iter =
+        malloc(sizeof(slope_iterator_t));
     iter->prev = NULL;
     iter->next = NULL;
     iter->data = data;
@@ -124,7 +126,6 @@ void slope_list_destroy (slope_list_t *list)
         iter = next;
     }
     free(list);
-    list = NULL;
 }
 
 /*
@@ -152,7 +153,7 @@ slope_iterator_t* slope_list_last (slope_list_t *list)
 /**
  * Access the size (element number) of the last
  */
-unsigned long slope_list_size (slope_list_t *list)
+int slope_list_size (slope_list_t *list)
 {
     if (list == NULL) {
         return 0;

@@ -1,0 +1,192 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+N	test.c	6;"	d	file:
+SLOPE_BLACK	slope/primitives.h	/^    SLOPE_BLACK,$/;"	e	enum:_slope_color_name
+SLOPE_BLUE	slope/primitives.h	/^    SLOPE_BLUE$/;"	e	enum:_slope_color_name
+SLOPE_CIRCLES	slope/data.h	/^    SLOPE_CIRCLES,$/;"	e	enum:__anon1
+SLOPE_FALSE	slope/primitives.h	28;"	d
+SLOPE_GREEN	slope/primitives.h	/^    SLOPE_GREEN,$/;"	e	enum:_slope_color_name
+SLOPE_LINE	slope/data.h	/^    SLOPE_LINE,$/;"	e	enum:__anon1
+SLOPE_RED	slope/primitives.h	/^    SLOPE_RED,$/;"	e	enum:_slope_color_name
+SLOPE_TRIANGLES	slope/data.h	/^    SLOPE_TRIANGLES$/;"	e	enum:__anon1
+SLOPE_TRUE	slope/primitives.h	29;"	d
+SLOPE_WHITE	slope/primitives.h	/^    SLOPE_WHITE,$/;"	e	enum:_slope_color_name
+SYMBRAD	slope/xydata.c	25;"	d	file:
+SYMBRADSQR	slope/xydata.c	26;"	d	file:
+THREESYMBRADSQR	slope/xydata.c	27;"	d	file:
+__SLOPE_BEGIN_DECLS	slope/global.h	26;"	d
+__SLOPE_BEGIN_DECLS	slope/global.h	29;"	d
+__SLOPE_DATA_H	slope/data.h	21;"	d
+__SLOPE_DATA_P_H	slope/data_p.h	21;"	d
+__SLOPE_END_DECLS	slope/global.h	27;"	d
+__SLOPE_END_DECLS	slope/global.h	30;"	d
+__SLOPE_GLOBAL_H	slope/global.h	21;"	d
+__SLOPE_H	slope/slope.h	21;"	d
+__SLOPE_LIST_H	slope/list.h	21;"	d
+__SLOPE_METRICS_H	slope/metrics.h	21;"	d
+__SLOPE_METRICS_P_H	slope/metrics_p.h	21;"	d
+__SLOPE_PRIMITIVES_H	slope/primitives.h	21;"	d
+__SLOPE_SCENE_H	slope/scene.h	21;"	d
+__SLOPE_SCENE_P_H	slope/scene_p.h	21;"	d
+__SLOPE_XYDATA_H	slope/xydata.h	21;"	d
+__SLOPE_XYDATA_P_H	slope/xydata_p.h	21;"	d
+__SLOPE_XYMETRICS_H	slope/xymetrics.h	21;"	d
+__SLOPE_XYMETRICS_P_H	slope/xymetrics_p.h	21;"	d
+__slope_data_draw	slope/data.c	/^void __slope_data_draw (slope_data_t *data, cairo_t *cr,$/;"	f
+__slope_metrics_draw	slope/metrics.c	/^void __slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,$/;"	f
+__slope_xydata_check_ranges	slope/xydata.c	/^void __slope_xydata_check_ranges (slope_data_t *data)$/;"	f
+__slope_xydata_draw	slope/xydata.c	/^void __slope_xydata_draw (slope_data_t *data, cairo_t *cr,$/;"	f
+__slope_xydata_draw_circles	slope/xydata.c	/^void __slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,$/;"	f
+__slope_xydata_draw_line	slope/xydata.c	/^void __slope_xydata_draw_line (slope_data_t *data, cairo_t *cr,$/;"	f
+__slope_xydata_draw_triangles	slope/xydata.c	/^void __slope_xydata_draw_triangles (slope_data_t *data, cairo_t *cr,$/;"	f
+__slope_xydata_get_class	slope/xydata.c	/^slope_data_class_t* __slope_xydata_get_class()$/;"	f
+__slope_xydata_init	slope/xydata.c	/^void __slope_xydata_init (slope_data_t *parent)$/;"	f
+__slope_xymetrics_draw	slope/xymetrics.c	/^void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,$/;"	f
+__slope_xymetrics_get_class	slope/xymetrics.c	/^slope_metrics_class_t* __slope_xymetrics_get_class()$/;"	f
+__slope_xymetrics_update	slope/xymetrics.c	/^void __slope_xymetrics_update (slope_metrics_t *metrics)$/;"	f
+_slope_color	slope/primitives.h	/^typedef struct _slope_color$/;"	s
+_slope_color_name	slope/primitives.h	/^typedef enum _slope_color_name$/;"	g
+_slope_data	slope/data_p.h	/^struct _slope_data$/;"	s
+_slope_data_class	slope/data_p.h	/^struct _slope_data_class$/;"	s
+_slope_iterator	slope/list.c	/^struct _slope_iterator$/;"	s	file:
+_slope_list	slope/list.c	/^struct _slope_list$/;"	s	file:
+_slope_metrics	slope/metrics_p.h	/^struct _slope_metrics$/;"	s
+_slope_metrics_class	slope/metrics_p.h	/^struct _slope_metrics_class$/;"	s
+_slope_point	slope/primitives.h	/^typedef struct _slope_point$/;"	s
+_slope_rect	slope/primitives.h	/^typedef struct _slope_rect$/;"	s
+_slope_scene	slope/scene_p.h	/^struct _slope_scene$/;"	s
+_slope_xydata	slope/xydata_p.h	/^struct _slope_xydata$/;"	s
+_slope_xymetrics	slope/xymetrics_p.h	/^struct _slope_xymetrics$/;"	s
+alpha	slope/primitives.h	/^    double alpha;$/;"	m	struct:_slope_color
+antialias	slope/xydata_p.h	/^    int             antialias;$/;"	m	struct:_slope_xydata
+appearence_change_callback	slope/data_p.h	/^    slope_callback_t appearence_change_callback;$/;"	m	struct:_slope_data
+back_color	slope/scene_p.h	/^    slope_color_t    back_color;$/;"	m	struct:_slope_scene
+blue	slope/primitives.h	/^    double blue;$/;"	m	struct:_slope_color
+change_callback	slope/scene_p.h	/^    slope_callback_t change_callback;$/;"	m	struct:_slope_scene
+color	slope/xydata_p.h	/^    slope_color_t   color;$/;"	m	struct:_slope_xydata
+data	slope/list.c	/^    void *data;$/;"	m	struct:_slope_iterator	file:
+data_change_callback	slope/data_p.h	/^    slope_callback_t data_change_callback;$/;"	m	struct:_slope_data
+data_list	slope/metrics_p.h	/^    slope_list_t *data_list;$/;"	m	struct:_slope_metrics
+destroy_fn	slope/data_p.h	/^    void (*destroy_fn) (slope_data_t*);$/;"	m	struct:_slope_data_class
+destroy_fn	slope/metrics_p.h	/^    void (*destroy_fn) (slope_metrics_t*);$/;"	m	struct:_slope_metrics_class
+draw_fn	slope/data_p.h	/^    void (*draw_fn) (slope_data_t*, cairo_t*,$/;"	m	struct:_slope_data_class
+draw_fn	slope/metrics_p.h	/^    void (*draw_fn) (slope_metrics_t*, cairo_t*, const slope_rect_t*);$/;"	m	struct:_slope_metrics_class
+fill_back	slope/scene_p.h	/^    int              fill_back;$/;"	m	struct:_slope_scene
+fill_symbol	slope/xydata_p.h	/^    int             fill_symbol;$/;"	m	struct:_slope_xydata
+first	slope/list.c	/^    struct _slope_iterator *first;$/;"	m	struct:_slope_list	typeref:struct:_slope_list::_slope_iterator	file:
+green	slope/primitives.h	/^    double green;$/;"	m	struct:_slope_color
+has_thumb	slope/data_p.h	/^    int has_thumb;$/;"	m	struct:_slope_data
+height	slope/primitives.h	/^    double height;$/;"	m	struct:_slope_rect
+height	slope/xymetrics_p.h	/^    double width, height;$/;"	m	struct:_slope_xymetrics
+height_scene	slope/xymetrics_p.h	/^    double width_scene, height_scene;$/;"	m	struct:_slope_xymetrics
+klass	slope/data_p.h	/^    slope_data_class_t *klass;$/;"	m	struct:_slope_data
+klass	slope/metrics_p.h	/^    slope_metrics_class_t *klass;$/;"	m	struct:_slope_metrics
+last	slope/list.c	/^    struct _slope_iterator *last;$/;"	m	struct:_slope_list	typeref:struct:_slope_list::_slope_iterator	file:
+line_width	slope/xydata_p.h	/^    double          line_width;$/;"	m	struct:_slope_xydata
+main	test.c	/^int main(int argc, char *argv[])$/;"	f
+metrics	slope/data_p.h	/^    slope_metrics_t *metrics;$/;"	m	struct:_slope_data
+metrics	slope/scene_p.h	/^    slope_list_t    *metrics;$/;"	m	struct:_slope_scene
+n	slope/xydata_p.h	/^    int             n;$/;"	m	struct:_slope_xydata
+name	slope/data_p.h	/^    char *name;$/;"	m	struct:_slope_data
+next	slope/list.c	/^    struct _slope_iterator *next;$/;"	m	struct:_slope_iterator	typeref:struct:_slope_iterator::_slope_iterator	file:
+on_draw	test.c	/^static gboolean on_draw(GtkWidget *widget,$/;"	f	file:
+parent	slope/xydata_p.h	/^    slope_data_t    parent;$/;"	m	struct:_slope_xydata
+parent	slope/xymetrics_p.h	/^    slope_metrics_t parent;$/;"	m	struct:_slope_xymetrics
+prev	slope/list.c	/^    struct _slope_iterator *prev;$/;"	m	struct:_slope_iterator	typeref:struct:_slope_iterator::_slope_iterator	file:
+red	slope/primitives.h	/^    double red;$/;"	m	struct:_slope_color
+rescalable	slope/xydata_p.h	/^    int             rescalable;$/;"	m	struct:_slope_xydata
+scatter	slope/xydata_p.h	/^    slope_scatter_t scatter;$/;"	m	struct:_slope_xydata
+scene	slope/metrics_p.h	/^    slope_scene_t *scene;$/;"	m	struct:_slope_metrics
+size	slope/list.c	/^    int size;$/;"	m	struct:_slope_list	file:
+slope_cairo_rectangle	slope/primitives.c	/^void slope_cairo_rectangle(cairo_t *cr,$/;"	f
+slope_cairo_set_color	slope/primitives.c	/^void slope_cairo_set_color(cairo_t *cr,$/;"	f
+slope_callback_t	slope/primitives.h	/^typedef void (*slope_callback_t) (void*);$/;"	t
+slope_color_name_t	slope/primitives.h	/^slope_color_name_t;$/;"	t	typeref:enum:_slope_color_name
+slope_color_set	slope/primitives.c	/^void slope_color_set (slope_color_t *color, double r,$/;"	f
+slope_color_set_name	slope/primitives.c	/^void slope_color_set_name (slope_color_t *color,$/;"	f
+slope_color_t	slope/primitives.h	/^slope_color_t;$/;"	t	typeref:struct:_slope_color
+slope_data_class_t	slope/data_p.h	/^typedef struct _slope_data_class slope_data_class_t;$/;"	t	typeref:struct:_slope_data_class
+slope_data_destroy	slope/data.c	/^void slope_data_destroy (slope_data_t *data)$/;"	f
+slope_data_get_metrics	slope/data.c	/^slope_metrics_t* slope_data_get_metrics (slope_data_t *data)$/;"	f
+slope_data_get_scene	slope/data.c	/^slope_scene_t* slope_data_get_scene (slope_data_t *data)$/;"	f
+slope_data_get_visible	slope/data.c	/^int slope_data_get_visible (slope_data_t *data)$/;"	f
+slope_data_set_visible	slope/data.c	/^void slope_data_set_visible (slope_data_t *data,$/;"	f
+slope_data_t	slope/primitives.h	/^typedef struct _slope_data slope_data_t;$/;"	t	typeref:struct:_slope_data
+slope_iterator_data	slope/list.c	/^void* slope_iterator_data (slope_iterator_t *iter)$/;"	f
+slope_iterator_next	slope/list.c	/^void slope_iterator_next (slope_iterator_t **iter)$/;"	f
+slope_iterator_previous	slope/list.c	/^void slope_iterator_previous (slope_iterator_t **iter)$/;"	f
+slope_iterator_t	slope/list.h	/^typedef struct _slope_iterator slope_iterator_t;$/;"	t	typeref:struct:_slope_iterator
+slope_list_append	slope/list.c	/^slope_list_t* slope_list_append (slope_list_t *list, void *data)$/;"	f
+slope_list_destroy	slope/list.c	/^void slope_list_destroy (slope_list_t *list)$/;"	f
+slope_list_first	slope/list.c	/^slope_iterator_t* slope_list_first (slope_list_t *list)$/;"	f
+slope_list_last	slope/list.c	/^slope_iterator_t* slope_list_last (slope_list_t *list)$/;"	f
+slope_list_prepend	slope/list.c	/^slope_list_t* slope_list_prepend (slope_list_t *list, void *data)$/;"	f
+slope_list_remove	slope/list.c	/^slope_iterator_t* slope_list_remove (slope_list_t *list,$/;"	f
+slope_list_size	slope/list.c	/^int slope_list_size (slope_list_t *list)$/;"	f
+slope_list_t	slope/list.h	/^typedef struct _slope_list slope_list_t;$/;"	t	typeref:struct:_slope_list
+slope_metrics_add_data	slope/metrics.c	/^void slope_metrics_add_data (slope_metrics_t *metrics,$/;"	f
+slope_metrics_class_t	slope/metrics_p.h	/^typedef struct _slope_metrics_class slope_metrics_class_t;$/;"	t	typeref:struct:_slope_metrics_class
+slope_metrics_destroy	slope/metrics.c	/^void slope_metrics_destroy (slope_metrics_t *metrics)$/;"	f
+slope_metrics_get_data_list	slope/metrics.c	/^slope_list_t* slope_metrics_get_data_list (slope_metrics_t *metrics)$/;"	f
+slope_metrics_get_scene	slope/metrics.c	/^slope_scene_t* slope_metrics_get_scene (slope_metrics_t *metrics)$/;"	f
+slope_metrics_get_visible	slope/metrics.c	/^int slope_metrics_get_visible(slope_metrics_t *metrics)$/;"	f
+slope_metrics_set_visible	slope/metrics.c	/^void slope_metrics_set_visible (slope_metrics_t *metrics,$/;"	f
+slope_metrics_t	slope/primitives.h	/^typedef struct _slope_metrics slope_metrics_t;$/;"	t	typeref:struct:_slope_metrics
+slope_metrics_update	slope/metrics.c	/^void slope_metrics_update (slope_metrics_t *metrics)$/;"	f
+slope_point_t	slope/primitives.h	/^slope_point_t;$/;"	t	typeref:struct:_slope_point
+slope_public	slope/global.h	37;"	d
+slope_public	slope/global.h	39;"	d
+slope_public	slope/global.h	42;"	d
+slope_rect_set	slope/primitives.c	/^void slope_rect_set (slope_rect_t *rect, double x,$/;"	f
+slope_rect_t	slope/primitives.h	/^slope_rect_t;$/;"	t	typeref:struct:_slope_rect
+slope_scatter_t	slope/data.h	/^slope_scatter_t;$/;"	t	typeref:enum:__anon1
+slope_scene_add_metrics	slope/scene.c	/^void slope_scene_add_metrics (slope_scene_t *scene,$/;"	f
+slope_scene_create	slope/scene.c	/^slope_scene_t* slope_scene_create()$/;"	f
+slope_scene_destroy	slope/scene.c	/^void slope_scene_destroy (slope_scene_t *scene)$/;"	f
+slope_scene_draw	slope/scene.c	/^void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,$/;"	f
+slope_scene_get_metrics_list	slope/scene.c	/^slope_list_t* slope_scene_get_metrics_list (slope_scene_t *scene)$/;"	f
+slope_scene_set_change_callback	slope/scene.c	/^void slope_scene_set_change_callback (slope_scene_t *scene,$/;"	f
+slope_scene_t	slope/primitives.h	/^typedef struct _slope_scene slope_scene_t;$/;"	t	typeref:struct:_slope_scene
+slope_scene_write_to_png	slope/scene.c	/^void slope_scene_write_to_png (slope_scene_t *scene,$/;"	f
+slope_xydata_create	slope/xydata.c	/^slope_data_t* slope_xydata_create()$/;"	f
+slope_xydata_create_simple	slope/xydata.c	/^slope_data_t* slope_xydata_create_simple (const double *vx, const double *vy,$/;"	f
+slope_xydata_set	slope/xydata.c	/^void slope_xydata_set (slope_data_t *data,$/;"	f
+slope_xydata_set_data	slope/xydata.c	/^void slope_xydata_set_data (slope_data_t *data,$/;"	f
+slope_xydata_t	slope/xydata_p.h	/^typedef struct _slope_xydata slope_xydata_t;$/;"	t	typeref:struct:_slope_xydata
+slope_xydata_update_data	slope/xydata.c	/^void slope_xydata_update_data (slope_data_t *data,$/;"	f
+slope_xymetrics_create	slope/xymetrics.c	/^slope_metrics_t* slope_xymetrics_create()$/;"	f
+slope_xymetrics_map_x	slope/xymetrics.c	/^double slope_xymetrics_map_x (const slope_metrics_t *metrics, double x)$/;"	f
+slope_xymetrics_map_y	slope/xymetrics.c	/^double slope_xymetrics_map_y (const slope_metrics_t *metrics, double y)$/;"	f
+slope_xymetrics_t	slope/xymetrics_p.h	/^typedef struct _slope_xymetrics slope_xymetrics_t;$/;"	t	typeref:struct:_slope_xymetrics
+update_fn	slope/metrics_p.h	/^    void (*update_fn) (slope_metrics_t*);$/;"	m	struct:_slope_metrics_class
+visible	slope/data_p.h	/^    int visible;$/;"	m	struct:_slope_data
+visible	slope/metrics_p.h	/^    int visible;$/;"	m	struct:_slope_metrics
+vx	slope/xydata_p.h	/^    const double   *vx, *vy;$/;"	m	struct:_slope_xydata
+vy	slope/xydata_p.h	/^    const double   *vx, *vy;$/;"	m	struct:_slope_xydata
+width	slope/primitives.h	/^    double width;$/;"	m	struct:_slope_rect
+width	slope/xymetrics_p.h	/^    double width, height;$/;"	m	struct:_slope_xymetrics
+width_scene	slope/xymetrics_p.h	/^    double width_scene, height_scene;$/;"	m	struct:_slope_xymetrics
+x	slope/primitives.h	/^    double x;$/;"	m	struct:_slope_point
+x	slope/primitives.h	/^    double x;$/;"	m	struct:_slope_rect
+x_low_bound	slope/xymetrics_p.h	/^    double x_low_bound, x_up_bound;$/;"	m	struct:_slope_xymetrics
+x_up_bound	slope/xymetrics_p.h	/^    double x_low_bound, x_up_bound;$/;"	m	struct:_slope_xymetrics
+xmax	slope/xydata_p.h	/^    double          xmin, xmax;$/;"	m	struct:_slope_xydata
+xmax	slope/xymetrics_p.h	/^    double xmin, xmax;$/;"	m	struct:_slope_xymetrics
+xmax_scene	slope/xymetrics_p.h	/^    double xmin_scene, xmax_scene;$/;"	m	struct:_slope_xymetrics
+xmin	slope/xydata_p.h	/^    double          xmin, xmax;$/;"	m	struct:_slope_xydata
+xmin	slope/xymetrics_p.h	/^    double xmin, xmax;$/;"	m	struct:_slope_xymetrics
+xmin_scene	slope/xymetrics_p.h	/^    double xmin_scene, xmax_scene;$/;"	m	struct:_slope_xymetrics
+y	slope/primitives.h	/^    double y;$/;"	m	struct:_slope_point
+y	slope/primitives.h	/^    double y;$/;"	m	struct:_slope_rect
+y_low_bound	slope/xymetrics_p.h	/^    double y_low_bound, y_up_bound;$/;"	m	struct:_slope_xymetrics
+y_up_bound	slope/xymetrics_p.h	/^    double y_low_bound, y_up_bound;$/;"	m	struct:_slope_xymetrics
+ymax	slope/xydata_p.h	/^    double          ymin, ymax;$/;"	m	struct:_slope_xydata
+ymax	slope/xymetrics_p.h	/^    double ymin, ymax;$/;"	m	struct:_slope_xymetrics
+ymax_scene	slope/xymetrics_p.h	/^    double ymin_scene, ymax_scene;$/;"	m	struct:_slope_xymetrics
+ymin	slope/xydata_p.h	/^    double          ymin, ymax;$/;"	m	struct:_slope_xydata
+ymin	slope/xymetrics_p.h	/^    double ymin, ymax;$/;"	m	struct:_slope_xymetrics
+ymin_scene	slope/xymetrics_p.h	/^    double ymin_scene, ymax_scene;$/;"	m	struct:_slope_xymetrics

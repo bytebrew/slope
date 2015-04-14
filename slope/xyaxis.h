@@ -17,23 +17,36 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_LEGEND_H_
-#define _SLOPE_LEGEND_H_
+#ifndef __SLOPE_XYAXIS_H
+#define __SLOPE_XYAXIS_H
 
-#include "slope/primitives.h"
+#include "slope/data.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__SLOPE_BEGIN_DECLS
 
-typedef struct _slope_legend slope_legend_t;
-
-int slope_legend_visible (slope_legend_t *legend);
-
-int slope_legend_set_visible (slope_legend_t *legend, int visible);
-
-#ifdef __cplusplus
+/**
+ */
+typedef enum _slope_xyaxis_type
+{
+    SLOPE_XYAXIS_TOP,
+    SLOPE_XYAXIS_BOTTOM,
+    SLOPE_XYAXIS_LEFT,
+    SLOPE_XYAXIS_RIGHT
 }
-#endif
+slope_xyaxis_type_t;
 
-#endif /*_SLOPE_LEGEND_H_*/
+/**
+ */
+slope_public slope_data_t*
+slope_xyaxis_create (slope_metrics_t *metrics,
+                     slope_xyaxis_type_t type,
+                     const char *name);
+
+/**
+ */
+slope_public slope_xyaxis_type_t
+slope_xyaxis_get_type (slope_data_t *axis);
+
+__SLOPE_END_DECLS
+
+#endif //__SLOPE_XYAXIS_H

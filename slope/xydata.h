@@ -17,49 +17,50 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_XYDATA_H_
-#define _SLOPE_XYDATA_H_
+#ifndef __SLOPE_XYDATA_H
+#define __SLOPE_XYDATA_H
 
 #include "slope/data.h"
-#include "slope/primitives.h"
-#include "slope/xymetrics.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__SLOPE_BEGIN_DECLS
 
-slope_data_t*
+/**
+ */
+slope_public slope_data_t* slope_xydata_create ();
+
+/**
+ */
+slope_public slope_data_t*
 slope_xydata_create_simple (const double *vx, const double *vy,
                             const int n,
                             const char *name,
                             slope_color_name_t color,
                             slope_scatter_t scatter);
 
-void slope_xydata_set (slope_data_t *data,
+/**
+ */
+slope_public void
+slope_xydata_set (slope_data_t *data,
+                  const double *vx, const double *vy,
+                  const int n,
+                  const char *name,
+                  slope_color_name_t color,
+                  slope_scatter_t scatter);
+
+/**
+ */
+slope_public void
+slope_xydata_set_data (slope_data_t *data,
                        const double *vx, const double *vy,
-                       const int n,
-                       const char *name,
-                       slope_color_name_t color,
-                       slope_scatter_t scatter);
+                       const int n);
 
-void slope_xydata_set_date (slope_data_t *data,
-                            const double *vx, const double *vy,
-                            const int n);
+/**
+ */
+slope_public void
+slope_xydata_update_data (slope_data_t *data,
+                          const double *vx, const double *vy,
+                          const int n);
 
-void slope_xydata_update_date (slope_data_t *data,
-                               const double *vx, const double *vy,
-                               const int n);
+__SLOPE_END_DECLS
 
-double slope_xydata_x_max (slope_data_t *data);
-
-double slope_xydata_x_min (slope_data_t *data);
-
-double slope_xydata_y_max (slope_data_t *data);
-
-double slope_xydata_y_min (slope_data_t *data);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /*_SLOPE_XYDATA_H_*/
+#endif /*__SLOPE_XYDATA_H */

@@ -17,32 +17,23 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_SCENE_P_H_
-#define _SLOPE_SCENE_P_H_
+#ifndef __SLOPE_SCENE_P_H
+#define __SLOPE_SCENE_P_H
 
 #include "slope/scene.h"
-#include "slope/list.h"
-#include "slope/primitives.h"
-#include "slope/legend_p.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__SLOPE_BEGIN_DECLS
 
+/**
+ */
 struct _slope_scene
 {
-    slope_list_t *metrics;
-    slope_color_t back_color;
-    slope_metrics_t *legend_manager;
-    slope_legend_t *legend;
-    int fill_back;
-    double font_size;
-
-    void (*_cleanup_fn) (slope_scene_t*);
+    slope_list_t    *metrics;
+    slope_color_t    back_color;
+    int              fill_back;
+    slope_callback_t change_callback;
 };
 
-#ifdef __cplusplus
-}
-#endif
+__SLOPE_END_DECLS
 
-#endif /*_SLOPE_SCENE_P_H_*/
+#endif /*__SLOPE_SCENE_P_H */

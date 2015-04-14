@@ -17,33 +17,51 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_METRICS_H_
-#define _SLOPE_METRICS_H_
+#ifndef __SLOPE_METRICS_H
+#define __SLOPE_METRICS_H
 
-#include "slope/primitives.h"
-#include "slope/data.h"
 #include "slope/list.h"
+#include "slope/primitives.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__SLOPE_BEGIN_DECLS
 
-typedef struct _slope_metrics slope_metrics_t;
+/**
+ */
+slope_public void
+slope_metrics_destroy (slope_metrics_t *metrics);
 
+/**
+ */
+slope_public int
+slope_metrics_get_visible (slope_metrics_t *metrics);
 
-void slope_metrics_destroy (slope_metrics_t *metrics);
+/**
+ */
+slope_public void
+slope_metrics_set_visible (slope_metrics_t *metrics,
+                           int visible);
 
-void slope_metrics_add_data (slope_metrics_t *metrics,
-                             slope_data_t *data);
+/**
+ */
+slope_public void
+slope_metrics_update (slope_metrics_t *metrics);
 
-slope_list_t* slope_metrics_data_list (slope_metrics_t *metrics);
+/**
+ */
+slope_public void
+slope_metrics_add_data (slope_metrics_t *metrics,
+                        slope_data_t *data);
 
-int slope_metrics_visible  (slope_metrics_t *metrics);
+/**
+ */
+slope_public slope_list_t*
+slope_metrics_get_data_list (slope_metrics_t *metrics);
 
-void slope_metrics_update (slope_metrics_t *metrics);
+/**
+ */
+slope_public slope_scene_t*
+slope_metrics_get_scene (slope_metrics_t *metrics);
 
-#ifdef __cplusplus
-}
-#endif
+__SLOPE_END_DECLS
 
-#endif /*_SLOPE_METRICS_H_*/
+#endif /*__SLOPE_METRICS_H */

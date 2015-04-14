@@ -18,6 +18,7 @@
  */
 
 #include "slope/data_p.h"
+#include "slope/metrics.h"
 #include <stdlib.h>
 
 
@@ -26,54 +27,60 @@ void slope_data_destroy (slope_data_t *data)
     if (data == NULL) {
         return;
     }
-    if (data->_cleanup_fn) {
-        (*data->_cleanup_fn)(data);
+    if (data->klass->destroy_fn) {
+        (*data->klass->destroy_fn)(data);
     }
     if (data->name) {
         free(data->name);
     }
     free(data);
-    data = NULL;
 }
 
 
-int slope_data_visible (slope_data_t *data)
+int slope_data_get_visible (slope_data_t *data)
 {
     if (data == NULL) {
-        return 0;
+        return SLOPE_FALSE;
     }
     return data->visible;
 }
 
 
-const char* slope_data_name (slope_data_t *data)
+void slope_data_set_visible (slope_data_t *data,
+                             int visible)
+{
+    if (data == NULL) {
+        return;
+    }
+    data->visible = visible;
+    if (data->appearence_change_callback) {
+        (*data->appearence_change_callback)(data);
+    }
+}
+
+
+void __slope_data_draw (slope_data_t *data, cairo_t *cr,
+                        const slope_metrics_t *metrics)
+{
+    (*data->klass->draw_fn)(data, cr, metrics);
+}
+
+
+slope_metrics_t* slope_data_get_metrics (slope_data_t *data)
 {
     if (data == NULL) {
         return NULL;
     }
-    return data->name;
+    return data->metrics;
 }
 
 
-void _slope_data_draw (slope_data_t *data, cairo_t *cr,
-                       slope_metrics_t *metrics)
+slope_scene_t* slope_data_get_scene (slope_data_t *data)
 {
-    if (data->_draw_fn) {
-        if (data->visible) {
-            (*data->_draw_fn)(data,cr,metrics);
-        }
+    if (data == NULL) {
+        return NULL;
     }
-}
-
-
-void _slope_data_draw_thumb (slope_data_t *data, cairo_t *cr,
-                             slope_point_t *point)
-{
-    if (data->_draw_thumb_fn) {
-        if (data->has_thumb) {
-            (*data->_draw_thumb_fn)(data,cr,point);
-        }
-    }
+    return slope_metrics_get_scene(data->metrics);
 }
 
 /* slope/data.c */

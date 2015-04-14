@@ -17,33 +17,50 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_DATA_H_
-#define _SLOPE_DATA_H_
+#ifndef __SLOPE_DATA_H
+#define __SLOPE_DATA_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "slope/primitives.h"
 
-typedef struct _slope_data slope_data_t;
+__SLOPE_BEGIN_DECLS
 
-
+/**
+ */
 typedef enum
 {
     SLOPE_LINE,
     SLOPE_CIRCLES,
-    SLOPE_TRIANGLES
+    SLOPE_TRIANGLES,
+    SLOPE_SQUARES,
+    SLOPE_PLUSSES
 }
 slope_scatter_t;
 
+/**
+ */
+slope_public void
+slope_data_destroy (slope_data_t *data);
 
-void slope_data_destroy (slope_data_t *data);
+/**
+ */
+slope_public int
+slope_data_get_visible (slope_data_t *data);
 
-int slope_data_visible (slope_data_t *data);
+/**
+ */
+slope_public void
+slope_data_set_visible (slope_data_t *data, int visible);
 
-const char* slope_data_name (slope_data_t *data);
+/**
+ */
+slope_public slope_metrics_t*
+slope_data_get_metrics (slope_data_t *data);
 
-#ifdef __cplusplus
-}
-#endif
+/**
+ */
+slope_public slope_scene_t*
+slope_data_get_scene (slope_data_t *data);
 
-#endif /*_SLOPE_XYMETRICS_H_*/
+__SLOPE_END_DECLS
+
+#endif /*__SLOPE_DATA_H */

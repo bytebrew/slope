@@ -17,60 +17,53 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_SCENE_H_
-#define _SLOPE_SCENE_H_
+#ifndef __SLOPE_SCENE_H
+#define __SLOPE_SCENE_H
 
-#include "slope/primitives.h"
-#include "slope/metrics.h"
 #include "slope/list.h"
-#include "slope/legend.h"
+#include "slope/primitives.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-typedef struct _slope_scene slope_scene_t;
-
-slope_scene_t* slope_scene_create();
+__SLOPE_BEGIN_DECLS
 
 /**
- * Drestroys scene
- * @param scene the scene to be destroyed
  */
-void slope_scene_destroy (slope_scene_t *scene);
+slope_public slope_scene_t* slope_scene_create();
 
 /**
- * Draw the contents of scenes to the surface targeted by cr
- * @param scene the scene to be drawn
- * @param cr the cairo context to draw the scene
- * @param area the target rectangle int surface coordinates
  */
-void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
-                       slope_rect_t *area);
+slope_public slope_list_t*
+slope_scene_get_metrics_list (slope_scene_t *scene);
 
 /**
- * Writes the scene to a png file
- * @param scene the scene to be writen
- * @param file name location for the output file
- * @param width width of the output image
- * @param height height of the output image
  */
-void slope_scene_write_to_png (slope_scene_t *scene,
-                               const char *filename,
-                               int width, int height);
+slope_public void
+slope_scene_add_metrics (slope_scene_t *scene,
+                         slope_metrics_t *metrics);
 
-void slope_scene_set_back_color_name (slope_scene_t *scene,
-                                      slope_color_name_t color);
+/**
+ */
+slope_public void
+slope_scene_destroy (slope_scene_t *scene);
 
-void slope_scene_add_metrics (slope_scene_t *scene,
-                              slope_metrics_t *plot);
+/**
+ */
+slope_public void
+slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
+                  const slope_rect_t *rect);
 
-slope_legend_t* slope_scene_legend (slope_scene_t *scene);
+/**
+ */
+slope_public void
+slope_scene_write_to_png (slope_scene_t *scene,
+                          const char *filename,
+                          int width, int height);
 
-slope_list_t* slope_scene_metrics_list (slope_scene_t *scene);
+/**
+ */
+slope_public void
+slope_scene_set_change_callback (slope_scene_t *scene,
+                                 slope_callback_t callback);
 
-#ifdef __cplusplus
-}
-#endif
+__SLOPE_END_DECLS
 
-#endif /*_SLOPE_SCENE_H_*/
+#endif /*__SLOPE_SCENE_H */

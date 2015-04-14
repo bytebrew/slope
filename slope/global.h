@@ -17,37 +17,29 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_LEGEND_P_H_
-#define _SLOPE_LEGEND_P_H_
+#ifndef __SLOPE_GLOBAL_H
+#define __SLOPE_GLOBAL_H
 
-#include "slope/legend.h"
-#include "slope/scene.h"
-
+/**
+ */
 #ifdef __cplusplus
-extern "C" {
+# define __SLOPE_BEGIN_DECLS  extern "C" {
+# define __SLOPE_END_DECLS    }
+#else
+# define __SLOPE_BEGIN_DECLS
+# define __SLOPE_END_DECLS
 #endif
 
-struct _slope_legend
-{
-    slope_scene_t *scene;
-    slope_rect_t rect;
-    slope_color_t stroke_color;
-    slope_color_t fill_color;
-    int visible;
-    int nlines;
-};
-
-
-slope_legend_t* _slope_legend_create(slope_scene_t *metrics);
-
-void _slope_legend_guess_geometry (slope_legend_t *legend,
-                                   cairo_t *cr);
-
-void _slope_legend_draw (slope_legend_t *legend,
-                         cairo_t *cr);
-
-#ifdef __cplusplus
-}
+/**
+ */
+#if defined (_MSC_VER)
+# if defined (SLOPE_BUILD)
+#  define slope_public __declspec(dllexport)
+# else
+#  define slope_public __declspec(dllimport)
+# endif
+#else
+#  define slope_public
 #endif
 
-#endif /*_SLOPE_LEGEND_P_H_*/
+#endif /*__SLOPE_GLOBAL_H */

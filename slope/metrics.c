@@ -18,6 +18,9 @@
  */
 
 #include "slope/metrics_p.h"
+#include "slope/data_p.h"
+#include "slope/list.h"
+#include <cairo.h>
 #include <stdlib.h>
 
 
@@ -26,46 +29,30 @@ void slope_metrics_destroy (slope_metrics_t *metrics)
     if (metrics == NULL) {
         return;
     }
-    if (metrics->_cleanup_fn) {
-        (*metrics->_cleanup_fn)(metrics);
+    if (metrics->klass->destroy_fn) {
+        (*metrics->klass->destroy_fn)(metrics);
     }
+    slope_list_destroy(metrics->data_list);
     free(metrics);
-    metrics = NULL;
 }
 
 
-void slope_metrics_add_data (slope_metrics_t *metrics,
-                             slope_data_t *data)
-{
-    metrics->data = slope_list_append(metrics->data, data);
-    slope_metrics_update(metrics);
-}
-
-
-slope_list_t* slope_metrics_data_list (slope_metrics_t *metrics)
+int slope_metrics_get_visible(slope_metrics_t *metrics)
 {
     if (metrics == NULL) {
-        return NULL;
-    }
-    return metrics->data;
-}
-
-
-int slope_metrics_visible  (slope_metrics_t *metrics)
-{
-    if (metrics == NULL) {
-        return 0;
+        return SLOPE_FALSE;
     }
     return metrics->visible;
 }
 
 
-void _slope_metrics_draw (slope_metrics_t *metrics,
-                          cairo_t *cr, slope_rect_t *area)
+void slope_metrics_set_visible (slope_metrics_t *metrics,
+                                int visible)
 {
-    if (metrics->visible) {
-        (*metrics->_draw_fn)(metrics, cr, area);
+    if (metrics == NULL) {
+        return;
     }
+    metrics->visible = visible;
 }
 
 
@@ -74,19 +61,47 @@ void slope_metrics_update (slope_metrics_t *metrics)
     if (metrics == NULL) {
         return;
     }
-    if (metrics->_update_fn) {
-        (*metrics->_update_fn)(metrics);
+    if (metrics->klass->update_fn) {
+        (*metrics->klass->update_fn)(metrics);
     }
 }
 
 
-void _slope_metrics_position_legend (slope_metrics_t *metrics,
-                                     slope_legend_t *legend)
+void __slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+                           const slope_rect_t *rect)
 {
-    if (metrics->_position_legend_fn) {
-        (*metrics->_position_legend_fn)(metrics,legend);
-    }
+    (*metrics->klass->draw_fn)(metrics, cr, rect);
 }
 
 
-/* slope/metrics.c */
+void slope_metrics_add_data (slope_metrics_t *metrics,
+                             slope_data_t *data)
+{
+    if (metrics == NULL || data == NULL) {
+        return;
+    }
+    data->metrics = metrics;
+    metrics->data_list = slope_list_append(
+        metrics->data_list, data);
+    slope_metrics_update(metrics);
+}
+
+
+slope_list_t* slope_metrics_get_data_list (slope_metrics_t *metrics)
+{
+    if (metrics == NULL) {
+        return NULL;
+    }
+    return metrics->data_list;
+}
+
+
+slope_scene_t* slope_metrics_get_scene (slope_metrics_t *metrics)
+{
+    if (metrics == NULL) {
+        return NULL;
+    }
+    return metrics->scene;
+}
+
+/* slope/metrics.h */

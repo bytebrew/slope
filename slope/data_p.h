@@ -17,37 +17,45 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_DATA_P_H_
-#define _SLOPE_DATA_P_H_
+#ifndef __SLOPE_DATA_P_H
+#define __SLOPE_DATA_P_H
 
-#include "slope/primitives.h"
 #include "slope/data.h"
-#include "slope/metrics.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__SLOPE_BEGIN_DECLS
 
-struct _slope_data
+/**
+ */
+typedef struct _slope_data_class slope_data_class_t;
+
+/**
+ */
+struct _slope_data_class
 {
-    int visible;
-    int has_thumb;
-    char *name;
-    
-    void (*_cleanup_fn) (slope_data_t*);
-    void (*_draw_fn) (slope_data_t*, cairo_t*, slope_metrics_t*);
-    void (*_draw_thumb_fn) (slope_data_t*, cairo_t*, slope_point_t*);
+    void (*destroy_fn) (slope_data_t*);
+
+    void (*draw_fn) (slope_data_t*, cairo_t*,
+                     const slope_metrics_t*);
 };
 
+/**
+ */
+struct _slope_data
+{
+    slope_data_class_t *klass;
+    slope_metrics_t *metrics;
+    slope_callback_t data_change_callback;
+    slope_callback_t appearence_change_callback;
+    char *name;
+    int visible;
+    int has_thumb;
+};
 
-void _slope_data_draw (slope_data_t *data, cairo_t *cr,
-                       slope_metrics_t *metrics);
+/**
+ */
+void __slope_data_draw (slope_data_t *data, cairo_t *cr,
+                        const slope_metrics_t *metrics);
 
-void _slope_data_draw_thumb (slope_data_t *data, cairo_t *cr,
-                             slope_point_t *point);
+__SLOPE_END_DECLS
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif /*_SLOPE_XYMETRICS_P_H_*/
+#endif /*__SLOPE_DATA_P_H */

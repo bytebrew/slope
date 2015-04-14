@@ -17,26 +17,46 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_PRIMITIVES_H_
-#define _SLOPE_PRIMITIVES_H_
+#ifndef __SLOPE_PRIMITIVES_H
+#define __SLOPE_PRIMITIVES_H
 
+#include "slope/global.h"
 #include <cairo.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__SLOPE_BEGIN_DECLS
 
 #define SLOPE_FALSE 0
 #define SLOPE_TRUE  1
 
-typedef struct
+
+/**
+ */
+typedef void (*slope_callback_t) (void*);
+
+/**
+ */
+typedef struct _slope_scene slope_scene_t;
+
+/**
+ */
+typedef struct _slope_metrics slope_metrics_t;
+
+/**
+ */
+typedef struct _slope_data slope_data_t;
+
+/**
+ */
+typedef struct _slope_point
 {
     double x;
     double y;
 }
 slope_point_t;
 
-typedef struct
+/**
+ */
+typedef struct _slope_rect
 {
     double x;
     double y;
@@ -45,7 +65,9 @@ typedef struct
 }
 slope_rect_t;
 
-typedef enum
+/**
+ */
+typedef enum _slope_color_name
 {
     SLOPE_BLACK,
     SLOPE_WHITE,
@@ -55,7 +77,9 @@ typedef enum
 }
 slope_color_name_t;
 
-typedef struct
+/**
+ */
+typedef struct _slope_color
 {
     double red;
     double green;
@@ -66,32 +90,35 @@ slope_color_t;
 
 /**
  * Sets the coordinates of a rectangle
- * @param rect the target rectangle
- * @param x the x coordinate of the top left corner
- * @param y the y coordinate of the top left corner
- * @param width the width of rectangle
- * @param height the height of the rectangle
  */
-void slope_rect_set (slope_rect_t *rect, double x,
-                     double y, double w, double h);
+slope_public void
+slope_rect_set (slope_rect_t *rect, double x,
+                double y, double w, double h);
 
 /**
  */
-void slope_color_set (slope_color_t *color, double r,
-                      double g, double b, double a);
+slope_public void
+slope_color_set (slope_color_t *color, double r,
+                 double g, double b, double a);
 
 /**
  */
-void slope_color_set_name (slope_color_t *color,
-                           slope_color_name_t name);
+slope_public void
+slope_color_set_name (slope_color_t *color,
+                      slope_color_name_t name);
 
-void slope_cairo_set_color(cairo_t *cr, slope_color_t *color);
+/**
+ */
+slope_public void
+slope_cairo_set_color(cairo_t *cr,
+                      const slope_color_t *color);
 
-void slope_cairo_rectangle(cairo_t *cr, slope_rect_t *rect);
+/**
+ */
+slope_public void
+slope_cairo_rectangle(cairo_t *cr,
+                      const slope_rect_t *rect);
 
+__SLOPE_END_DECLS
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif /*_SLOPE_PRIMITIVES_H_*/
+#endif /*__SLOPE_PRIMITIVES_H */

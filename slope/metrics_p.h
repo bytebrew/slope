@@ -17,36 +17,45 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_METRICS_P_H_
-#define _SLOPE_METRICS_P_H_
+#ifndef __SLOPE_METRICS_P_H
+#define __SLOPE_METRICS_P_H
 
-#include "slope/primitives.h"
 #include "slope/metrics.h"
-#include "slope/legend.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__SLOPE_BEGIN_DECLS
 
-struct _slope_metrics
+/**
+ */
+typedef struct _slope_metrics_class slope_metrics_class_t;
+
+/**
+ */
+struct _slope_metrics_class
 {
-    slope_list_t *data;
-    int visible;
-
-    void (*_cleanup_fn) (slope_metrics_t*);
-    void (*_update_fn) (slope_metrics_t*);
-    void (*_draw_fn) (slope_metrics_t*, cairo_t*, slope_rect_t*);
-    void (*_position_legend_fn) (slope_metrics_t*, slope_legend_t*);
+    void (*destroy_fn) (slope_metrics_t*);
+    void (*update_fn) (slope_metrics_t*);
+    void (*draw_fn) (slope_metrics_t*, cairo_t*, const slope_rect_t*);
 };
 
-void _slope_metrics_draw (slope_metrics_t *metrics,
-                          cairo_t *cr, slope_rect_t *area);
+/**
+ */
+struct _slope_metrics
+{
+    slope_metrics_class_t *klass;
+    slope_scene_t *scene;
+    int visible;
+    slope_list_t *data_list;
+};
 
-void _slope_metrics_position_legend (slope_metrics_t *metrics,
-                                     slope_legend_t *legend);
+/**
+ */
+slope_metrics_class_t* __slope_metrics_get_class();
 
-#ifdef __cplusplus
-}
-#endif
+/**
+ */
+void __slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+                           const slope_rect_t *rect);
 
-#endif /*_SLOPE_METRICS_P_H_*/
+__SLOPE_END_DECLS
+
+#endif /*__SLOPE_METRICS_P_H */

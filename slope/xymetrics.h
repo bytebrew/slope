@@ -17,39 +17,42 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_XYMETRICS_H_
-#define _SLOPE_XYMETRICS_H_
+#ifndef __SLOPE_XYMETRICS_H
+#define __SLOPE_XYMETRICS_H
 
 #include "slope/metrics.h"
-#include "slope/xyframe.h"
+#include "slope/xyaxis.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__SLOPE_BEGIN_DECLS
 
-slope_metrics_t* slope_xymetrics_create();
+/**
+ */
+slope_public slope_metrics_t* slope_xymetrics_create();
 
-slope_frame_t* slope_xymetrics_get_frame (slope_metrics_t *metrics);
+/**
+ */
+slope_public double
+slope_xymetrics_map_x (const slope_metrics_t *metrics, double x);
 
-double slope_xymetrics_map_x (slope_metrics_t *metrics, double x);
+/**
+ */
+slope_public double
+slope_xymetrics_map_y (const slope_metrics_t *metrics, double y);
 
-double slope_xymetrics_map_y (slope_metrics_t *metrics, double y);
+/**
+ */
+slope_public slope_data_t*
+slope_xymetrics_get_axis (slope_metrics_t *metrics,
+                          slope_xyaxis_type_t type);
 
-void slope_xymetrics_set_x_range (slope_metrics_t *metrics,
-                                  double xi, double xf);
+slope_public void
+slope_xymetrics_set_x_boundary (slope_metrics_t *metrics,
+                                double low, double hi);
 
-void slope_xymetrics_set_y_range (slope_metrics_t *metrics,
-                                  double yi, double yf);
+slope_public void
+slope_xymetrics_set_y_boundary (slope_metrics_t *metrics,
+                                double low, double hi);
 
-void slope_xymetrics_set_x_bounds (slope_metrics_t *metrics,
-                                   double xi, double xf);
+__SLOPE_END_DECLS
 
-void slope_xymetrics_set_y_bounds (slope_metrics_t *metrics,
-                                   double yi, double yf);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /*_SLOPE_XYMETRICS_H_*/
-
+#endif /*__SLOPE_XYMETRICS_H */

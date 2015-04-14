@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 FIND_PACKAGE(PkgConfig REQUIRED)
 PKG_CHECK_MODULES(CAIRO "cairo")
-PKG_CHECK_MODULES(GTK "gtk+-3.0")
+PKG_CHECK_MODULES(GTK "gtk+-2.0")
 
 INCLUDE_DIRECTORIES(
     ${CAIRO_INCLUDE_DIRS}
@@ -12,30 +12,27 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(SLOPE_HDRS
-    slope/list.h
+    slope/global.h
     slope/primitives.h
+    slope/list.h
     slope/scene.h
     slope/metrics.h
     slope/data.h
-    slope/frame.h
     slope/xymetrics.h
     slope/xydata.h
-    slope/xyframe.h
-    slope/legend.h
+    slope/xyaxis.h
     slope/slope.h
 )
 
 SET(SLOPE_SRCS
-    slope/list.c
     slope/primitives.c
+    slope/list.c
     slope/scene.c
     slope/metrics.c
     slope/data.c
-    slope/frame.c
     slope/xymetrics.c
     slope/xydata.c
-    slope/xyframe.c
-    slope/legend.c
+    slope/xyaxis.c
 )
 
 ADD_LIBRARY(slope SHARED ${SLOPE_SRCS})

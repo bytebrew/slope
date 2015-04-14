@@ -17,51 +17,55 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLOPE_XYMETRICS_P_H_
-#define _SLOPE_XYMETRICS_P_H_
+#ifndef __SLOPE_XYMETRICS_P_H
+#define __SLOPE_XYMETRICS_P_H
 
-#include "slope/primitives.h"
 #include "slope/xymetrics.h"
 #include "slope/metrics_p.h"
-#include "slope/xyframe_p.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__SLOPE_BEGIN_DECLS
 
+/**
+ */
 typedef struct _slope_xymetrics slope_xymetrics_t;
 
+/**
+ */
 struct _slope_xymetrics
 {
-    struct _slope_metrics parent;
-    
-    slope_frame_t *frame;
-    
+    slope_metrics_t parent;
+    /* axis list */
+    slope_list_t *axis_list;
+    /* boundary between data image and scene frontier */
     double x_low_bound, x_up_bound;
     double y_low_bound, y_up_bound;
-    
+    /* data space geometry attributes */
     double xmin, xmax;
     double ymin, ymax;
     double width, height;
-    
+    /* scene geometry attributes */
     double xmin_scene, xmax_scene;
     double ymin_scene, ymax_scene;
     double width_scene, height_scene;
 };
 
+/**
+ */
+slope_metrics_class_t* __slope_xymetrics_get_class();
 
-void _slope_xymetrics_cleanup (slope_metrics_t *metrics);
+/**
+ */
+void __slope_xymetrics_destroy (slope_metrics_t *metrics);
 
-void _slope_xymetrics_update (slope_metrics_t *metrics);
+/**
+ */
+void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+                             const slope_rect_t *rect);
 
-void _slope_xymetrics_draw (slope_metrics_t *metrics,
-                            cairo_t *cr, slope_rect_t *area);
+/**
+ */
+void __slope_xymetrics_update (slope_metrics_t *metrics);
 
-void _slope_xymetrics_position_legend (slope_metrics_t *metrics,
-                                       slope_legend_t *legend);
+__SLOPE_END_DECLS
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif /*_SLOPE_XYMETRICS_P_H_*/
+#endif /*__SLOPE_XYMETRICS_P_H */
