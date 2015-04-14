@@ -20,6 +20,7 @@
 #include "slope/data_p.h"
 #include "slope/metrics.h"
 #include <stdlib.h>
+#include <string.h>
 
 
 void slope_data_destroy (slope_data_t *data)
@@ -56,6 +57,27 @@ void slope_data_set_visible (slope_data_t *data,
     if (data->appearence_change_callback) {
         (*data->appearence_change_callback)(data);
     }
+}
+
+
+const char* slope_data_get_name (slope_data_t *data)
+{
+    if (data == NULL) {
+        return NULL;
+    }
+    return data->name;
+}
+
+
+void slope_data_set_name (slope_data_t *data, const char *name)
+{
+    if (data == NULL) {
+        return;
+    }
+    if (data->name) {
+        free(data->name);
+    }
+    data->name = strdup(name);
 }
 
 

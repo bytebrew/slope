@@ -38,18 +38,30 @@ int main(int argc, char *argv[])
     slope_data_t *sin_data =
         slope_xydata_create_simple(
             x, y1, N, "Sine",
-            SLOPE_BLUE, SLOPE_CIRCLES);
+            SLOPE_BLUE, SLOPE_PLUSSES);
 
     slope_data_t *cos_data =
         slope_xydata_create_simple(
             x, y2, N, "Cossine",
-            SLOPE_RED, SLOPE_TRIANGLES);
+            SLOPE_RED, SLOPE_LINE);
 
     /* put the data objectsin a metrics and the metrics in a scene */
     slope_metrics_t *metrics = slope_xymetrics_create();
     slope_metrics_add_data(metrics, sin_data);
     slope_metrics_add_data(metrics, cos_data);
-
+    
+    /* set axis labels */
+    slope_data_t *axis;
+    axis = slope_xymetrics_get_axis(metrics, SLOPE_XYAXIS_TOP);
+    slope_data_set_name(axis, "Trigonometric functions");
+    axis = slope_xymetrics_get_axis(metrics, SLOPE_XYAXIS_BOTTOM);
+    slope_data_set_name(axis, "Phase");
+    axis = slope_xymetrics_get_axis(metrics, SLOPE_XYAXIS_LEFT);
+    slope_data_set_name(axis, "Amplitude");
+    axis = slope_xymetrics_get_axis(metrics, SLOPE_XYAXIS_RIGHT);
+    slope_data_set_name(axis, ""); /* no label */
+    
+    /* create the where everything will be drawn */
     slope_scene_t *scene = slope_scene_create();
     slope_scene_add_metrics(scene, metrics);
 

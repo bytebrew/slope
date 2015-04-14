@@ -22,9 +22,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define SYMBRAD 2.0
-#define SYMBRADSQR 4.0
-#define THREESYMBRADSQR 36.0
+#define SYMBRAD 3.0
+#define SYMBRADSQR 9.0
+#define TWOSYMBRADSQR 36.0
 
 
 slope_data_class_t* __slope_xydata_get_class()
@@ -45,8 +45,8 @@ slope_data_class_t* __slope_xydata_get_class()
 void __slope_xydata_init (slope_data_t *parent)
 {
     slope_xydata_t *self = (slope_xydata_t*) parent;
-    self->antialias = SLOPE_TRUE;
-    self->line_width = 1.5;
+    self->antialias = SLOPE_FALSE;
+    self->line_width = 1.0;
     self->fill_symbol = SLOPE_TRUE;
     self->rescalable = SLOPE_TRUE;
     parent->name = NULL;
@@ -227,7 +227,7 @@ void __slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
 
-        if (distsqr >= THREESYMBRADSQR) {
+        if (distsqr >= TWOSYMBRADSQR) {
             cairo_move_to(cr, x2+SYMBRAD, y2);
             cairo_arc(cr, x2, y2, SYMBRAD, 0.0, 6.283185);
             if (self->fill_symbol) cairo_fill(cr);
@@ -265,7 +265,7 @@ void __slope_xydata_draw_triangles (slope_data_t *data, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
 
-        if (distsqr >= THREESYMBRADSQR) {
+        if (distsqr >= TWOSYMBRADSQR) {
             cairo_move_to(cr, x2-SYMBRAD, y2+SYMBRAD);
             cairo_line_to(cr, x2+SYMBRAD, y2+SYMBRAD);
             cairo_line_to(cr, x2, y2-SYMBRAD);
@@ -301,7 +301,6 @@ void __slope_xydata_draw_plusses (slope_data_t *data, cairo_t *cr,
     cairo_line_to(cr, x1+SYMBRAD, y1);
     cairo_move_to(cr, x1, y1-SYMBRAD);
     cairo_line_to(cr, x1, y1+SYMBRAD);
-    
     int k;
     for (k=1; k<n; k++) {
         double x2 = slope_xymetrics_map_x(metrics, vx[k]);
@@ -311,7 +310,7 @@ void __slope_xydata_draw_plusses (slope_data_t *data, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
         
-        if (distsqr >= THREESYMBRADSQR) {
+        if (distsqr >= TWOSYMBRADSQR) {
             cairo_move_to(cr, x1-SYMBRAD, y1);
             cairo_line_to(cr, x1+SYMBRAD, y1);
             cairo_move_to(cr, x1, y1-SYMBRAD);

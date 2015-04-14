@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 
 slope_data_class_t* __slope_xyaxis_get_class()
@@ -218,7 +219,8 @@ void __slope_xyaxis_draw_left (slope_data_t *data, cairo_t *cr,
     double y = xymetr->ymax_scene;
     double coord = xymetr->ymin;
     char label[32];
-
+    double max_txt_wid = 0.0;
+    
     cairo_move_to(cr, x, y);
     cairo_line_to(cr, x, y-axis->length);
 
@@ -229,6 +231,7 @@ void __slope_xyaxis_draw_left (slope_data_t *data, cairo_t *cr,
             sprintf(label, "%2.2lf", coord);
             cairo_text_extents_t txt_ext;
             cairo_text_extents(cr, label, &txt_ext);
+            if (txt_ext.width > max_txt_wid) max_txt_wid = txt_ext.width;
             cairo_line_to(cr, x+8.0, y);
             cairo_move_to(
                 cr, x-txt_ext.width-txt_ext.height, y+0.5*txt_ext.height);
@@ -240,6 +243,16 @@ void __slope_xyaxis_draw_left (slope_data_t *data, cairo_t *cr,
         coord += axis->divlen;
         y = slope_xymetrics_map_y(metrics, coord);
     }
+    cairo_save(cr);
+    cairo_rotate(cr, -M_PI/2.0);
+    sprintf(label, "%2.2lf", data->name);
+    cairo_text_extents_t txt_ext;
+    cairo_text_extents(cr, data->name, &txt_ext);
+    x = - xymetr->ymin_scene - (xymetr->height_scene + txt_ext.width)/2.0;
+    y = xymetr->xmin_scene - max_txt_wid - 2.0*txt_ext.height;
+    cairo_move_to(cr, x, y);
+    cairo_show_text(cr, data->name);
+    cairo_restore(cr);
     cairo_stroke(cr);
 }
 
@@ -254,6 +267,7 @@ void __slope_xyaxis_draw_right (slope_data_t *data, cairo_t *cr,
     double y = xymetr->ymax_scene;
     double coord = xymetr->ymin;
     char label[32];
+    double max_txt_wid = 0.0;
 
     cairo_move_to(cr, x, y);
     cairo_line_to(cr, x, y-axis->length);
@@ -265,6 +279,7 @@ void __slope_xyaxis_draw_right (slope_data_t *data, cairo_t *cr,
             sprintf(label, "%2.2lf", coord);
             cairo_text_extents_t txt_ext;
             cairo_text_extents(cr, label, &txt_ext);
+            if (txt_ext.width > max_txt_wid) max_txt_wid = txt_ext.width;
             cairo_line_to(cr, x-8.0, y);
             cairo_move_to(cr, x+txt_ext.height, y+0.5*txt_ext.height);
             cairo_show_text(cr, label);
@@ -275,6 +290,16 @@ void __slope_xyaxis_draw_right (slope_data_t *data, cairo_t *cr,
         coord += axis->divlen;
         y = slope_xymetrics_map_y(metrics, coord);
     }
+    cairo_save(cr);
+    cairo_rotate(cr, -M_PI/2.0);
+    sprintf(label, "%2.2lf", data->name);
+    cairo_text_extents_t txt_ext;
+    cairo_text_extents(cr, data->name, &txt_ext);
+    x = - xymetr->ymin_scene - (xymetr->height_scene + txt_ext.width)/2.0;
+    y = xymetr->xmax_scene + max_txt_wid + 2.6*txt_ext.height;
+    cairo_move_to(cr, x, y);
+    cairo_show_text(cr, data->name);
+    cairo_restore(cr);
     cairo_stroke(cr);
 }
 

@@ -50,8 +50,8 @@ slope_metrics_t* slope_xymetrics_create()
     metrics->data_list = NULL;
     metrics->scene = NULL;
 
-    self->x_low_bound = self->x_up_bound = 60.0;
-    self->y_low_bound = self->y_up_bound = 40.0;
+    self->x_low_bound = self->x_up_bound = 80.0;
+    self->y_low_bound = self->y_up_bound = 45.0;
 
     self->axis_list = NULL;
     slope_data_t *axis = slope_xyaxis_create(

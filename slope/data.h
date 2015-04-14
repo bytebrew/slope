@@ -53,6 +53,16 @@ slope_data_set_visible (slope_data_t *data, int visible);
 
 /**
  */
+slope_public const char*
+slope_data_get_name (slope_data_t *data);
+
+/**
+ */
+slope_public void
+slope_data_set_name (slope_data_t *data, const char *name);
+
+/**
+ */
 slope_public slope_metrics_t*
 slope_data_get_metrics (slope_data_t *data);
 
