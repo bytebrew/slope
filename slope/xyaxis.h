@@ -28,10 +28,10 @@ __SLOPE_BEGIN_DECLS
  */
 typedef enum _slope_xyaxis_type
 {
-    SLOPE_XYAXIS_TOP,
-    SLOPE_XYAXIS_BOTTOM,
-    SLOPE_XYAXIS_LEFT,
-    SLOPE_XYAXIS_RIGHT
+    SLOPE_XYAXIS_TOP     = 0,
+    SLOPE_XYAXIS_BOTTOM  = 1,
+    SLOPE_XYAXIS_LEFT    = 2,
+    SLOPE_XYAXIS_RIGHT   = 3
 }
 slope_xyaxis_type_t;
 

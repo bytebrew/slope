@@ -55,16 +55,16 @@ slope_metrics_t* slope_xymetrics_create()
 
     self->axis_list = NULL;
     slope_data_t *axis = slope_xyaxis_create(
-        metrics, SLOPE_XYAXIS_TOP, "TopAxis");
+        metrics, SLOPE_XYAXIS_TOP, "");
     self->axis_list = slope_list_append(self->axis_list, axis);
     axis = slope_xyaxis_create(
-        metrics, SLOPE_XYAXIS_BOTTOM, "BottomAxis");
+        metrics, SLOPE_XYAXIS_BOTTOM, "X");
     self->axis_list = slope_list_append(self->axis_list, axis);
     axis = slope_xyaxis_create(
-        metrics, SLOPE_XYAXIS_LEFT, "LeftAxis");
+        metrics, SLOPE_XYAXIS_LEFT, "Y");
     self->axis_list = slope_list_append(self->axis_list, axis);
     axis = slope_xyaxis_create(
-        metrics, SLOPE_XYAXIS_RIGHT, "RightAxis");
+        metrics, SLOPE_XYAXIS_RIGHT, "");
     self->axis_list = slope_list_append(self->axis_list, axis);
 
     slope_metrics_update(metrics);

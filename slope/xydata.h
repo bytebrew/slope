@@ -61,6 +61,11 @@ slope_xydata_update_data (slope_data_t *data,
                           const double *vx, const double *vy,
                           const int n);
 
+/**
+ */
+slope_public void
+slope_xydata_set_antialias (slope_data_t *data, int on);
+
 __SLOPE_END_DECLS
 
 #endif /*__SLOPE_XYDATA_H */

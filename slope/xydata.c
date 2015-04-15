@@ -45,7 +45,7 @@ slope_data_class_t* __slope_xydata_get_class()
 void __slope_xydata_init (slope_data_t *parent)
 {
     slope_xydata_t *self = (slope_xydata_t*) parent;
-    self->antialias = SLOPE_FALSE;
+    self->antialias = SLOPE_TRUE;
     self->line_width = 1.0;
     self->fill_symbol = SLOPE_TRUE;
     self->rescalable = SLOPE_TRUE;
@@ -332,4 +332,16 @@ void __slope_xydata_check_ranges (slope_data_t *data)
     }
 }
 
+
+void slope_xydata_set_antialias (slope_data_t *data, int on)
+{
+    if (data == NULL) {
+        return;
+    }
+    slope_xydata_t *self = (slope_xydata_t*) data;
+    self->antialias = on;
+    slope_data_notify_appearence_change(data);
+}
+
 /* slope/xydata.c */
+
