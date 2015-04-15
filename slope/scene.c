@@ -71,8 +71,10 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
 {
     cairo_stroke(cr);
     cairo_save(cr);
-    cairo_select_font_face(
-        cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+    /* use an easy font */
+    cairo_select_font_face(cr, "Sans",
+                           CAIRO_FONT_SLANT_NORMAL,
+                           CAIRO_FONT_WEIGHT_NORMAL);
     cairo_set_font_size(cr, 11);
     slope_cairo_rectangle(cr, rect);
     cairo_clip(cr);
