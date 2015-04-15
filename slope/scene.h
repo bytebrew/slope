@@ -64,6 +64,18 @@ slope_public void
 slope_scene_set_change_callback (slope_scene_t *scene,
                                  slope_callback_t callback);
 
+/**
+ */
+slope_public void
+slope_scene_notify_appearence_change (slope_scene_t *scene,
+                                      slope_data_t *data);
+
+/**
+ */
+slope_public void
+slope_scene_notify_data_change (slope_scene_t *scene,
+                                slope_data_t *data);
+
 __SLOPE_END_DECLS
 
 #endif /*__SLOPE_SCENE_H */

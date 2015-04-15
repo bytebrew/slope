@@ -44,8 +44,6 @@ struct _slope_data
 {
     slope_data_class_t *klass;
     slope_metrics_t *metrics;
-    slope_callback_t data_change_callback;
-    slope_callback_t appearence_change_callback;
     char *name;
     int visible;
     int has_thumb;

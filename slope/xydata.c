@@ -53,8 +53,6 @@ void __slope_xydata_init (slope_data_t *parent)
     parent->visible = SLOPE_TRUE;
     parent->has_thumb = SLOPE_TRUE;
     parent->metrics = NULL;
-    parent->data_change_callback = NULL;
-    parent->appearence_change_callback = NULL;
     parent->klass = __slope_xydata_get_class();
 }
 
@@ -100,9 +98,7 @@ void slope_xydata_set (slope_data_t *data,
     slope_color_set_name(&self->color, color);
     self->scatter = scatter;
     __slope_xydata_check_ranges(data);
-    if (data->data_change_callback) {
-        (*data->data_change_callback)(data);
-    }
+    slope_data_notify_data_change(data);
 }
 
 
@@ -115,9 +111,7 @@ void slope_xydata_set_data (slope_data_t *data,
     self->vy = vy;
     self->n = n;
     __slope_xydata_check_ranges(data);
-    if (data->data_change_callback) {
-        (*data->data_change_callback)(data);
-    }
+    slope_data_notify_data_change(data);
 }
 
 
@@ -129,9 +123,7 @@ void slope_xydata_update_data (slope_data_t *data,
     self->vx = vx;
     self->vy = vy;
     self->n = n;
-    if (data->appearence_change_callback) {
-        (*data->appearence_change_callback)(data);
-    }
+    slope_data_notify_appearence_change(data);
 }
 
 

@@ -53,8 +53,6 @@ slope_data_t* slope_xyaxis_create (slope_metrics_t *metrics,
     parent->visible = SLOPE_TRUE;
     parent->has_thumb = SLOPE_FALSE;
     parent->metrics = metrics;
-    parent->data_change_callback = NULL;
-    parent->appearence_change_callback = NULL;
     parent->klass = __slope_xyaxis_get_class();
 
     return parent;

@@ -19,6 +19,7 @@
 
 #include "slope/scene_p.h"
 #include "slope/metrics_p.h"
+#include "slope/data.h"
 #include "slope/list.h"
 #include <cairo.h>
 #include <stdlib.h>
@@ -120,6 +121,33 @@ void slope_scene_set_change_callback (slope_scene_t *scene,
         return;
     }
     scene->change_callback = callback;
+}
+
+
+void slope_scene_notify_appearence_change (slope_scene_t *scene,
+                                           slope_data_t *data)
+{
+    (void) data;
+    if (scene == NULL) {
+        return;
+    }
+    if (scene->change_callback) {
+        (*scene->change_callback)(scene);
+    }
+}
+
+
+void slope_scene_notify_data_change (slope_scene_t *scene,
+                                     slope_data_t *data)
+{
+    if (scene == NULL) {
+        return;
+    }
+    slope_metrics_t *metrics = slope_data_get_metrics(data);
+    slope_metrics_update(metrics);
+    if (scene->change_callback) {
+        (*scene->change_callback)(scene);
+    }
 }
 
 /* slope/scene.h */

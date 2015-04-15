@@ -71,6 +71,16 @@ slope_data_get_metrics (slope_data_t *data);
 slope_public slope_scene_t*
 slope_data_get_scene (slope_data_t *data);
 
+/**
+ */
+slope_public void
+slope_data_notify_appearence_change (slope_data_t *data);
+
+/**
+ */
+slope_public void
+slope_data_notify_data_change (slope_data_t *data);
+
 __SLOPE_END_DECLS
 
 #endif /*__SLOPE_DATA_H */

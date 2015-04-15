@@ -19,6 +19,7 @@
 
 #include "slope/data_p.h"
 #include "slope/metrics.h"
+#include "slope/scene.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -54,9 +55,7 @@ void slope_data_set_visible (slope_data_t *data,
         return;
     }
     data->visible = visible;
-    if (data->appearence_change_callback) {
-        (*data->appearence_change_callback)(data);
-    }
+    slope_data_notify_appearence_change(data);
 }
 
 
@@ -78,6 +77,7 @@ void slope_data_set_name (slope_data_t *data, const char *name)
         free(data->name);
     }
     data->name = strdup(name);
+    slope_data_notify_appearence_change(data);
 }
 
 
@@ -103,6 +103,20 @@ slope_scene_t* slope_data_get_scene (slope_data_t *data)
         return NULL;
     }
     return slope_metrics_get_scene(data->metrics);
+}
+
+
+void slope_data_notify_appearence_change (slope_data_t *data)
+{
+    slope_scene_t *scene = slope_data_get_scene(data);
+    slope_scene_notify_appearence_change(scene, data);
+}
+
+
+void slope_data_notify_data_change (slope_data_t *data)
+{
+    slope_scene_t *scene = slope_data_get_scene(data);
+    slope_scene_notify_data_change(scene, data);
 }
 
 /* slope/data.c */
