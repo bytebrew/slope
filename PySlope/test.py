@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import simple_charts as sc
 import data
 
