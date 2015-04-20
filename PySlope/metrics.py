@@ -1,4 +1,0 @@
-
-class Metrics(object):
-    pass
-

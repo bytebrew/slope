@@ -17,5 +17,3 @@ top level source repository.
 Slope's basic usage is: create a **slope_scene_t**, add one or more **slope_metrics_t**
 to it and add some **slope_data_t** to the metrics, then use function **slope_scene_draw()**
 to stroke the resulting chart via a **cairo_t**.
-
-Contributions to slope are welcome, propose your's to elvismtt@gmail.com
