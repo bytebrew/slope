@@ -152,7 +152,7 @@ void __slope_xyaxis_draw_top (slope_data_t *data, cairo_t *cr,
         coord += axis->divlen;
         x = slope_xymetrics_map_x(metrics, coord);
     }
-    sprintf(label, "%s", data->name);
+    sprintf(label, "%2.2lf", data->name);
     cairo_text_extents_t txt_ext;
     cairo_text_extents(cr, data->name, &txt_ext);
     x = xymetr->xmin_scene + (xymetr->width_scene - txt_ext.width)/2.0;
@@ -195,7 +195,7 @@ void __slope_xyaxis_draw_bottom (slope_data_t *data, cairo_t *cr,
         coord += axis->divlen;
         x = slope_xymetrics_map_x(metrics, coord);
     }
-    sprintf(label, "%s", data->name);
+    sprintf(label, "%2.2lf", data->name);
     cairo_text_extents_t txt_ext;
     cairo_text_extents(cr, data->name, &txt_ext);
     x = xymetr->xmin_scene + (xymetr->width_scene - txt_ext.width)/2.0;
@@ -243,7 +243,7 @@ void __slope_xyaxis_draw_left (slope_data_t *data, cairo_t *cr,
     }
     cairo_save(cr);
     cairo_rotate(cr, -M_PI/2.0);
-    sprintf(label, "%s", data->name);
+    sprintf(label, "%2.2lf", data->name);
     cairo_text_extents_t txt_ext;
     cairo_text_extents(cr, data->name, &txt_ext);
     x = - xymetr->ymin_scene - (xymetr->height_scene + txt_ext.width)/2.0;
@@ -290,7 +290,7 @@ void __slope_xyaxis_draw_right (slope_data_t *data, cairo_t *cr,
     }
     cairo_save(cr);
     cairo_rotate(cr, -M_PI/2.0);
-    sprintf(label, "%s", data->name);
+    sprintf(label, "%2.2lf", data->name);
     cairo_text_extents_t txt_ext;
     cairo_text_extents(cr, data->name, &txt_ext);
     x = - xymetr->ymin_scene - (xymetr->height_scene + txt_ext.width)/2.0;
