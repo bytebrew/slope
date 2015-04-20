@@ -7,18 +7,16 @@
 
 
 static gboolean on_draw(GtkWidget *widget,
-                        GdkEvent *event,
+                        cairo_t *cr,
                         gpointer data)
 {
     slope_rect_t rect;
     rect.x = 0.0;
     rect.y = 0.0;
-    rect.width = (double) widget->allocation.width;
-    rect.height = (double) widget->allocation.height;
-    cairo_t *cr = gdk_cairo_create(widget->window);
+    rect.width = (double) gtk_widget_get_allocated_width(widget);
+    rect.height = (double) gtk_widget_get_allocated_height(widget);
     slope_scene_t *scene = (slope_scene_t*) data;
     slope_scene_draw(scene, cr, &rect);
-    cairo_destroy(cr);
     return TRUE;
 }
 
@@ -75,7 +73,7 @@ int main(int argc, char *argv[])
     gtk_container_add(GTK_CONTAINER(window), drawing_area);
     g_signal_connect(G_OBJECT(window), "delete-event",
                      G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(G_OBJECT(drawing_area), "expose-event",
+    g_signal_connect(G_OBJECT(drawing_area), "draw",
                      G_CALLBACK(on_draw), scene);
     gtk_widget_show_all(window);
     gtk_main();

@@ -282,6 +282,7 @@ void __slope_xydata_draw_plusses (slope_data_t *data, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
     slope_xydata_t *self = (slope_xydata_t*) data;
+    cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
     
     const double *vx = self->vx;
     const double *vy = self->vy;
