@@ -27,4 +27,24 @@
 #include "slope/xydata.h"
 #include "slope/xyaxis.h"
 
+
+/*
+ * the functions bellow are convenient shortcuts to create commom
+ * figures and plots
+ */
+
+slope_public slope_scene_t*
+slope_chart_create (const char *title,
+                    const char *xlabel,
+                    const char *label);
+
+slope_public void
+slope_chart_destroy (slope_scene_t *scene);
+
+slope_public void
+slope_chart_add_plot (slope_scene_t *chart,
+                      const double *x, const double *y, int n,
+                      const char *title, const char *fmt);
+
 #endif /*__SLOPE_H */
+

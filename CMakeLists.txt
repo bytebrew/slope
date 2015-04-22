@@ -33,6 +33,7 @@ SET(SLOPE_SRCS
     slope/xymetrics.c
     slope/xydata.c
     slope/xyaxis.c
+    slope/slope.c
 )
 
 ADD_LIBRARY(slope SHARED ${SLOPE_SRCS})
