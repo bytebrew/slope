@@ -34,6 +34,8 @@ slope_public slope_data_t*
 slope_xydata_create_simple (const double *vx, const double *vy,
                             const int n,
                             const char *name,
+                            slope_color_name_t color,
+                            slope_scatter_t scatter,
                             const char *fmt);
 
 /**

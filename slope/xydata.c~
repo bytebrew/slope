@@ -69,12 +69,13 @@ slope_data_t* slope_xydata_create()
 slope_data_t* slope_xydata_create_simple (const double *vx, const double *vy,
                                           const int n,
                                           const char *name,
-                                          const char *fmt)
+                                          slope_color_name_t color,
+                                          slope_scatter_t scatter)
 {
     slope_xydata_t *self = malloc(sizeof(slope_xydata_t));
     slope_data_t *parent = (slope_data_t*) self;
     __slope_xydata_init(parent);
-    slope_xydata_set(parent, vx, vy, n, name, fmt);
+    slope_xydata_set(parent, vx, vy, n, name, color, scatter);
     return parent;
 }
 
@@ -83,7 +84,8 @@ void slope_xydata_set (slope_data_t *data,
                        const double *vx, const double *vy,
                        const int n,
                        const char *name,
-                       const char *fmt)
+                       slope_color_name_t color,
+                       slope_scatter_t scatter)
 {
     slope_xydata_t *self = (slope_xydata_t*) data;
     self->vx = vx;
@@ -93,8 +95,8 @@ void slope_xydata_set (slope_data_t *data,
         free(data->name);
     }
     data->name = strdup(name);
-    slope_color_set_name(&self->color, __slope_data_parse_color(fmt));
-    self->scatter = __slope_data_parse_scatter(fmt);
+    slope_color_set_name(&self->color, color);
+    self->scatter = scatter;
     __slope_xydata_check_ranges(data);
     slope_data_notify_data_change(data);
 }

@@ -56,11 +56,11 @@ void __slope_data_draw (slope_data_t *data, cairo_t *cr,
 
 /**
  */
-int __slope_data_parse_color (const char *fmt);
+int __data_parse_color (const char *fmt);
 
 /**
  */
-int __slope_data_parse_scatter (const char *fmt);
+int __data_parse_symbol (const char *fmt);
 
 __SLOPE_END_DECLS
 

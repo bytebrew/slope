@@ -120,7 +120,7 @@ void slope_data_notify_data_change (slope_data_t *data)
 }
 
 
-int __slope_data_parse_color (const char *fmt)
+int __data_parse_color (const char *fmt)
 {
     while (*fmt) {
         if (*fmt == 'r') return SLOPE_RED;
@@ -132,7 +132,7 @@ int __slope_data_parse_color (const char *fmt)
 }
 
 
-int __slope_data_parse_scatter (const char *fmt)
+int __data_parse_symbol (const char *fmt)
 {
     while (*fmt) {
         if (*fmt == '-') return SLOPE_LINE;
