@@ -21,6 +21,7 @@ SET(SLOPE_HDRS
     slope/xymetrics.h
     slope/xydata.h
     slope/xyaxis.h
+    slope/legend.h
     slope/slope.h
 )
 
@@ -33,6 +34,7 @@ SET(SLOPE_SRCS
     slope/xymetrics.c
     slope/xydata.c
     slope/xyaxis.c
+    slope/legend.c
     slope/slope.c
 )
 
