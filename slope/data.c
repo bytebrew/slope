@@ -123,12 +123,13 @@ void slope_data_notify_data_change (slope_data_t *data)
 int __slope_data_parse_color (const char *fmt)
 {
     while (*fmt) {
+        if (*fmt == 'b') return SLOPE_BLACK;
         if (*fmt == 'r') return SLOPE_RED;
         if (*fmt == 'g') return SLOPE_GREEN;
-        if (*fmt == 'b') return SLOPE_BLUE;
+        if (*fmt == 'l') return SLOPE_BLUE;
         ++fmt;
     }
-    return SLOPE_BLUE;
+    return SLOPE_BLACK;
 }
 
 
@@ -136,7 +137,7 @@ int __slope_data_parse_scatter (const char *fmt)
 {
     while (*fmt) {
         if (*fmt == '-') return SLOPE_LINE;
-        if (*fmt == 'o') return SLOPE_CIRCLES;
+        if (*fmt == '*') return SLOPE_CIRCLES;
         if (*fmt == '+') return SLOPE_PLUSSES;
         ++fmt;
     }

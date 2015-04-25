@@ -92,3 +92,4 @@ void slope_cairo_rectangle(cairo_t *cr,
 }
 
 /* slope/primitives.c */
+
