@@ -45,13 +45,29 @@ slope_public slope_data_t*
 slope_xymetrics_get_axis (slope_metrics_t *metrics,
                           slope_xyaxis_type_t type);
 
+/**
+ */
 slope_public void
 slope_xymetrics_set_x_boundary (slope_metrics_t *metrics,
                                 double low, double hi);
 
+/**
+ */
 slope_public void
 slope_xymetrics_set_y_boundary (slope_metrics_t *metrics,
                                 double low, double hi);
+
+/**
+ */
+slope_public void
+slope_xymetrics_set_x_range (slope_metrics_t *metrics,
+                             double xi, double xf);
+
+/**
+ */
+slope_public void
+slope_xymetrics_set_y_range (slope_metrics_t *metrics,
+                             double yi, double yf);
 
 __SLOPE_END_DECLS
 

@@ -124,6 +124,7 @@ int __slope_data_parse_color (const char *fmt)
 {
     while (*fmt) {
         if (*fmt == 'b') return SLOPE_BLACK;
+        if (*fmt == 'w') return SLOPE_WHITE;
         if (*fmt == 'r') return SLOPE_RED;
         if (*fmt == 'g') return SLOPE_GREEN;
         if (*fmt == 'l') return SLOPE_BLUE;

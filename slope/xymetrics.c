@@ -242,4 +242,30 @@ slope_xymetrics_set_y_boundary (slope_metrics_t *metrics,
     self->y_up_bound = hi;
 }
 
+
+void slope_xymetrics_set_x_range (slope_metrics_t *metrics,
+                                  double xi, double xf)
+{
+    if (metrics == NULL) {
+        return;
+    }
+    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
+    self->xmin = xi;
+    self->xmax = xf;
+    self->width = self->xmax - self->xmin;
+}
+
+
+void slope_xymetrics_set_y_range (slope_metrics_t *metrics,
+                                  double yi, double yf)
+{
+    if (metrics == NULL) {
+        return;
+    }
+    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
+    self->ymin = yi;
+    self->ymax = yf;
+    self->height = self->ymax - self->ymin;
+}
+
 /* slope/xymetrics.h */

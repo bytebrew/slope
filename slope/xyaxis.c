@@ -156,7 +156,7 @@ void __slope_xyaxis_draw_top (slope_data_t *data, cairo_t *cr,
     cairo_text_extents_t txt_ext;
     cairo_text_extents(cr, data->name, &txt_ext);
     x = xymetr->xmin_scene + (xymetr->width_scene - txt_ext.width)/2.0;
-    y = y - 2.6*txt_ext.height;
+    y = y - 3.0*txt_ext.height;
     cairo_move_to(cr, x, y);
     cairo_show_text(cr, data->name);
     
@@ -199,7 +199,7 @@ void __slope_xyaxis_draw_bottom (slope_data_t *data, cairo_t *cr,
     cairo_text_extents_t txt_ext;
     cairo_text_extents(cr, data->name, &txt_ext);
     x = xymetr->xmin_scene + (xymetr->width_scene - txt_ext.width)/2.0;
-    y = y + 4.3*txt_ext.height;
+    y = y + 3.2*txt_ext.height;
     cairo_move_to(cr, x, y);
     cairo_show_text(cr, data->name);
     
