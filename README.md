@@ -12,7 +12,7 @@ and polishing. Some accessor methods to objects properties are also absent. But 
 what we already have: The following chart is the output of the test.c program in de
 top level source repository.
 
-![](figure.svg)
+![](figure.png)
 
 Slope's basic usage is: create a **slope_scene_t**, add one or more **slope_metrics_t**
 to it and add some **slope_data_t** to the metrics, then use function **slope_scene_draw()**
