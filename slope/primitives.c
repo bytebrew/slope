@@ -71,6 +71,47 @@ void slope_color_set_name (slope_color_t *color,
             color->green = 0.0;
             color->blue = 1.0;
             break;
+        case SLOPE_YELLOW:
+            color->red = 1.0;
+            color->green = 1.0;
+            color->blue = 0.0;
+            break;
+        case SLOPE_MAROON:
+            color->red = 0.5;
+            color->green = 0.0;
+            color->blue = 0.0;
+            break;
+        case SLOPE_GREY:
+            color->red = 0.5;
+            color->green = 0.5;
+            color->blue = 0.5;
+            break;
+        case SLOPE_PURPLE:
+            color->red = 0.5;
+            color->green = 0.0;
+            color->blue = 0.5;
+            break;
+        case SLOPE_OLIVE:
+            color->red = 0.5;
+            color->green = 0.5;
+            color->blue = 0.0;
+            break;
+        case SLOPE_TEAL:
+            color->red = 0.0;
+            color->green = 0.5;
+            color->blue = 0.5;
+            break;
+        case SLOPE_ORANGE:
+            color->red = 1.0;
+            color->green = 0.65;
+            color->blue = 0.0;
+            break;
+        default:
+            color->red = 0.0;
+            color->green = 0.0;
+            color->blue = 0.0;
+            break;
+
     }
 }
 
@@ -79,7 +120,7 @@ void slope_cairo_set_color(cairo_t *cr,
                            const slope_color_t *color)
 {
     cairo_set_source_rgba(
-        cr, color->red, color->green, 
+        cr, color->red, color->green,
         color->blue, color->alpha);
 }
 

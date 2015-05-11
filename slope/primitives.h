@@ -69,11 +69,19 @@ slope_rect_t;
  */
 typedef enum _slope_color_name
 {
-    SLOPE_BLACK    = 0,
-    SLOPE_WHITE    = 1,
-    SLOPE_RED      = 2,
-    SLOPE_GREEN    = 3,
-    SLOPE_BLUE     = 4
+    SLOPE_WHITE             = 0,
+    SLOPE_BLACK             = 1,
+    SLOPE_RED               = 2,
+    SLOPE_GREEN             = 3,
+    SLOPE_BLUE              = 4,
+    SLOPE_MAROON            = 5,
+    SLOPE_PURPLE            = 6,
+    SLOPE_YELLOW            = 7,
+    SLOPE_GREY              = 8,
+    SLOPE_OLIVE             = 9,
+    SLOPE_ORANGE            = 10,
+    SLOPE_TEAL              = 11,
+    SLOPE_LAST_COLOR        = 12
 }
 slope_color_name_t;
 

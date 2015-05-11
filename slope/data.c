@@ -122,12 +122,27 @@ void slope_data_notify_data_change (slope_data_t *data)
 
 int __slope_data_parse_color (const char *fmt)
 {
+    static int undefine_color=SLOPE_WHITE;
     while (*fmt) {
         if (*fmt == 'b') return SLOPE_BLACK;
         if (*fmt == 'w') return SLOPE_WHITE;
         if (*fmt == 'r') return SLOPE_RED;
         if (*fmt == 'g') return SLOPE_GREEN;
         if (*fmt == 'l') return SLOPE_BLUE;
+        if (*fmt == 'y') return SLOPE_YELLOW;
+        if (*fmt == 'm') return SLOPE_MAROON;
+        if (*fmt == 'e') return SLOPE_GREY;
+        if (*fmt == 'p') return SLOPE_PURPLE;
+        if (*fmt == 'i') return SLOPE_OLIVE;
+        if (*fmt == 't') return SLOPE_TEAL;
+        if (*fmt == 'o') return SLOPE_ORANGE;
+        if (*fmt == 'u')
+        {
+            ++undefine_color;
+            if (undefine_color == SLOPE_LAST_COLOR)
+                undefine_color=SLOPE_RED;
+            return undefine_color;
+        }
         ++fmt;
     }
     return SLOPE_BLACK;
