@@ -34,6 +34,7 @@ slope_public slope_data_t*
 slope_xydata_create_simple (const double *vx, const double *vy,
                             const int n,
                             const char *name,
+                            int line,
                             const char *fmt);
 
 /**
@@ -43,6 +44,7 @@ slope_xydata_set (slope_data_t *data,
                   const double *vx, const double *vy,
                   const int n,
                   const char *name,
+                  int line,
                   const char *fmt);
 
 /**

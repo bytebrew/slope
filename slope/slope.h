@@ -44,7 +44,7 @@ slope_chart_destroy (slope_scene_t *scene);
 slope_public void
 slope_chart_add_plot (slope_scene_t *chart,
                       const double *x, const double *y, int n,
-                      const char *title, const char *fmt);
+                      const char *title, int line, const char *fmt);
 
 #endif /*__SLOPE_H */
 

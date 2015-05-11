@@ -152,12 +152,13 @@ int __slope_data_parse_color (const char *fmt)
 int __slope_data_parse_scatter (const char *fmt)
 {
     while (*fmt) {
-        if (*fmt == '-') return SLOPE_LINE;
-        if (*fmt == '*') return SLOPE_CIRCLES;
+        if (*fmt == '-') return SLOPE_SQUARES;
+        if (*fmt == '.') return SLOPE_CIRCLES;
         if (*fmt == '+') return SLOPE_PLUSSES;
+        if (*fmt == '/') return SLOPE_TRIANGLES;
         ++fmt;
     }
-    return SLOPE_LINE;
+    return -1;
 }
 
 /* slope/data.c */

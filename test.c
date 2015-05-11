@@ -26,11 +26,11 @@ int main(int argc, char *argv[])
     }
 
     /* this is all you need to know to crete a chart */
-    slope_scene_t *chart = slope_chart_create("Sine + random noise", "phase", "amplitude");
-    slope_chart_add_plot(chart, x, y1, N, "sine", "u-");
-    slope_chart_add_plot(chart, x, y2, N, "noise sin", "u+");
-    slope_chart_add_plot(chart, x, y3, N, "cos", "u-");
-    slope_chart_add_plot(chart, x, y4, N, "noise cos", "u+");
+    slope_scene_t *chart = slope_chart_create("Sin + cos + random noise", "phase", "amplitude");
+    slope_chart_add_plot(chart, x, y1, N, "sin",SLOPE_TRUE, "u-");
+    slope_chart_add_plot(chart, x, y2, N, "noise sin",SLOPE_FALSE, "u+");
+    slope_chart_add_plot(chart, x, y3, N, "cos",SLOPE_TRUE, "u.");
+    slope_chart_add_plot(chart, x, y4, N, "noise cos",SLOPE_FALSE, "u/");
 
     #if SLOPE_GTK
     /* put the scene in a gtk widget */
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     gtk_main();
     #else
     /* save the chart in a png figure */
-    slope_scene_write_to_png(chart, "figure.png", 500, 350);
+    slope_scene_write_to_png(chart, "figure.png", 800, 500);
     #endif /* SLOPE_GTK */
 
     slope_chart_destroy(chart);
