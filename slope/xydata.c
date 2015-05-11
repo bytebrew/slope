@@ -69,12 +69,13 @@ slope_data_t* slope_xydata_create()
 slope_data_t* slope_xydata_create_simple (const double *vx, const double *vy,
                                           const int n,
                                           const char *name,
+                                          int line,
                                           const char *fmt)
 {
     slope_xydata_t *self = malloc(sizeof(slope_xydata_t));
     slope_data_t *parent = (slope_data_t*) self;
     __slope_xydata_init(parent);
-    slope_xydata_set(parent, vx, vy, n, name, fmt);
+    slope_xydata_set(parent, vx, vy, n, name,line, fmt);
     return parent;
 }
 
@@ -83,6 +84,7 @@ void slope_xydata_set (slope_data_t *data,
                        const double *vx, const double *vy,
                        const int n,
                        const char *name,
+                       int line,
                        const char *fmt)
 {
     slope_xydata_t *self = (slope_xydata_t*) data;
@@ -95,6 +97,7 @@ void slope_xydata_set (slope_data_t *data,
     data->name = strdup(name);
     slope_color_set_name(&self->color, __slope_data_parse_color(fmt));
     self->scatter = __slope_data_parse_scatter(fmt);
+    self->line = line;
     __slope_xydata_check_ranges(data);
     slope_data_notify_data_change(data);
 }
@@ -142,9 +145,6 @@ void __slope_xydata_draw (slope_data_t *data, cairo_t *cr,
     cairo_set_line_width(cr,self->line_width);
 
     switch (self->scatter) {
-        case SLOPE_LINE:
-            __slope_xydata_draw_line(data, cr, metrics);
-            break;
         case SLOPE_CIRCLES:
             __slope_xydata_draw_circles(data, cr, metrics);
             break;
@@ -158,6 +158,8 @@ void __slope_xydata_draw (slope_data_t *data, cairo_t *cr,
             __slope_xydata_draw_plusses(data, cr, metrics);
             break;
     }
+    if (self->line)
+        __slope_xydata_draw_line(data, cr, metrics);
 }
 
 
@@ -272,7 +274,7 @@ void __slope_xydata_draw_triangles (slope_data_t *data, cairo_t *cr,
 void __slope_xydata_draw_squares (slope_data_t *data, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
-    
+
 }
 
 
@@ -281,11 +283,11 @@ void __slope_xydata_draw_plusses (slope_data_t *data, cairo_t *cr,
 {
     slope_xydata_t *self = (slope_xydata_t*) data;
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
-    
+
     const double *vx = self->vx;
     const double *vy = self->vy;
     const int n = self->n;
-    
+
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
     cairo_move_to(cr, x1-SYMBRAD, y1);
@@ -296,11 +298,11 @@ void __slope_xydata_draw_plusses (slope_data_t *data, cairo_t *cr,
     for (k=1; k<n; k++) {
         double x2 = slope_xymetrics_map_x(metrics, vx[k]);
         double y2 = slope_xymetrics_map_y(metrics, vy[k]);
-        
+
         double dx = x2 - x1;
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
-        
+
         if (distsqr >= TWOSYMBRADSQR) {
             cairo_move_to(cr, x1-SYMBRAD, y1);
             cairo_line_to(cr, x1+SYMBRAD, y1);

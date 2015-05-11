@@ -46,10 +46,10 @@ void slope_chart_destroy (slope_scene_t *scene)
 
 void slope_chart_add_plot (slope_scene_t *chart,
                            const double *x, const double *y, int n,
-                           const char *title, const char *fmt)
+                           const char *title, int line,const char *fmt)
 {
     slope_data_t *plot =
-        slope_xydata_create_simple(x, y, n, title, fmt);
+        slope_xydata_create_simple(x, y, n, title, line, fmt);
     slope_iterator_t *iter =
         slope_list_first(slope_scene_get_metrics_list(chart));
     slope_metrics_t *metrics =

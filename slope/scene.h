@@ -53,10 +53,27 @@ slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
 
 /**
  */
-slope_public void
+slope_public int
 slope_scene_write_to_png (slope_scene_t *scene,
                           const char *filename,
                           int width, int height);
+
+
+/**
+ */
+slope_public int
+slope_scene_write_to_svg(slope_scene_t *scene,
+                          const char *filename,
+                          int width, int height);
+
+
+/**
+ */
+slope_public int
+slope_scene_write_to_pdf(slope_scene_t *scene,
+                          const char *filename,
+                          slope_paper_size_t paper_size,
+                          slope_paper_orientation_t orientation);
 
 /**
  */

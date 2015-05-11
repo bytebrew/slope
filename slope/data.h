@@ -28,11 +28,10 @@ __SLOPE_BEGIN_DECLS
  */
 typedef enum
 {
-    SLOPE_LINE       = 0,
-    SLOPE_CIRCLES    = 1,
-    SLOPE_TRIANGLES  = 2,
-    SLOPE_SQUARES    = 3,
-    SLOPE_PLUSSES    = 4
+    SLOPE_CIRCLES    = 0,
+    SLOPE_TRIANGLES  = 1,
+    SLOPE_SQUARES    = 2,
+    SLOPE_PLUSSES    = 3
 }
 slope_scatter_t;
 

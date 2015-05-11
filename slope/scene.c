@@ -22,6 +22,8 @@
 #include "slope/data.h"
 #include "slope/list.h"
 #include <cairo.h>
+#include <cairo-svg.h>
+#include <cairo-pdf.h>
 #include <stdlib.h>
 
 slope_scene_t* slope_scene_create()
@@ -100,19 +102,117 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
 }
 
 
-void slope_scene_write_to_png (slope_scene_t *scene,
+int slope_scene_write_to_png (slope_scene_t *scene,
                                const char *filename,
                                int width, int height)
 {
+    int success = SLOPE_TRUE;
+
     cairo_surface_t *surf = cairo_image_surface_create(
         CAIRO_FORMAT_ARGB32, width, height);
+    cairo_t *cr = cairo_create(surf);
+
+    slope_rect_t rect;
+    slope_rect_set(&rect, 0.0, 0.0, width, height);
+    slope_scene_draw(scene, cr, &rect);
+    if (cairo_surface_write_to_png(surf, filename) != CAIRO_STATUS_SUCCESS)
+        success = SLOPE_FALSE;
+
+    cairo_destroy(cr);
+    cairo_surface_destroy(surf);
+
+    return success;
+}
+
+
+int slope_scene_write_to_svg (slope_scene_t *scene,
+                               const char *filename,
+                               int width, int height)
+{
+    int success = SLOPE_TRUE;
+
+    cairo_surface_t *surf = cairo_svg_surface_create(
+        filename, width, height);
+
+    if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS)
+        success = SLOPE_FALSE;
+
     cairo_t *cr = cairo_create(surf);
     slope_rect_t rect;
     slope_rect_set(&rect, 0.0, 0.0, width, height);
     slope_scene_draw(scene, cr, &rect);
-    cairo_surface_write_to_png(surf, filename);
+
     cairo_destroy(cr);
     cairo_surface_destroy(surf);
+
+    return success;
+}
+
+int slope_scene_write_to_pdf (slope_scene_t *scene,
+                               const char *filename,
+                               slope_paper_size_t paper_size,
+                               slope_paper_orientation_t orientation)
+{
+    int success = SLOPE_TRUE;
+    int width, height;
+
+    switch (paper_size)
+    {
+    case SLOPE_A0:
+        width = 2384;
+        height = 3371;
+        break;
+    case SLOPE_A1:
+        width = 1685;
+        height = 2384;
+        break;
+    case SLOPE_A2:
+        width = 1190;
+        height = 1684;
+        break;
+    case SLOPE_A3:
+        width = 842;
+        height = 1190;
+        break;
+    case SLOPE_A4:
+        width = 595;
+        height = 842;
+        break;
+    case SLOPE_LETTER:
+        width = 612;
+        height = 792;
+        break;
+    case SLOPE_B4:
+        width = 420;
+        height = 595;
+        break;
+    case SLOPE_B5:
+        width = 516;
+        height = 729;
+        break;
+    }
+    if (orientation == SLOPE_LANDSCAPE)
+    {
+        int tmp = width;
+        width = height;
+        height = tmp;
+    }
+
+    cairo_surface_t *surf = cairo_pdf_surface_create(
+        filename, width, height);
+
+    if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS)
+        success = SLOPE_FALSE;
+
+    cairo_t *cr = cairo_create(surf);
+    slope_rect_t rect;
+    slope_rect_set(&rect, 0.0, 0.0, width, height);
+    slope_scene_draw(scene, cr, &rect);
+
+    cairo_destroy(cr);
+    cairo_surface_destroy(surf);
+
+    return success;
 }
 
 
