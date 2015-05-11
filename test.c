@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     gtk_main();
     #else
     /* save the chart in a png figure */
-    slope_scene_write_to_png(chart, "figure.png", 800, 500);
+    slope_scene_write_to_svg(chart, "figure.svg", 800, 500);
     #endif /* SLOPE_GTK */
 
     slope_chart_destroy(chart);

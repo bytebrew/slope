@@ -96,6 +96,32 @@ typedef struct _slope_color
 }
 slope_color_t;
 
+
+/**
+ */
+typedef enum _slope_paper_size
+{
+    SLOPE_A0      = 0,
+    SLOPE_A1      = 1,
+    SLOPE_A2      = 2,
+    SLOPE_A3      = 3,
+    SLOPE_A4      = 4,
+    SLOPE_LETTER  = 5,
+    SLOPE_B4      = 6,
+    SLOPE_B5      = 7
+}
+slope_paper_size_t;
+
+/**
+ */
+typedef enum _slope_paper_orientation
+{
+    SLOPE_PORTRAIT   = 0,
+    SLOPE_LANDSCAPE  = 1
+}
+slope_paper_orientation_t;
+
+
 /**
  * Sets the coordinates of a rectangle
  */
