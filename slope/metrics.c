@@ -18,7 +18,7 @@
  */
 
 #include "slope/metrics_p.h"
-#include "slope/data_p.h"
+#include "slope/item_p.h"
 #include "slope/list.h"
 #include <cairo.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@ void slope_metrics_destroy (slope_metrics_t *metrics)
     if (metrics->klass->destroy_fn) {
         (*metrics->klass->destroy_fn)(metrics);
     }
-    slope_list_destroy(metrics->data_list);
+    slope_list_destroy(metrics->item_list);
     free(metrics);
 }
 
@@ -74,34 +74,34 @@ void __slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
 }
 
 
-void slope_metrics_add_data (slope_metrics_t *metrics,
-                             slope_data_t *data)
+void slope_metrics_add_item (slope_metrics_t *metrics,
+                             slope_item_t *item)
 {
-    if (metrics == NULL || data == NULL) {
+    if (metrics == NULL || item == NULL) {
         return;
     }
-    data->metrics = metrics;
-    metrics->data_list = slope_list_append(
-        metrics->data_list, data);
+    item->metrics = metrics;
+    metrics->item_list = slope_list_append(
+        metrics->item_list, item);
     slope_metrics_update(metrics);
 }
 
 
-slope_list_t* slope_metrics_get_data_list (slope_metrics_t *metrics)
+slope_list_t* slope_metrics_get_item_list (slope_metrics_t *metrics)
 {
     if (metrics == NULL) {
         return NULL;
     }
-    return metrics->data_list;
+    return metrics->item_list;
 }
 
 
-slope_scene_t* slope_metrics_get_scene (slope_metrics_t *metrics)
+slope_figure_t* slope_metrics_get_figure (slope_metrics_t *metrics)
 {
     if (metrics == NULL) {
         return NULL;
     }
-    return metrics->scene;
+    return metrics->figure;
 }
 
 /* slope/metrics.h */

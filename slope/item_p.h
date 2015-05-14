@@ -20,29 +20,29 @@
 #ifndef __SLOPE_DATA_P_H
 #define __SLOPE_DATA_P_H
 
-#include "slope/data.h"
+#include "slope/item.h"
 
 __SLOPE_BEGIN_DECLS
 
 /**
  */
-typedef struct _slope_data_class slope_data_class_t;
+typedef struct _slope_item_class slope_item_class_t;
 
 /**
  */
-struct _slope_data_class
+struct _slope_item_class
 {
-    void (*destroy_fn) (slope_data_t*);
+    void (*destroy_fn) (slope_item_t*);
 
-    void (*draw_fn) (slope_data_t*, cairo_t*,
+    void (*draw_fn) (slope_item_t*, cairo_t*,
                      const slope_metrics_t*);
 };
 
 /**
  */
-struct _slope_data
+struct _slope_item
 {
-    slope_data_class_t *klass;
+    slope_item_class_t *klass;
     slope_metrics_t *metrics;
     char *name;
     int visible;
@@ -51,16 +51,16 @@ struct _slope_data
 
 /**
  */
-void __slope_data_draw (slope_data_t *data, cairo_t *cr,
+void __slope_item_draw (slope_item_t *item, cairo_t *cr,
                         const slope_metrics_t *metrics);
 
 /**
  */
-int __slope_data_parse_color (const char *fmt);
+int __slope_item_parse_color (const char *fmt);
 
 /**
  */
-int __slope_data_parse_scatter (const char *fmt);
+int __slope_item_parse_scatter (const char *fmt);
 
 __SLOPE_END_DECLS
 

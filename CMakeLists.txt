@@ -1,7 +1,7 @@
 PROJECT(slope)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-#SET(SLOPE_USE_GTK3 TRUE)
+SET(SLOPE_USE_GTK3 TRUE)
 
 FIND_PACKAGE(PkgConfig REQUIRED)
 
@@ -27,11 +27,11 @@ SET(SLOPE_HDRS
     slope/global.h
     slope/primitives.h
     slope/list.h
-    slope/scene.h
+    slope/figure.h
     slope/metrics.h
-    slope/data.h
+    slope/item.h
     slope/xymetrics.h
-    slope/xydata.h
+    slope/xyitem.h
     slope/xyaxis.h
     slope/legend.h
     slope/slope.h
@@ -44,11 +44,11 @@ ENDIF()
 SET(SLOPE_SRCS
     slope/primitives.c
     slope/list.c
-    slope/scene.c
+    slope/figure.c
     slope/metrics.c
-    slope/data.c
+    slope/item.c
     slope/xymetrics.c
-    slope/xydata.c
+    slope/xyitem.c
     slope/xyaxis.c
     slope/legend.c
     slope/slope.c
@@ -67,3 +67,4 @@ TARGET_LINK_LIBRARIES(app slope -lm)
 INSTALL(TARGETS slope DESTINATION /usr/lib)
 INSTALL(FILES ${SLOPE_HDRS} DESTINATION /usr/include/slope)
 INSTALL(FILES "${PROJECT_BINARY_DIR}/config.h" DESTINATION /usr/include/slope)
+

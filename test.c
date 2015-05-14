@@ -13,7 +13,7 @@
 
 int main(int argc, char *argv[])
 {
-    /* generate some data */
+    /* generate some item */
     const double step = 2.0*M_PI/N;
     double x[N], y1[N], y2[N];
     int k;
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     }
 
     /* this is all you need to know to crete a chart */
-    slope_scene_t *chart = slope_chart_create("Sine + random noise", "phase", "amplitude");
+    slope_figure_t *chart = slope_chart_create("Sine + random noise", "phase", "amplitude");
     slope_chart_add_plot(chart, x, y1, N, "sine", "r-");
     slope_chart_add_plot(chart, x, y2, N, "noise", "l+");
 
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     gtk_main();
     #else
     /* save the chart in a png figure */
-    slope_scene_write_to_png(chart, "figure.png", 500, 350);
+    slope_figure_write_to_png(chart, "figure.png", 500, 350);
     #endif /* SLOPE_GTK */
     
     slope_chart_destroy(chart);    

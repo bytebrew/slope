@@ -49,18 +49,18 @@ slope_metrics_update (slope_metrics_t *metrics);
 /**
  */
 slope_public void
-slope_metrics_add_data (slope_metrics_t *metrics,
-                        slope_data_t *data);
+slope_metrics_add_item (slope_metrics_t *metrics,
+                        slope_item_t *item);
 
 /**
  */
 slope_public slope_list_t*
-slope_metrics_get_data_list (slope_metrics_t *metrics);
+slope_metrics_get_item_list (slope_metrics_t *metrics);
 
 /**
  */
-slope_public slope_scene_t*
-slope_metrics_get_scene (slope_metrics_t *metrics);
+slope_public slope_figure_t*
+slope_metrics_get_figure (slope_metrics_t *metrics);
 
 __SLOPE_END_DECLS
 

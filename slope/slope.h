@@ -20,11 +20,11 @@
 #ifndef __SLOPE_H
 #define __SLOPE_H
 
-/* for scene object */
-#include "slope/scene.h"
+/* for figure object */
+#include "slope/figure.h"
 /* for xy charts */
 #include "slope/xymetrics.h"
-#include "slope/xydata.h"
+#include "slope/xyitem.h"
 #include "slope/xyaxis.h"
 
 
@@ -33,16 +33,16 @@
  * figures and plots
  */
 
-slope_public slope_scene_t*
+slope_public slope_figure_t*
 slope_chart_create (const char *title,
                     const char *xlabel,
                     const char *label);
 
 slope_public void
-slope_chart_destroy (slope_scene_t *scene);
+slope_chart_destroy (slope_figure_t *figure);
 
 slope_public void
-slope_chart_add_plot (slope_scene_t *chart,
+slope_chart_add_plot (slope_figure_t *chart,
                       const double *x, const double *y, int n,
                       const char *title, const char *fmt);
 

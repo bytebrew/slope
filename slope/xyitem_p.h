@@ -20,16 +20,16 @@
 #ifndef __SLOPE_XYDATA_P_H
 #define __SLOPE_XYDATA_P_H
 
-#include "slope/xydata.h"
-#include "slope/data_p.h"
+#include "slope/xyitem.h"
+#include "slope/item_p.h"
 
 __SLOPE_BEGIN_DECLS
 
-typedef struct _slope_xydata slope_xydata_t;
+typedef struct _slope_xyitem slope_xyitem_t;
 
-struct _slope_xydata
+struct _slope_xyitem
 {
-    slope_data_t    parent;
+    slope_item_t    parent;
     int             rescalable;
     const double   *vx, *vy;
     int             n;
@@ -44,43 +44,43 @@ struct _slope_xydata
 
 /**
  */
-slope_data_class_t* __slope_xydata_get_class();
+slope_item_class_t* __slope_xyitem_get_class();
 
-void __slope_xydata_init (slope_data_t *data);
+void __slope_xyitem_init (slope_item_t *item);
 
 /**
  */
-void __slope_xydata_draw (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
                           const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xydata_draw_line (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
                                const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xydata_draw_triangles (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
                                     const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xydata_draw_squares (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw_squares (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xydata_draw_plusses (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xydata_check_ranges (slope_data_t *data);
+void __slope_xyitem_check_ranges (slope_item_t *item);
 
 __SLOPE_END_DECLS
 

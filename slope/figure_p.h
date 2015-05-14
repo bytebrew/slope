@@ -20,15 +20,16 @@
 #ifndef __SLOPE_SCENE_P_H
 #define __SLOPE_SCENE_P_H
 
-#include "slope/scene.h"
+#include "slope/figure.h"
 
 __SLOPE_BEGIN_DECLS
 
 /**
  */
-struct _slope_scene
+struct _slope_figure
 {
     slope_list_t    *metrics;
+    slope_metrics_t *default_metrics;
     slope_color_t    back_color;
     int              fill_back;
     slope_callback_t change_callback;

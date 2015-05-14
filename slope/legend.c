@@ -18,17 +18,17 @@
  */
 
 #include "slope/legend_p.h"
-#include "slope/scene_p.h"
+#include "slope/figure_p.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
 
 
-slope_data_class_t* __slope_legend_get_class()
+slope_item_class_t* __slope_legend_get_class()
 {
     static int first_call = SLOPE_TRUE;
-    static slope_data_class_t klass;
+    static slope_item_class_t klass;
 
     if (first_call) {
         klass.destroy_fn = NULL;
@@ -40,19 +40,19 @@ slope_data_class_t* __slope_legend_get_class()
 }
 
 
-slope_data_t* slope_legend_create (slope_scene_t *scene)
+slope_item_t* slope_legend_create (slope_figure_t *figure)
 {
     slope_legend_t *legend = malloc(sizeof(slope_legend_t));
-    slope_data_t *parent = (slope_data_t*) legend;
+    slope_item_t *parent = (slope_item_t*) legend;
     
-    legend->scene = scene;
+    legend->figure = figure;
     parent->klass = __slope_legend_get_class();
     
     return parent;
 }
 
 
-void __slope_legend_draw (slope_data_t *legend, cairo_t *cr,
+void __slope_legend_draw (slope_item_t *legend, cairo_t *cr,
                           const slope_metrics_t *metrics)
 {
 

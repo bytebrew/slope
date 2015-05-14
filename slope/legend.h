@@ -20,12 +20,12 @@
 #ifndef __SLOPE_LEGEND_H
 #define __SLOPE_LEGEND_H
 
-#include "slope/data.h"
+#include "slope/item.h"
 
 __SLOPE_BEGIN_DECLS
 
-slope_public slope_data_t*
-slope_legend_create (slope_scene_t *scene);
+slope_public slope_item_t*
+slope_legend_create (slope_figure_t *figure);
 
 __SLOPE_END_DECLS
 

@@ -29,11 +29,11 @@ typedef struct _slope_iterator slope_iterator_t;
 typedef struct _slope_list slope_list_t;
 
 /**
- * Access the data pointed to by iter
- * @return an untyped pointer to the data pointed to by iter
+ * Access the item pointed to by iter
+ * @return an untyped pointer to the item pointed to by iter
  */
 slope_public void*
-slope_iterator_data (slope_iterator_t *iter);
+slope_iterator_item (slope_iterator_t *iter);
 
 /**
  * Moves the iterator to the next position
@@ -52,14 +52,14 @@ slope_iterator_previous (slope_iterator_t **iter);
  * @return the newly allocated list
  */
 slope_public slope_list_t*
-slope_list_append (slope_list_t *list, void *data);
+slope_list_append (slope_list_t *list, void *item);
 
 /**
  * Prepends an element to the begining of the list
  * @return the newly allocated list
  */
 slope_public slope_list_t*
-slope_list_prepend (slope_list_t *list, void *data);
+slope_list_prepend (slope_list_t *list, void *item);
 
 /**
  * Destroys list

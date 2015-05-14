@@ -21,7 +21,7 @@
 #define __SLOPE_LEGEND_P_H
 
 #include "slope/legend.h"
-#include "slope/data_p.h"
+#include "slope/item_p.h"
 
 __SLOPE_BEGIN_DECLS
 
@@ -29,18 +29,18 @@ typedef struct _slope_legend slope_legend_t;
 
 struct _slope_legend
 {
-    slope_data_t parent;
-    slope_scene_t *scene;
+    slope_item_t parent;
+    slope_figure_t *figure;
 };
 
 /**
  */
-slope_data_class_t* __slope_legend_get_class();
+slope_item_class_t* __slope_legend_get_class();
 
 
 /**
  */
-void __slope_legend_draw (slope_data_t *legend, cairo_t *cr,
+void __slope_legend_draw (slope_item_t *legend, cairo_t *cr,
                           const slope_metrics_t *metrics);
 
 

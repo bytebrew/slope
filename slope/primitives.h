@@ -31,11 +31,7 @@ __SLOPE_BEGIN_DECLS
 
 /**
  */
-typedef void (*slope_callback_t) (void*);
-
-/**
- */
-typedef struct _slope_scene slope_scene_t;
+typedef struct _slope_figure slope_figure_t;
 
 /**
  */
@@ -43,7 +39,11 @@ typedef struct _slope_metrics slope_metrics_t;
 
 /**
  */
-typedef struct _slope_data slope_data_t;
+typedef struct _slope_item slope_item_t;
+
+/**
+ */
+typedef void (*slope_callback_t) (slope_figure_t*);
 
 /**
  */

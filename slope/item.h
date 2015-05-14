@@ -39,47 +39,47 @@ slope_scatter_t;
 /**
  */
 slope_public void
-slope_data_destroy (slope_data_t *data);
+slope_item_destroy (slope_item_t *item);
 
 /**
  */
 slope_public int
-slope_data_get_visible (slope_data_t *data);
+slope_item_get_visible (slope_item_t *item);
 
 /**
  */
 slope_public void
-slope_data_set_visible (slope_data_t *data, int visible);
+slope_item_set_visible (slope_item_t *item, int visible);
 
 /**
  */
 slope_public const char*
-slope_data_get_name (slope_data_t *data);
+slope_item_get_name (slope_item_t *item);
 
 /**
  */
 slope_public void
-slope_data_set_name (slope_data_t *data, const char *name);
+slope_item_set_name (slope_item_t *item, const char *name);
 
 /**
  */
 slope_public slope_metrics_t*
-slope_data_get_metrics (slope_data_t *data);
+slope_item_get_metrics (slope_item_t *item);
 
 /**
  */
-slope_public slope_scene_t*
-slope_data_get_scene (slope_data_t *data);
-
-/**
- */
-slope_public void
-slope_data_notify_appearence_change (slope_data_t *data);
+slope_public slope_figure_t*
+slope_item_get_figure (slope_item_t *item);
 
 /**
  */
 slope_public void
-slope_data_notify_data_change (slope_data_t *data);
+slope_item_notify_appearence_change (slope_item_t *item);
+
+/**
+ */
+slope_public void
+slope_item_notify_item_change (slope_item_t *item);
 
 __SLOPE_END_DECLS
 

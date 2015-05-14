@@ -30,7 +30,7 @@ typedef struct _slope_window slope_window_t;
 /**
  */
 slope_public GtkWidget*
-slope_create_window (slope_scene_t *scene,
+slope_create_window (slope_figure_t *figure,
                      const char *title);
 
 __SLOPE_END_DECLS

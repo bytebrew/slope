@@ -17,7 +17,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/xydata_p.h"
+#include "slope/xyitem_p.h"
 #include "slope/xymetrics_p.h"
 #include <stdlib.h>
 #include <string.h>
@@ -27,14 +27,14 @@
 #define TWOSYMBRADSQR 36.0
 
 
-slope_data_class_t* __slope_xydata_get_class()
+slope_item_class_t* __slope_xyitem_get_class()
 {
     static int first_call = SLOPE_TRUE;
-    static slope_data_class_t klass;
+    static slope_item_class_t klass;
 
     if (first_call) {
         klass.destroy_fn = NULL;
-        klass.draw_fn = __slope_xydata_draw;
+        klass.draw_fn = __slope_xyitem_draw;
         first_call = SLOPE_FALSE;
     }
 
@@ -42,9 +42,9 @@ slope_data_class_t* __slope_xydata_get_class()
 }
 
 
-void __slope_xydata_init (slope_data_t *parent)
+void __slope_xyitem_init (slope_item_t *parent)
 {
-    slope_xydata_t *self = (slope_xydata_t*) parent;
+    slope_xyitem_t *self = (slope_xyitem_t*) parent;
     self->antialias = SLOPE_TRUE;
     self->line_width = 1.0;
     self->fill_symbol = SLOPE_TRUE;
@@ -53,82 +53,82 @@ void __slope_xydata_init (slope_data_t *parent)
     parent->visible = SLOPE_TRUE;
     parent->has_thumb = SLOPE_TRUE;
     parent->metrics = NULL;
-    parent->klass = __slope_xydata_get_class();
+    parent->klass = __slope_xyitem_get_class();
 }
 
 
-slope_data_t* slope_xydata_create()
+slope_item_t* slope_xyitem_create()
 {
-    slope_xydata_t *self = malloc(sizeof(slope_xydata_t));
-    slope_data_t *parent = (slope_data_t*) self;
-    __slope_xydata_init(parent);
+    slope_xyitem_t *self = malloc(sizeof(slope_xyitem_t));
+    slope_item_t *parent = (slope_item_t*) self;
+    __slope_xyitem_init(parent);
     return parent;
 }
 
 
-slope_data_t* slope_xydata_create_simple (const double *vx, const double *vy,
+slope_item_t* slope_xyitem_create_simple (const double *vx, const double *vy,
                                           const int n,
                                           const char *name,
                                           const char *fmt)
 {
-    slope_xydata_t *self = malloc(sizeof(slope_xydata_t));
-    slope_data_t *parent = (slope_data_t*) self;
-    __slope_xydata_init(parent);
-    slope_xydata_set(parent, vx, vy, n, name, fmt);
+    slope_xyitem_t *self = malloc(sizeof(slope_xyitem_t));
+    slope_item_t *parent = (slope_item_t*) self;
+    __slope_xyitem_init(parent);
+    slope_xyitem_set(parent, vx, vy, n, name, fmt);
     return parent;
 }
 
 
-void slope_xydata_set (slope_data_t *data,
+void slope_xyitem_set (slope_item_t *item,
                        const double *vx, const double *vy,
                        const int n,
                        const char *name,
                        const char *fmt)
 {
-    slope_xydata_t *self = (slope_xydata_t*) data;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
     self->vx = vx;
     self->vy = vy;
     self->n = n;
-    if (data->name) {
-        free(data->name);
+    if (item->name) {
+        free(item->name);
     }
-    data->name = strdup(name);
-    slope_color_set_name(&self->color, __slope_data_parse_color(fmt));
-    self->scatter = __slope_data_parse_scatter(fmt);
-    __slope_xydata_check_ranges(data);
-    slope_data_notify_data_change(data);
+    item->name = strdup(name);
+    slope_color_set_name(&self->color, __slope_item_parse_color(fmt));
+    self->scatter = __slope_item_parse_scatter(fmt);
+    __slope_xyitem_check_ranges(item);
+    slope_item_notify_item_change(item);
 }
 
 
-void slope_xydata_set_data (slope_data_t *data,
+void slope_xyitem_set_item (slope_item_t *item,
                             const double *vx, const double *vy,
                             const int n)
 {
-    slope_xydata_t *self = (slope_xydata_t*) data;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
     self->vx = vx;
     self->vy = vy;
     self->n = n;
-    __slope_xydata_check_ranges(data);
-    slope_data_notify_data_change(data);
+    __slope_xyitem_check_ranges(item);
+    slope_item_notify_item_change(item);
 }
 
 
-void slope_xydata_update_data (slope_data_t *data,
+void slope_xyitem_update_item (slope_item_t *item,
                                const double *vx, const double *vy,
                                const int n)
 {
-    slope_xydata_t *self = (slope_xydata_t*) data;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
     self->vx = vx;
     self->vy = vy;
     self->n = n;
-    slope_data_notify_appearence_change(data);
+    slope_item_notify_appearence_change(item);
 }
 
 
-void __slope_xydata_draw (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
                           const slope_metrics_t *metrics)
 {
-    slope_xydata_t *self = (slope_xydata_t*) data;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
 
     slope_cairo_set_color(cr, &self->color);
     if (self->antialias) {
@@ -143,28 +143,28 @@ void __slope_xydata_draw (slope_data_t *data, cairo_t *cr,
 
     switch (self->scatter) {
         case SLOPE_LINE:
-            __slope_xydata_draw_line(data, cr, metrics);
+            __slope_xyitem_draw_line(item, cr, metrics);
             break;
         case SLOPE_CIRCLES:
-            __slope_xydata_draw_circles(data, cr, metrics);
+            __slope_xyitem_draw_circles(item, cr, metrics);
             break;
         case SLOPE_TRIANGLES:
-            __slope_xydata_draw_triangles(data, cr, metrics);
+            __slope_xyitem_draw_triangles(item, cr, metrics);
             break;
         case SLOPE_SQUARES:
-            __slope_xydata_draw_squares(data, cr, metrics);
+            __slope_xyitem_draw_squares(item, cr, metrics);
             break;
         case SLOPE_PLUSSES:
-            __slope_xydata_draw_plusses(data, cr, metrics);
+            __slope_xyitem_draw_plusses(item, cr, metrics);
             break;
     }
 }
 
 
-void __slope_xydata_draw_line (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
                                const slope_metrics_t *metrics)
 {
-    slope_xydata_t *self = (slope_xydata_t*) data;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
 
     const double *vx = self->vx;
     const double *vy = self->vy;
@@ -193,10 +193,10 @@ void __slope_xydata_draw_line (slope_data_t *data, cairo_t *cr,
 }
 
 
-void __slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
-    slope_xydata_t *self = (slope_xydata_t*) data;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
 
     const double *vx = self->vx;
     const double *vy = self->vy;
@@ -229,10 +229,10 @@ void __slope_xydata_draw_circles (slope_data_t *data, cairo_t *cr,
 }
 
 
-void __slope_xydata_draw_triangles (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
                                     const slope_metrics_t *metrics)
 {
-    slope_xydata_t *self = (slope_xydata_t*) data;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
 
     const double *vx = self->vx;
     const double *vy = self->vy;
@@ -269,17 +269,17 @@ void __slope_xydata_draw_triangles (slope_data_t *data, cairo_t *cr,
 }
 
 
-void __slope_xydata_draw_squares (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw_squares (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
     
 }
 
 
-void __slope_xydata_draw_plusses (slope_data_t *data, cairo_t *cr,
+void __slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
-    slope_xydata_t *self = (slope_xydata_t*) data;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
     
     const double *vx = self->vx;
@@ -314,9 +314,9 @@ void __slope_xydata_draw_plusses (slope_data_t *data, cairo_t *cr,
 }
 
 
-void __slope_xydata_check_ranges (slope_data_t *data)
+void __slope_xyitem_check_ranges (slope_item_t *item)
 {
-    slope_xydata_t *self = (slope_xydata_t*) data;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
     const double *vx = self->vx;
     const double *vy = self->vy;
     const int n = self->n;
@@ -332,15 +332,15 @@ void __slope_xydata_check_ranges (slope_data_t *data)
 }
 
 
-void slope_xydata_set_antialias (slope_data_t *data, int on)
+void slope_xyitem_set_antialias (slope_item_t *item, int on)
 {
-    if (data == NULL) {
+    if (item == NULL) {
         return;
     }
-    slope_xydata_t *self = (slope_xydata_t*) data;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
     self->antialias = on;
-    slope_data_notify_appearence_change(data);
+    slope_item_notify_appearence_change(item);
 }
 
-/* slope/xydata.c */
+/* slope/xyitem.c */
 

@@ -20,7 +20,7 @@
 #ifndef __SLOPE_XYAXIS_H
 #define __SLOPE_XYAXIS_H
 
-#include "slope/data.h"
+#include "slope/item.h"
 
 __SLOPE_BEGIN_DECLS
 
@@ -37,7 +37,7 @@ slope_xyaxis_type_t;
 
 /**
  */
-slope_public slope_data_t*
+slope_public slope_item_t*
 slope_xyaxis_create (slope_metrics_t *metrics,
                      slope_xyaxis_type_t type,
                      const char *name);
@@ -45,7 +45,7 @@ slope_xyaxis_create (slope_metrics_t *metrics,
 /**
  */
 slope_public slope_xyaxis_type_t
-slope_xyaxis_get_type (slope_data_t *axis);
+slope_xyaxis_get_type (slope_item_t *axis);
 
 __SLOPE_END_DECLS
 
