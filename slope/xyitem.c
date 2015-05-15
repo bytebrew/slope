@@ -69,13 +69,13 @@ slope_item_t* slope_xyitem_create()
 slope_item_t* slope_xyitem_create_simple (const double *vx, const double *vy,
                                           const int n,
                                           const char *name,
-                                          int line,
                                           const char *fmt)
 {
+
     slope_xyitem_t *self = malloc(sizeof(slope_xyitem_t));
     slope_item_t *parent = (slope_item_t*) self;
     __slope_xyitem_init(parent);
-    slope_xyitem_set(parent, vx, vy, n, name,line, fmt);
+    slope_xyitem_set(parent, vx, vy, n, name, fmt);
     return parent;
 }
 
@@ -84,7 +84,6 @@ void slope_xyitem_set (slope_item_t *item,
                        const double *vx, const double *vy,
                        const int n,
                        const char *name,
-                       int line,
                        const char *fmt)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
@@ -97,7 +96,6 @@ void slope_xyitem_set (slope_item_t *item,
     item->name = strdup(name);
     slope_color_set_name(&self->color, __slope_item_parse_color(fmt));
     self->scatter = __slope_item_parse_scatter(fmt);
-    self->line = line;
     __slope_xyitem_check_ranges(item);
     slope_item_notify_item_change(item);
 }
@@ -145,6 +143,9 @@ void __slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
     cairo_set_line_width(cr,self->line_width);
 
     switch (self->scatter) {
+        case SLOPE_LINE:
+            __slope_xyitem_draw_line(item, cr, metrics);
+            break;
         case SLOPE_CIRCLES:
             __slope_xyitem_draw_circles(item, cr, metrics);
             break;
@@ -158,8 +159,6 @@ void __slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
             __slope_xyitem_draw_plusses(item, cr, metrics);
             break;
     }
-    if (self->line)
-        __slope_xyitem_draw_line(item, cr, metrics);
 }
 
 

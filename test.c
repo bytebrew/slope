@@ -25,12 +25,11 @@ int main(int argc, char *argv[])
         y4[k] = y3[k] + 0.2*((double)rand())/RAND_MAX - 0.1;
     }
 
-    /* this is all you need to know to crete a chart */
-    slope_figure_t *chart = slope_chart_create("Sin + cos + random noise", "phase", "amplitude");
-    slope_chart_add_plot(chart, x, y1, N, "sin",SLOPE_TRUE, "u-");
-    slope_chart_add_plot(chart, x, y2, N, "noise sin",SLOPE_FALSE, "u+");
-    slope_chart_add_plot(chart, x, y3, N, "cos",SLOPE_TRUE, "u.");
-    slope_chart_add_plot(chart, x, y4, N, "noise cos",SLOPE_FALSE, "u/");
+    slope_figure_t *chart = slope_chart_create("Sine + random noise", "phase", "amplitude");
+    slope_chart_add_plot(chart, x, y1, N, "sine", "u-");
+    slope_chart_add_plot(chart, x, y2, N, "noise sin", "u+");
+    slope_chart_add_plot(chart, x, y3, N, "cos", "u-");
+    slope_chart_add_plot(chart, x, y4, N, "noise cos", "u+");
 
     #if SLOPE_GTK
     /* put the figure in a gtk widget */

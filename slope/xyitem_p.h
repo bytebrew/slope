@@ -37,7 +37,6 @@ struct _slope_xyitem
     double          ymin, ymax;
     slope_color_t   color;
     slope_scatter_t scatter;
-    int             line;
     int             fill_symbol;
     int             antialias;
     double          line_width;

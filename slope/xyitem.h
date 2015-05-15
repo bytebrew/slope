@@ -34,7 +34,6 @@ slope_public slope_item_t*
 slope_xyitem_create_simple (const double *vx, const double *vy,
                             const int n,
                             const char *name,
-                            int line,
                             const char *fmt);
 
 /**
@@ -44,7 +43,6 @@ slope_xyitem_set (slope_item_t *item,
                   const double *vx, const double *vy,
                   const int n,
                   const char *name,
-                  int line,
                   const char *fmt);
 
 /**
