@@ -17,110 +17,110 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/data_p.h"
+#include "slope/item_p.h"
 #include "slope/metrics.h"
-#include "slope/scene.h"
+#include "slope/figure.h"
 #include <stdlib.h>
 #include <string.h>
 
 
-void slope_data_destroy (slope_data_t *data)
+void slope_item_destroy (slope_item_t *item)
 {
-    if (data == NULL) {
+    if (item == NULL) {
         return;
     }
-    if (data->klass->destroy_fn) {
-        (*data->klass->destroy_fn)(data);
+    if (item->klass->destroy_fn) {
+        (*item->klass->destroy_fn)(item);
     }
-    if (data->name) {
-        free(data->name);
+    if (item->name) {
+        free(item->name);
     }
-    free(data);
+    free(item);
 }
 
 
-int slope_data_get_visible (slope_data_t *data)
+int slope_item_get_visible (slope_item_t *item)
 {
-    if (data == NULL) {
+    if (item == NULL) {
         return SLOPE_FALSE;
     }
-    return data->visible;
+    return item->visible;
 }
 
 
-void slope_data_set_visible (slope_data_t *data,
+void slope_item_set_visible (slope_item_t *item,
                              int visible)
 {
-    if (data == NULL) {
+    if (item == NULL) {
         return;
     }
-    data->visible = visible;
-    slope_data_notify_appearence_change(data);
+    item->visible = visible;
+    slope_item_notify_appearence_change(item);
 }
 
 
-const char* slope_data_get_name (slope_data_t *data)
+const char* slope_item_get_name (slope_item_t *item)
 {
-    if (data == NULL) {
+    if (item == NULL) {
         return NULL;
     }
-    return data->name;
+    return item->name;
 }
 
 
-void slope_data_set_name (slope_data_t *data, const char *name)
+void slope_item_set_name (slope_item_t *item, const char *name)
 {
-    if (data == NULL) {
+    if (item == NULL) {
         return;
     }
-    if (data->name) {
-        free(data->name);
+    if (item->name) {
+        free(item->name);
     }
-    data->name = strdup(name);
-    slope_data_notify_appearence_change(data);
+    item->name = strdup(name);
+    slope_item_notify_appearence_change(item);
 }
 
 
-void __slope_data_draw (slope_data_t *data, cairo_t *cr,
+void __slope_item_draw (slope_item_t *item, cairo_t *cr,
                         const slope_metrics_t *metrics)
 {
-    (*data->klass->draw_fn)(data, cr, metrics);
+    (*item->klass->draw_fn)(item, cr, metrics);
 }
 
 
-slope_metrics_t* slope_data_get_metrics (slope_data_t *data)
+slope_metrics_t* slope_item_get_metrics (slope_item_t *item)
 {
-    if (data == NULL) {
+    if (item == NULL) {
         return NULL;
     }
-    return data->metrics;
+    return item->metrics;
 }
 
 
-slope_scene_t* slope_data_get_scene (slope_data_t *data)
+slope_figure_t* slope_item_get_figure (slope_item_t *item)
 {
-    if (data == NULL) {
+    if (item == NULL) {
         return NULL;
     }
-    return slope_metrics_get_scene(data->metrics);
+    return slope_metrics_get_figure(item->metrics);
 }
 
 
-void slope_data_notify_appearence_change (slope_data_t *data)
+void slope_item_notify_appearence_change (slope_item_t *item)
 {
-    slope_scene_t *scene = slope_data_get_scene(data);
-    slope_scene_notify_appearence_change(scene, data);
+    slope_figure_t *figure = slope_item_get_figure(item);
+    slope_figure_notify_appearence_change(figure, item);
 }
 
 
-void slope_data_notify_data_change (slope_data_t *data)
+void slope_item_notify_item_change (slope_item_t *item)
 {
-    slope_scene_t *scene = slope_data_get_scene(data);
-    slope_scene_notify_data_change(scene, data);
+    slope_figure_t *figure = slope_item_get_figure(item);
+    slope_figure_notify_item_change(figure, item);
 }
 
 
-int __slope_data_parse_color (const char *fmt)
+int __slope_item_parse_color (const char *fmt)
 {
     static int undefine_color=SLOPE_WHITE;
     while (*fmt) {
@@ -149,7 +149,7 @@ int __slope_data_parse_color (const char *fmt)
 }
 
 
-int __slope_data_parse_scatter (const char *fmt)
+int __slope_item_parse_scatter (const char *fmt)
 {
     while (*fmt) {
         if (*fmt == '-') return SLOPE_SQUARES;
@@ -161,5 +161,5 @@ int __slope_data_parse_scatter (const char *fmt)
     return -1;
 }
 
-/* slope/data.c */
+/* slope/item.c */
 

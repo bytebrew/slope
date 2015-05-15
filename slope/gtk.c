@@ -20,10 +20,10 @@
 #include "slope/gtk.h"
 
 
-static gboolean on_draw (GtkWidget *widget, cairo_t *cr, gpointer *data);
+static gboolean on_draw (GtkWidget *widget, cairo_t *cr, gpointer *item);
 
 
-GtkWidget* slope_create_window (slope_scene_t *scene,
+GtkWidget* slope_create_window (slope_figure_t *figure,
                                 const char *title)
 {
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -33,21 +33,21 @@ GtkWidget* slope_create_window (slope_scene_t *scene,
     GtkWidget *drawing_area = gtk_drawing_area_new();
     gtk_container_add(GTK_CONTAINER(window), drawing_area);
     g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(G_OBJECT(drawing_area), "draw", G_CALLBACK(on_draw), scene);
-    
+    g_signal_connect(G_OBJECT(drawing_area), "draw", G_CALLBACK(on_draw), figure);
+
     return window;
 }
 
 
-static gboolean on_draw (GtkWidget *widget, cairo_t *cr, gpointer *data)
+static gboolean on_draw (GtkWidget *widget, cairo_t *cr, gpointer *item)
 {
     slope_rect_t rect;
     rect.x = 0.0;
     rect.y = 0.0;
     rect.width = (double) gtk_widget_get_allocated_width(widget);
     rect.height = (double) gtk_widget_get_allocated_height(widget);
-    slope_scene_t *scene = (slope_scene_t*) data;
-    slope_scene_draw(scene, cr, &rect);
+    slope_figure_t *figure = (slope_figure_t*) item;
+    slope_figure_draw(figure, cr, &rect);
     return TRUE;
 }
 

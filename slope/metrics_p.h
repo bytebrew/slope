@@ -42,9 +42,9 @@ struct _slope_metrics_class
 struct _slope_metrics
 {
     slope_metrics_class_t *klass;
-    slope_scene_t *scene;
+    slope_figure_t *figure;
     int visible;
-    slope_list_t *data_list;
+    slope_list_t *item_list;
 };
 
 /**

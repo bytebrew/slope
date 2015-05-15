@@ -27,11 +27,11 @@ SET(SLOPE_HDRS
     slope/global.h
     slope/primitives.h
     slope/list.h
-    slope/scene.h
+    slope/figure.h
     slope/metrics.h
-    slope/data.h
+    slope/item.h
     slope/xymetrics.h
-    slope/xydata.h
+    slope/xyitem.h
     slope/xyaxis.h
     slope/legend.h
     slope/slope.h
@@ -44,11 +44,11 @@ ENDIF()
 SET(SLOPE_SRCS
     slope/primitives.c
     slope/list.c
-    slope/scene.c
+    slope/figure.c
     slope/metrics.c
-    slope/data.c
+    slope/item.c
     slope/xymetrics.c
-    slope/xydata.c
+    slope/xyitem.c
     slope/xyaxis.c
     slope/legend.c
     slope/slope.c

@@ -27,34 +27,34 @@ __SLOPE_BEGIN_DECLS
 
 /**
  */
-slope_public slope_scene_t* slope_scene_create();
+slope_public slope_figure_t* slope_figure_create();
 
 /**
  */
 slope_public slope_list_t*
-slope_scene_get_metrics_list (slope_scene_t *scene);
+slope_figure_get_metrics_list (slope_figure_t *figure);
 
 /**
  */
 slope_public void
-slope_scene_add_metrics (slope_scene_t *scene,
+slope_figure_add_metrics (slope_figure_t *figure,
                          slope_metrics_t *metrics);
 
 /**
  */
 slope_public void
-slope_scene_destroy (slope_scene_t *scene);
+slope_figure_destroy (slope_figure_t *figure);
 
 /**
  */
 slope_public void
-slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
+slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
                   const slope_rect_t *rect);
 
 /**
  */
 slope_public int
-slope_scene_write_to_png (slope_scene_t *scene,
+slope_figure_write_to_png (slope_figure_t *figure,
                           const char *filename,
                           int width, int height);
 
@@ -62,7 +62,7 @@ slope_scene_write_to_png (slope_scene_t *scene,
 /**
  */
 slope_public int
-slope_scene_write_to_svg(slope_scene_t *scene,
+slope_figure_write_to_svg(slope_figure_t *figure,
                           const char *filename,
                           int width, int height);
 
@@ -70,7 +70,7 @@ slope_scene_write_to_svg(slope_scene_t *scene,
 /**
  */
 slope_public int
-slope_scene_write_to_pdf(slope_scene_t *scene,
+slope_figure_write_to_pdf(slope_figure_t *figure,
                           const char *filename,
                           slope_paper_size_t paper_size,
                           slope_paper_orientation_t orientation);
@@ -78,20 +78,20 @@ slope_scene_write_to_pdf(slope_scene_t *scene,
 /**
  */
 slope_public void
-slope_scene_set_change_callback (slope_scene_t *scene,
+slope_figure_set_change_callback (slope_figure_t *figure,
                                  slope_callback_t callback);
 
 /**
  */
 slope_public void
-slope_scene_notify_appearence_change (slope_scene_t *scene,
-                                      slope_data_t *data);
+slope_figure_notify_appearence_change (slope_figure_t *figure,
+                                      slope_item_t *item);
 
 /**
  */
 slope_public void
-slope_scene_notify_data_change (slope_scene_t *scene,
-                                slope_data_t *data);
+slope_figure_notify_item_change (slope_figure_t *figure,
+                                slope_item_t *item);
 
 __SLOPE_END_DECLS
 

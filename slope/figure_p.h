@@ -17,52 +17,23 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_DATA_P_H
-#define __SLOPE_DATA_P_H
+#ifndef __SLOPE_SCENE_P_H
+#define __SLOPE_SCENE_P_H
 
-#include "slope/data.h"
+#include "slope/figure.h"
 
 __SLOPE_BEGIN_DECLS
 
 /**
  */
-typedef struct _slope_data_class slope_data_class_t;
-
-/**
- */
-struct _slope_data_class
+struct _slope_figure
 {
-    void (*destroy_fn) (slope_data_t*);
-
-    void (*draw_fn) (slope_data_t*, cairo_t*,
-                     const slope_metrics_t*);
+    slope_list_t    *metrics;
+    slope_color_t    back_color;
+    int              fill_back;
+    slope_callback_t change_callback;
 };
-
-/**
- */
-struct _slope_data
-{
-    slope_data_class_t *klass;
-    slope_metrics_t *metrics;
-    char *name;
-    int visible;
-    int has_thumb;
-};
-
-/**
- */
-void __slope_data_draw (slope_data_t *data, cairo_t *cr,
-                        const slope_metrics_t *metrics);
-
-/**
- */
-int __slope_data_parse_color (const char *fmt);
-
-/**
- */
-int __slope_data_parse_scatter (const char *fmt);
 
 __SLOPE_END_DECLS
 
-#endif /*__SLOPE_DATA_P_H */
-
+#endif /*__SLOPE_SCENE_P_H */

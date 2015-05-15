@@ -26,21 +26,21 @@ int main(int argc, char *argv[])
     }
 
     /* this is all you need to know to crete a chart */
-    slope_scene_t *chart = slope_chart_create("Sin + cos + random noise", "phase", "amplitude");
+    slope_figure_t *chart = slope_chart_create("Sin + cos + random noise", "phase", "amplitude");
     slope_chart_add_plot(chart, x, y1, N, "sin",SLOPE_TRUE, "u-");
     slope_chart_add_plot(chart, x, y2, N, "noise sin",SLOPE_FALSE, "u+");
     slope_chart_add_plot(chart, x, y3, N, "cos",SLOPE_TRUE, "u.");
     slope_chart_add_plot(chart, x, y4, N, "noise cos",SLOPE_FALSE, "u/");
 
     #if SLOPE_GTK
-    /* put the scene in a gtk widget */
+    /* put the figure in a gtk widget */
     gtk_init(&argc,&argv);
     GtkWidget *window = slope_create_window(chart, "Data and Model");
     gtk_widget_show_all(window);
     gtk_main();
     #else
     /* save the chart in a png figure */
-    slope_scene_write_to_svg(chart, "figure.svg", 800, 500);
+    slope_figure_write_to_png(chart, "figure.png", 800, 500);
     #endif /* SLOPE_GTK */
 
     slope_chart_destroy(chart);

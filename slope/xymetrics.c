@@ -18,7 +18,7 @@
  */
 
 #include "slope/xymetrics_p.h"
-#include "slope/xydata_p.h"
+#include "slope/xyitem_p.h"
 #include "slope/list.h"
 #include <cairo.h>
 #include <stdlib.h>
@@ -47,14 +47,14 @@ slope_metrics_t* slope_xymetrics_create()
 
     metrics->klass = __slope_xymetrics_get_class();
     metrics->visible = SLOPE_TRUE;
-    metrics->data_list = NULL;
-    metrics->scene = NULL;
+    metrics->item_list = NULL;
+    metrics->figure = NULL;
 
     self->x_low_bound = self->x_up_bound = 80.0;
     self->y_low_bound = self->y_up_bound = 45.0;
 
     self->axis_list = NULL;
-    slope_data_t *axis = slope_xyaxis_create(
+    slope_item_t *axis = slope_xyaxis_create(
         metrics, SLOPE_XYAXIS_TOP, "");
     self->axis_list = slope_list_append(self->axis_list, axis);
     axis = slope_xyaxis_create(
@@ -80,9 +80,9 @@ void __slope_xymetrics_destroy (slope_metrics_t *metrics)
     slope_iterator_t *axis_iter =
     slope_list_first(self->axis_list);
     while (axis_iter) {
-        slope_data_t *axis = (slope_data_t*)
-            slope_iterator_data(axis_iter);
-        slope_data_destroy(axis);
+        slope_item_t *axis = (slope_item_t*)
+            slope_iterator_item(axis_iter);
+        slope_item_destroy(axis);
         slope_iterator_next(&axis_iter);
     }
 }
@@ -92,29 +92,29 @@ void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                              const slope_rect_t *rect)
 {
     slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
-    self->xmin_scene = rect->x + self->x_low_bound;
-    self->ymin_scene = rect->y + self->y_low_bound;
-    self->xmax_scene = rect->x + rect->width - self->x_up_bound;
-    self->ymax_scene = rect->y + rect->height - self->y_up_bound;
-    self->width_scene = self->xmax_scene - self->xmin_scene;
-    self->height_scene = self->ymax_scene - self->ymin_scene;
+    self->xmin_figure = rect->x + self->x_low_bound;
+    self->ymin_figure = rect->y + self->y_low_bound;
+    self->xmax_figure = rect->x + rect->width - self->x_up_bound;
+    self->ymax_figure = rect->y + rect->height - self->y_up_bound;
+    self->width_figure = self->xmax_figure - self->xmin_figure;
+    self->height_figure = self->ymax_figure - self->ymin_figure;
 
     cairo_rectangle(
-        cr, self->xmin_scene, self->ymin_scene,
-        self->width_scene, self->height_scene);
+        cr, self->xmin_figure, self->ymin_figure,
+        self->width_figure, self->height_figure);
     cairo_save(cr);
     cairo_clip(cr);
 
-    /* draw user data */
-    slope_iterator_t *data_iter =
-        slope_list_first(metrics->data_list);
-    while (data_iter) {
-        slope_data_t *data = (slope_data_t*)
-            slope_iterator_data(data_iter);
-        if (slope_data_get_visible(data)) {
-            __slope_data_draw(data, cr, metrics);
+    /* draw user item */
+    slope_iterator_t *item_iter =
+        slope_list_first(metrics->item_list);
+    while (item_iter) {
+        slope_item_t *item = (slope_item_t*)
+            slope_iterator_item(item_iter);
+        if (slope_item_get_visible(item)) {
+            __slope_item_draw(item, cr, metrics);
         }
-        slope_iterator_next(&data_iter);
+        slope_iterator_next(&item_iter);
     }
     cairo_restore(cr);
 
@@ -122,10 +122,10 @@ void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
     slope_iterator_t *axis_iter =
     slope_list_first(self->axis_list);
     while (axis_iter) {
-        slope_data_t *axis = (slope_data_t*)
-            slope_iterator_data(axis_iter);
-        if (slope_data_get_visible(axis)) {
-            __slope_data_draw(axis, cr, metrics);
+        slope_item_t *axis = (slope_item_t*)
+            slope_iterator_item(axis_iter);
+        if (slope_item_get_visible(axis)) {
+            __slope_item_draw(axis, cr, metrics);
         }
         slope_iterator_next(&axis_iter);
     }
@@ -135,7 +135,7 @@ void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
 void __slope_xymetrics_update (slope_metrics_t *metrics)
 {
     slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
-    if (metrics->data_list == NULL) {
+    if (metrics->item_list == NULL) {
         self->xmin = 0.0;
         self->xmax = 1.0;
         self->ymin = 0.0;
@@ -145,30 +145,30 @@ void __slope_xymetrics_update (slope_metrics_t *metrics)
         return;
     }
 
-    slope_iterator_t *iter = slope_list_first(metrics->data_list);
-    slope_xydata_t *data = (slope_xydata_t*) slope_iterator_data(iter);
+    slope_iterator_t *iter = slope_list_first(metrics->item_list);
+    slope_xyitem_t *item = (slope_xyitem_t*) slope_iterator_item(iter);
 
-    while (data->rescalable == SLOPE_FALSE) {
+    while (item->rescalable == SLOPE_FALSE) {
         slope_iterator_next(&iter);
-        data = (slope_xydata_t*) slope_iterator_data(iter);
+        item = (slope_xyitem_t*) slope_iterator_item(iter);
     }
 
-    self->xmin = data->xmin;
-    self->xmax = data->xmax;
-    self->ymin = data->ymin;
-    self->ymax = data->ymax;
+    self->xmin = item->xmin;
+    self->xmax = item->xmax;
+    self->ymin = item->ymin;
+    self->ymax = item->ymax;
 
     slope_iterator_next(&iter);
     while (iter) {
-        data = (slope_xydata_t*) slope_iterator_data(iter);
-        if (data->rescalable == SLOPE_FALSE) {
+        item = (slope_xyitem_t*) slope_iterator_item(iter);
+        if (item->rescalable == SLOPE_FALSE) {
             slope_iterator_next(&iter);
             continue;
         }
-        if (data->xmin < self->xmin) self->xmin = data->xmin;
-        if (data->xmax > self->xmax) self->xmax = data->xmax;
-        if (data->ymin < self->ymin) self->ymin = data->ymin;
-        if (data->ymax > self->ymax) self->ymax = data->ymax;
+        if (item->xmin < self->xmin) self->xmin = item->xmin;
+        if (item->xmax > self->xmax) self->xmax = item->xmax;
+        if (item->ymin < self->ymin) self->ymin = item->ymin;
+        if (item->ymax > self->ymax) self->ymax = item->ymax;
         slope_iterator_next(&iter);
     }
     double xbound = (self->xmax - self->xmin) /20.0;
@@ -186,7 +186,7 @@ double slope_xymetrics_map_x (const slope_metrics_t *metrics, double x)
 {
     const slope_xymetrics_t *self = (const slope_xymetrics_t*) metrics;
     double tmp = (x - self->xmin) /self->width;
-    return self->xmin_scene + tmp*self->width_scene;
+    return self->xmin_figure + tmp*self->width_figure;
 }
 
 
@@ -194,11 +194,11 @@ double slope_xymetrics_map_y (const slope_metrics_t *metrics, double y)
 {
     const slope_xymetrics_t *self = (const slope_xymetrics_t*) metrics;
     double tmp = (y - self->ymin) /self->height;
-    return self->ymax_scene - tmp*self->height_scene;
+    return self->ymax_figure - tmp*self->height_figure;
 }
 
 
-slope_data_t* slope_xymetrics_get_axis (slope_metrics_t *metrics,
+slope_item_t* slope_xymetrics_get_axis (slope_metrics_t *metrics,
                                         slope_xyaxis_type_t type)
 {
     slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
@@ -206,8 +206,8 @@ slope_data_t* slope_xymetrics_get_axis (slope_metrics_t *metrics,
     slope_iterator_t *axis_iter =
         slope_list_first(self->axis_list);
     while (axis_iter) {
-        slope_data_t *axis = (slope_data_t*)
-            slope_iterator_data(axis_iter);
+        slope_item_t *axis = (slope_item_t*)
+            slope_iterator_item(axis_iter);
         if (slope_xyaxis_get_type(axis) == type) {
             return axis;
         }

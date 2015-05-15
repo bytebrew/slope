@@ -17,58 +17,58 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/scene_p.h"
+#include "slope/figure_p.h"
 #include "slope/metrics_p.h"
-#include "slope/data.h"
+#include "slope/item.h"
 #include "slope/list.h"
 #include <cairo.h>
 #include <cairo-svg.h>
 #include <cairo-pdf.h>
 #include <stdlib.h>
 
-slope_scene_t* slope_scene_create()
+slope_figure_t* slope_figure_create()
 {
-    slope_scene_t *scene = malloc(sizeof(slope_scene_t));
-    scene->metrics = NULL;
-    scene->change_callback = NULL;
-    slope_color_set_name(&scene->back_color, SLOPE_WHITE);
-    scene->fill_back = SLOPE_TRUE;
-    return scene;
+    slope_figure_t *figure = malloc(sizeof(slope_figure_t));
+    figure->metrics = NULL;
+    figure->change_callback = NULL;
+    slope_color_set_name(&figure->back_color, SLOPE_WHITE);
+    figure->fill_back = SLOPE_TRUE;
+    return figure;
 }
 
 
-void slope_scene_destroy (slope_scene_t *scene)
+void slope_figure_destroy (slope_figure_t *figure)
 {
-    if (scene == NULL) {
+    if (figure == NULL) {
         return;
     }
-    slope_list_destroy(scene->metrics);
-    free(scene);
+    slope_list_destroy(figure->metrics);
+    free(figure);
 }
 
 
-void slope_scene_add_metrics (slope_scene_t *scene,
+void slope_figure_add_metrics (slope_figure_t *figure,
                               slope_metrics_t *metrics)
 {
-    metrics->scene = scene;
-    scene->metrics = slope_list_append(scene->metrics,
+    metrics->figure = figure;
+    figure->metrics = slope_list_append(figure->metrics,
                                        metrics);
-    if (scene->change_callback) {
-        (*scene->change_callback)(NULL);
+    if (figure->change_callback) {
+        (*figure->change_callback)(NULL);
     }
 }
 
 
-slope_list_t* slope_scene_get_metrics_list (slope_scene_t *scene)
+slope_list_t* slope_figure_get_metrics_list (slope_figure_t *figure)
 {
-    if (scene == NULL) {
+    if (figure == NULL) {
         return NULL;
     }
-    return scene->metrics;
+    return figure->metrics;
 }
 
 
-void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
+void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
                        const slope_rect_t *rect)
 {
     cairo_stroke(cr);
@@ -81,18 +81,18 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
     slope_cairo_rectangle(cr, rect);
     cairo_clip(cr);
     /* fill background */
-    if (scene->fill_back) {
-        slope_cairo_set_color(cr, &scene->back_color);
+    if (figure->fill_back) {
+        slope_cairo_set_color(cr, &figure->back_color);
         cairo_paint(cr);
     }
     cairo_stroke(cr);
 
     /* draw contents */
     slope_iterator_t *met_iter =
-        slope_list_first(scene->metrics);
+        slope_list_first(figure->metrics);
     while (met_iter) {
         slope_metrics_t *met = (slope_metrics_t*)
-            slope_iterator_data(met_iter);
+            slope_iterator_item(met_iter);
         if (slope_metrics_get_visible(met)) {
             __slope_metrics_draw(met, cr, rect);
         }
@@ -102,7 +102,7 @@ void slope_scene_draw (slope_scene_t *scene, cairo_t *cr,
 }
 
 
-int slope_scene_write_to_png (slope_scene_t *scene,
+int slope_figure_write_to_png (slope_figure_t *figure,
                                const char *filename,
                                int width, int height)
 {
@@ -114,7 +114,7 @@ int slope_scene_write_to_png (slope_scene_t *scene,
 
     slope_rect_t rect;
     slope_rect_set(&rect, 0.0, 0.0, width, height);
-    slope_scene_draw(scene, cr, &rect);
+    slope_figure_draw(figure, cr, &rect);
     if (cairo_surface_write_to_png(surf, filename) != CAIRO_STATUS_SUCCESS)
         success = SLOPE_FALSE;
 
@@ -125,7 +125,7 @@ int slope_scene_write_to_png (slope_scene_t *scene,
 }
 
 
-int slope_scene_write_to_svg (slope_scene_t *scene,
+int slope_figure_write_to_svg (slope_figure_t *figure,
                                const char *filename,
                                int width, int height)
 {
@@ -140,7 +140,7 @@ int slope_scene_write_to_svg (slope_scene_t *scene,
     cairo_t *cr = cairo_create(surf);
     slope_rect_t rect;
     slope_rect_set(&rect, 0.0, 0.0, width, height);
-    slope_scene_draw(scene, cr, &rect);
+    slope_figure_draw(figure, cr, &rect);
 
     cairo_destroy(cr);
     cairo_surface_destroy(surf);
@@ -148,7 +148,7 @@ int slope_scene_write_to_svg (slope_scene_t *scene,
     return success;
 }
 
-int slope_scene_write_to_pdf (slope_scene_t *scene,
+int slope_figure_write_to_pdf (slope_figure_t *figure,
                                const char *filename,
                                slope_paper_size_t paper_size,
                                slope_paper_orientation_t orientation)
@@ -207,7 +207,7 @@ int slope_scene_write_to_pdf (slope_scene_t *scene,
     cairo_t *cr = cairo_create(surf);
     slope_rect_t rect;
     slope_rect_set(&rect, 0.0, 0.0, width, height);
-    slope_scene_draw(scene, cr, &rect);
+    slope_figure_draw(figure, cr, &rect);
 
     cairo_destroy(cr);
     cairo_surface_destroy(surf);
@@ -216,40 +216,40 @@ int slope_scene_write_to_pdf (slope_scene_t *scene,
 }
 
 
-void slope_scene_set_change_callback (slope_scene_t *scene,
+void slope_figure_set_change_callback (slope_figure_t *figure,
                                       slope_callback_t callback)
 {
-    if (scene == NULL) {
+    if (figure == NULL) {
         return;
     }
-    scene->change_callback = callback;
+    figure->change_callback = callback;
 }
 
 
-void slope_scene_notify_appearence_change (slope_scene_t *scene,
-                                           slope_data_t *data)
+void slope_figure_notify_appearence_change (slope_figure_t *figure,
+                                           slope_item_t *item)
 {
-    (void) data;
-    if (scene == NULL) {
+    (void) item;
+    if (figure == NULL) {
         return;
     }
-    if (scene->change_callback) {
-        (*scene->change_callback)(scene);
+    if (figure->change_callback) {
+        (*figure->change_callback)(figure);
     }
 }
 
 
-void slope_scene_notify_data_change (slope_scene_t *scene,
-                                     slope_data_t *data)
+void slope_figure_notify_item_change (slope_figure_t *figure,
+                                     slope_item_t *item)
 {
-    if (scene == NULL) {
+    if (figure == NULL) {
         return;
     }
-    slope_metrics_t *metrics = slope_data_get_metrics(data);
+    slope_metrics_t *metrics = slope_item_get_metrics(item);
     slope_metrics_update(metrics);
-    if (scene->change_callback) {
-        (*scene->change_callback)(scene);
+    if (figure->change_callback) {
+        (*figure->change_callback)(figure);
     }
 }
 
-/* slope/scene.h */
+/* slope/figure.h */

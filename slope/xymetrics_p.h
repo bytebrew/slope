@@ -36,17 +36,17 @@ struct _slope_xymetrics
     slope_metrics_t parent;
     /* axis list */
     slope_list_t *axis_list;
-    /* boundary between data image and scene frontier */
+    /* boundary between item image and figure frontier */
     double x_low_bound, x_up_bound;
     double y_low_bound, y_up_bound;
-    /* data space geometry attributes */
+    /* item space geometry attributes */
     double xmin, xmax;
     double ymin, ymax;
     double width, height;
-    /* scene geometry attributes */
-    double xmin_scene, xmax_scene;
-    double ymin_scene, ymax_scene;
-    double width_scene, height_scene;
+    /* figure geometry attributes */
+    double xmin_figure, xmax_figure;
+    double ymin_figure, ymax_figure;
+    double width_figure, height_figure;
 };
 
 /**

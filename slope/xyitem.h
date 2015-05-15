@@ -20,18 +20,18 @@
 #ifndef __SLOPE_XYDATA_H
 #define __SLOPE_XYDATA_H
 
-#include "slope/data.h"
+#include "slope/item.h"
 
 __SLOPE_BEGIN_DECLS
 
 /**
  */
-slope_public slope_data_t* slope_xydata_create ();
+slope_public slope_item_t* slope_xyitem_create ();
 
 /**
  */
-slope_public slope_data_t*
-slope_xydata_create_simple (const double *vx, const double *vy,
+slope_public slope_item_t*
+slope_xyitem_create_simple (const double *vx, const double *vy,
                             const int n,
                             const char *name,
                             int line,
@@ -40,7 +40,7 @@ slope_xydata_create_simple (const double *vx, const double *vy,
 /**
  */
 slope_public void
-slope_xydata_set (slope_data_t *data,
+slope_xyitem_set (slope_item_t *item,
                   const double *vx, const double *vy,
                   const int n,
                   const char *name,
@@ -50,21 +50,21 @@ slope_xydata_set (slope_data_t *data,
 /**
  */
 slope_public void
-slope_xydata_set_data (slope_data_t *data,
+slope_xyitem_set_item (slope_item_t *item,
                        const double *vx, const double *vy,
                        const int n);
 
 /**
  */
 slope_public void
-slope_xydata_update_data (slope_data_t *data,
+slope_xyitem_update_item (slope_item_t *item,
                           const double *vx, const double *vy,
                           const int n);
 
 /**
  */
 slope_public void
-slope_xydata_set_antialias (slope_data_t *data, int on);
+slope_xyitem_set_antialias (slope_item_t *item, int on);
 
 __SLOPE_END_DECLS
 

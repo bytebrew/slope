@@ -41,7 +41,7 @@ slope_xymetrics_map_y (const slope_metrics_t *metrics, double y);
 
 /**
  */
-slope_public slope_data_t*
+slope_public slope_item_t*
 slope_xymetrics_get_axis (slope_metrics_t *metrics,
                           slope_xyaxis_type_t type);
 
