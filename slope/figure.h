@@ -49,7 +49,7 @@ slope_figure_destroy (slope_figure_t *figure);
  */
 slope_public void
 slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
-                  const slope_rect_t *rect);
+                   const slope_rect_t *rect);
 
 /**
  */

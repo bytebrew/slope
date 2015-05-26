@@ -129,7 +129,7 @@ void slope_figure_notify_appearence_change (slope_figure_t *figure,
                                             slope_item_t *item)
 {
     if (figure == NULL) return;
-    (void) item; /* avoids "variable set but not used" warning */
+    (void) item; /* reserved for possible future use */
     
     if (figure->change_callback) {
         (*figure->change_callback)(figure);
