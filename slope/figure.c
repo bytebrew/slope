@@ -99,6 +99,14 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
         slope_iterator_next(&met_iter);
     }
     cairo_restore(cr);
+
+    /* draw legend */
+    slope_item_t *legend = figure->legend;
+    if (slope_item_get_visible(legend)
+        && figure->default_metrics != NULL) {
+            __slope_legend_eval_geometry(legend, figure->default_metrics);
+            __slope_legend_draw(legend, cr, figure->default_metrics);
+    }
 }
 
 

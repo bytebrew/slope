@@ -46,6 +46,8 @@ slope_item_t* slope_legend_create ()
     slope_item_t *parent = (slope_item_t*) legend;
 
     parent->klass = __slope_legend_get_class();
+    parent->visible = SLOPE_TRUE;
+
     slope_color_set_name(&legend->fill_color, SLOPE_WHITE);
     slope_color_set_name(&legend->stroke_color, SLOPE_BLACK);
     
@@ -60,7 +62,7 @@ void __slope_legend_draw (slope_item_t *legend, cairo_t *cr,
 }
 
 
-void __slope_legend_eval_geometry (slope_legend_t *legend,
+void __slope_legend_eval_geometry (slope_item_t *legend,
                                    const slope_metrics_t *metrics)
 {
     
