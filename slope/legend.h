@@ -24,8 +24,7 @@
 
 __SLOPE_BEGIN_DECLS
 
-slope_public slope_item_t*
-slope_legend_create (slope_figure_t *figure);
+slope_public slope_item_t* slope_legend_create ();
 
 __SLOPE_END_DECLS
 

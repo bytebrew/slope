@@ -28,12 +28,12 @@ void slope_chart_destroy (slope_figure_t *figure)
         slope_list_first(slope_figure_get_metrics_list(figure));
     while (met_iter) {
         slope_metrics_t *metrics =
-            (slope_metrics_t*) slope_iterator_item(met_iter);
+            (slope_metrics_t*) slope_iterator_data(met_iter);
         slope_iterator_t *plot_iter =
             slope_list_first(slope_metrics_get_item_list(metrics));
         while (plot_iter) {
             slope_item_t *plot =
-                (slope_item_t*) slope_iterator_item(plot_iter);
+                (slope_item_t*) slope_iterator_data(plot_iter);
             slope_item_destroy(plot);
             slope_iterator_next(&plot_iter);
         }
@@ -53,7 +53,7 @@ void slope_chart_add_plot (slope_figure_t *chart,
     slope_iterator_t *iter =
         slope_list_first(slope_figure_get_metrics_list(chart));
     slope_metrics_t *metrics =
-        (slope_metrics_t*) slope_iterator_item(iter);
+        (slope_metrics_t*) slope_iterator_data(iter);
     slope_metrics_add_item(metrics, plot);
 }
 

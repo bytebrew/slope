@@ -25,7 +25,7 @@ struct _slope_iterator
 {
     struct _slope_iterator *next;
     struct _slope_iterator *prev;
-    void *item;
+    void *data;
 };
 
 
@@ -38,11 +38,11 @@ struct _slope_list
 
 
 /*
- * Access the item pointed to by iter
+ * Access the data pointed to by iter
  */
-void* slope_iterator_item (slope_iterator_t *iter)
+void* slope_iterator_data (slope_iterator_t *iter)
 {
-    return iter->item;
+    return iter->data;
 }
 
 /*
@@ -64,13 +64,13 @@ void slope_iterator_previous (slope_iterator_t **iter)
 /*
  * Appends an element to the end of the list
  */
-slope_list_t* slope_list_append (slope_list_t *list, void *item)
+slope_list_t* slope_list_append (slope_list_t *list, void *data)
 {
     slope_iterator_t *iter =
         malloc(sizeof(slope_iterator_t));
     iter->prev = NULL;
     iter->next = NULL;
-    iter->item = item;
+    iter->data = data;
     if (list == NULL) {
         list = malloc(sizeof(slope_list_t));
         list->first = iter;
@@ -89,13 +89,13 @@ slope_list_t* slope_list_append (slope_list_t *list, void *item)
 /*
  * Prepends an element to the begining of the list
  */
-slope_list_t* slope_list_prepend (slope_list_t *list, void *item)
+slope_list_t* slope_list_prepend (slope_list_t *list, void *data)
 {
     slope_iterator_t *iter =
         malloc(sizeof(slope_iterator_t));
     iter->prev = NULL;
     iter->next = NULL;
-    iter->item = item;
+    iter->data = data;
     if (list == NULL) {
         list = malloc(sizeof(slope_list_t));
         list->first = iter;

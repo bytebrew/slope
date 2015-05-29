@@ -81,7 +81,7 @@ void __slope_xymetrics_destroy (slope_metrics_t *metrics)
     slope_list_first(self->axis_list);
     while (axis_iter) {
         slope_item_t *axis = (slope_item_t*)
-            slope_iterator_item(axis_iter);
+            slope_iterator_data(axis_iter);
         slope_item_destroy(axis);
         slope_iterator_next(&axis_iter);
     }
@@ -110,7 +110,7 @@ void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
         slope_list_first(metrics->item_list);
     while (item_iter) {
         slope_item_t *item = (slope_item_t*)
-            slope_iterator_item(item_iter);
+            slope_iterator_data(item_iter);
         if (slope_item_get_visible(item)) {
             __slope_item_draw(item, cr, metrics);
         }
@@ -123,7 +123,7 @@ void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
     slope_list_first(self->axis_list);
     while (axis_iter) {
         slope_item_t *axis = (slope_item_t*)
-            slope_iterator_item(axis_iter);
+            slope_iterator_data(axis_iter);
         if (slope_item_get_visible(axis)) {
             __slope_item_draw(axis, cr, metrics);
         }
@@ -146,11 +146,11 @@ void __slope_xymetrics_update (slope_metrics_t *metrics)
     }
 
     slope_iterator_t *iter = slope_list_first(metrics->item_list);
-    slope_xyitem_t *item = (slope_xyitem_t*) slope_iterator_item(iter);
+    slope_xyitem_t *item = (slope_xyitem_t*) slope_iterator_data(iter);
 
     while (item->rescalable == SLOPE_FALSE) {
         slope_iterator_next(&iter);
-        item = (slope_xyitem_t*) slope_iterator_item(iter);
+        item = (slope_xyitem_t*) slope_iterator_data(iter);
     }
 
     self->xmin = item->xmin;
@@ -160,7 +160,7 @@ void __slope_xymetrics_update (slope_metrics_t *metrics)
 
     slope_iterator_next(&iter);
     while (iter) {
-        item = (slope_xyitem_t*) slope_iterator_item(iter);
+        item = (slope_xyitem_t*) slope_iterator_data(iter);
         if (item->rescalable == SLOPE_FALSE) {
             slope_iterator_next(&iter);
             continue;
@@ -207,7 +207,7 @@ slope_item_t* slope_xymetrics_get_axis (slope_metrics_t *metrics,
         slope_list_first(self->axis_list);
     while (axis_iter) {
         slope_item_t *axis = (slope_item_t*)
-            slope_iterator_item(axis_iter);
+            slope_iterator_data(axis_iter);
         if (slope_xyaxis_get_type(axis) == type) {
             return axis;
         }

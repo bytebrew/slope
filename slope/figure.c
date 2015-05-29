@@ -19,6 +19,7 @@
 
 #include "slope/figure_p.h"
 #include "slope/metrics_p.h"
+#include "slope/legend_p.h"
 #include "slope/item.h"
 #include "slope/list.h"
 #include <cairo.h>
@@ -30,6 +31,7 @@ slope_figure_t* slope_figure_create()
     figure->metrics = NULL;
     figure->default_metrics = NULL;
     figure->change_callback = NULL;
+    figure->legend = slope_legend_create();
     slope_color_set_name(&figure->back_color, SLOPE_WHITE);
     figure->fill_back = SLOPE_TRUE;
     return figure;
@@ -39,6 +41,7 @@ slope_figure_t* slope_figure_create()
 void slope_figure_destroy (slope_figure_t *figure)
 {
     if (figure == NULL) return;
+    slope_item_destroy(figure->legend);
     slope_list_destroy(figure->metrics);
     free(figure);
 }
@@ -70,15 +73,13 @@ slope_list_t* slope_figure_get_metrics_list (slope_figure_t *figure)
 void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
                         const slope_rect_t *rect)
 {
+    /* perform any pending draw and clip to the figure's
+       rectangle */
     cairo_stroke(cr);
     cairo_save(cr);
-    /* use an easy font */
-    cairo_select_font_face(cr, "Sans",
-                           CAIRO_FONT_SLANT_NORMAL,
-                           CAIRO_FONT_WEIGHT_NORMAL);
-    cairo_set_font_size(cr, 11);
     slope_cairo_rectangle(cr, rect);
     cairo_clip(cr);
+
     /* fill background */
     if (figure->fill_back) {
         slope_cairo_set_color(cr, &figure->back_color);
@@ -91,7 +92,7 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
         slope_list_first(figure->metrics);
     while (met_iter) {
         slope_metrics_t *met = (slope_metrics_t*)
-            slope_iterator_item(met_iter);
+            slope_iterator_data(met_iter);
         if (slope_metrics_get_visible(met)) {
             __slope_metrics_draw(met, cr, rect);
         }

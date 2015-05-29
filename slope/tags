@@ -167,7 +167,7 @@ slope_item_notify_item_change	item.c	/^void slope_item_notify_item_change (slope
 slope_item_set_name	item.c	/^void slope_item_set_name (slope_item_t *item, const char *name)$/;"	f
 slope_item_set_visible	item.c	/^void slope_item_set_visible (slope_item_t *item,$/;"	f
 slope_item_t	primitives.h	/^typedef struct _slope_item slope_item_t;$/;"	t	typeref:struct:_slope_item
-slope_iterator_item	list.c	/^void* slope_iterator_item (slope_iterator_t *iter)$/;"	f
+slope_iterator_data	list.c	/^void* slope_iterator_data (slope_iterator_t *iter)$/;"	f
 slope_iterator_next	list.c	/^void slope_iterator_next (slope_iterator_t **iter)$/;"	f
 slope_iterator_previous	list.c	/^void slope_iterator_previous (slope_iterator_t **iter)$/;"	f
 slope_iterator_t	list.h	/^typedef struct _slope_iterator slope_iterator_t;$/;"	t	typeref:struct:_slope_iterator

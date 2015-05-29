@@ -40,7 +40,7 @@ slope_item_class_t* __slope_legend_get_class()
 }
 
 
-slope_item_t* slope_legend_create (slope_figure_t *figure)
+slope_item_t* slope_legend_create ()
 {
     slope_legend_t *legend = malloc(sizeof(slope_legend_t));
     slope_item_t *parent = (slope_item_t*) legend;
@@ -60,11 +60,10 @@ void __slope_legend_draw (slope_item_t *legend, cairo_t *cr,
 }
 
 
-void __slope_legend_set_position (slope_legend_t *legend,
-                                  const slope_point_t *point)
+void __slope_legend_eval_geometry (slope_legend_t *legend,
+                                   const slope_metrics_t *metrics)
 {
-    legend->rect.x = point->x;
-    legend->rect.y = point->y;
+    
 }
 
 /* slope/legend.c */
