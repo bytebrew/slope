@@ -33,17 +33,21 @@ __SLOPE_BEGIN_DECLS
  */
 typedef struct _slope_figure slope_figure_t;
 
+
 /**
  */
 typedef struct _slope_metrics slope_metrics_t;
+
 
 /**
  */
 typedef struct _slope_item slope_item_t;
 
+
 /**
  */
 typedef void (*slope_callback_t) (slope_figure_t*);
+
 
 /**
  */
@@ -53,6 +57,7 @@ typedef struct _slope_point
     double y;
 }
 slope_point_t;
+
 
 /**
  */
@@ -64,6 +69,17 @@ typedef struct _slope_rect
     double height;
 }
 slope_rect_t;
+
+
+/**
+ */
+typedef enum _slope_status
+{
+    SLOPE_SUCCESS = 0,
+    SLOPE_ERROR = 1
+}
+slope_status_t;
+
 
 /**
  */
@@ -85,6 +101,33 @@ typedef enum _slope_color_name
 }
 slope_color_name_t;
 
+
+/**
+ */
+typedef enum _slope_paper_size
+{
+    SLOPE_PAPER_SIZE_A0      = 0,
+    SLOPE_PAPER_SIZE_A1      = 1,
+    SLOPE_PAPER_SIZE_A2      = 2,
+    SLOPE_PAPER_SIZE_A3      = 3,
+    SLOPE_PAPER_SIZE_A4      = 4,
+    SLOPE_PAPER_SIZE_LETTER  = 5,
+    SLOPE_PAPER_SIZE_B4      = 6,
+    SLOPE_PAPER_SIZE_B5      = 7
+}
+slope_paper_size_t;
+
+
+/**
+ */
+typedef enum _slope_paper_orientation
+{
+    SLOPE_PAPER_ORIENTATION_PORTRAIT   = 0,
+    SLOPE_PAPER_ORIENTATION_LANDSCAPE  = 1
+}
+slope_paper_orientation_t;
+
+
 /**
  */
 typedef struct _slope_color
@@ -96,6 +139,7 @@ typedef struct _slope_color
 }
 slope_color_t;
 
+
 /**
  * Sets the coordinates of a rectangle
  */
@@ -103,11 +147,13 @@ slope_public void
 slope_rect_set (slope_rect_t *rect, double x,
                 double y, double w, double h);
 
+
 /**
  */
 slope_public void
 slope_color_set (slope_color_t *color, double r,
                  double g, double b, double a);
+
 
 /**
  */
@@ -115,11 +161,13 @@ slope_public void
 slope_color_set_name (slope_color_t *color,
                       slope_color_name_t name);
 
+
 /**
  */
 slope_public void
 slope_cairo_set_color(cairo_t *cr,
                       const slope_color_t *color);
+
 
 /**
  */

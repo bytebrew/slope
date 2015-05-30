@@ -60,6 +60,21 @@ slope_figure_write_to_png (slope_figure_t *figure,
 
 /**
  */
+ slope_public int
+ slope_figure_write_to_svg(slope_figure_t *figure,
+                           const char *filename,
+                           int width, int height);
+
+/**
+ */
+ slope_public int
+ slope_figure_write_to_pdf(slope_figure_t *figure,
+                           const char *filename,
+                           slope_paper_size_t paper_size,
+                           slope_paper_orientation_t orientation);
+
+/**
+ */
 slope_public void
 slope_figure_set_change_callback (slope_figure_t *figure,
                                  slope_callback_t callback);

@@ -34,11 +34,15 @@ int main(int argc, char *argv[])
     GtkWidget *window = slope_create_window(chart, "Data and Model");
     gtk_widget_show_all(window);
     gtk_main();
-    #else
+//    #else
     /* save the chart in a png figure */
-    slope_figure_write_to_png(chart, "figure.png", 500, 350);
+//    slope_figure_write_to_png(chart, "figure.png", 500, 350);
     #endif /* SLOPE_GTK */
     
+    slope_figure_write_to_pdf(chart, "figure.pdf",
+                              SLOPE_PAPER_SIZE_A4,
+                              SLOPE_PAPER_ORIENTATION_PORTRAIT);
+
     slope_chart_destroy(chart);    
     return 0;
 }
