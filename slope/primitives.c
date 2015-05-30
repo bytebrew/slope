@@ -71,6 +71,21 @@ void slope_color_set_name (slope_color_t *color,
             color->green = 0.0;
             color->blue = 1.0;
             break;
+        case SLOPE_YELLOW:
+            color->red = 1.0;
+            color->green = 1.0;
+            color->blue = 0.0;
+            break;
+        case SLOPE_MAROON:
+            color->red = 0.5;
+            color->green = 0.0;
+            color->blue = 0.0;
+            break;
+        case SLOPE_GREY:
+            color->red = 0.5;
+            color->green = 0.5;
+            color->blue = 0.5;
+            break;
     }
 }
 

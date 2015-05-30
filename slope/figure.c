@@ -25,6 +25,7 @@
 #include <cairo.h>
 #include <stdlib.h>
 
+
 slope_figure_t* slope_figure_create()
 {
     slope_figure_t *figure = malloc(sizeof(slope_figure_t));
@@ -73,21 +74,21 @@ slope_list_t* slope_figure_get_metrics_list (slope_figure_t *figure)
 void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
                         const slope_rect_t *rect)
 {
-    /* perform any pending draw and clip to the figure's
+    /* perform any pending drawing and clip to the figure's
        rectangle */
     cairo_stroke(cr);
     cairo_save(cr);
     slope_cairo_rectangle(cr, rect);
     cairo_clip(cr);
 
-    /* fill background */
+    /* fill background if required */
     if (figure->fill_back) {
         slope_cairo_set_color(cr, &figure->back_color);
         cairo_paint(cr);
     }
     cairo_stroke(cr);
 
-    /* draw contents */
+    /* draw main items */
     slope_iterator_t *met_iter =
         slope_list_first(figure->metrics);
     while (met_iter) {

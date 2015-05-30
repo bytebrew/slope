@@ -47,6 +47,7 @@ slope_item_t* slope_legend_create ()
 
     parent->klass = __slope_legend_get_class();
     parent->visible = SLOPE_TRUE;
+    legend->position = SLOPE_LEGEND_TOPRIGHT;
 
     slope_color_set_name(&legend->fill_color, SLOPE_WHITE);
     slope_color_set_name(&legend->stroke_color, SLOPE_BLACK);
