@@ -18,3 +18,48 @@
  */
 
 #include "slope/view.h"
+#include <stdio.h>
+
+#define SLOPE_VIEW_PRIVATE(obj)          \
+    (G_TYPE_INSTANCE_GET_PRIVATE((obj),  \
+    SLOPE_VIEW_TYPE, SlopeViewPrivate))
+
+
+/**
+*/
+typedef struct _SlopeViewPrivate SlopeViewPrivate;
+
+
+/**
+ */
+struct _SlopeViewPrivate
+{
+    slope_figure_t *figure;
+};
+
+
+G_DEFINE_TYPE(SlopeView, slope_view, GTK_TYPE_DRAWING_AREA);
+
+
+static void
+slope_view_class_init(SlopeViewClass *klass)
+{
+    g_type_class_add_private(klass, sizeof(SlopeViewPrivate));
+}
+
+
+static void
+slope_view_init(SlopeView *view)
+{
+    SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (view);
+    priv->figure = slope_figure_create();
+}
+
+
+GtkWidget *
+slope_view_new()
+{
+    return GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
+}
+
+/* slope/view.c */

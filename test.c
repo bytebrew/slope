@@ -1,9 +1,10 @@
 
 #include "build/config.h"
 #if SLOPE_GTK
-#  include <slope/gtk.h>
+# include <slope/gtk.h>
+# include <slope/view.h>
 #else
-#  include <slope/slope.h>
+# include <slope/slope.h>
 #endif /* SLOPE_GTK */
 
 #include <math.h>
@@ -36,18 +37,9 @@ int main(int argc, char *argv[])
     gtk_main();
     #else
     /* save the chart in a png figure */
-    /*
     slope_figure_write_to_png(chart, "figure.png", 500, 350);
-    */
-    /*
-    slope_figure_write_to_pdf(chart, "figure.pdf",
-                              SLOPE_PAPER_SIZE_A4,
-                              SLOPE_PAPER_ORIENTATION_PORTRAIT);
-    */
     #endif /* SLOPE_GTK */
     
-    
-
     slope_chart_destroy(chart);    
     return 0;
 }

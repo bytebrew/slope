@@ -38,7 +38,11 @@ SET(SLOPE_HDRS
 )
 
 IF(SLOPE_USE_GTK3 MATCHES "TRUE")
-    SET(SLOPE_HDRS ${SLOPE_HDRS} slope/gtk.h)
+    SET(SLOPE_HDRS
+        ${SLOPE_HDRS}
+        slope/gtk.h
+        slope/view.h
+    )
 ENDIF()
 
 SET(SLOPE_SRCS
@@ -55,7 +59,11 @@ SET(SLOPE_SRCS
 )
 
 IF(SLOPE_USE_GTK3 MATCHES "TRUE")
-    SET(SLOPE_SRCS ${SLOPE_SRCS} slope/gtk.c)
+    SET(SLOPE_SRCS
+        ${SLOPE_SRCS}
+        slope/gtk.c
+        slope/view.c
+    )
 ENDIF()
 
 ADD_LIBRARY(slope SHARED ${SLOPE_SRCS})
@@ -67,4 +75,3 @@ TARGET_LINK_LIBRARIES(app slope -lm)
 INSTALL(TARGETS slope DESTINATION /usr/lib)
 INSTALL(FILES ${SLOPE_HDRS} DESTINATION /usr/include/slope)
 INSTALL(FILES "${PROJECT_BINARY_DIR}/config.h" DESTINATION /usr/include/slope)
-
