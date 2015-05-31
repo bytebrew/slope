@@ -50,8 +50,8 @@ slope_metrics_t* slope_xymetrics_create()
     metrics->item_list = NULL;
     metrics->figure = NULL;
 
-    self->x_low_bound = self->x_up_bound = 80.0;
-    self->y_low_bound = self->y_up_bound = 45.0;
+    metrics->x_low_bound = metrics->x_up_bound = 80.0;
+    metrics->y_low_bound = metrics->y_up_bound = 45.0;
 
     self->axis_list = NULL;
     slope_item_t *axis = slope_xyaxis_create(
@@ -92,16 +92,16 @@ void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                              const slope_rect_t *rect)
 {
     slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
-    self->xmin_figure = rect->x + self->x_low_bound;
-    self->ymin_figure = rect->y + self->y_low_bound;
-    self->xmax_figure = rect->x + rect->width - self->x_up_bound;
-    self->ymax_figure = rect->y + rect->height - self->y_up_bound;
-    self->width_figure = self->xmax_figure - self->xmin_figure;
-    self->height_figure = self->ymax_figure - self->ymin_figure;
+    metrics->xmin_figure = rect->x + metrics->x_low_bound;
+    metrics->ymin_figure = rect->y + metrics->y_low_bound;
+    metrics->xmax_figure = rect->x + rect->width - metrics->x_up_bound;
+    metrics->ymax_figure = rect->y + rect->height - metrics->y_up_bound;
+    metrics->width_figure = metrics->xmax_figure - metrics->xmin_figure;
+    metrics->height_figure = metrics->ymax_figure - metrics->ymin_figure;
 
     cairo_rectangle(
-        cr, self->xmin_figure, self->ymin_figure,
-        self->width_figure, self->height_figure);
+        cr, metrics->xmin_figure, metrics->ymin_figure,
+        metrics->width_figure, metrics->height_figure);
     cairo_save(cr);
     cairo_clip(cr);
 
@@ -186,7 +186,7 @@ double slope_xymetrics_map_x (const slope_metrics_t *metrics, double x)
 {
     const slope_xymetrics_t *self = (const slope_xymetrics_t*) metrics;
     double tmp = (x - self->xmin) /self->width;
-    return self->xmin_figure + tmp*self->width_figure;
+    return metrics->xmin_figure + tmp*metrics->width_figure;
 }
 
 
@@ -194,7 +194,7 @@ double slope_xymetrics_map_y (const slope_metrics_t *metrics, double y)
 {
     const slope_xymetrics_t *self = (const slope_xymetrics_t*) metrics;
     double tmp = (y - self->ymin) /self->height;
-    return self->ymax_figure - tmp*self->height_figure;
+    return metrics->ymax_figure - tmp*metrics->height_figure;
 }
 
 
@@ -217,29 +217,25 @@ slope_item_t* slope_xymetrics_get_axis (slope_metrics_t *metrics,
 }
 
 
-slope_public void
-slope_xymetrics_set_x_boundary (slope_metrics_t *metrics,
-                                double low, double hi)
+void slope_xymetrics_set_x_boundary (slope_metrics_t *metrics,
+                                     double low, double hi)
 {
     if (metrics == NULL) {
         return;
     }
-    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
-    self->x_low_bound = low;
-    self->x_up_bound = hi;
+    metrics->x_low_bound = low;
+    metrics->x_up_bound = hi;
 }
 
 
-slope_public void
-slope_xymetrics_set_y_boundary (slope_metrics_t *metrics,
-                                double low, double hi)
+void slope_xymetrics_set_y_boundary (slope_metrics_t *metrics,
+                                     double low, double hi)
 {
     if (metrics == NULL) {
         return;
     }
-    slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
-    self->y_low_bound = low;
-    self->y_up_bound = hi;
+    metrics->y_low_bound = low;
+    metrics->y_up_bound = hi;
 }
 
 

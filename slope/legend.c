@@ -19,6 +19,7 @@
 
 #include "slope/legend_p.h"
 #include "slope/figure_p.h"
+#include "slope/metrics_p.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -56,18 +57,34 @@ slope_item_t* slope_legend_create ()
 }
 
 
-void __slope_legend_draw (slope_item_t *legend, cairo_t *cr,
-                          const slope_metrics_t *metrics)
+void __slope_legend_eval_geometry (slope_item_t *item,
+                                   const slope_metrics_t *metrics)
 {
-
+    slope_legend_t *self = (slope_legend_t*) item;
+    
+    switch (self->position) {
+        case SLOPE_LEGEND_TOPRIGHT:
+            self->rect.x = metrics->xmax_figure - 15.0;
+            self->rect.y = metrics->ymin_figure + 15.0;
+            self->rect.width = 20.0;
+            self->rect.height = 20.0;
+            break;
+    }
 }
 
 
-void __slope_legend_eval_geometry (slope_item_t *legend,
-                                   const slope_metrics_t *metrics)
+void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
+                          const slope_metrics_t *metrics)
 {
+    slope_legend_t *self = (slope_legend_t*) item;
+    slope_rect_t *rec = &self->rect;
     
+    slope_cairo_set_color(cr, &self->stroke_color);
+    cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
+    cairo_set_line_width(cr, 1.0);
+    
+    cairo_rectangle(cr, rec->x, rec->y, rec->width, rec->height);
+    cairo_stroke(cr);
 }
 
 /* slope/legend.c */
-

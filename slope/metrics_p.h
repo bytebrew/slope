@@ -43,18 +43,29 @@ struct _slope_metrics
 {
     slope_metrics_class_t *klass;
     slope_figure_t *figure;
-    int visible;
     slope_list_t *item_list;
+    /* boundary between item image and figure frontier */
+    double x_low_bound, x_up_bound;
+    double y_low_bound, y_up_bound;
+    /* figure geometry attributes */
+    double xmin_figure, xmax_figure;
+    double ymin_figure, ymax_figure;
+    double width_figure, height_figure;
+    /* show this metric's items? */
+    int visible;
 };
+
 
 /**
  */
 slope_metrics_class_t* __slope_metrics_get_class();
 
+
 /**
  */
 void __slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                            const slope_rect_t *rect);
+
 
 __SLOPE_END_DECLS
 
