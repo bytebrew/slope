@@ -40,7 +40,7 @@ struct _slope_list
 /*
  * Access the data pointed to by iter
  */
-void* slope_iterator_data (slope_iterator_t *iter)
+void* slope_iterator_data (const slope_iterator_t *iter)
 {
     return iter->data;
 }
@@ -131,7 +131,7 @@ void slope_list_destroy (slope_list_t *list)
 /*
  * Access the iterator for the first element
  */
-slope_iterator_t* slope_list_first (slope_list_t *list)
+slope_iterator_t* slope_list_first (const slope_list_t *list)
 {
     if (list == NULL) {
         return NULL;
@@ -142,7 +142,7 @@ slope_iterator_t* slope_list_first (slope_list_t *list)
 /*
  * Access the iterator for the last element
  */
-slope_iterator_t* slope_list_last (slope_list_t *list)
+slope_iterator_t* slope_list_last (const slope_list_t *list)
 {
     if (list == NULL) {
         return NULL;
@@ -153,7 +153,7 @@ slope_iterator_t* slope_list_last (slope_list_t *list)
 /**
  * Access the size (element number) of the last
  */
-int slope_list_size (slope_list_t *list)
+int slope_list_size (const slope_list_t *list)
 {
     if (list == NULL) {
         return 0;

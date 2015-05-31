@@ -20,8 +20,7 @@
 #ifndef __SLOPE_GTK_H
 #define __SLOPE_GTK_H
 
-#include "slope/slope.h"
-#include <gtk/gtk.h>
+#include "slope/view.h"
 
 __SLOPE_BEGIN_DECLS
 

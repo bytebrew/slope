@@ -33,7 +33,7 @@ slope_metrics_destroy (slope_metrics_t *metrics);
 /**
  */
 slope_public int
-slope_metrics_get_visible (slope_metrics_t *metrics);
+slope_metrics_get_visible (const slope_metrics_t *metrics);
 
 /**
  */
@@ -55,12 +55,12 @@ slope_metrics_add_item (slope_metrics_t *metrics,
 /**
  */
 slope_public slope_list_t*
-slope_metrics_get_item_list (slope_metrics_t *metrics);
+slope_metrics_get_item_list (const slope_metrics_t *metrics);
 
 /**
  */
 slope_public slope_figure_t*
-slope_metrics_get_figure (slope_metrics_t *metrics);
+slope_metrics_get_figure (const slope_metrics_t *metrics);
 
 __SLOPE_END_DECLS
 

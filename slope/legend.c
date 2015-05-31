@@ -57,17 +57,51 @@ slope_item_t* slope_legend_create ()
 }
 
 
-void __slope_legend_eval_geometry (slope_item_t *item,
+void __slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
                                    const slope_metrics_t *metrics)
 {
     slope_legend_t *self = (slope_legend_t*) item;
+    slope_figure_t *figure = slope_metrics_get_figure(metrics);
+    
+    double max_width = 0.0;
+    self->rect.width = 0.0;
+    self->rect.height = 0.0;
+
+    slope_iterator_t *met_iter = slope_list_first(
+        slope_figure_get_metrics_list(figure));
+    /* for each metrics in the figure */
+    while (met_iter) {
+        slope_metrics_t *metrics = (slope_metrics_t*)
+            slope_iterator_data(met_iter);
+        slope_iterator_t *item_iter = slope_list_first(
+            slope_metrics_get_item_list(metrics));
+        /* for each item in the metrics */
+        while (item_iter) {
+            slope_item_t *item = (slope_item_t*)
+                slope_iterator_data(item_iter);
+                
+                cairo_text_extents_t txt_ext;
+                cairo_text_extents(cr, slope_item_get_name(item), &txt_ext);
+                
+                self->rect.height += txt_ext.height;
+                if (txt_ext.width > max_width) max_width = txt_ext.width;
+                
+            slope_iterator_next(&item_iter);
+        }
+        slope_iterator_next(&met_iter);
+    }
+    
+    self->rect.width = max_width + 40.0;
+    self->rect.height += 10.0;
     
     switch (self->position) {
         case SLOPE_LEGEND_TOPRIGHT:
-            self->rect.x = metrics->xmax_figure - 15.0;
+            self->rect.x = metrics->xmax_figure - self->rect.width - 10.0;
             self->rect.y = metrics->ymin_figure + 15.0;
-            self->rect.width = 20.0;
-            self->rect.height = 20.0;
+            break;
+        default: /* TOPRIGHT */
+            self->rect.x = metrics->xmax_figure - self->rect.width - 10.0;
+            self->rect.y = metrics->ymin_figure + 15.0;
             break;
     }
 }
@@ -77,13 +111,50 @@ void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
                           const slope_metrics_t *metrics)
 {
     slope_legend_t *self = (slope_legend_t*) item;
+    slope_figure_t *figure = slope_metrics_get_figure(metrics);
     slope_rect_t *rec = &self->rect;
     
+    __slope_legend_eval_geometry(item, cr, metrics);
+    
+    /* fill background */
+    slope_cairo_set_color(cr, &self->fill_color);
+    cairo_rectangle(cr, rec->x, rec->y, rec->width, rec->height);
+    cairo_fill_preserve(cr);
+    
+    /* paint outline */
     slope_cairo_set_color(cr, &self->stroke_color);
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
     cairo_set_line_width(cr, 1.0);
+    cairo_stroke(cr);
     
-    cairo_rectangle(cr, rec->x, rec->y, rec->width, rec->height);
+    /* finaly draw the legend entries */
+    const double x = self->rect.x + 35.0;
+    double y = self->rect.y + 5.0;
+    
+    slope_iterator_t *met_iter = slope_list_first(
+        slope_figure_get_metrics_list(figure));
+    /* for each metrics in the figure */
+    while (met_iter) {
+        slope_metrics_t *metrics = (slope_metrics_t*)
+            slope_iterator_data(met_iter);
+        slope_iterator_t *item_iter = slope_list_first(
+            slope_metrics_get_item_list(metrics));
+        /* for each item in the metrics */
+        while (item_iter) {
+            slope_item_t *item = (slope_item_t*)
+                slope_iterator_data(item_iter);
+            const char *entry = slope_item_get_name(item);
+            
+            cairo_text_extents_t txt_ext;
+            cairo_text_extents(cr, entry, &txt_ext);
+            y += txt_ext.height;
+            cairo_move_to(cr, x, y);
+            cairo_show_text(cr, entry);
+            
+            slope_iterator_next(&item_iter);
+        }
+        slope_iterator_next(&met_iter);
+    }
     cairo_stroke(cr);
 }
 

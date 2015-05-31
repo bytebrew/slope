@@ -66,7 +66,7 @@ void slope_figure_add_metrics (slope_figure_t *figure,
 }
 
 
-slope_list_t* slope_figure_get_metrics_list (slope_figure_t *figure)
+slope_list_t* slope_figure_get_metrics_list (const slope_figure_t *figure)
 {
     if (figure == NULL) return NULL;
     return figure->metrics;
@@ -107,7 +107,6 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
     slope_item_t *legend = figure->legend;
     if (slope_item_get_visible(legend)
         && figure->default_metrics != NULL) {
-            __slope_legend_eval_geometry(legend, figure->default_metrics);
             __slope_legend_draw(legend, cr, figure->default_metrics);
     }
 }
@@ -234,7 +233,7 @@ void slope_figure_notify_appearence_change (slope_figure_t *figure,
 }
 
 
-void slope_figure_notify_item_change (slope_figure_t *figure,
+void slope_figure_notify_data_change (slope_figure_t *figure,
                                       slope_item_t *item)
 {
     if (figure == NULL) return;

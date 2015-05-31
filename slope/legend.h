@@ -26,7 +26,10 @@ __SLOPE_BEGIN_DECLS
 
 typedef enum _slope_legend_position
 {
-    SLOPE_LEGEND_TOPRIGHT
+    SLOPE_LEGEND_TOPRIGHT,
+    SLOPE_LEGEND_TOPLEFT,
+    SLOPE_LEGEND_TOPRIGHT_OUTSIDE,
+    SLOPE_LEGEND_TOPLEFT_OUTSIDE
 }
 slope_legend_position_t;
 

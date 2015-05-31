@@ -39,7 +39,7 @@ void slope_item_destroy (slope_item_t *item)
 }
 
 
-int slope_item_get_visible (slope_item_t *item)
+int slope_item_get_visible (const slope_item_t *item)
 {
     if (item == NULL) {
         return SLOPE_FALSE;
@@ -59,7 +59,7 @@ void slope_item_set_visible (slope_item_t *item,
 }
 
 
-const char* slope_item_get_name (slope_item_t *item)
+const char* slope_item_get_name (const slope_item_t *item)
 {
     if (item == NULL) {
         return NULL;
@@ -88,7 +88,7 @@ void __slope_item_draw (slope_item_t *item, cairo_t *cr,
 }
 
 
-slope_metrics_t* slope_item_get_metrics (slope_item_t *item)
+slope_metrics_t* slope_item_get_metrics (const slope_item_t *item)
 {
     if (item == NULL) {
         return NULL;
@@ -97,7 +97,7 @@ slope_metrics_t* slope_item_get_metrics (slope_item_t *item)
 }
 
 
-slope_figure_t* slope_item_get_figure (slope_item_t *item)
+slope_figure_t* slope_item_get_figure (const slope_item_t *item)
 {
     if (item == NULL) {
         return NULL;
@@ -113,10 +113,10 @@ void slope_item_notify_appearence_change (slope_item_t *item)
 }
 
 
-void slope_item_notify_item_change (slope_item_t *item)
+void slope_item_notify_data_change (slope_item_t *item)
 {
     slope_figure_t *figure = slope_item_get_figure(item);
-    slope_figure_notify_item_change(figure, item);
+    slope_figure_notify_data_change(figure, item);
 }
 
 
@@ -146,4 +146,3 @@ int __slope_item_parse_scatter (const char *fmt)
 }
 
 /* slope/item.c */
-

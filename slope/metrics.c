@@ -37,7 +37,7 @@ void slope_metrics_destroy (slope_metrics_t *metrics)
 }
 
 
-int slope_metrics_get_visible(slope_metrics_t *metrics)
+int slope_metrics_get_visible (const slope_metrics_t *metrics)
 {
     if (metrics == NULL) {
         return SLOPE_FALSE;
@@ -87,7 +87,7 @@ void slope_metrics_add_item (slope_metrics_t *metrics,
 }
 
 
-slope_list_t* slope_metrics_get_item_list (slope_metrics_t *metrics)
+slope_list_t* slope_metrics_get_item_list (const slope_metrics_t *metrics)
 {
     if (metrics == NULL) {
         return NULL;
@@ -96,7 +96,7 @@ slope_list_t* slope_metrics_get_item_list (slope_metrics_t *metrics)
 }
 
 
-slope_figure_t* slope_metrics_get_figure (slope_metrics_t *metrics)
+slope_figure_t* slope_metrics_get_figure (const slope_metrics_t *metrics)
 {
     if (metrics == NULL) {
         return NULL;

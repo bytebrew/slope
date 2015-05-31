@@ -32,13 +32,13 @@ slope_public slope_figure_t* slope_figure_create();
 /**
  */
 slope_public slope_list_t*
-slope_figure_get_metrics_list (slope_figure_t *figure);
+slope_figure_get_metrics_list (const slope_figure_t *figure);
 
 /**
  */
 slope_public void
 slope_figure_add_metrics (slope_figure_t *figure,
-                         slope_metrics_t *metrics);
+                          slope_metrics_t *metrics);
 
 /**
  */
@@ -60,36 +60,36 @@ slope_figure_write_to_png (slope_figure_t *figure,
 
 /**
  */
- slope_public int
- slope_figure_write_to_svg(slope_figure_t *figure,
-                           const char *filename,
-                           int width, int height);
+slope_public int
+slope_figure_write_to_svg(slope_figure_t *figure,
+                          const char *filename,
+                          int width, int height);
 
 /**
  */
- slope_public int
- slope_figure_write_to_pdf(slope_figure_t *figure,
-                           const char *filename,
-                           slope_paper_size_t paper_size,
-                           slope_paper_orientation_t orientation);
+slope_public int
+slope_figure_write_to_pdf(slope_figure_t *figure,
+                          const char *filename,
+                          slope_paper_size_t paper_size,
+                          slope_paper_orientation_t orientation);
 
 /**
  */
 slope_public void
 slope_figure_set_change_callback (slope_figure_t *figure,
-                                 slope_callback_t callback);
+                                  slope_callback_t callback);
 
 /**
  */
 slope_public void
 slope_figure_notify_appearence_change (slope_figure_t *figure,
-                                      slope_item_t *item);
+                                       slope_item_t *item);
 
 /**
  */
 slope_public void
-slope_figure_notify_item_change (slope_figure_t *figure,
-                                slope_item_t *item);
+slope_figure_notify_data_change (slope_figure_t *figure,
+                                 slope_item_t *item);
 
 __SLOPE_END_DECLS
 

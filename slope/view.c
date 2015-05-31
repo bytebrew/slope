@@ -20,9 +20,16 @@
 #include "slope/view.h"
 #include <stdio.h>
 
+
 #define SLOPE_VIEW_PRIVATE(obj)          \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj),  \
     SLOPE_VIEW_TYPE, SlopeViewPrivate))
+
+
+/**
+ */
+static gboolean
+on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data);
 
 
 /**
@@ -51,15 +58,42 @@ slope_view_class_init(SlopeViewClass *klass)
 static void
 slope_view_init(SlopeView *view)
 {
-    SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (view);
-    priv->figure = slope_figure_create();
+    g_signal_connect(G_OBJECT(view), "draw", G_CALLBACK(on_draw_event), NULL);
 }
 
 
 GtkWidget *
-slope_view_new()
+slope_view_new ()
 {
-    return GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
+    GtkWidget *view = GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
+    SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (view);
+    priv->figure = slope_figure_create();
+    return view;
+}
+
+
+GtkWidget *
+slope_view_new_for_figure (slope_figure_t *figure)
+{
+    GtkWidget *view = GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
+    SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (view);
+    priv->figure = figure;
+    return view;
+}
+
+
+static gboolean
+on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data)
+{
+    int width, height;
+    slope_rect_t rect;
+    width = gtk_widget_get_allocated_width(widget);
+    height = gtk_widget_get_allocated_height(widget);
+    slope_rect_set(&rect, 0.0, 0.0, (double)width, (double)height);
+    SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (widget);
+    slope_figure_t *figure = priv->figure;
+    slope_figure_draw(figure, cr, &rect);
+    return TRUE;
 }
 
 /* slope/view.c */

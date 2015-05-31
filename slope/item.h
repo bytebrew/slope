@@ -44,7 +44,7 @@ slope_item_destroy (slope_item_t *item);
 /**
  */
 slope_public int
-slope_item_get_visible (slope_item_t *item);
+slope_item_get_visible (const slope_item_t *item);
 
 /**
  */
@@ -54,7 +54,7 @@ slope_item_set_visible (slope_item_t *item, int visible);
 /**
  */
 slope_public const char*
-slope_item_get_name (slope_item_t *item);
+slope_item_get_name (const slope_item_t *item);
 
 /**
  */
@@ -64,12 +64,12 @@ slope_item_set_name (slope_item_t *item, const char *name);
 /**
  */
 slope_public slope_metrics_t*
-slope_item_get_metrics (slope_item_t *item);
+slope_item_get_metrics (const slope_item_t *item);
 
 /**
  */
 slope_public slope_figure_t*
-slope_item_get_figure (slope_item_t *item);
+slope_item_get_figure (const slope_item_t *item);
 
 /**
  */
@@ -79,7 +79,7 @@ slope_item_notify_appearence_change (slope_item_t *item);
 /**
  */
 slope_public void
-slope_item_notify_item_change (slope_item_t *item);
+slope_item_notify_data_change (slope_item_t *item);
 
 __SLOPE_END_DECLS
 

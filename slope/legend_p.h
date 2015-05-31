@@ -48,10 +48,9 @@ void __slope_legend_draw (slope_item_t *legend, cairo_t *cr,
 
 /**
  */
-void __slope_legend_eval_geometry (slope_item_t *legend,
+void __slope_legend_eval_geometry (slope_item_t *legend, cairo_t *cr,
                                    const slope_metrics_t *metrics);
 
 __SLOPE_END_DECLS
 
 #endif /*__SLOPE_LEGEND_P_H */
-

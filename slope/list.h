@@ -33,7 +33,7 @@ typedef struct _slope_list slope_list_t;
  * @return an untyped pointer to the data pointed to by iter
  */
 slope_public void*
-slope_iterator_data (slope_iterator_t *iter);
+slope_iterator_data (const slope_iterator_t *iter);
 
 /**
  * Moves the iterator to the next position
@@ -72,21 +72,21 @@ slope_list_destroy (slope_list_t *list);
  * @return an iterator pointing to the first element
  */
 slope_public slope_iterator_t*
-slope_list_first (slope_list_t *list);
+slope_list_first (const slope_list_t *list);
 
 /**
  * Access the iterator for the last element
  * @return an iterator pointing to the last element
  */
 slope_public slope_iterator_t*
-slope_list_last (slope_list_t *list);
+slope_list_last (const slope_list_t *list);
 
 /**
  * Access the size (element number) of the last
  * @return the size of the string
  */
 slope_public int
-slope_list_size (slope_list_t *list);
+slope_list_size (const slope_list_t *list);
 
 /**
  * Removes the element pointed to by iterator pos

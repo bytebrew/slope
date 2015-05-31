@@ -35,12 +35,12 @@ __SLOPE_BEGIN_DECLS
 
 /**
  */
-typedef struct _SlopeView       SlopeView;
+typedef struct _SlopeView SlopeView;
 
 
 /**
  */
-typedef struct _SlopeViewClass  SlopeViewClass;
+typedef struct _SlopeViewClass SlopeViewClass;
 
 
 /**
@@ -61,12 +61,19 @@ struct _SlopeViewClass
 
 /**
  */
-GType slope_view_get_type(void) G_GNUC_CONST;
+slope_public GType
+slope_view_get_type(void) G_GNUC_CONST;
 
 
 /**
  */
-GtkWidget *slope_view_new(void);
+slope_public GtkWidget* slope_view_new (void);
+
+
+/**
+ */
+slope_public GtkWidget*
+slope_view_new_for_figure (slope_figure_t *figure);
 
 
 __SLOPE_END_DECLS

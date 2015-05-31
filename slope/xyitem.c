@@ -96,7 +96,7 @@ void slope_xyitem_set (slope_item_t *item,
     slope_color_set_name(&self->color, __slope_item_parse_color(fmt));
     self->scatter = __slope_item_parse_scatter(fmt);
     __slope_xyitem_check_ranges(item);
-    slope_item_notify_item_change(item);
+    slope_item_notify_data_change(item);
 }
 
 
@@ -109,7 +109,7 @@ void slope_xyitem_set_item (slope_item_t *item,
     self->vy = vy;
     self->n = n;
     __slope_xyitem_check_ranges(item);
-    slope_item_notify_item_change(item);
+    slope_item_notify_data_change(item);
 }
 
 
