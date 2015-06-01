@@ -16,7 +16,7 @@ top level source repository.
 ![](https://github.com/exocode/slope/blob/master/figure.png)
 
 Slope's basic usage is: create a **slope_figure_t**, add one or more **slope_metrics_t**
-to it and add some **slope_item_t** to the metrics, then use function **slope_scene_draw()**
+to it and add some **slope_item_t** to the metrics, then use function **slope_figure_draw()**
 to stroke the resulting chart via a **cairo_t**.
 
 Contributions to slope are welcome, propose your's to elvismtt@gmail.com
