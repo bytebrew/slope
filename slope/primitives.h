@@ -25,6 +25,13 @@
 
 __SLOPE_BEGIN_DECLS
 
+/**
+ * \defgroup Utils
+ * \ingroup Utils
+ *
+ * Functions are of global interest used through the library
+ */
+
 #define SLOPE_FALSE 0
 #define SLOPE_TRUE  1
 
