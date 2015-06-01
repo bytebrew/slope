@@ -64,11 +64,6 @@ void __slope_item_draw_thumb (slope_item_t *item,
 
 /**
  */
-int __slope_item_get_has_thumb (const slope_item_t *item);
-
-
-/**
- */
 int __slope_item_parse_color (const char *fmt);
 
 

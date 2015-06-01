@@ -35,6 +35,7 @@ slope_item_class_t* __slope_xyitem_get_class()
     if (first_call) {
         klass.destroy_fn = NULL;
         klass.draw_fn = __slope_xyitem_draw;
+        klass.draw_thumb_fn = __slope_xyitem_draw_thumb;
         first_call = SLOPE_FALSE;
     }
 
@@ -309,6 +310,42 @@ void __slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
             x1 = x2;
             y1 = y2;
         }
+    }
+    cairo_stroke(cr);
+}
+
+
+void __slope_xyitem_draw_thumb (slope_item_t *item,
+                                const slope_point_t *pos, cairo_t *cr)
+{
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    
+    slope_cairo_set_color(cr, &self->color);
+    if (self->antialias) {
+        cairo_set_antialias(
+            cr, CAIRO_ANTIALIAS_SUBPIXEL);
+    }
+    else {
+        cairo_set_antialias(
+            cr, CAIRO_ANTIALIAS_NONE);
+    }
+    cairo_set_line_width(cr,self->line_width);
+    
+    switch (self->scatter) {
+        case SLOPE_LINE:
+            cairo_move_to(cr, pos->x - 10.0, pos->y - 4.0);
+            cairo_line_to(cr, pos->x + 10.0, pos->y - 4.0);
+            cairo_move_to(cr, pos->x + 17.0, pos->y);
+            cairo_show_text(cr, item->name);
+            break;
+        case SLOPE_PLUSSES:
+            cairo_move_to(cr, pos->x - SYMBRAD, pos->y - 4.0);
+            cairo_line_to(cr, pos->x + SYMBRAD, pos->y - 4.0);
+            cairo_move_to(cr, pos->x , pos->y - SYMBRAD - 4.0);
+            cairo_line_to(cr, pos->x , pos->y + SYMBRAD - 4.0);
+            cairo_move_to(cr, pos->x + 17.0, pos->y);
+            cairo_show_text(cr, item->name);
+            break;
     }
     cairo_stroke(cr);
 }

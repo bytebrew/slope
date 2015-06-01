@@ -33,6 +33,7 @@ slope_item_class_t* __slope_xyaxis_get_class()
     if (first_call) {
         klass.destroy_fn = NULL;
         klass.draw_fn = __slope_xyaxis_draw;
+        klass.draw_thumb_fn = NULL;
         first_call = SLOPE_FALSE;
     }
 

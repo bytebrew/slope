@@ -81,7 +81,7 @@ void slope_item_set_name (slope_item_t *item, const char *name)
 }
 
 
-int __slope_item_get_has_thumb (const slope_item_t *item)
+int slope_item_get_has_thumb (const slope_item_t *item)
 {
     if (item == NULL) return SLOPE_FALSE;
     return item->has_thumb;

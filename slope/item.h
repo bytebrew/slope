@@ -63,6 +63,10 @@ slope_item_set_name (slope_item_t *item, const char *name);
 
 /**
  */
+int slope_item_get_has_thumb (const slope_item_t *item);
+
+/**
+ */
 slope_public slope_metrics_t*
 slope_item_get_metrics (const slope_item_t *item);
 

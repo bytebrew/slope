@@ -34,6 +34,7 @@ slope_item_class_t* __slope_legend_get_class()
     if (first_call) {
         klass.destroy_fn = NULL;
         klass.draw_fn = __slope_legend_draw;
+        klass.draw_thumb_fn = NULL;
         first_call = SLOPE_FALSE;
     }
 
@@ -48,10 +49,11 @@ slope_item_t* slope_legend_create ()
 
     parent->klass = __slope_legend_get_class();
     parent->visible = SLOPE_TRUE;
+    parent->has_thumb = SLOPE_FALSE;
     legend->position = SLOPE_LEGEND_TOPRIGHT;
 
     slope_color_set_name(&legend->fill_color, SLOPE_WHITE);
-    slope_color_set_name(&legend->stroke_color, SLOPE_BLACK);
+    slope_color_set_name(&legend->stroke_color, SLOPE_WHITE);
     
     return parent;
 }
@@ -82,9 +84,9 @@ void __slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
 
                 /* check if item is visible and has a legend thumb */
                 if (slope_item_get_visible(item) == SLOPE_FALSE
-                    || __slope_item_get_has_thumb(item) == SLOPE_FALSE) {
-                        slope_iterator_next(&item_iter);
-                        continue;
+                || slope_item_get_has_thumb(item) == SLOPE_FALSE) {
+                    slope_iterator_next(&item_iter);
+                    continue;
                 }
                 
                 /* increment height and check for bigger width */
@@ -135,8 +137,9 @@ void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
     cairo_stroke(cr);
     
     /* finaly draw the legend entries */
-    const double x = self->rect.x + 35.0;
-    double y = self->rect.y;
+    slope_point_t entry_pos;
+    entry_pos.x = self->rect.x + 15.0;
+    entry_pos.y = self->rect.y;
     
     slope_iterator_t *met_iter = slope_list_first(
         slope_figure_get_metrics_list(figure));
@@ -154,18 +157,17 @@ void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
             
             /* check if item is visible and has a legend thumb */
             if (slope_item_get_visible(item) == SLOPE_FALSE
-                || __slope_item_get_has_thumb(item) == SLOPE_FALSE) {
-                    slope_iterator_next(&item_iter);
-                    continue;
+            || slope_item_get_has_thumb(item) == SLOPE_FALSE) {
+                slope_iterator_next(&item_iter);
+                continue;
             }
 
             /* position pen and delegate entry drawing to the item */
             cairo_text_extents_t txt_ext;
             cairo_text_extents(cr, entry, &txt_ext);
-            y += txt_ext.height + 4.0;
-            cairo_move_to(cr, x, y);
-            cairo_show_text(cr, entry);
-            
+            entry_pos.y += txt_ext.height + 4.0;
+            __slope_item_draw_thumb(item, &entry_pos, cr);
+
             slope_iterator_next(&item_iter);
         }
         slope_iterator_next(&met_iter);
