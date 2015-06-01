@@ -79,11 +79,18 @@ void __slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
         while (item_iter) {
             slope_item_t *item = (slope_item_t*)
                 slope_iterator_data(item_iter);
+
+                /* check if item is visible and has a legend thumb */
+                if (slope_item_get_visible(item) == SLOPE_FALSE
+                    || __slope_item_get_has_thumb(item) == SLOPE_FALSE) {
+                        slope_iterator_next(&item_iter);
+                        continue;
+                }
                 
+                /* increment height and check for bigger width */
                 cairo_text_extents_t txt_ext;
                 cairo_text_extents(cr, slope_item_get_name(item), &txt_ext);
-                
-                self->rect.height += txt_ext.height;
+                self->rect.height += txt_ext.height + 4.0;
                 if (txt_ext.width > max_width) max_width = txt_ext.width;
                 
             slope_iterator_next(&item_iter);
@@ -97,11 +104,11 @@ void __slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
     switch (self->position) {
         case SLOPE_LEGEND_TOPRIGHT:
             self->rect.x = metrics->xmax_figure - self->rect.width - 10.0;
-            self->rect.y = metrics->ymin_figure + 15.0;
+            self->rect.y = metrics->ymin_figure + 10.0;
             break;
         default: /* TOPRIGHT */
             self->rect.x = metrics->xmax_figure - self->rect.width - 10.0;
-            self->rect.y = metrics->ymin_figure + 15.0;
+            self->rect.y = metrics->ymin_figure + 10.0;
             break;
     }
 }
@@ -129,7 +136,7 @@ void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
     
     /* finaly draw the legend entries */
     const double x = self->rect.x + 35.0;
-    double y = self->rect.y + 5.0;
+    double y = self->rect.y;
     
     slope_iterator_t *met_iter = slope_list_first(
         slope_figure_get_metrics_list(figure));
@@ -145,9 +152,17 @@ void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
                 slope_iterator_data(item_iter);
             const char *entry = slope_item_get_name(item);
             
+            /* check if item is visible and has a legend thumb */
+            if (slope_item_get_visible(item) == SLOPE_FALSE
+                || __slope_item_get_has_thumb(item) == SLOPE_FALSE) {
+                    slope_iterator_next(&item_iter);
+                    continue;
+            }
+
+            /* position pen and delegate entry drawing to the item */
             cairo_text_extents_t txt_ext;
             cairo_text_extents(cr, entry, &txt_ext);
-            y += txt_ext.height;
+            y += txt_ext.height + 4.0;
             cairo_move_to(cr, x, y);
             cairo_show_text(cr, entry);
             
@@ -159,3 +174,4 @@ void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
 }
 
 /* slope/legend.c */
+

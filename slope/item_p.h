@@ -34,8 +34,9 @@ struct _slope_item_class
 {
     void (*destroy_fn) (slope_item_t*);
 
-    void (*draw_fn) (slope_item_t*, cairo_t*,
-                     const slope_metrics_t*);
+    void (*draw_fn) (slope_item_t*, cairo_t*, const slope_metrics_t*);
+
+    void (*draw_thumb_fn) (slope_item_t*, const slope_point_t*, cairo_t*);
 };
 
 /**
@@ -54,9 +55,22 @@ struct _slope_item
 void __slope_item_draw (slope_item_t *item, cairo_t *cr,
                         const slope_metrics_t *metrics);
 
+
+/**
+ */
+void __slope_item_draw_thumb (slope_item_t *item,
+                              const slope_point_t *pos, cairo_t *cr);
+
+
+/**
+ */
+int __slope_item_get_has_thumb (const slope_item_t *item);
+
+
 /**
  */
 int __slope_item_parse_color (const char *fmt);
+
 
 /**
  */

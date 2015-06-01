@@ -81,10 +81,24 @@ void slope_item_set_name (slope_item_t *item, const char *name)
 }
 
 
+int __slope_item_get_has_thumb (const slope_item_t *item)
+{
+    if (item == NULL) return SLOPE_FALSE;
+    return item->has_thumb;
+}
+
+
 void __slope_item_draw (slope_item_t *item, cairo_t *cr,
                         const slope_metrics_t *metrics)
 {
     (*item->klass->draw_fn)(item, cr, metrics);
+}
+
+
+void __slope_item_draw_thumb (slope_item_t *item,
+                              const slope_point_t *pos, cairo_t *cr)
+{
+    (*item->klass->draw_thumb_fn)(item, pos, cr);
 }
 
 
