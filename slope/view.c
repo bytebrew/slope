@@ -33,6 +33,18 @@ on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data);
 
 
 /**
+ */
+static gboolean
+on_button_press_event (GtkWidget *widget, GdkEventButton *event, gpointer *data);
+
+
+/**
+ */
+static gboolean
+on_button_move_event (GtkWidget *widget, GdkEventButton *event, gpointer *data);
+
+
+/**
 */
 typedef struct _SlopeViewPrivate SlopeViewPrivate;
 
@@ -42,6 +54,9 @@ typedef struct _SlopeViewPrivate SlopeViewPrivate;
 struct _SlopeViewPrivate
 {
     slope_figure_t *figure;
+    slope_point_t move_start;
+    slope_point_t move_end;
+    int on_move;
 };
 
 
@@ -58,7 +73,23 @@ slope_view_class_init(SlopeViewClass *klass)
 static void
 slope_view_init(SlopeView *view)
 {
-    g_signal_connect(G_OBJECT(view), "draw", G_CALLBACK(on_draw_event), NULL);
+    SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (view);
+    GtkWidget *widget = GTK_WIDGET (view);
+
+    priv->on_move = SLOPE_FALSE;
+
+    gtk_widget_add_events(widget,
+                          GDK_EXPOSURE_MASK
+                          |GDK_BUTTON_MOTION_MASK
+                          |GDK_BUTTON_PRESS_MASK
+                          |GDK_BUTTON_RELEASE_MASK);
+
+    g_signal_connect(G_OBJECT(view), "draw",
+                     G_CALLBACK(on_draw_event), NULL);
+    g_signal_connect(G_OBJECT(view), "button-press-event",
+                     G_CALLBACK(on_button_press_event), NULL);
+    g_signal_connect(G_OBJECT(view), "motion-notify-event",
+                     G_CALLBACK(on_button_move_event), NULL);
 }
 
 
@@ -96,4 +127,39 @@ on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data)
     return TRUE;
 }
 
+
+/**
+ */
+static gboolean
+on_button_press_event (GtkWidget *widget, GdkEventButton *event, gpointer *data)
+{
+    SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
+
+    if (event->button == 1 /*left button*/) {
+        priv->move_start.x = event->x;
+        priv->move_start.y = event->y;
+        priv->move_end.x = event->x;
+        priv->move_end.y = event->y;
+        priv->on_move = SLOPE_TRUE;
+    }
+    return TRUE;
+}
+
+
+/**
+ */
+static gboolean
+on_button_move_event (GtkWidget *widget, GdkEventButton *event, gpointer *data)
+{
+    SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
+    
+    if (event->button == 1 /*left button*/) {
+        priv->move_end.x = event->x;
+        priv->move_end.y = event->y;
+        gtk_widget_queue_draw(widget);
+    }
+    return TRUE;
+}
+
 /* slope/view.c */
+
