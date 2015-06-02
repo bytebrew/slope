@@ -54,6 +54,12 @@ slope_metrics_add_item (slope_metrics_t *metrics,
 
 /**
  */
+slope_public void
+slope_metrics_remove_item (slope_metrics_t *metrics,
+                           slope_item_t *item);
+
+/**
+ */
 slope_public slope_list_t*
 slope_metrics_get_item_list (const slope_metrics_t *metrics);
 

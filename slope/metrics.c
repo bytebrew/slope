@@ -84,6 +84,31 @@ void slope_metrics_add_item (slope_metrics_t *metrics,
     metrics->item_list = slope_list_append(
         metrics->item_list, item);
     slope_metrics_update(metrics);
+    slope_figure_notify_appearence_change(metrics->figure);
+}
+
+
+void slope_metrics_remove_item (slope_metrics_t *metrics,
+                                slope_item_t *item)
+{
+    if (metrics == NULL || item == NULL) {
+        return;
+    }
+    int change = SLOPE_FALSE;
+    slope_iterator_t *iter = slope_list_first(metrics->item_list);
+    while (iter) {
+        slope_item_t *curr_item = (slope_item_t*) slope_iterator_data(iter);
+        if (curr_item == item) {
+            iter = slope_list_remove(metrics->item_list, iter);
+            change = SLOPE_TRUE;
+        } else {
+            slope_iterator_next(&iter);
+        }
+    }
+    if (change) {
+        slope_metrics_update(metrics);
+        slope_figure_notify_appearence_change(metrics->figure);
+    }
 }
 
 

@@ -75,6 +75,12 @@ slope_figure_write_to_pdf(slope_figure_t *figure,
 
 /**
  */
+slope_public slope_metrics_t*
+slope_figure_get_default_metrics (slope_figure_t *figure);
+
+
+/**
+ */
 slope_public void
 slope_figure_set_change_callback (slope_figure_t *figure,
                                   slope_callback_t callback);

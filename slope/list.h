@@ -122,4 +122,3 @@ slope_list_remove (slope_list_t *list,
 __SLOPE_END_DECLS
 
 #endif /*__SLOPE_LIST_H */
-

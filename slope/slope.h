@@ -41,7 +41,7 @@ slope_chart_create (const char *title,
 slope_public void
 slope_chart_destroy (slope_figure_t *figure);
 
-slope_public void
+slope_public slope_item_t*
 slope_chart_add_plot (slope_figure_t *chart,
                       const double *x, const double *y, int n,
                       const char *title, const char *fmt);

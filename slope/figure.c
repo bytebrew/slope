@@ -213,6 +213,13 @@ int slope_figure_write_to_pdf (slope_figure_t *figure,
 }
 
 
+slope_metrics_t* slope_figure_get_default_metrics (slope_figure_t *figure)
+{
+    if (figure == NULL) return NULL;
+    return figure->default_metrics;
+}
+
+
 void slope_figure_set_change_callback (slope_figure_t *figure,
                                        slope_callback_t callback)
 {
