@@ -53,7 +53,7 @@ slope_item_t* slope_legend_create ()
     legend->position = SLOPE_LEGEND_TOPRIGHT;
 
     slope_color_set_name(&legend->fill_color, SLOPE_WHITE);
-    slope_color_set_name(&legend->stroke_color, SLOPE_WHITE);
+    slope_color_set_name(&legend->stroke_color, SLOPE_BLACK);
     
     return parent;
 }

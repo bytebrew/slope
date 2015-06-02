@@ -333,20 +333,23 @@ void __slope_xyitem_draw_thumb (slope_item_t *item,
     
     switch (self->scatter) {
         case SLOPE_LINE:
-            cairo_move_to(cr, pos->x - 10.0, pos->y - 4.0);
-            cairo_line_to(cr, pos->x + 10.0, pos->y - 4.0);
-            cairo_move_to(cr, pos->x + 17.0, pos->y);
-            cairo_show_text(cr, item->name);
+            cairo_move_to(cr, pos->x - 10.0, pos->y - 3.0);
+            cairo_line_to(cr, pos->x + 10.0, pos->y - 3.0);
             break;
+        case SLOPE_CIRCLES:
+            cairo_move_to(cr, pos->x + SYMBRAD, pos->y - SYMBRAD);
+            cairo_arc(cr, pos->x, pos->y - SYMBRAD, SYMBRAD, 0.0, 6.283185);
+            cairo_fill(cr);
         case SLOPE_PLUSSES:
-            cairo_move_to(cr, pos->x - SYMBRAD, pos->y - 4.0);
-            cairo_line_to(cr, pos->x + SYMBRAD, pos->y - 4.0);
-            cairo_move_to(cr, pos->x , pos->y - SYMBRAD - 4.0);
-            cairo_line_to(cr, pos->x , pos->y + SYMBRAD - 4.0);
-            cairo_move_to(cr, pos->x + 17.0, pos->y);
-            cairo_show_text(cr, item->name);
+            cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
+            cairo_move_to(cr, pos->x - SYMBRAD, pos->y - SYMBRAD);
+            cairo_line_to(cr, pos->x + SYMBRAD, pos->y - SYMBRAD);
+            cairo_move_to(cr, pos->x , pos->y - SYMBRAD - SYMBRAD);
+            cairo_line_to(cr, pos->x , pos->y + SYMBRAD - SYMBRAD);
             break;
     }
+    cairo_move_to(cr, pos->x + 17.0, pos->y);
+    cairo_show_text(cr, item->name);
     cairo_stroke(cr);
 }
 
