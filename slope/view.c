@@ -154,8 +154,8 @@ on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data)
 }
 
 
-static gboolean
-on_button_press_event (GtkWidget *widget, GdkEventButton *event, gpointer *data)
+static gboolean on_button_press_event (GtkWidget *widget,
+                                       GdkEventButton *event, gpointer *data)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
 
@@ -174,8 +174,8 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event, gpointer *data)
 }
 
 
-static gboolean
-on_button_move_event (GtkWidget *widget, GdkEventButton *event, gpointer *data)
+static gboolean on_button_move_event (GtkWidget *widget,
+                                      GdkEventButton *event, gpointer *data)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
     
@@ -188,8 +188,8 @@ on_button_move_event (GtkWidget *widget, GdkEventButton *event, gpointer *data)
 }
 
 
-static gboolean
-on_button_release_event (GtkWidget *widget, GdkEventButton *event, gpointer *data)
+static gboolean on_button_release_event (GtkWidget *widget,
+                                         GdkEventButton *event, gpointer *data)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
     
@@ -197,7 +197,17 @@ on_button_release_event (GtkWidget *widget, GdkEventButton *event, gpointer *dat
         priv->on_move = SLOPE_FALSE;
         priv->move_end.x = event->x;
         priv->move_end.y = event->y;
+        
+        /* if the region is too small, the user probably just
+           clicked on a point, no region to track */
+        double width = priv->move_start.x - priv->move_end.x;
+        double height = priv->move_start.y - priv->move_end.y;
+        if (width < 0.0) width = -width;
+        if (width < 3.0) return;
+        if (height < 0.0) height = -height;
+        if (height < 3.0) return;
 
+        /* if a good region was selected, let's track it! */
         slope_figure_track_region(
             priv->figure,
             priv->move_start.x, priv->move_start.y,
