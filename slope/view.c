@@ -18,7 +18,6 @@
  */
 
 #include "slope/view.h"
-#include <stdio.h>
 
 
 #define SLOPE_VIEW_PRIVATE(obj)          \
@@ -132,10 +131,13 @@ on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data)
     slope_rect_t rect;
     width = gtk_widget_get_allocated_width(widget);
     height = gtk_widget_get_allocated_height(widget);
-    
-        slope_rect_set(&rect, 0.0, 0.0, (double)width, (double)height);
-        slope_figure_t *figure = priv->figure;
-        slope_figure_draw(figure, cr, &rect);
+
+    /* TODO: save figure in back_surf instead of recalculate
+     * everithing for each zooming redraw
+     */
+    slope_rect_set(&rect, 0.0, 0.0, (double)width, (double)height);
+    slope_figure_t *figure = priv->figure;
+    slope_figure_draw(figure, cr, &rect);
         
     if (priv->on_move) {
         slope_cairo_set_color(cr, &priv->mouse_rec_color);
