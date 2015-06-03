@@ -42,6 +42,7 @@ struct _slope_metrics_class
 struct _slope_metrics
 {
     slope_metrics_class_t *klass;
+    slope_metrics_type_t type;
     slope_figure_t *figure;
     slope_list_t *item_list;
     /* boundary between item image and figure frontier */

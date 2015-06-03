@@ -61,23 +61,28 @@ slope_figure_write_to_png (slope_figure_t *figure,
 /**
  */
 slope_public int
-slope_figure_write_to_svg(slope_figure_t *figure,
+slope_figure_write_to_svg (slope_figure_t *figure,
+                           const char *filename,
+                           int width, int height);
+
+/**
+ */
+slope_public int
+slope_figure_write_to_pdf (slope_figure_t *figure,
+                           const char *filename,
+                           int width, int height);
+
+/**
+ */
+slope_public int
+slope_figure_write_to_ps (slope_figure_t *figure,
                           const char *filename,
                           int width, int height);
 
 /**
  */
-slope_public int
-slope_figure_write_to_pdf(slope_figure_t *figure,
-                          const char *filename,
-                          slope_paper_size_t paper_size,
-                          slope_paper_orientation_t orientation);
-
-/**
- */
 slope_public slope_metrics_t*
 slope_figure_get_default_metrics (slope_figure_t *figure);
-
 
 /**
  */
@@ -96,6 +101,18 @@ slope_figure_notify_appearence_change (slope_figure_t *figure,
 slope_public void
 slope_figure_notify_data_change (slope_figure_t *figure,
                                  slope_item_t *item);
+
+/**
+ */
+slope_public void
+slope_figure_track_region (slope_figure_t *figure,
+                           double x1, double y1,
+                           double x2, double y2);
+
+/**
+ */
+slope_public void
+slope_figure_update (slope_figure_t *figure);
 
 __SLOPE_END_DECLS
 

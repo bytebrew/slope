@@ -26,9 +26,7 @@
 
 void slope_metrics_destroy (slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return;
-    }
+    if (metrics == NULL) return;
     if (metrics->klass->destroy_fn) {
         (*metrics->klass->destroy_fn)(metrics);
     }
@@ -39,28 +37,29 @@ void slope_metrics_destroy (slope_metrics_t *metrics)
 
 int slope_metrics_get_visible (const slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return SLOPE_FALSE;
-    }
+    if (metrics == NULL) return SLOPE_FALSE;
     return metrics->visible;
+}
+
+
+slope_metrics_type_t slope_metrics_get_type (slope_metrics_t *metrics)
+{
+    if (metrics == NULL) return SLOPE_METRICS_INVALID;
+    return metrics->type;
 }
 
 
 void slope_metrics_set_visible (slope_metrics_t *metrics,
                                 int visible)
 {
-    if (metrics == NULL) {
-        return;
-    }
+    if (metrics == NULL) return;
     metrics->visible = visible;
 }
 
 
 void slope_metrics_update (slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return;
-    }
+    if (metrics == NULL) return;
     if (metrics->klass->update_fn) {
         (*metrics->klass->update_fn)(metrics);
     }
@@ -114,18 +113,14 @@ void slope_metrics_remove_item (slope_metrics_t *metrics,
 
 slope_list_t* slope_metrics_get_item_list (const slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return NULL;
-    }
+    if (metrics == NULL) return NULL;
     return metrics->item_list;
 }
 
 
 slope_figure_t* slope_metrics_get_figure (const slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return NULL;
-    }
+    if (metrics == NULL) return NULL;
     return metrics->figure;
 }
 

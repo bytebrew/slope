@@ -25,6 +25,15 @@
 
 __SLOPE_BEGIN_DECLS
 
+
+typedef enum _slope_metrics_type
+{
+    SLOPE_METRICS_INVALID = 0,
+    SLOPE_XYMETRICS       = 1
+}
+slope_metrics_type_t;
+
+
 /**
  */
 slope_public void
@@ -40,6 +49,11 @@ slope_metrics_get_visible (const slope_metrics_t *metrics);
 slope_public void
 slope_metrics_set_visible (slope_metrics_t *metrics,
                            int visible);
+
+/**
+ */
+slope_public slope_metrics_type_t
+slope_metrics_get_type (slope_metrics_t *metrics);
 
 /**
  */

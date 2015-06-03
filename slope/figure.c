@@ -19,6 +19,7 @@
 
 #include "slope/figure_p.h"
 #include "slope/metrics_p.h"
+#include "slope/xymetrics.h"
 #include "slope/legend_p.h"
 #include "slope/item.h"
 #include "slope/list.h"
@@ -26,6 +27,7 @@
 #include <cairo.h>
 #include <cairo-svg.h>
 #include <cairo-pdf.h>
+#include <cairo-ps.h>
 
 
 slope_figure_t* slope_figure_create()
@@ -148,54 +150,31 @@ int slope_figure_write_to_svg (slope_figure_t *figure,
 
 int slope_figure_write_to_pdf (slope_figure_t *figure,
                                const char *filename,
-                               slope_paper_size_t paper_size,
-                               slope_paper_orientation_t orientation)
+                               int width, int height)
 {
-    int width, height;
-    
-    switch (paper_size)
-    {
-        case SLOPE_PAPER_SIZE_A0:
-            width = 2384;
-            height = 3371;
-            break;
-        case SLOPE_PAPER_SIZE_A1:
-            width = 1685;
-            height = 2384;
-            break;
-        case SLOPE_PAPER_SIZE_A2:
-            width = 1190;
-            height = 1684;
-            break;
-        case SLOPE_PAPER_SIZE_A3:
-            width = 842;
-            height = 1190;
-            break;
-        case SLOPE_PAPER_SIZE_A4:
-            width = 595;
-            height = 842;
-            break;
-        case SLOPE_PAPER_SIZE_LETTER:
-            width = 612;
-            height = 792;
-            break;
-        case SLOPE_PAPER_SIZE_B4:
-            width = 420;
-            height = 595;
-            break;
-        case SLOPE_PAPER_SIZE_B5:
-            width = 516;
-            height = 729;
-            break;
-    }
-    if (orientation == SLOPE_PAPER_ORIENTATION_LANDSCAPE)
-    {
-        int tmp = width;
-        width = height;
-        height = tmp;
-    }
-    
     cairo_surface_t *surf = cairo_pdf_surface_create(
+        filename, width, height);
+    
+    if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS)
+        return SLOPE_ERROR;
+    
+    cairo_t *cr = cairo_create(surf);
+    slope_rect_t rect;
+    slope_rect_set(&rect, 0.0, 0.0, width, height);
+    slope_figure_draw(figure, cr, &rect);
+    
+    cairo_destroy(cr);
+    cairo_surface_destroy(surf);
+    
+    return SLOPE_SUCCESS;
+}
+
+
+int slope_figure_write_to_ps (slope_figure_t *figure,
+                              const char *filename,
+                              int width, int height)
+{
+    cairo_surface_t *surf = cairo_ps_surface_create(
         filename, width, height);
     
     if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS)
@@ -252,5 +231,59 @@ void slope_figure_notify_data_change (slope_figure_t *figure,
     }
 }
 
-/* slope/figure.h */
 
+void slope_figure_track_region (slope_figure_t *figure,
+                                double x1, double y1,
+                                double x2, double y2)
+{
+    if (figure == NULL) return;
+    
+    if (x2 < x1) {
+        double tmp = x2;
+        x2 = x1;
+        x1 = tmp;
+    }
+    if (y2 > y1) {
+        double tmp = y2;
+        y2 = y1;
+        y1 = tmp;
+    }
+    
+    slope_iterator_t *metr_iter =
+        slope_list_first(figure->metrics);
+    while (metr_iter) {
+        slope_metrics_t *metrics =
+            slope_iterator_data(metr_iter);
+        
+        /* cartesian coordinates (xymetrics) */
+        if (slope_metrics_get_type(metrics) == SLOPE_XYMETRICS) {
+            slope_xymetrics_set_x_range(metrics,
+                slope_xymetrics_unmap_x(metrics, x1),
+                slope_xymetrics_unmap_x(metrics, x2));
+            slope_xymetrics_set_y_range(metrics,
+                slope_xymetrics_unmap_y(metrics, y1),
+                slope_xymetrics_unmap_y(metrics, y2));
+        }
+
+        slope_iterator_next(&metr_iter);
+    }
+}
+
+
+void slope_figure_update (slope_figure_t *figure)
+{
+    if (figure == NULL) return;
+    
+    slope_iterator_t *metr_iter =
+    slope_list_first(figure->metrics);
+    while (metr_iter) {
+        slope_metrics_t *metrics =
+        slope_iterator_data(metr_iter);
+        if (slope_metrics_get_visible(metrics)) {
+            slope_metrics_update(metrics);
+        }
+        slope_iterator_next(&metr_iter);
+    }
+}
+
+/* slope/figure.h */

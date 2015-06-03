@@ -46,6 +46,7 @@ slope_metrics_t* slope_xymetrics_create()
     slope_metrics_t *metrics = (slope_metrics_t*) self;
 
     metrics->klass = __slope_xymetrics_get_class();
+    metrics->type = SLOPE_XYMETRICS;
     metrics->visible = SLOPE_TRUE;
     metrics->item_list = NULL;
     metrics->figure = NULL;
@@ -195,6 +196,22 @@ double slope_xymetrics_map_y (const slope_metrics_t *metrics, double y)
     const slope_xymetrics_t *self = (const slope_xymetrics_t*) metrics;
     double tmp = (y - self->ymin) /self->height;
     return metrics->ymax_figure - tmp*metrics->height_figure;
+}
+
+
+double slope_xymetrics_unmap_x (const slope_metrics_t *metrics, double x)
+{
+    const slope_xymetrics_t *self = (const slope_xymetrics_t*) metrics;
+    double tmp = (x - metrics->xmin_figure) /metrics->width_figure;
+    return self->xmin + tmp*self->width;
+}
+
+
+double slope_xymetrics_unmap_y (const slope_metrics_t *metrics, double y)
+{
+    const slope_xymetrics_t *self = (const slope_xymetrics_t*) metrics;
+    double tmp = (metrics->ymax_figure - y) /metrics->height_figure;
+    return self->ymin + tmp*self->height;
 }
 
 
