@@ -1,0 +1,150 @@
+\hypertarget{group__List}{\section{List}
+\label{group__List}\index{List@{List}}
+}
+
+
+Functions to create and manipulate linked lists of pointers Used to store and iterate over linked lists of pointers to slope's objects.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+slope\+\_\+public void $\ast$ \hyperlink{group__List_ga33ad9bae82e595e65a1ffe4bf7168a84}{slope\+\_\+iterator\+\_\+data} (const slope\+\_\+iterator\+\_\+t $\ast$iter)
+\begin{DoxyCompactList}\small\item\em Access the data pointed to by iter. \end{DoxyCompactList}\item 
+\hypertarget{group__List_gae0daa8d0f64b26df51cbae035578ca55}{slope\+\_\+public void \hyperlink{group__List_gae0daa8d0f64b26df51cbae035578ca55}{slope\+\_\+iterator\+\_\+next} (slope\+\_\+iterator\+\_\+t $\ast$$\ast$iter)}\label{group__List_gae0daa8d0f64b26df51cbae035578ca55}
+
+\begin{DoxyCompactList}\small\item\em Moves the iterator to the next position. \end{DoxyCompactList}\item 
+\hypertarget{group__List_ga32395735bd64e9e085a4e70ebaf96a1d}{slope\+\_\+public void \hyperlink{group__List_ga32395735bd64e9e085a4e70ebaf96a1d}{slope\+\_\+iterator\+\_\+previous} (slope\+\_\+iterator\+\_\+t $\ast$$\ast$iter)}\label{group__List_ga32395735bd64e9e085a4e70ebaf96a1d}
+
+\begin{DoxyCompactList}\small\item\em Moves the iterator to the previous position. \end{DoxyCompactList}\item 
+slope\+\_\+public \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$ \hyperlink{group__List_ga44d52be6db2e8321a4a81fb481212f54}{slope\+\_\+list\+\_\+append} (\hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em Appends an element to the end of the list. \end{DoxyCompactList}\item 
+slope\+\_\+public \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$ \hyperlink{group__List_ga770e1a1761295088a2e769f10c50e9e7}{slope\+\_\+list\+\_\+prepend} (\hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em Prepends an element to the begining of the list. \end{DoxyCompactList}\item 
+\hypertarget{group__List_gad1f8ec4bc7db2daff96765ed708437b2}{slope\+\_\+public void \hyperlink{group__List_gad1f8ec4bc7db2daff96765ed708437b2}{slope\+\_\+list\+\_\+destroy} (\hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list)}\label{group__List_gad1f8ec4bc7db2daff96765ed708437b2}
+
+\begin{DoxyCompactList}\small\item\em Destroys list. \end{DoxyCompactList}\item 
+slope\+\_\+public slope\+\_\+iterator\+\_\+t $\ast$ \hyperlink{group__List_ga7fbf15803b6c95dc32989a0d9170f145}{slope\+\_\+list\+\_\+first} (const \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list)
+\begin{DoxyCompactList}\small\item\em Access the iterator for the first element. \end{DoxyCompactList}\item 
+slope\+\_\+public slope\+\_\+iterator\+\_\+t $\ast$ \hyperlink{group__List_ga3b742a38cf861650f7b1a15ae038fac9}{slope\+\_\+list\+\_\+last} (const \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list)
+\begin{DoxyCompactList}\small\item\em Access the iterator for the last element. \end{DoxyCompactList}\item 
+slope\+\_\+public int \hyperlink{group__List_gadbc1b27be93a2a166071c14ebb008359}{slope\+\_\+list\+\_\+size} (const \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list)
+\begin{DoxyCompactList}\small\item\em Access the size (element number) of the last. \end{DoxyCompactList}\item 
+slope\+\_\+public slope\+\_\+iterator\+\_\+t $\ast$ \hyperlink{group__List_ga0066274727609b058da0b561743dc318}{slope\+\_\+list\+\_\+remove} (\hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list, slope\+\_\+iterator\+\_\+t $\ast$pos)
+\begin{DoxyCompactList}\small\item\em Removes the element pointed to by iterator pos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Functions to create and manipulate linked lists of pointers Used to store and iterate over linked lists of pointers to slope's objects. 
+
+\begin{DoxyAuthor}{Author}
+Elvis Teixeira 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+18 Jan 2015 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\hypertarget{group__List_ga33ad9bae82e595e65a1ffe4bf7168a84}{\index{List@{List}!slope\+\_\+iterator\+\_\+data@{slope\+\_\+iterator\+\_\+data}}
+\index{slope\+\_\+iterator\+\_\+data@{slope\+\_\+iterator\+\_\+data}!List@{List}}
+\subsubsection[{slope\+\_\+iterator\+\_\+data}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public void$\ast$ slope\+\_\+iterator\+\_\+data (
+\begin{DoxyParamCaption}
+\item[{const slope\+\_\+iterator\+\_\+t $\ast$}]{iter}
+\end{DoxyParamCaption}
+)}}\label{group__List_ga33ad9bae82e595e65a1ffe4bf7168a84}
+
+
+Access the data pointed to by iter. 
+
+\begin{DoxyReturn}{Returns}
+an untyped pointer to the data pointed to by iter 
+\end{DoxyReturn}
+\hypertarget{group__List_ga44d52be6db2e8321a4a81fb481212f54}{\index{List@{List}!slope\+\_\+list\+\_\+append@{slope\+\_\+list\+\_\+append}}
+\index{slope\+\_\+list\+\_\+append@{slope\+\_\+list\+\_\+append}!List@{List}}
+\subsubsection[{slope\+\_\+list\+\_\+append}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public {\bf slope\+\_\+list\+\_\+t}$\ast$ slope\+\_\+list\+\_\+append (
+\begin{DoxyParamCaption}
+\item[{{\bf slope\+\_\+list\+\_\+t} $\ast$}]{list, }
+\item[{void $\ast$}]{data}
+\end{DoxyParamCaption}
+)}}\label{group__List_ga44d52be6db2e8321a4a81fb481212f54}
+
+
+Appends an element to the end of the list. 
+
+\begin{DoxyReturn}{Returns}
+the newly allocated list 
+\end{DoxyReturn}
+\hypertarget{group__List_ga7fbf15803b6c95dc32989a0d9170f145}{\index{List@{List}!slope\+\_\+list\+\_\+first@{slope\+\_\+list\+\_\+first}}
+\index{slope\+\_\+list\+\_\+first@{slope\+\_\+list\+\_\+first}!List@{List}}
+\subsubsection[{slope\+\_\+list\+\_\+first}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public slope\+\_\+iterator\+\_\+t$\ast$ slope\+\_\+list\+\_\+first (
+\begin{DoxyParamCaption}
+\item[{const {\bf slope\+\_\+list\+\_\+t} $\ast$}]{list}
+\end{DoxyParamCaption}
+)}}\label{group__List_ga7fbf15803b6c95dc32989a0d9170f145}
+
+
+Access the iterator for the first element. 
+
+\begin{DoxyReturn}{Returns}
+an iterator pointing to the first element 
+\end{DoxyReturn}
+\hypertarget{group__List_ga3b742a38cf861650f7b1a15ae038fac9}{\index{List@{List}!slope\+\_\+list\+\_\+last@{slope\+\_\+list\+\_\+last}}
+\index{slope\+\_\+list\+\_\+last@{slope\+\_\+list\+\_\+last}!List@{List}}
+\subsubsection[{slope\+\_\+list\+\_\+last}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public slope\+\_\+iterator\+\_\+t$\ast$ slope\+\_\+list\+\_\+last (
+\begin{DoxyParamCaption}
+\item[{const {\bf slope\+\_\+list\+\_\+t} $\ast$}]{list}
+\end{DoxyParamCaption}
+)}}\label{group__List_ga3b742a38cf861650f7b1a15ae038fac9}
+
+
+Access the iterator for the last element. 
+
+\begin{DoxyReturn}{Returns}
+an iterator pointing to the last element 
+\end{DoxyReturn}
+\hypertarget{group__List_ga770e1a1761295088a2e769f10c50e9e7}{\index{List@{List}!slope\+\_\+list\+\_\+prepend@{slope\+\_\+list\+\_\+prepend}}
+\index{slope\+\_\+list\+\_\+prepend@{slope\+\_\+list\+\_\+prepend}!List@{List}}
+\subsubsection[{slope\+\_\+list\+\_\+prepend}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public {\bf slope\+\_\+list\+\_\+t}$\ast$ slope\+\_\+list\+\_\+prepend (
+\begin{DoxyParamCaption}
+\item[{{\bf slope\+\_\+list\+\_\+t} $\ast$}]{list, }
+\item[{void $\ast$}]{data}
+\end{DoxyParamCaption}
+)}}\label{group__List_ga770e1a1761295088a2e769f10c50e9e7}
+
+
+Prepends an element to the begining of the list. 
+
+\begin{DoxyReturn}{Returns}
+the newly allocated list 
+\end{DoxyReturn}
+\hypertarget{group__List_ga0066274727609b058da0b561743dc318}{\index{List@{List}!slope\+\_\+list\+\_\+remove@{slope\+\_\+list\+\_\+remove}}
+\index{slope\+\_\+list\+\_\+remove@{slope\+\_\+list\+\_\+remove}!List@{List}}
+\subsubsection[{slope\+\_\+list\+\_\+remove}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public slope\+\_\+iterator\+\_\+t$\ast$ slope\+\_\+list\+\_\+remove (
+\begin{DoxyParamCaption}
+\item[{{\bf slope\+\_\+list\+\_\+t} $\ast$}]{list, }
+\item[{slope\+\_\+iterator\+\_\+t $\ast$}]{pos}
+\end{DoxyParamCaption}
+)}}\label{group__List_ga0066274727609b058da0b561743dc318}
+
+
+Removes the element pointed to by iterator pos. 
+
+\begin{DoxyReturn}{Returns}
+the next valid element, N\+U\+L\+L the list ended
+\end{DoxyReturn}
+Removes the element pointed to by iterator pos \hypertarget{group__List_gadbc1b27be93a2a166071c14ebb008359}{\index{List@{List}!slope\+\_\+list\+\_\+size@{slope\+\_\+list\+\_\+size}}
+\index{slope\+\_\+list\+\_\+size@{slope\+\_\+list\+\_\+size}!List@{List}}
+\subsubsection[{slope\+\_\+list\+\_\+size}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public int slope\+\_\+list\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{const {\bf slope\+\_\+list\+\_\+t} $\ast$}]{list}
+\end{DoxyParamCaption}
+)}}\label{group__List_gadbc1b27be93a2a166071c14ebb008359}
+
+
+Access the size (element number) of the last. 
+
+\begin{DoxyReturn}{Returns}
+the size of the string
+\end{DoxyReturn}
+Access the size (element number) of the last 

@@ -17,13 +17,21 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_METRICS_H
-#define __SLOPE_METRICS_H
+/**
+ * @file metrics.h
+ * @brief The base class for metrics objects
+ * 
+ * @defgroup Metrics
+ */
+
+
+#ifndef SLOPE_METRICS_H
+#define SLOPE_METRICS_H
 
 #include "slope/list.h"
 #include "slope/primitives.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 
 typedef enum _slope_metrics_type
@@ -82,6 +90,6 @@ slope_metrics_get_item_list (const slope_metrics_t *metrics);
 slope_public slope_figure_t*
 slope_metrics_get_figure (const slope_metrics_t *metrics);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_METRICS_H */
+#endif /*SLOPE_METRICS_H */

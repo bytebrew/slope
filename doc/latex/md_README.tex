@@ -1,0 +1,11 @@
+Slope is a free (L\+G\+P\+L) {\bfseries C} library that creates charts from numerical data. It's design principle is the following\+: {\bfseries T\+H\+E O\+N\+L\+Y D\+E\+P\+E\+N\+D\+E\+N\+C\+Y I\+S C\+A\+I\+R\+O}, and the {\bfseries A\+P\+I} is familiar to the users of cairo. Additionaly an alternative build provides a Gtk widget and some utilities so create simple chart windows and animations, such as real time data display. This build of course makes slope {\bfseries Gtk} dependent. The cairo only build will always be maintained.
+
+Slope is in it's early stages of development and still needs some optimization and polishing. Some accessor methods to objects properties are also absent. But here's what we already have\+: The following chart is the output of the test.\+c program in de top level source repository.
+
+
+
+Slope's basic usage is\+: create a {\bfseries slope\+\_\+figure\+\_\+t}, add one or more {\bfseries slope\+\_\+metrics\+\_\+t} to it and add some {\bfseries slope\+\_\+item\+\_\+t} to the metrics, then use function {\bfseries \hyperlink{group__Figure_ga386e261642ba2b0fdc39a550e3e94462}{slope\+\_\+figure\+\_\+draw()}} to stroke the resulting chart via a {\bfseries cairo\+\_\+t}.
+
+Contributions to slope are welcome, propose your's to \href{mailto:elvismtt@gmail.com}{\tt elvismtt@gmail.\+com}
+
+Special thanks to Remi Bertho (\href{mailto:remi.bertho@openmailbox.org}{\tt remi.\+bertho@openmailbox.\+org}) for his contributions 

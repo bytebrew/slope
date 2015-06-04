@@ -17,13 +17,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_LEGEND_P_H
-#define __SLOPE_LEGEND_P_H
+#ifndef SLOPE_LEGEND_P_H
+#define SLOPE_LEGEND_P_H
 
 #include "slope/legend.h"
 #include "slope/item_p.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 typedef struct _slope_legend slope_legend_t;
 
@@ -51,6 +51,6 @@ void __slope_legend_draw (slope_item_t *legend, cairo_t *cr,
 void __slope_legend_eval_geometry (slope_item_t *legend, cairo_t *cr,
                                    const slope_metrics_t *metrics);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_LEGEND_P_H */
+#endif /*SLOPE_LEGEND_P_H */

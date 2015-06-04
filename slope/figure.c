@@ -84,6 +84,11 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
     cairo_save(cr);
     slope_cairo_rectangle(cr, rect);
     cairo_clip(cr);
+    
+    cairo_select_font_face(cr, "Sans",
+        CAIRO_FONT_SLANT_NORMAL,
+        CAIRO_FONT_WEIGHT_NORMAL);
+    cairo_set_font_size(cr, 11);
 
     /* fill background if required */
     if (figure->fill_back) {
@@ -103,7 +108,6 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
         }
         slope_iterator_next(&met_iter);
     }
-    cairo_restore(cr);
 
     /* draw legend */
     slope_item_t *legend = figure->legend;
@@ -111,6 +115,7 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
         && figure->default_metrics != NULL) {
             __slope_legend_draw(legend, cr, figure->default_metrics);
     }
+    cairo_restore(cr);
 }
 
 

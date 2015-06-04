@@ -17,12 +17,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_DATA_P_H
-#define __SLOPE_DATA_P_H
+#ifndef SLOPE_DATA_P_H
+#define SLOPE_DATA_P_H
 
 #include "slope/item.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
@@ -71,7 +71,7 @@ int __slope_item_parse_color (const char *fmt);
  */
 int __slope_item_parse_scatter (const char *fmt);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_DATA_P_H */
+#endif /*SLOPE_DATA_P_H */
 

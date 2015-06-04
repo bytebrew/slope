@@ -17,8 +17,8 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_H
-#define __SLOPE_H
+#ifndef SLOPE_H
+#define SLOPE_H
 
 /* for figure object */
 #include "slope/figure.h"
@@ -46,5 +46,5 @@ slope_chart_add_plot (slope_figure_t *chart,
                       const double *x, const double *y, int n,
                       const char *title, const char *fmt);
 
-#endif /*__SLOPE_H */
+#endif /*SLOPE_H */
 

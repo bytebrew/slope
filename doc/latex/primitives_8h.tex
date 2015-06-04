@@ -1,0 +1,140 @@
+\hypertarget{primitives_8h}{\section{slope/primitives.h File Reference}
+\label{primitives_8h}\index{slope/primitives.\+h@{slope/primitives.\+h}}
+}
+{\ttfamily \#include \char`\"{}slope/global.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$cairo.\+h$>$}\\*
+Include dependency graph for primitives.\+h\+:
+This graph shows which files directly or indirectly include this file\+:
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__slope__point}{\+\_\+slope\+\_\+point}
+\item 
+struct \hyperlink{struct__slope__rect}{\+\_\+slope\+\_\+rect}
+\item 
+struct \hyperlink{struct__slope__color}{\+\_\+slope\+\_\+color}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__Primitives_gae6284087e258abab2709107da8deef10}{\#define \hyperlink{group__Primitives_gae6284087e258abab2709107da8deef10}{S\+L\+O\+P\+E\+\_\+\+F\+A\+L\+S\+E}~0}\label{group__Primitives_gae6284087e258abab2709107da8deef10}
+
+\begin{DoxyCompactList}\small\item\em The boolean false value. \end{DoxyCompactList}\item 
+\hypertarget{group__Primitives_gaf4724331c7139c35a340ef6c34d1d5b8}{\#define \hyperlink{group__Primitives_gaf4724331c7139c35a340ef6c34d1d5b8}{S\+L\+O\+P\+E\+\_\+\+T\+R\+U\+E}~1}\label{group__Primitives_gaf4724331c7139c35a340ef6c34d1d5b8}
+
+\begin{DoxyCompactList}\small\item\em The boolean true value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{typedef struct \hyperlink{struct__slope__figure}{\+\_\+slope\+\_\+figure} \hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t}}\label{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}
+
+\begin{DoxyCompactList}\small\item\em The figure type represents the final drawable of slopes architecture This is the final product os a user operation, it can dre drawn in any cairo backend like Gtk\+Widgets or one of many graphics file formats. \end{DoxyCompactList}\item 
+\hypertarget{group__Metrics_gab80787ee8ae8dc449e770249fe0e3c35}{typedef struct \hyperlink{struct__slope__metrics}{\+\_\+slope\+\_\+metrics} \hyperlink{group__Metrics_gab80787ee8ae8dc449e770249fe0e3c35}{slope\+\_\+metrics\+\_\+t}}\label{group__Metrics_gab80787ee8ae8dc449e770249fe0e3c35}
+
+\begin{DoxyCompactList}\small\item\em Metrics objects scale the data representations to the fiure's rect and helps items to place themselves around. \end{DoxyCompactList}\item 
+\hypertarget{group__Item_ga2616141f0e164a876049da51ea3a8646}{typedef struct \hyperlink{struct__slope__item}{\+\_\+slope\+\_\+item} \hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t}}\label{group__Item_ga2616141f0e164a876049da51ea3a8646}
+
+\begin{DoxyCompactList}\small\item\em Every thing that can be drawn to a figure is a subclass of slope\+\_\+item\+\_\+t. \end{DoxyCompactList}\item 
+\hypertarget{primitives_8h_a51f2b92d1dce9304be0cf46806a8e06a}{typedef void($\ast$ {\bfseries slope\+\_\+callback\+\_\+t} )(\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$)}\label{primitives_8h_a51f2b92d1dce9304be0cf46806a8e06a}
+
+\item 
+\hypertarget{primitives_8h_a1df3e11b1569613c075b5088bf3266db}{typedef struct \hyperlink{struct__slope__point}{\+\_\+slope\+\_\+point} {\bfseries slope\+\_\+point\+\_\+t}}\label{primitives_8h_a1df3e11b1569613c075b5088bf3266db}
+
+\item 
+\hypertarget{primitives_8h_a61007712a465c14c2d4e4d95a2921f4e}{typedef struct \hyperlink{struct__slope__rect}{\+\_\+slope\+\_\+rect} {\bfseries slope\+\_\+rect\+\_\+t}}\label{primitives_8h_a61007712a465c14c2d4e4d95a2921f4e}
+
+\item 
+\hypertarget{primitives_8h_a06b03623b620960db8b4bd348c71f7e9}{typedef enum \+\_\+slope\+\_\+status {\bfseries slope\+\_\+status\+\_\+t}}\label{primitives_8h_a06b03623b620960db8b4bd348c71f7e9}
+
+\item 
+\hypertarget{primitives_8h_ac8087f3ce8e8a945ba80cdba991d8627}{typedef enum \+\_\+slope\+\_\+color\+\_\+name {\bfseries slope\+\_\+color\+\_\+name\+\_\+t}}\label{primitives_8h_ac8087f3ce8e8a945ba80cdba991d8627}
+
+\item 
+\hypertarget{primitives_8h_adcc947614ed3c4c11bfcd6a287331061}{typedef enum \+\_\+slope\+\_\+paper\+\_\+size {\bfseries slope\+\_\+paper\+\_\+size\+\_\+t}}\label{primitives_8h_adcc947614ed3c4c11bfcd6a287331061}
+
+\item 
+\hypertarget{primitives_8h_a3291b9639b5653b1cc5df85112034d70}{typedef enum \\*
+\+\_\+slope\+\_\+paper\+\_\+orientation {\bfseries slope\+\_\+paper\+\_\+orientation\+\_\+t}}\label{primitives_8h_a3291b9639b5653b1cc5df85112034d70}
+
+\item 
+\hypertarget{primitives_8h_aae63a9f54e5753b7c9722854215c33e2}{typedef struct \hyperlink{struct__slope__color}{\+\_\+slope\+\_\+color} {\bfseries slope\+\_\+color\+\_\+t}}\label{primitives_8h_aae63a9f54e5753b7c9722854215c33e2}
+
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{primitives_8h_acf733844c60fdb824ec3c70d4c77175a}{enum {\bfseries \+\_\+slope\+\_\+status} \{ {\bfseries S\+L\+O\+P\+E\+\_\+\+S\+U\+C\+C\+E\+S\+S} = 0, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+E\+R\+R\+O\+R} = 1
+ \}}\label{primitives_8h_acf733844c60fdb824ec3c70d4c77175a}
+
+\item 
+\hypertarget{primitives_8h_a6b2fbc03b013e1f3de996805fc1da7c8}{enum {\bfseries \+\_\+slope\+\_\+color\+\_\+name} \{ \\*
+{\bfseries S\+L\+O\+P\+E\+\_\+\+B\+L\+A\+C\+K} = 0, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+W\+H\+I\+T\+E} = 1, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+R\+E\+D} = 2, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+G\+R\+E\+E\+N} = 3, 
+\\*
+{\bfseries S\+L\+O\+P\+E\+\_\+\+B\+L\+U\+E} = 4, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+M\+A\+R\+O\+O\+N} = 5, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+U\+R\+P\+L\+E} = 6, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+Y\+E\+L\+L\+O\+W} = 7, 
+\\*
+{\bfseries S\+L\+O\+P\+E\+\_\+\+G\+R\+E\+Y} = 8, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+O\+L\+I\+V\+E} = 9, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+O\+R\+A\+N\+G\+E} = 10, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+T\+E\+A\+L} = 11, 
+\\*
+{\bfseries S\+L\+O\+P\+E\+\_\+\+L\+A\+S\+T\+\_\+\+C\+O\+L\+O\+R} = 12
+ \}}\label{primitives_8h_a6b2fbc03b013e1f3de996805fc1da7c8}
+
+\item 
+\hypertarget{primitives_8h_a9599cb877d948e653ef68bcb3dd79632}{enum {\bfseries \+\_\+slope\+\_\+paper\+\_\+size} \{ \\*
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+A\+P\+E\+R\+\_\+\+S\+I\+Z\+E\+\_\+\+A0} = 0, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+A\+P\+E\+R\+\_\+\+S\+I\+Z\+E\+\_\+\+A1} = 1, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+A\+P\+E\+R\+\_\+\+S\+I\+Z\+E\+\_\+\+A2} = 2, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+A\+P\+E\+R\+\_\+\+S\+I\+Z\+E\+\_\+\+A3} = 3, 
+\\*
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+A\+P\+E\+R\+\_\+\+S\+I\+Z\+E\+\_\+\+A4} = 4, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+A\+P\+E\+R\+\_\+\+S\+I\+Z\+E\+\_\+\+L\+E\+T\+T\+E\+R} = 5, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+A\+P\+E\+R\+\_\+\+S\+I\+Z\+E\+\_\+\+B4} = 6, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+A\+P\+E\+R\+\_\+\+S\+I\+Z\+E\+\_\+\+B5} = 7
+ \}}\label{primitives_8h_a9599cb877d948e653ef68bcb3dd79632}
+
+\item 
+\hypertarget{primitives_8h_aadde8c6dc07f7b39904901a0fbc59b40}{enum {\bfseries \+\_\+slope\+\_\+paper\+\_\+orientation} \{ {\bfseries S\+L\+O\+P\+E\+\_\+\+P\+A\+P\+E\+R\+\_\+\+O\+R\+I\+E\+N\+T\+A\+T\+I\+O\+N\+\_\+\+P\+O\+R\+T\+R\+A\+I\+T} = 0, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+A\+P\+E\+R\+\_\+\+O\+R\+I\+E\+N\+T\+A\+T\+I\+O\+N\+\_\+\+L\+A\+N\+D\+S\+C\+A\+P\+E} = 1
+ \}}\label{primitives_8h_aadde8c6dc07f7b39904901a0fbc59b40}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+slope\+\_\+public void \hyperlink{primitives_8h_a30b271fd07025c5402baabc433e6d4c9}{slope\+\_\+rect\+\_\+set} (\hyperlink{struct__slope__rect}{slope\+\_\+rect\+\_\+t} $\ast$rect, double x, double y, double w, double h)
+\item 
+\hypertarget{primitives_8h_ab2396e54321484bbe77362f0826aea42}{slope\+\_\+public void {\bfseries slope\+\_\+color\+\_\+set} (\hyperlink{struct__slope__color}{slope\+\_\+color\+\_\+t} $\ast$color, double r, double g, double b, double a)}\label{primitives_8h_ab2396e54321484bbe77362f0826aea42}
+
+\item 
+\hypertarget{primitives_8h_a2e3d5907d550e32103bee048d8826342}{slope\+\_\+public void {\bfseries slope\+\_\+color\+\_\+set\+\_\+name} (\hyperlink{struct__slope__color}{slope\+\_\+color\+\_\+t} $\ast$color, slope\+\_\+color\+\_\+name\+\_\+t name)}\label{primitives_8h_a2e3d5907d550e32103bee048d8826342}
+
+\item 
+\hypertarget{primitives_8h_aab36420cbb71dddf152bbaeb3434651d}{slope\+\_\+public void {\bfseries slope\+\_\+cairo\+\_\+set\+\_\+color} (cairo\+\_\+t $\ast$cr, const \hyperlink{struct__slope__color}{slope\+\_\+color\+\_\+t} $\ast$color)}\label{primitives_8h_aab36420cbb71dddf152bbaeb3434651d}
+
+\item 
+\hypertarget{primitives_8h_aadd5a1136fdf728fe3327db36dd09400}{slope\+\_\+public void {\bfseries slope\+\_\+cairo\+\_\+rectangle} (cairo\+\_\+t $\ast$cr, const \hyperlink{struct__slope__rect}{slope\+\_\+rect\+\_\+t} $\ast$rect)}\label{primitives_8h_aadd5a1136fdf728fe3327db36dd09400}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{primitives_8h_a30b271fd07025c5402baabc433e6d4c9}{\index{primitives.\+h@{primitives.\+h}!slope\+\_\+rect\+\_\+set@{slope\+\_\+rect\+\_\+set}}
+\index{slope\+\_\+rect\+\_\+set@{slope\+\_\+rect\+\_\+set}!primitives.\+h@{primitives.\+h}}
+\subsubsection[{slope\+\_\+rect\+\_\+set}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public void slope\+\_\+rect\+\_\+set (
+\begin{DoxyParamCaption}
+\item[{{\bf slope\+\_\+rect\+\_\+t} $\ast$}]{rect, }
+\item[{double}]{x, }
+\item[{double}]{y, }
+\item[{double}]{w, }
+\item[{double}]{h}
+\end{DoxyParamCaption}
+)}}\label{primitives_8h_a30b271fd07025c5402baabc433e6d4c9}
+Sets the coordinates of a rectangle 

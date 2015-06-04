@@ -30,12 +30,12 @@
   * objects.
   */
 
-#ifndef __SLOPE_LIST_H
-#define __SLOPE_LIST_H
+#ifndef SLOPE_LIST_H
+#define SLOPE_LIST_H
 
 #include "slope/global.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 typedef struct _slope_iterator slope_iterator_t;
 
@@ -119,6 +119,6 @@ slope_public slope_iterator_t*
 slope_list_remove (slope_list_t *list,
                    slope_iterator_t *pos);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_LIST_H */
+#endif /*SLOPE_LIST_H */

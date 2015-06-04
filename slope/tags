@@ -23,29 +23,29 @@ SLOPE_XYAXIS_TOP	xyaxis.h	/^    SLOPE_XYAXIS_TOP     = 0,$/;"	e	enum:_slope_xyax
 SYMBRAD	xyitem.c	25;"	d	file:
 SYMBRADSQR	xyitem.c	26;"	d	file:
 TWOSYMBRADSQR	xyitem.c	27;"	d	file:
-__SLOPE_BEGIN_DECLS	global.h	26;"	d
-__SLOPE_BEGIN_DECLS	global.h	29;"	d
-__SLOPE_DATA_H	item.h	21;"	d
-__SLOPE_DATA_P_H	item_p.h	21;"	d
-__SLOPE_END_DECLS	global.h	27;"	d
-__SLOPE_END_DECLS	global.h	30;"	d
-__SLOPE_GLOBAL_H	global.h	21;"	d
-__SLOPE_GTK_H	gtk.h	21;"	d
-__SLOPE_H	slope.h	21;"	d
-__SLOPE_LEGEND_H	legend.h	21;"	d
-__SLOPE_LEGEND_P_H	legend_p.h	21;"	d
-__SLOPE_LIST_H	list.h	21;"	d
-__SLOPE_METRICS_H	metrics.h	21;"	d
-__SLOPE_METRICS_P_H	metrics_p.h	21;"	d
-__SLOPE_PRIMITIVES_H	primitives.h	21;"	d
-__SLOPE_SCENE_H	figure.h	21;"	d
-__SLOPE_SCENE_P_H	figure_p.h	21;"	d
-__SLOPE_XYAXIS_H	xyaxis.h	21;"	d
-__SLOPE_XYAXIS_P_H	xyaxis_p.h	21;"	d
-__SLOPE_XYDATA_H	xyitem.h	21;"	d
-__SLOPE_XYDATA_P_H	xyitem_p.h	21;"	d
-__SLOPE_XYMETRICS_H	xymetrics.h	21;"	d
-__SLOPE_XYMETRICS_P_H	xymetrics_p.h	21;"	d
+SLOPE_BEGIN_DECLS	global.h	26;"	d
+SLOPE_BEGIN_DECLS	global.h	29;"	d
+SLOPE_DATA_H	item.h	21;"	d
+SLOPE_DATA_P_H	item_p.h	21;"	d
+SLOPE_END_DECLS	global.h	27;"	d
+SLOPE_END_DECLS	global.h	30;"	d
+SLOPE_GLOBAL_H	global.h	21;"	d
+SLOPE_GTK_H	gtk.h	21;"	d
+SLOPE_H	slope.h	21;"	d
+SLOPE_LEGEND_H	legend.h	21;"	d
+SLOPE_LEGEND_P_H	legend_p.h	21;"	d
+SLOPE_LIST_H	list.h	21;"	d
+SLOPE_METRICS_H	metrics.h	21;"	d
+SLOPE_METRICS_P_H	metrics_p.h	21;"	d
+SLOPE_PRIMITIVES_H	primitives.h	21;"	d
+SLOPE_SCENE_H	figure.h	21;"	d
+SLOPE_SCENE_P_H	figure_p.h	21;"	d
+SLOPE_XYAXIS_H	xyaxis.h	21;"	d
+SLOPE_XYAXIS_P_H	xyaxis_p.h	21;"	d
+SLOPE_XYDATA_H	xyitem.h	21;"	d
+SLOPE_XYDATA_P_H	xyitem_p.h	21;"	d
+SLOPE_XYMETRICS_H	xymetrics.h	21;"	d
+SLOPE_XYMETRICS_P_H	xymetrics_p.h	21;"	d
 __slope_item_draw	item.c	/^void __slope_item_draw (slope_item_t *item, cairo_t *cr,$/;"	f
 __slope_item_parse_color	item.c	/^int __slope_item_parse_color (const char *fmt)$/;"	f
 __slope_item_parse_scatter	item.c	/^int __slope_item_parse_scatter (const char *fmt)$/;"	f

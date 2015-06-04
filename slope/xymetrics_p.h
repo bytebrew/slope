@@ -17,13 +17,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_XYMETRICS_P_H
-#define __SLOPE_XYMETRICS_P_H
+#ifndef SLOPE_XYMETRICS_P_H
+#define SLOPE_XYMETRICS_P_H
 
 #include "slope/xymetrics.h"
 #include "slope/metrics_p.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
@@ -62,6 +62,6 @@ void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
  */
 void __slope_xymetrics_update (slope_metrics_t *metrics);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_XYMETRICS_P_H */
+#endif /*SLOPE_XYMETRICS_P_H */

@@ -17,13 +17,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_XYMETRICS_H
-#define __SLOPE_XYMETRICS_H
+#ifndef SLOPE_XYMETRICS_H
+#define SLOPE_XYMETRICS_H
 
 #include "slope/metrics.h"
 #include "slope/xyaxis.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
@@ -79,6 +79,6 @@ slope_public void
 slope_xymetrics_set_y_range (slope_metrics_t *metrics,
                              double yi, double yf);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_XYMETRICS_H */
+#endif /*SLOPE_XYMETRICS_H */

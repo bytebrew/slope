@@ -17,13 +17,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_XYAXIS_P_H
-#define __SLOPE_XYAXIS_P_H
+#ifndef SLOPE_XYAXIS_P_H
+#define SLOPE_XYAXIS_P_H
 
 #include "slope/xyaxis.h"
 #include "slope/item_p.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 typedef struct _slope_xyaxis slope_xyaxis_t;
 
@@ -71,6 +71,6 @@ void __slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
 void __slope_xyaxis_draw_right (slope_item_t *item, cairo_t *cr,
                                 const slope_metrics_t *metrics);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif //__SLOPE_XYAXIS_P_H
+#endif //SLOPE_XYAXIS_P_H

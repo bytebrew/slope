@@ -17,12 +17,19 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_DATA_H
-#define __SLOPE_DATA_H
+/**
+ * @file item.h
+ * @brief The base class for item objects
+ * 
+ * @defgroup Item
+ */
+
+#ifndef SLOPE_DATA_H
+#define SLOPE_DATA_H
 
 #include "slope/primitives.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
@@ -85,6 +92,6 @@ slope_item_notify_appearence_change (slope_item_t *item);
 slope_public void
 slope_item_notify_data_change (slope_item_t *item);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_DATA_H */
+#endif /*SLOPE_DATA_H */

@@ -17,12 +17,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_XYDATA_H
-#define __SLOPE_XYDATA_H
+#ifndef SLOPE_XYDATA_H
+#define SLOPE_XYDATA_H
 
 #include "slope/item.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
@@ -64,6 +64,6 @@ slope_xyitem_update_item (slope_item_t *item,
 slope_public void
 slope_xyitem_set_antialias (slope_item_t *item, int on);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_XYDATA_H */
+#endif /*SLOPE_XYDATA_H */

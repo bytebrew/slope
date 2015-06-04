@@ -1,0 +1,47 @@
+\hypertarget{figure_8h}{\section{slope/figure.h File Reference}
+\label{figure_8h}\index{slope/figure.\+h@{slope/figure.\+h}}
+}
+{\ttfamily \#include \char`\"{}slope/list.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}slope/primitives.\+h\char`\"{}}\\*
+Include dependency graph for figure.\+h\+:
+This graph shows which files directly or indirectly include this file\+:
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+S\+L\+O\+P\+E\+\_\+\+B\+E\+G\+I\+N\+\_\+\+D\+E\+C\+L\+S slope\+\_\+public \\*
+\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$ \hyperlink{group__Figure_ga0534b5fef88fda65fd4b8feb33071cab}{slope\+\_\+figure\+\_\+create} ()
+\begin{DoxyCompactList}\small\item\em Creates a new figure object. \end{DoxyCompactList}\item 
+slope\+\_\+public \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$ \hyperlink{group__Figure_gac7d6aaca4df6806f00f3cb130a78dcde}{slope\+\_\+figure\+\_\+get\+\_\+metrics\+\_\+list} (const \hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure)
+\begin{DoxyCompactList}\small\item\em Retrieves the metrics list of figure. \end{DoxyCompactList}\item 
+\hypertarget{group__Figure_ga08b6896169ef4a926e7d487ade3fe74e}{slope\+\_\+public void \hyperlink{group__Figure_ga08b6896169ef4a926e7d487ade3fe74e}{slope\+\_\+figure\+\_\+add\+\_\+metrics} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, \hyperlink{group__Metrics_gab80787ee8ae8dc449e770249fe0e3c35}{slope\+\_\+metrics\+\_\+t} $\ast$metrics)}\label{group__Figure_ga08b6896169ef4a926e7d487ade3fe74e}
+
+\begin{DoxyCompactList}\small\item\em Adds a metrics the metrics list of figure. \end{DoxyCompactList}\item 
+\hypertarget{group__Figure_gada369b301fabc0c40ef172e22d4fcb85}{slope\+\_\+public void \hyperlink{group__Figure_gada369b301fabc0c40ef172e22d4fcb85}{slope\+\_\+figure\+\_\+destroy} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure)}\label{group__Figure_gada369b301fabc0c40ef172e22d4fcb85}
+
+\begin{DoxyCompactList}\small\item\em Destroys any figure object and frees the memory used by it. \end{DoxyCompactList}\item 
+slope\+\_\+public void \hyperlink{group__Figure_ga386e261642ba2b0fdc39a550e3e94462}{slope\+\_\+figure\+\_\+draw} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, cairo\+\_\+t $\ast$cr, const \hyperlink{struct__slope__rect}{slope\+\_\+rect\+\_\+t} $\ast$rect)
+\begin{DoxyCompactList}\small\item\em Draw the contents of this figure to one of cairo's backends via cr. \end{DoxyCompactList}\item 
+slope\+\_\+public void \hyperlink{group__Figure_ga586a40d60b3c5feec3f74f1bb00b011d}{slope\+\_\+figure\+\_\+write\+\_\+to\+\_\+png} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, const char $\ast$filename, int width, int height)
+\begin{DoxyCompactList}\small\item\em Writes the figure to a png file. \end{DoxyCompactList}\item 
+slope\+\_\+public int \hyperlink{group__Figure_ga18b13f5d94a871984760eaa4b5f5f4ae}{slope\+\_\+figure\+\_\+write\+\_\+to\+\_\+svg} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, const char $\ast$filename, int width, int height)
+\begin{DoxyCompactList}\small\item\em The figure to be drawn. \end{DoxyCompactList}\item 
+slope\+\_\+public int \hyperlink{group__Figure_ga3d70896b8765c2ea7058e5213daa17fd}{slope\+\_\+figure\+\_\+write\+\_\+to\+\_\+pdf} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, const char $\ast$filename, int width, int height)
+\begin{DoxyCompactList}\small\item\em The figure to be drawn. \end{DoxyCompactList}\item 
+slope\+\_\+public int \hyperlink{group__Figure_gaad033abcd87cdbae258f073c6f43101b}{slope\+\_\+figure\+\_\+write\+\_\+to\+\_\+ps} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, const char $\ast$filename, int width, int height)
+\begin{DoxyCompactList}\small\item\em The figure to be drawn. \end{DoxyCompactList}\item 
+slope\+\_\+public \hyperlink{group__Metrics_gab80787ee8ae8dc449e770249fe0e3c35}{slope\+\_\+metrics\+\_\+t} $\ast$ \hyperlink{group__Figure_gae97736e589280dfdd5446500c576887a}{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+metrics} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure)
+\begin{DoxyCompactList}\small\item\em Retrieves the default metrics of the figure, normaly the last to be inserted. It is the one that will place the legend. \end{DoxyCompactList}\item 
+slope\+\_\+public void \hyperlink{group__Figure_gad9907caa20c827f090b140e389f3c077}{slope\+\_\+figure\+\_\+set\+\_\+change\+\_\+callback} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, slope\+\_\+callback\+\_\+t callback)
+\begin{DoxyCompactList}\small\item\em Sets a callback to be called when some thing change on the figure, e. g. useful to tell a widget to update it1s contents. \end{DoxyCompactList}\item 
+\hypertarget{figure_8h_a78d439a1e8d367d8961c09643e16a6a7}{slope\+\_\+public void {\bfseries slope\+\_\+figure\+\_\+notify\+\_\+appearence\+\_\+change} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, \hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)}\label{figure_8h_a78d439a1e8d367d8961c09643e16a6a7}
+
+\item 
+\hypertarget{figure_8h_a9fdc8f75bd016087d559f3eff854bb92}{slope\+\_\+public void {\bfseries slope\+\_\+figure\+\_\+notify\+\_\+data\+\_\+change} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, \hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)}\label{figure_8h_a9fdc8f75bd016087d559f3eff854bb92}
+
+\item 
+\hypertarget{figure_8h_ad5502c2dd6a1897b23659431f0dedd91}{slope\+\_\+public void {\bfseries slope\+\_\+figure\+\_\+track\+\_\+region} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, double x1, double y1, double x2, double y2)}\label{figure_8h_ad5502c2dd6a1897b23659431f0dedd91}
+
+\item 
+\hypertarget{figure_8h_a9a4978e9b4cb7cb7f27f6efb8fb06d9b}{slope\+\_\+public void {\bfseries slope\+\_\+figure\+\_\+update} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure)}\label{figure_8h_a9a4978e9b4cb7cb7f27f6efb8fb06d9b}
+
+\end{DoxyCompactItemize}

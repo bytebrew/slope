@@ -17,17 +17,17 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_GLOBAL_H
-#define __SLOPE_GLOBAL_H
+#ifndef SLOPE_GLOBAL_H
+#define SLOPE_GLOBAL_H
 
 /**
  */
 #ifdef __cplusplus
-# define __SLOPE_BEGIN_DECLS  extern "C" {
-# define __SLOPE_END_DECLS    }
+# define SLOPE_BEGIN_DECLS  extern "C" {
+# define SLOPE_END_DECLS    }
 #else
-# define __SLOPE_BEGIN_DECLS
-# define __SLOPE_END_DECLS
+# define SLOPE_BEGIN_DECLS
+# define SLOPE_END_DECLS
 #endif
 
 /**
@@ -42,4 +42,4 @@
 #  define slope_public
 #endif
 
-#endif /*__SLOPE_GLOBAL_H */
+#endif /*SLOPE_GLOBAL_H */

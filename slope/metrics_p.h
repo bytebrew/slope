@@ -17,12 +17,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_METRICS_P_H
-#define __SLOPE_METRICS_P_H
+#ifndef SLOPE_METRICS_P_H
+#define SLOPE_METRICS_P_H
 
 #include "slope/metrics.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
@@ -68,6 +68,6 @@ void __slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                            const slope_rect_t *rect);
 
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_METRICS_P_H */
+#endif /*SLOPE_METRICS_P_H */

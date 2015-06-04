@@ -1,0 +1,21 @@
+digraph "_slope_item"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="_slope_item",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" metrics" ,fontname="Helvetica"];
+  Node2 [label="_slope_metrics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$struct__slope__metrics.html"];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" item_list" ,fontname="Helvetica"];
+  Node3 [label="_slope_list",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$struct__slope__list.html"];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" last\nfirst" ,fontname="Helvetica"];
+  Node4 [label="_slope_iterator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$struct__slope__iterator.html"];
+  Node4 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" prev\nnext" ,fontname="Helvetica"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" figure" ,fontname="Helvetica"];
+  Node5 [label="_slope_figure",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$struct__slope__figure.html"];
+  Node3 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" metrics" ,fontname="Helvetica"];
+  Node2 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" default_metrics" ,fontname="Helvetica"];
+  Node5 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" change_callback" ,fontname="Helvetica"];
+  Node1 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" legend" ,fontname="Helvetica"];
+  Node6 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" back_color" ,fontname="Helvetica"];
+  Node6 [label="_slope_color",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$struct__slope__color.html"];
+}

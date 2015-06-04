@@ -1,0 +1,43 @@
+\hypertarget{list_8h}{\section{slope/list.h File Reference}
+\label{list_8h}\index{slope/list.\+h@{slope/list.\+h}}
+}
+{\ttfamily \#include \char`\"{}slope/global.\+h\char`\"{}}\\*
+Include dependency graph for list.\+h\+:
+This graph shows which files directly or indirectly include this file\+:
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{list_8h_aad13ce078b8dfe56e5a54bafc9aff9af}{typedef \\*
+typedef\+S\+L\+O\+P\+E\+\_\+\+B\+E\+G\+I\+N\+\_\+\+D\+E\+C\+L\+S \\*
+struct \hyperlink{struct__slope__iterator}{\+\_\+slope\+\_\+iterator} {\bfseries slope\+\_\+iterator\+\_\+t}}\label{list_8h_aad13ce078b8dfe56e5a54bafc9aff9af}
+
+\item 
+\hypertarget{list_8h_a88326d377deca937191acac6784bff0e}{typedef struct \hyperlink{struct__slope__list}{\+\_\+slope\+\_\+list} {\bfseries slope\+\_\+list\+\_\+t}}\label{list_8h_a88326d377deca937191acac6784bff0e}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+slope\+\_\+public void $\ast$ \hyperlink{group__List_ga33ad9bae82e595e65a1ffe4bf7168a84}{slope\+\_\+iterator\+\_\+data} (const slope\+\_\+iterator\+\_\+t $\ast$iter)
+\begin{DoxyCompactList}\small\item\em Access the data pointed to by iter. \end{DoxyCompactList}\item 
+\hypertarget{group__List_gae0daa8d0f64b26df51cbae035578ca55}{slope\+\_\+public void \hyperlink{group__List_gae0daa8d0f64b26df51cbae035578ca55}{slope\+\_\+iterator\+\_\+next} (slope\+\_\+iterator\+\_\+t $\ast$$\ast$iter)}\label{group__List_gae0daa8d0f64b26df51cbae035578ca55}
+
+\begin{DoxyCompactList}\small\item\em Moves the iterator to the next position. \end{DoxyCompactList}\item 
+\hypertarget{group__List_ga32395735bd64e9e085a4e70ebaf96a1d}{slope\+\_\+public void \hyperlink{group__List_ga32395735bd64e9e085a4e70ebaf96a1d}{slope\+\_\+iterator\+\_\+previous} (slope\+\_\+iterator\+\_\+t $\ast$$\ast$iter)}\label{group__List_ga32395735bd64e9e085a4e70ebaf96a1d}
+
+\begin{DoxyCompactList}\small\item\em Moves the iterator to the previous position. \end{DoxyCompactList}\item 
+slope\+\_\+public \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$ \hyperlink{group__List_ga44d52be6db2e8321a4a81fb481212f54}{slope\+\_\+list\+\_\+append} (\hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em Appends an element to the end of the list. \end{DoxyCompactList}\item 
+slope\+\_\+public \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$ \hyperlink{group__List_ga770e1a1761295088a2e769f10c50e9e7}{slope\+\_\+list\+\_\+prepend} (\hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em Prepends an element to the begining of the list. \end{DoxyCompactList}\item 
+\hypertarget{group__List_gad1f8ec4bc7db2daff96765ed708437b2}{slope\+\_\+public void \hyperlink{group__List_gad1f8ec4bc7db2daff96765ed708437b2}{slope\+\_\+list\+\_\+destroy} (\hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list)}\label{group__List_gad1f8ec4bc7db2daff96765ed708437b2}
+
+\begin{DoxyCompactList}\small\item\em Destroys list. \end{DoxyCompactList}\item 
+slope\+\_\+public slope\+\_\+iterator\+\_\+t $\ast$ \hyperlink{group__List_ga7fbf15803b6c95dc32989a0d9170f145}{slope\+\_\+list\+\_\+first} (const \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list)
+\begin{DoxyCompactList}\small\item\em Access the iterator for the first element. \end{DoxyCompactList}\item 
+slope\+\_\+public slope\+\_\+iterator\+\_\+t $\ast$ \hyperlink{group__List_ga3b742a38cf861650f7b1a15ae038fac9}{slope\+\_\+list\+\_\+last} (const \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list)
+\begin{DoxyCompactList}\small\item\em Access the iterator for the last element. \end{DoxyCompactList}\item 
+slope\+\_\+public int \hyperlink{group__List_gadbc1b27be93a2a166071c14ebb008359}{slope\+\_\+list\+\_\+size} (const \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list)
+\begin{DoxyCompactList}\small\item\em Access the size (element number) of the last. \end{DoxyCompactList}\item 
+slope\+\_\+public slope\+\_\+iterator\+\_\+t $\ast$ \hyperlink{group__List_ga0066274727609b058da0b561743dc318}{slope\+\_\+list\+\_\+remove} (\hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$list, slope\+\_\+iterator\+\_\+t $\ast$pos)
+\begin{DoxyCompactList}\small\item\em Removes the element pointed to by iterator pos. \end{DoxyCompactList}\end{DoxyCompactItemize}

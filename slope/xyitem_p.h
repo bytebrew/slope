@@ -17,13 +17,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_XYDATA_P_H
-#define __SLOPE_XYDATA_P_H
+#ifndef SLOPE_XYDATA_P_H
+#define SLOPE_XYDATA_P_H
 
 #include "slope/xyitem.h"
 #include "slope/item_p.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 typedef struct _slope_xyitem slope_xyitem_t;
 
@@ -88,6 +88,6 @@ void __slope_xyitem_draw_thumb (slope_item_t *item,
  */
 void __slope_xyitem_check_ranges (slope_item_t *item);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_XYDATA_P_H */
+#endif /*SLOPE_XYDATA_P_H */

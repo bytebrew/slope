@@ -17,14 +17,14 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_VIEW_H
-#define __SLOPE_VIEW_H
+#ifndef SLOPE_VIEW_H
+#define SLOPE_VIEW_H
 
 #include "slope/slope.h"
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 #define SLOPE_VIEW_TYPE            (slope_view_get_type())
 #define SLOPE_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_VIEW_TYPE, SlopeView))
@@ -76,6 +76,6 @@ slope_public GtkWidget*
 slope_view_new_for_figure (slope_figure_t *figure);
 
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /* __SLOPE_VIEW_H */
+#endif /* SLOPE_VIEW_H */

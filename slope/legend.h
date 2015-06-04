@@ -17,12 +17,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_LEGEND_H
-#define __SLOPE_LEGEND_H
+#ifndef SLOPE_LEGEND_H
+#define SLOPE_LEGEND_H
 
 #include "slope/item.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 typedef enum _slope_legend_position
 {
@@ -36,6 +36,6 @@ slope_legend_position_t;
 
 slope_public slope_item_t* slope_legend_create ();
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_LEGEND_H */
+#endif /*SLOPE_LEGEND_H */
