@@ -18,7 +18,7 @@ Figure is the object that holds any of slope's drawables.
 S\+L\+O\+P\+E\+\_\+\+B\+E\+G\+I\+N\+\_\+\+D\+E\+C\+L\+S slope\+\_\+public \\*
 \hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$ \hyperlink{group__Figure_ga0534b5fef88fda65fd4b8feb33071cab}{slope\+\_\+figure\+\_\+create} ()
 \begin{DoxyCompactList}\small\item\em Creates a new figure object. \end{DoxyCompactList}\item 
-slope\+\_\+public \hyperlink{struct__slope__list}{slope\+\_\+list\+\_\+t} $\ast$ \hyperlink{group__Figure_gac7d6aaca4df6806f00f3cb130a78dcde}{slope\+\_\+figure\+\_\+get\+\_\+metrics\+\_\+list} (const \hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure)
+slope\+\_\+public \hyperlink{group__List_ga88326d377deca937191acac6784bff0e}{slope\+\_\+list\+\_\+t} $\ast$ \hyperlink{group__Figure_gac7d6aaca4df6806f00f3cb130a78dcde}{slope\+\_\+figure\+\_\+get\+\_\+metrics\+\_\+list} (const \hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure)
 \begin{DoxyCompactList}\small\item\em Retrieves the metrics list of figure. \end{DoxyCompactList}\item 
 \hypertarget{group__Figure_ga08b6896169ef4a926e7d487ade3fe74e}{slope\+\_\+public void \hyperlink{group__Figure_ga08b6896169ef4a926e7d487ade3fe74e}{slope\+\_\+figure\+\_\+add\+\_\+metrics} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, \hyperlink{group__Metrics_gab80787ee8ae8dc449e770249fe0e3c35}{slope\+\_\+metrics\+\_\+t} $\ast$metrics)}\label{group__Figure_ga08b6896169ef4a926e7d487ade3fe74e}
 
@@ -45,6 +45,12 @@ slope\+\_\+public void \hyperlink{group__Figure_gad9907caa20c827f090b140e389f3c0
 \subsection{Detailed Description}
 Figure is the object that holds any of slope's drawables. 
 
+\begin{DoxyAuthor}{Author}
+Elvis Teixeira 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+18 Jan 2015
+\end{DoxyDate}
 Every time one wants to produce a figure one will instantiate a slope\+\_\+figure\+\_\+t, add one or more slope\+\_\+metrics\+\_\+t to it and then place the slope\+\_\+item\+\_\+t's in the metrics. All that remains to do is draw the figure to any of cairo's backends, such as a Gtk\+Widget a P\+N\+G file or any other. 
 
 \subsection{Function Documentation}

@@ -18,9 +18,12 @@
  */
 
 /**
- * @file figure.h
+ * @file slope/figure.h
  * @defgroup Figure
  * @ingroup Figure
+ * 
+ * @author Elvis Teixeira
+ * @date 18 Jan 2015
  * 
  * @brief Figure is the object that holds any of slope's drawables
  * 
@@ -196,4 +199,4 @@ slope_figure_update (slope_figure_t *figure);
 
 SLOPE_END_DECLS
 
-#endif /*SLOPE_SCENE_H */
+#endif /* SLOPE_SCENE_H */

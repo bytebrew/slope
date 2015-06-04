@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('metrics__p_8h_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('metrics__p_8h_source.html','');});
 <div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="struct__slope__metrics.html">   42</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct__slope__metrics.html">_slope_metrics</a></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    slope_metrics_class_t *klass;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    slope_metrics_type_t type;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="group__Metrics.html#ga5f51fc24807a4b3d2b0d41f354bbcedf">slope_metrics_type_t</a> type;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="struct__slope__figure.html">slope_figure_t</a> *figure;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="struct__slope__list.html">slope_list_t</a> *item_list;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">/* boundary between item image and figure frontier */</span></div>
@@ -172,8 +172,9 @@ $(document).ready(function(){initNavTree('metrics__p_8h_source.html','');});
 <div class="ttc" id="struct__slope__list_html"><div class="ttname"><a href="struct__slope__list.html">_slope_list</a></div><div class="ttdef"><b>Definition:</b> list.c:32</div></div>
 <div class="ttc" id="struct__slope__metrics__class_html"><div class="ttname"><a href="struct__slope__metrics__class.html">_slope_metrics_class</a></div><div class="ttdef"><b>Definition:</b> metrics_p.h:33</div></div>
 <div class="ttc" id="struct__slope__figure_html"><div class="ttname"><a href="struct__slope__figure.html">_slope_figure</a></div><div class="ttdef"><b>Definition:</b> figure_p.h:29</div></div>
+<div class="ttc" id="group__Metrics_html_ga5f51fc24807a4b3d2b0d41f354bbcedf"><div class="ttname"><a href="group__Metrics.html#ga5f51fc24807a4b3d2b0d41f354bbcedf">slope_metrics_type_t</a></div><div class="ttdeci">SLOPE_BEGIN_DECLS enum _slope_metrics_type slope_metrics_type_t</div><div class="ttdoc">The metrics type tells the type of transformation from data space to figure coordinates. </div></div>
 <div class="ttc" id="struct__slope__rect_html"><div class="ttname"><a href="struct__slope__rect.html">_slope_rect</a></div><div class="ttdef"><b>Definition:</b> primitives.h:90</div></div>
-<div class="ttc" id="metrics_8h_html"><div class="ttname"><a href="metrics_8h.html">metrics.h</a></div><div class="ttdoc">The base class for metrics objects. </div></div>
+<div class="ttc" id="metrics_8h_html"><div class="ttname"><a href="metrics_8h.html">metrics.h</a></div></div>
 <div class="ttc" id="struct__slope__metrics_html"><div class="ttname"><a href="struct__slope__metrics.html">_slope_metrics</a></div><div class="ttdef"><b>Definition:</b> metrics_p.h:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -181,7 +182,7 @@ $(document).ready(function(){initNavTree('metrics__p_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b486b20c73a5631d156ab795507a462d.html">slope</a></li><li class="navelem"><b>metrics_p.h</b></li>
-    <li class="footer">Generated on Thu Jun 4 2015 11:10:44 for SLOPE by
+    <li class="footer">Generated on Thu Jun 4 2015 11:55:25 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

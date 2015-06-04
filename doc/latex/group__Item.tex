@@ -1,12 +1,81 @@
 \hypertarget{group__Item}{\section{Item}
 \label{group__Item}\index{Item@{Item}}
 }
+
+
+The base class for item objects.  
+
+
 \subsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{group__Item_ga2616141f0e164a876049da51ea3a8646}{typedef struct \hyperlink{struct__slope__item}{\+\_\+slope\+\_\+item} \hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t}}\label{group__Item_ga2616141f0e164a876049da51ea3a8646}
 
 \begin{DoxyCompactList}\small\item\em Every thing that can be drawn to a figure is a subclass of slope\+\_\+item\+\_\+t. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__Item_ga7be66725a3a198bcbd9434e6d3ad70c5}{enum \hyperlink{group__Item_ga7be66725a3a198bcbd9434e6d3ad70c5}{slope\+\_\+scatter\+\_\+t} \{ \\*
+{\bfseries S\+L\+O\+P\+E\+\_\+\+L\+I\+N\+E} = 0, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+C\+I\+R\+C\+L\+E\+S} = 1, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+T\+R\+I\+A\+N\+G\+L\+E\+S} = 2, 
+{\bfseries S\+L\+O\+P\+E\+\_\+\+S\+Q\+U\+A\+R\+E\+S} = 3, 
+\\*
+{\bfseries S\+L\+O\+P\+E\+\_\+\+P\+L\+U\+S\+S\+E\+S} = 4
+ \}}\label{group__Item_ga7be66725a3a198bcbd9434e6d3ad70c5}
+
+\begin{DoxyCompactList}\small\item\em The symbol to represent a data point in a scatter map type chart. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+slope\+\_\+public void \hyperlink{group__Item_gaf048bd8c425893229133befa61831fd6}{slope\+\_\+item\+\_\+destroy} (\hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)
+\begin{DoxyCompactList}\small\item\em Destroys an item and frees the memory. \end{DoxyCompactList}\item 
+slope\+\_\+public int \hyperlink{group__Item_gaf9e09ab9591e1a2c3c41441f206ffd38}{slope\+\_\+item\+\_\+get\+\_\+visible} (const \hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)
+\begin{DoxyCompactList}\small\item\em Queries for the visibility of an item. \end{DoxyCompactList}\item 
+\hypertarget{group__Item_ga05e1944a09f330d4f9c0aa5e51181742}{slope\+\_\+public void \hyperlink{group__Item_ga05e1944a09f330d4f9c0aa5e51181742}{slope\+\_\+item\+\_\+set\+\_\+visible} (\hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item, int visible)}\label{group__Item_ga05e1944a09f330d4f9c0aa5e51181742}
+
+\begin{DoxyCompactList}\small\item\em Sets the visibility state of the item. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
+The base class for item objects. 
+
+\begin{DoxyAuthor}{Author}
+Elvis Teixeira 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+18 Jan 2015
+\end{DoxyDate}
+Everithing that can be drawn in a slope\+\_\+figure\+\_\+t, including data representations, chart axis, legends and text labels, are items. To be drawn, items must lie in the item list of metrics that that lie in the metrics list of a figure. 
+
+\subsection{Function Documentation}
+\hypertarget{group__Item_gaf048bd8c425893229133befa61831fd6}{\index{Item@{Item}!slope\+\_\+item\+\_\+destroy@{slope\+\_\+item\+\_\+destroy}}
+\index{slope\+\_\+item\+\_\+destroy@{slope\+\_\+item\+\_\+destroy}!Item@{Item}}
+\subsubsection[{slope\+\_\+item\+\_\+destroy}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public void slope\+\_\+item\+\_\+destroy (
+\begin{DoxyParamCaption}
+\item[{{\bf slope\+\_\+item\+\_\+t} $\ast$}]{item}
+\end{DoxyParamCaption}
+)}}\label{group__Item_gaf048bd8c425893229133befa61831fd6}
+
+
+Destroys an item and frees the memory. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em item} & The item to be destroyed. \\
+\hline
+\end{DoxyParams}
+\hypertarget{group__Item_gaf9e09ab9591e1a2c3c41441f206ffd38}{\index{Item@{Item}!slope\+\_\+item\+\_\+get\+\_\+visible@{slope\+\_\+item\+\_\+get\+\_\+visible}}
+\index{slope\+\_\+item\+\_\+get\+\_\+visible@{slope\+\_\+item\+\_\+get\+\_\+visible}!Item@{Item}}
+\subsubsection[{slope\+\_\+item\+\_\+get\+\_\+visible}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public int slope\+\_\+item\+\_\+get\+\_\+visible (
+\begin{DoxyParamCaption}
+\item[{const {\bf slope\+\_\+item\+\_\+t} $\ast$}]{item}
+\end{DoxyParamCaption}
+)}}\label{group__Item_gaf9e09ab9591e1a2c3c41441f206ffd38}
+
+
+Queries for the visibility of an item. 
+
+\begin{DoxyReturn}{Returns}
+S\+L\+O\+P\+E\+\_\+\+T\+R\+U\+E if the item is visible, S\+L\+O\+P\+E\+\_\+\+F\+A\+L\+S\+E otherwise 
+\end{DoxyReturn}

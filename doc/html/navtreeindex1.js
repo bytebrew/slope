@@ -1,5 +1,15 @@
 var NAVTREEINDEX1 =
 {
+"struct__slope__rect.html#aee8ea863cafdbee525219b26bd400177":[2,0,10,0],
+"struct__slope__vector.html":[2,0,11],
+"struct__slope__vector.html#a2635b20c85067423e4f3482e9557613e":[2,0,11,1],
+"struct__slope__vector.html#a2bea13c3c5345b2540bf810ef117e7ab":[2,0,11,0],
+"struct__slope__vector.html#a7b6b1ef243e1c3a288ec1ae932512e1f":[2,0,11,2],
+"struct__slope__xyaxis.html":[2,0,12],
+"struct__slope__xyaxis.html#a56aa7533e274304b0391a18a5c1e760c":[2,0,12,5],
+"struct__slope__xyaxis.html#a6a1eecc666de23bfd52da363a8452ac5":[2,0,12,3],
+"struct__slope__xyaxis.html#a815c7ca4b34489e3f85cfb3b0272bd55":[2,0,12,1],
+"struct__slope__xyaxis.html#ab53d8e2917569ff2ba7d4df2fdf89d05":[2,0,12,4],
 "struct__slope__xyaxis.html#addc6da873f46da73c1233d2343ed92b9":[2,0,12,2],
 "struct__slope__xyaxis.html#afbee67325cf0615e6897aa608660024f":[2,0,12,0],
 "struct__slope__xyitem.html":[2,0,13],

@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('item_8h.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,9 +109,6 @@ $(document).ready(function(){initNavTree('item_8h.html','');});
 <div class="title">item.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>The base class for item objects.  
-<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="primitives_8h_source.html">slope/primitives.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for item.h:</div>
@@ -132,7 +129,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a7be66725a3a198bcbd9434e6d3ad70c5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7be66725a3a198bcbd9434e6d3ad70c5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>slope_scatter_t</b> { <br />
+<tr class="memitem:ga7be66725a3a198bcbd9434e6d3ad70c5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7be66725a3a198bcbd9434e6d3ad70c5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Item.html#ga7be66725a3a198bcbd9434e6d3ad70c5">slope_scatter_t</a> { <br />
 &#160;&#160;<b>SLOPE_LINE</b> = 0, 
 <b>SLOPE_CIRCLES</b> = 1, 
 <b>SLOPE_TRIANGLES</b> = 2, 
@@ -141,19 +138,21 @@ Enumerations</h2></td></tr>
 &#160;&#160;<b>SLOPE_PLUSSES</b> = 4
 <br />
  }</td></tr>
-<tr class="separator:a7be66725a3a198bcbd9434e6d3ad70c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ga7be66725a3a198bcbd9434e6d3ad70c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The symbol to represent a data point in a scatter map type chart. <br /></td></tr>
+<tr class="separator:ga7be66725a3a198bcbd9434e6d3ad70c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af048bd8c425893229133befa61831fd6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af048bd8c425893229133befa61831fd6"></a>
-slope_public void&#160;</td><td class="memItemRight" valign="bottom"><b>slope_item_destroy</b> (<a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item)</td></tr>
-<tr class="separator:af048bd8c425893229133befa61831fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9e09ab9591e1a2c3c41441f206ffd38"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9e09ab9591e1a2c3c41441f206ffd38"></a>
-slope_public int&#160;</td><td class="memItemRight" valign="bottom"><b>slope_item_get_visible</b> (const <a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item)</td></tr>
-<tr class="separator:af9e09ab9591e1a2c3c41441f206ffd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05e1944a09f330d4f9c0aa5e51181742"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05e1944a09f330d4f9c0aa5e51181742"></a>
-slope_public void&#160;</td><td class="memItemRight" valign="bottom"><b>slope_item_set_visible</b> (<a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item, int visible)</td></tr>
-<tr class="separator:a05e1944a09f330d4f9c0aa5e51181742"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf048bd8c425893229133befa61831fd6"><td class="memItemLeft" align="right" valign="top">slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Item.html#gaf048bd8c425893229133befa61831fd6">slope_item_destroy</a> (<a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item)</td></tr>
+<tr class="memdesc:gaf048bd8c425893229133befa61831fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an item and frees the memory.  <a href="group__Item.html#gaf048bd8c425893229133befa61831fd6">More...</a><br /></td></tr>
+<tr class="separator:gaf048bd8c425893229133befa61831fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf9e09ab9591e1a2c3c41441f206ffd38"><td class="memItemLeft" align="right" valign="top">slope_public int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Item.html#gaf9e09ab9591e1a2c3c41441f206ffd38">slope_item_get_visible</a> (const <a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item)</td></tr>
+<tr class="memdesc:gaf9e09ab9591e1a2c3c41441f206ffd38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries for the visibility of an item.  <a href="group__Item.html#gaf9e09ab9591e1a2c3c41441f206ffd38">More...</a><br /></td></tr>
+<tr class="separator:gaf9e09ab9591e1a2c3c41441f206ffd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05e1944a09f330d4f9c0aa5e51181742"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga05e1944a09f330d4f9c0aa5e51181742"></a>
+slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Item.html#ga05e1944a09f330d4f9c0aa5e51181742">slope_item_set_visible</a> (<a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item, int visible)</td></tr>
+<tr class="memdesc:ga05e1944a09f330d4f9c0aa5e51181742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the visibility state of the item. <br /></td></tr>
+<tr class="separator:ga05e1944a09f330d4f9c0aa5e51181742"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedadc38c8be254d52f5660db119f50b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedadc38c8be254d52f5660db119f50b5"></a>
 slope_public const char *&#160;</td><td class="memItemRight" valign="bottom"><b>slope_item_get_name</b> (const <a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item)</td></tr>
 <tr class="separator:aedadc38c8be254d52f5660db119f50b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,15 +175,13 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><b>slope_it
 slope_public void&#160;</td><td class="memItemRight" valign="bottom"><b>slope_item_notify_data_change</b> (<a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item)</td></tr>
 <tr class="separator:a3321bd4c28e14b8e8f577a191e17dbe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The base class for item objects. </p>
-</div></div><!-- contents -->
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b486b20c73a5631d156ab795507a462d.html">slope</a></li><li class="navelem"><a class="el" href="item_8h.html">item.h</a></li>
-    <li class="footer">Generated on Thu Jun 4 2015 11:10:44 for SLOPE by
+    <li class="footer">Generated on Thu Jun 4 2015 11:55:25 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

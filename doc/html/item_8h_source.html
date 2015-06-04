@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('item_8h_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -125,57 +125,61 @@ $(document).ready(function(){initNavTree('item_8h_source.html','');});
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> * If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#ifndef SLOPE_DATA_H</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define SLOPE_DATA_H</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="primitives_8h.html">slope/primitives.h</a>&quot;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;SLOPE_BEGIN_DECLS</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    SLOPE_LINE       = 0,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    SLOPE_CIRCLES    = 1,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    SLOPE_TRIANGLES  = 2,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    SLOPE_SQUARES    = 3,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    SLOPE_PLUSSES    = 4</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;slope_scatter_t;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;slope_public <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;slope_item_destroy (<a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;slope_public <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;slope_item_get_visible (<span class="keyword">const</span> <a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;slope_public <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;slope_item_set_visible (<a class="code" href="struct__slope__item.html">slope_item_t</a> *item, <span class="keywordtype">int</span> visible);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;slope_public <span class="keyword">const</span> <span class="keywordtype">char</span>*</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;slope_item_get_name (<span class="keyword">const</span> <a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#ifndef SLOPE_DATA_H</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define SLOPE_DATA_H</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="primitives_8h.html">slope/primitives.h</a>&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;SLOPE_BEGIN_DECLS</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="group__Item.html#ga7be66725a3a198bcbd9434e6d3ad70c5">   47</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    SLOPE_LINE       = 0, <span class="comment">/*&lt; The data points are joined by lines */</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    SLOPE_CIRCLES    = 1, <span class="comment">/*&lt; The data points are represent by circles, filled or not */</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    SLOPE_TRIANGLES  = 2, <span class="comment">/*&lt; The data points are represent by triangles, filled or not */</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    SLOPE_SQUARES    = 3, <span class="comment">/*&lt; The data points are represent by squares, filled or not */</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    SLOPE_PLUSSES    = 4  <span class="comment">/*&lt; The data points are represent by plus signs, filled or not */</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<a class="code" href="group__Item.html#ga7be66725a3a198bcbd9434e6d3ad70c5">slope_scatter_t</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;slope_public <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<a class="code" href="group__Item.html#gaf048bd8c425893229133befa61831fd6">slope_item_destroy</a> (<a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;slope_public <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;slope_item_set_name (<a class="code" href="struct__slope__item.html">slope_item_t</a> *item, <span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">int</span> slope_item_get_has_thumb (<span class="keyword">const</span> <a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;slope_public <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<a class="code" href="group__Item.html#gaf9e09ab9591e1a2c3c41441f206ffd38">slope_item_get_visible</a> (<span class="keyword">const</span> <a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;slope_public <a class="code" href="struct__slope__metrics.html">slope_metrics_t</a>*</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;slope_item_get_metrics (<span class="keyword">const</span> <a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;slope_public <a class="code" href="struct__slope__figure.html">slope_figure_t</a>*</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;slope_item_get_figure (<span class="keyword">const</span> <a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;slope_public <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;slope_item_notify_appearence_change (<a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;slope_public <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;slope_item_notify_data_change (<a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;SLOPE_END_DECLS</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*SLOPE_DATA_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;slope_public <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<a class="code" href="group__Item.html#ga05e1944a09f330d4f9c0aa5e51181742">slope_item_set_visible</a> (<a class="code" href="struct__slope__item.html">slope_item_t</a> *item, <span class="keywordtype">int</span> visible);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;slope_public <span class="keyword">const</span> <span class="keywordtype">char</span>*</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;slope_item_get_name (<span class="keyword">const</span> <a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;slope_public <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;slope_item_set_name (<a class="code" href="struct__slope__item.html">slope_item_t</a> *item, <span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keywordtype">int</span> slope_item_get_has_thumb (<span class="keyword">const</span> <a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;slope_public <a class="code" href="struct__slope__metrics.html">slope_metrics_t</a>*</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;slope_item_get_metrics (<span class="keyword">const</span> <a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;slope_public <a class="code" href="struct__slope__figure.html">slope_figure_t</a>*</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;slope_item_get_figure (<span class="keyword">const</span> <a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;slope_public <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;slope_item_notify_appearence_change (<a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;slope_public <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;slope_item_notify_data_change (<a class="code" href="struct__slope__item.html">slope_item_t</a> *item);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;SLOPE_END_DECLS</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SLOPE_DATA_H */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="primitives_8h_html"><div class="ttname"><a href="primitives_8h.html">primitives.h</a></div></div>
+<div class="ttc" id="group__Item_html_ga05e1944a09f330d4f9c0aa5e51181742"><div class="ttname"><a href="group__Item.html#ga05e1944a09f330d4f9c0aa5e51181742">slope_item_set_visible</a></div><div class="ttdeci">slope_public void slope_item_set_visible(slope_item_t *item, int visible)</div><div class="ttdoc">Sets the visibility state of the item. </div><div class="ttdef"><b>Definition:</b> item.c:51</div></div>
+<div class="ttc" id="group__Item_html_gaf9e09ab9591e1a2c3c41441f206ffd38"><div class="ttname"><a href="group__Item.html#gaf9e09ab9591e1a2c3c41441f206ffd38">slope_item_get_visible</a></div><div class="ttdeci">slope_public int slope_item_get_visible(const slope_item_t *item)</div><div class="ttdoc">Queries for the visibility of an item. </div><div class="ttdef"><b>Definition:</b> item.c:42</div></div>
+<div class="ttc" id="group__Item_html_ga7be66725a3a198bcbd9434e6d3ad70c5"><div class="ttname"><a href="group__Item.html#ga7be66725a3a198bcbd9434e6d3ad70c5">slope_scatter_t</a></div><div class="ttdeci">slope_scatter_t</div><div class="ttdoc">The symbol to represent a data point in a scatter map type chart. </div><div class="ttdef"><b>Definition:</b> item.h:47</div></div>
 <div class="ttc" id="struct__slope__figure_html"><div class="ttname"><a href="struct__slope__figure.html">_slope_figure</a></div><div class="ttdef"><b>Definition:</b> figure_p.h:29</div></div>
+<div class="ttc" id="group__Item_html_gaf048bd8c425893229133befa61831fd6"><div class="ttname"><a href="group__Item.html#gaf048bd8c425893229133befa61831fd6">slope_item_destroy</a></div><div class="ttdeci">slope_public void slope_item_destroy(slope_item_t *item)</div><div class="ttdoc">Destroys an item and frees the memory. </div><div class="ttdef"><b>Definition:</b> item.c:27</div></div>
 <div class="ttc" id="struct__slope__item_html"><div class="ttname"><a href="struct__slope__item.html">_slope_item</a></div><div class="ttdef"><b>Definition:</b> item_p.h:44</div></div>
 <div class="ttc" id="struct__slope__metrics_html"><div class="ttname"><a href="struct__slope__metrics.html">_slope_metrics</a></div><div class="ttdef"><b>Definition:</b> metrics_p.h:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -184,7 +188,7 @@ $(document).ready(function(){initNavTree('item_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b486b20c73a5631d156ab795507a462d.html">slope</a></li><li class="navelem"><a class="el" href="item_8h.html">item.h</a></li>
-    <li class="footer">Generated on Thu Jun 4 2015 11:10:44 for SLOPE by
+    <li class="footer">Generated on Thu Jun 4 2015 11:55:25 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

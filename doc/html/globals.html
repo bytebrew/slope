@@ -77,7 +77,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="globals.html"><span>All</span></a></li>
       <li><a href="globals_func.html"><span>Functions</span></a></li>
       <li><a href="globals_type.html"><span>Typedefs</span></a></li>
+      <li><a href="globals_enum.html"><span>Enumerations</span></a></li>
       <li><a href="globals_defs.html"><span>Macros</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow4" class="tabs3">
+    <ul class="tablist">
+      <li><a href="#index__"><span>_</span></a></li>
+      <li class="current"><a href="#index_s"><span>s</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -100,7 +107,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -110,7 +117,16 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented file members with links to the documentation:</div><ul>
+<div class="textblock">Here is a list of all documented file members with links to the documentation:</div>
+
+<h3><a class="anchor" id="index__"></a>- _ -</h3><ul>
+<li>_slope_metrics_type
+: <a class="el" href="group__Metrics.html#gafd1cecb864b09319525ee096fc692dd4">metrics.h</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
 <li>SLOPE_FALSE
 : <a class="el" href="group__Primitives.html#gae6284087e258abab2709107da8deef10">primitives.h</a>
 </li>
@@ -150,6 +166,15 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>slope_figure_write_to_svg()
 : <a class="el" href="group__Figure.html#ga18b13f5d94a871984760eaa4b5f5f4ae">figure.h</a>
 </li>
+<li>slope_item_destroy()
+: <a class="el" href="group__Item.html#gaf048bd8c425893229133befa61831fd6">item.h</a>
+</li>
+<li>slope_item_get_visible()
+: <a class="el" href="group__Item.html#gaf9e09ab9591e1a2c3c41441f206ffd38">item.h</a>
+</li>
+<li>slope_item_set_visible()
+: <a class="el" href="group__Item.html#ga05e1944a09f330d4f9c0aa5e51181742">item.h</a>
+</li>
 <li>slope_item_t
 : <a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">primitives.h</a>
 </li>
@@ -161,6 +186,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>slope_iterator_previous()
 : <a class="el" href="group__List.html#ga32395735bd64e9e085a4e70ebaf96a1d">list.h</a>
+</li>
+<li>slope_iterator_t
+: <a class="el" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">list.h</a>
 </li>
 <li>slope_list_append()
 : <a class="el" href="group__List.html#ga44d52be6db2e8321a4a81fb481212f54">list.h</a>
@@ -183,11 +211,23 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>slope_list_size()
 : <a class="el" href="group__List.html#gadbc1b27be93a2a166071c14ebb008359">list.h</a>
 </li>
+<li>slope_list_t
+: <a class="el" href="group__List.html#ga88326d377deca937191acac6784bff0e">list.h</a>
+</li>
+<li>slope_metrics_destroy()
+: <a class="el" href="group__Metrics.html#ga6c36874eecc6dbd3ac465da700c27d9f">metrics.h</a>
+</li>
 <li>slope_metrics_t
 : <a class="el" href="group__Metrics.html#gab80787ee8ae8dc449e770249fe0e3c35">primitives.h</a>
 </li>
+<li>slope_metrics_type_t
+: <a class="el" href="group__Metrics.html#ga5f51fc24807a4b3d2b0d41f354bbcedf">metrics.h</a>
+</li>
 <li>slope_rect_set()
 : <a class="el" href="primitives_8h.html#a30b271fd07025c5402baabc433e6d4c9">primitives.h</a>
+</li>
+<li>slope_scatter_t
+: <a class="el" href="group__Item.html#ga7be66725a3a198bcbd9434e6d3ad70c5">item.h</a>
 </li>
 <li>SLOPE_TRUE
 : <a class="el" href="group__Primitives.html#gaf4724331c7139c35a340ef6c34d1d5b8">primitives.h</a>
@@ -198,7 +238,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 4 2015 11:10:44 for SLOPE by
+    <li class="footer">Generated on Thu Jun 4 2015 11:55:25 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

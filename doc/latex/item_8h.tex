@@ -1,39 +1,32 @@
 \hypertarget{item_8h}{\section{slope/item.h File Reference}
 \label{item_8h}\index{slope/item.\+h@{slope/item.\+h}}
 }
-
-
-The base class for item objects.  
-
-
 {\ttfamily \#include \char`\"{}slope/primitives.\+h\char`\"{}}\\*
 Include dependency graph for item.\+h\+:
 This graph shows which files directly or indirectly include this file\+:
 \subsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{item_8h_a7be66725a3a198bcbd9434e6d3ad70c5}{enum {\bfseries slope\+\_\+scatter\+\_\+t} \{ \\*
+\hypertarget{group__Item_ga7be66725a3a198bcbd9434e6d3ad70c5}{enum \hyperlink{group__Item_ga7be66725a3a198bcbd9434e6d3ad70c5}{slope\+\_\+scatter\+\_\+t} \{ \\*
 {\bfseries S\+L\+O\+P\+E\+\_\+\+L\+I\+N\+E} = 0, 
 {\bfseries S\+L\+O\+P\+E\+\_\+\+C\+I\+R\+C\+L\+E\+S} = 1, 
 {\bfseries S\+L\+O\+P\+E\+\_\+\+T\+R\+I\+A\+N\+G\+L\+E\+S} = 2, 
 {\bfseries S\+L\+O\+P\+E\+\_\+\+S\+Q\+U\+A\+R\+E\+S} = 3, 
 \\*
 {\bfseries S\+L\+O\+P\+E\+\_\+\+P\+L\+U\+S\+S\+E\+S} = 4
- \}}\label{item_8h_a7be66725a3a198bcbd9434e6d3ad70c5}
+ \}}\label{group__Item_ga7be66725a3a198bcbd9434e6d3ad70c5}
 
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The symbol to represent a data point in a scatter map type chart. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{item_8h_af048bd8c425893229133befa61831fd6}{slope\+\_\+public void {\bfseries slope\+\_\+item\+\_\+destroy} (\hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)}\label{item_8h_af048bd8c425893229133befa61831fd6}
+slope\+\_\+public void \hyperlink{group__Item_gaf048bd8c425893229133befa61831fd6}{slope\+\_\+item\+\_\+destroy} (\hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)
+\begin{DoxyCompactList}\small\item\em Destroys an item and frees the memory. \end{DoxyCompactList}\item 
+slope\+\_\+public int \hyperlink{group__Item_gaf9e09ab9591e1a2c3c41441f206ffd38}{slope\+\_\+item\+\_\+get\+\_\+visible} (const \hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)
+\begin{DoxyCompactList}\small\item\em Queries for the visibility of an item. \end{DoxyCompactList}\item 
+\hypertarget{group__Item_ga05e1944a09f330d4f9c0aa5e51181742}{slope\+\_\+public void \hyperlink{group__Item_ga05e1944a09f330d4f9c0aa5e51181742}{slope\+\_\+item\+\_\+set\+\_\+visible} (\hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item, int visible)}\label{group__Item_ga05e1944a09f330d4f9c0aa5e51181742}
 
-\item 
-\hypertarget{item_8h_af9e09ab9591e1a2c3c41441f206ffd38}{slope\+\_\+public int {\bfseries slope\+\_\+item\+\_\+get\+\_\+visible} (const \hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)}\label{item_8h_af9e09ab9591e1a2c3c41441f206ffd38}
-
-\item 
-\hypertarget{item_8h_a05e1944a09f330d4f9c0aa5e51181742}{slope\+\_\+public void {\bfseries slope\+\_\+item\+\_\+set\+\_\+visible} (\hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item, int visible)}\label{item_8h_a05e1944a09f330d4f9c0aa5e51181742}
-
-\item 
+\begin{DoxyCompactList}\small\item\em Sets the visibility state of the item. \end{DoxyCompactList}\item 
 \hypertarget{item_8h_aedadc38c8be254d52f5660db119f50b5}{slope\+\_\+public const char $\ast$ {\bfseries slope\+\_\+item\+\_\+get\+\_\+name} (const \hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)}\label{item_8h_aedadc38c8be254d52f5660db119f50b5}
 
 \item 
@@ -55,8 +48,3 @@ This graph shows which files directly or indirectly include this file\+:
 \hypertarget{item_8h_a3321bd4c28e14b8e8f577a191e17dbe2}{slope\+\_\+public void {\bfseries slope\+\_\+item\+\_\+notify\+\_\+data\+\_\+change} (\hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)}\label{item_8h_a3321bd4c28e14b8e8f577a191e17dbe2}
 
 \end{DoxyCompactItemize}
-
-
-\subsection{Detailed Description}
-The base class for item objects. 
-

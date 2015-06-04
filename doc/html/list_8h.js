@@ -1,7 +1,7 @@
 var list_8h =
 [
-    [ "slope_iterator_t", "list_8h.html#aad13ce078b8dfe56e5a54bafc9aff9af", null ],
-    [ "slope_list_t", "list_8h.html#a88326d377deca937191acac6784bff0e", null ],
+    [ "slope_iterator_t", "group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af", null ],
+    [ "slope_list_t", "group__List.html#ga88326d377deca937191acac6784bff0e", null ],
     [ "slope_iterator_data", "group__List.html#ga33ad9bae82e595e65a1ffe4bf7168a84", null ],
     [ "slope_iterator_next", "group__List.html#gae0daa8d0f64b26df51cbae035578ca55", null ],
     [ "slope_iterator_previous", "group__List.html#ga32395735bd64e9e085a4e70ebaf96a1d", null ],

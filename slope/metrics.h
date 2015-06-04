@@ -18,10 +18,17 @@
  */
 
 /**
- * @file metrics.h
- * @brief The base class for metrics objects
- * 
+ * @file slope/metrics.h
  * @defgroup Metrics
+ * @ingroup Metrics
+ * 
+ * @author Elvis Teixeira
+ * @date 18 Jan 2015
+ * 
+ * @brief The base class for metrics objects.
+ * 
+ * Metrics are used to scale the datasets to the size of the figure and to
+ * help place and anchor the various items to the appropriate figure layout.
  */
 
 
@@ -34,15 +41,28 @@
 SLOPE_BEGIN_DECLS
 
 
+/**
+ * @ingroup Metrics
+ * 
+ * @brief The metrics type tells the type of transformation from data space to figure coordinates
+ * 
+ * The metrics type tells the type of transformation from data space to figure coordinates,
+ * the only transformation implemented at this time is slope_xymetrics_t, which performs the
+ * transformation from data in cartesian coordinates to cartesian figure coordinates.
+ */
 typedef enum _slope_metrics_type
 {
-    SLOPE_METRICS_INVALID = 0,
-    SLOPE_XYMETRICS       = 1
+    SLOPE_METRICS_INVALID = 0, /*< Uninitialised metrics object */
+    SLOPE_XYMETRICS       = 1  /*< XY or cartesian metrics object */
 }
 slope_metrics_type_t;
 
 
 /**
+ * @ingroup Metrics
+ * @brief Destroys a metrics object and frees the memory.
+ * 
+ * @param metrics The metrics to be destroyed.
  */
 slope_public void
 slope_metrics_destroy (slope_metrics_t *metrics);
@@ -92,4 +112,4 @@ slope_metrics_get_figure (const slope_metrics_t *metrics);
 
 SLOPE_END_DECLS
 
-#endif /*SLOPE_METRICS_H */
+#endif /* SLOPE_METRICS_H */

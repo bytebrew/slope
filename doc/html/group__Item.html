@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('group__Item.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -97,11 +97,16 @@ $(document).ready(function(){initNavTree('group__Item.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Item</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>The base class for item objects.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -109,14 +114,89 @@ Typedefs</h2></td></tr>
 typedef struct <a class="el" href="struct__slope__item.html">_slope_item</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a></td></tr>
 <tr class="memdesc:ga2616141f0e164a876049da51ea3a8646"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every thing that can be drawn to a figure is a subclass of slope_item_t. <br /></td></tr>
 <tr class="separator:ga2616141f0e164a876049da51ea3a8646"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ga7be66725a3a198bcbd9434e6d3ad70c5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7be66725a3a198bcbd9434e6d3ad70c5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Item.html#ga7be66725a3a198bcbd9434e6d3ad70c5">slope_scatter_t</a> { <br />
+&#160;&#160;<b>SLOPE_LINE</b> = 0, 
+<b>SLOPE_CIRCLES</b> = 1, 
+<b>SLOPE_TRIANGLES</b> = 2, 
+<b>SLOPE_SQUARES</b> = 3, 
+<br />
+&#160;&#160;<b>SLOPE_PLUSSES</b> = 4
+<br />
+ }</td></tr>
+<tr class="memdesc:ga7be66725a3a198bcbd9434e6d3ad70c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The symbol to represent a data point in a scatter map type chart. <br /></td></tr>
+<tr class="separator:ga7be66725a3a198bcbd9434e6d3ad70c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gaf048bd8c425893229133befa61831fd6"><td class="memItemLeft" align="right" valign="top">slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Item.html#gaf048bd8c425893229133befa61831fd6">slope_item_destroy</a> (<a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item)</td></tr>
+<tr class="memdesc:gaf048bd8c425893229133befa61831fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an item and frees the memory.  <a href="#gaf048bd8c425893229133befa61831fd6">More...</a><br /></td></tr>
+<tr class="separator:gaf048bd8c425893229133befa61831fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf9e09ab9591e1a2c3c41441f206ffd38"><td class="memItemLeft" align="right" valign="top">slope_public int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Item.html#gaf9e09ab9591e1a2c3c41441f206ffd38">slope_item_get_visible</a> (const <a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item)</td></tr>
+<tr class="memdesc:gaf9e09ab9591e1a2c3c41441f206ffd38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries for the visibility of an item.  <a href="#gaf9e09ab9591e1a2c3c41441f206ffd38">More...</a><br /></td></tr>
+<tr class="separator:gaf9e09ab9591e1a2c3c41441f206ffd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05e1944a09f330d4f9c0aa5e51181742"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga05e1944a09f330d4f9c0aa5e51181742"></a>
+slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Item.html#ga05e1944a09f330d4f9c0aa5e51181742">slope_item_set_visible</a> (<a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *item, int visible)</td></tr>
+<tr class="memdesc:ga05e1944a09f330d4f9c0aa5e51181742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the visibility state of the item. <br /></td></tr>
+<tr class="separator:ga05e1944a09f330d4f9c0aa5e51181742"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p>The base class for item objects. </p>
+<dl class="section author"><dt>Author</dt><dd>Elvis Teixeira </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>18 Jan 2015</dd></dl>
+<p>Everithing that can be drawn in a slope_figure_t, including data representations, chart axis, legends and text labels, are items. To be drawn, items must lie in the item list of metrics that that lie in the metrics list of a figure. </p>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="gaf048bd8c425893229133befa61831fd6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">slope_public void slope_item_destroy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destroys an item and frees the memory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item to be destroyed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gaf9e09ab9591e1a2c3c41441f206ffd38"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">slope_public int slope_item_get_visible </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="group__Item.html#ga2616141f0e164a876049da51ea3a8646">slope_item_t</a> *&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Queries for the visibility of an item. </p>
+<dl class="section return"><dt>Returns</dt><dd>SLOPE_TRUE if the item is visible, SLOPE_FALSE otherwise </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 4 2015 11:10:44 for SLOPE by
+    <li class="footer">Generated on Thu Jun 4 2015 11:55:25 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

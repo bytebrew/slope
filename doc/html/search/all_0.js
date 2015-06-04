@@ -9,6 +9,7 @@ var searchData=
   ['_5fslope_5flist',['_slope_list',['../struct__slope__list.html',1,'']]],
   ['_5fslope_5fmetrics',['_slope_metrics',['../struct__slope__metrics.html',1,'']]],
   ['_5fslope_5fmetrics_5fclass',['_slope_metrics_class',['../struct__slope__metrics__class.html',1,'']]],
+  ['_5fslope_5fmetrics_5ftype',['_slope_metrics_type',['../group__Metrics.html#gafd1cecb864b09319525ee096fc692dd4',1,'metrics.h']]],
   ['_5fslope_5fpoint',['_slope_point',['../struct__slope__point.html',1,'']]],
   ['_5fslope_5frect',['_slope_rect',['../struct__slope__rect.html',1,'']]],
   ['_5fslope_5fvector',['_slope_vector',['../struct__slope__vector.html',1,'']]],

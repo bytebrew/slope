@@ -18,10 +18,19 @@
  */
 
 /**
- * @file item.h
- * @brief The base class for item objects
- * 
+ * @file slope/item.h
  * @defgroup Item
+ * @ingroup Item
+ * 
+ * @author Elvis Teixeira
+ * @date 18 Jan 2015
+ * 
+ * @brief The base class for item objects.
+ * 
+ * Everithing that can be drawn in a slope_figure_t, including data
+ * representations, chart axis, legends and text labels, are items.
+ * To be drawn, items must lie in the item list of metrics that
+ * that lie in the metrics list of a figure.
  */
 
 #ifndef SLOPE_DATA_H
@@ -32,28 +41,40 @@
 SLOPE_BEGIN_DECLS
 
 /**
+ * @ingroup Item
+ * @brief The symbol to represent a data point in a scatter map type chart
  */
 typedef enum
 {
-    SLOPE_LINE       = 0,
-    SLOPE_CIRCLES    = 1,
-    SLOPE_TRIANGLES  = 2,
-    SLOPE_SQUARES    = 3,
-    SLOPE_PLUSSES    = 4
+    SLOPE_LINE       = 0, /*< The data points are joined by lines */
+    SLOPE_CIRCLES    = 1, /*< The data points are represent by circles, filled or not */
+    SLOPE_TRIANGLES  = 2, /*< The data points are represent by triangles, filled or not */
+    SLOPE_SQUARES    = 3, /*< The data points are represent by squares, filled or not */
+    SLOPE_PLUSSES    = 4  /*< The data points are represent by plus signs, filled or not */
 }
 slope_scatter_t;
 
 /**
+ * @ingroup Item
+ * @brief Destroys an item and frees the memory
+ * 
+ * @param item The item to be destroyed.
  */
 slope_public void
 slope_item_destroy (slope_item_t *item);
 
 /**
+ * @ingroup Item
+ * @brief Queries for the visibility of an item
+ * 
+ * @returns SLOPE_TRUE if the item is visible, SLOPE_FALSE otherwise
  */
 slope_public int
 slope_item_get_visible (const slope_item_t *item);
 
 /**
+ * @ingroup Item
+ * @brief Sets the visibility state of the item
  */
 slope_public void
 slope_item_set_visible (slope_item_t *item, int visible);
@@ -94,4 +115,4 @@ slope_item_notify_data_change (slope_item_t *item);
 
 SLOPE_END_DECLS
 
-#endif /*SLOPE_DATA_H */
+#endif /* SLOPE_DATA_H */

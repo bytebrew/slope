@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('group__Figure.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -120,7 +120,7 @@ Functions</h2></td></tr>
 <a class="el" href="group__Figure.html#ga507cc82eeca8255d6c0f603ffdaeb59e">slope_figure_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Figure.html#ga0534b5fef88fda65fd4b8feb33071cab">slope_figure_create</a> ()</td></tr>
 <tr class="memdesc:ga0534b5fef88fda65fd4b8feb33071cab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new figure object.  <a href="#ga0534b5fef88fda65fd4b8feb33071cab">More...</a><br /></td></tr>
 <tr class="separator:ga0534b5fef88fda65fd4b8feb33071cab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac7d6aaca4df6806f00f3cb130a78dcde"><td class="memItemLeft" align="right" valign="top">slope_public <a class="el" href="struct__slope__list.html">slope_list_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Figure.html#gac7d6aaca4df6806f00f3cb130a78dcde">slope_figure_get_metrics_list</a> (const <a class="el" href="group__Figure.html#ga507cc82eeca8255d6c0f603ffdaeb59e">slope_figure_t</a> *figure)</td></tr>
+<tr class="memitem:gac7d6aaca4df6806f00f3cb130a78dcde"><td class="memItemLeft" align="right" valign="top">slope_public <a class="el" href="group__List.html#ga88326d377deca937191acac6784bff0e">slope_list_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Figure.html#gac7d6aaca4df6806f00f3cb130a78dcde">slope_figure_get_metrics_list</a> (const <a class="el" href="group__Figure.html#ga507cc82eeca8255d6c0f603ffdaeb59e">slope_figure_t</a> *figure)</td></tr>
 <tr class="memdesc:gac7d6aaca4df6806f00f3cb130a78dcde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the metrics list of figure.  <a href="#gac7d6aaca4df6806f00f3cb130a78dcde">More...</a><br /></td></tr>
 <tr class="separator:gac7d6aaca4df6806f00f3cb130a78dcde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga08b6896169ef4a926e7d487ade3fe74e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga08b6896169ef4a926e7d487ade3fe74e"></a>
@@ -155,6 +155,8 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Figure is the object that holds any of slope's drawables. </p>
+<dl class="section author"><dt>Author</dt><dd>Elvis Teixeira </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>18 Jan 2015</dd></dl>
 <p>Every time one wants to produce a figure one will instantiate a slope_figure_t, add one or more slope_metrics_t to it and then place the slope_item_t's in the metrics. All that remains to do is draw the figure to any of cairo's backends, such as a GtkWidget a PNG file or any other. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="ga0534b5fef88fda65fd4b8feb33071cab"></a>
@@ -247,7 +249,7 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">slope_public <a class="el" href="struct__slope__list.html">slope_list_t</a>* slope_figure_get_metrics_list </td>
+          <td class="memname">slope_public <a class="el" href="group__List.html#ga88326d377deca937191acac6784bff0e">slope_list_t</a>* slope_figure_get_metrics_list </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="group__Figure.html#ga507cc82eeca8255d6c0f603ffdaeb59e">slope_figure_t</a> *&#160;</td>
           <td class="paramname"><em>figure</em></td><td>)</td>
@@ -501,7 +503,7 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 4 2015 11:10:44 for SLOPE by
+    <li class="footer">Generated on Thu Jun 4 2015 11:55:25 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

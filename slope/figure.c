@@ -85,10 +85,12 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
     slope_cairo_rectangle(cr, rect);
     cairo_clip(cr);
     
+    /*
     cairo_select_font_face(cr, "Sans",
         CAIRO_FONT_SLANT_NORMAL,
         CAIRO_FONT_WEIGHT_NORMAL);
     cairo_set_font_size(cr, 11);
+    */
 
     /* fill background if required */
     if (figure->fill_back) {

@@ -17,18 +17,18 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
- /**
-  * @file slope/list.h
-  *
-  * @defgroup List
-  * @ingroup List
-  * @author Elvis Teixeira
-  * @date 18 Jan 2015
-  *
-  * @brief Functions to create and manipulate linked lists of pointers
-  * Used to store and iterate over linked lists of pointers to slope's
-  * objects.
-  */
+/**
+ * @file slope/list.h
+ * @defgroup List
+ * @ingroup List
+ * 
+ * @author Elvis Teixeira
+ * @date 18 Jan 2015
+ *
+ * @brief Functions to create and manipulate linked lists of pointers
+ * Used to store and iterate over linked lists of pointers to slope's
+ * objects.
+ */
 
 #ifndef SLOPE_LIST_H
 #define SLOPE_LIST_H
@@ -37,8 +37,20 @@
 
 SLOPE_BEGIN_DECLS
 
+/**
+ * @ingroup List
+ * 
+ * @brief A List node that contains pointers to the previous and next nodes
+ * as well as to the node data
+ */
 typedef struct _slope_iterator slope_iterator_t;
 
+/**
+ * @ingroup List
+ * 
+ * @brief An doubly linked list, contains pointers to the first and last nodes
+ * and the current number of nodes.
+ */
 typedef struct _slope_list slope_list_t;
 
 /**

@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('list_8h_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -132,48 +132,49 @@ $(document).ready(function(){initNavTree('list_8h_source.html','');});
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;SLOPE_BEGIN_DECLS</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct__slope__iterator.html">_slope_iterator</a> slope_iterator_t;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct__slope__list.html">_slope_list</a> <a class="code" href="struct__slope__list.html">slope_list_t</a>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;slope_public <span class="keywordtype">void</span>*</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<a class="code" href="group__List.html#ga33ad9bae82e595e65a1ffe4bf7168a84">slope_iterator_data</a> (<span class="keyword">const</span> slope_iterator_t *iter);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;slope_public <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<a class="code" href="group__List.html#gae0daa8d0f64b26df51cbae035578ca55">slope_iterator_next</a> (slope_iterator_t **iter);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;slope_public <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<a class="code" href="group__List.html#ga32395735bd64e9e085a4e70ebaf96a1d">slope_iterator_previous</a> (slope_iterator_t **iter);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;slope_public <a class="code" href="struct__slope__list.html">slope_list_t</a>*</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<a class="code" href="group__List.html#ga44d52be6db2e8321a4a81fb481212f54">slope_list_append</a> (<a class="code" href="struct__slope__list.html">slope_list_t</a> *list, <span class="keywordtype">void</span> *data);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;slope_public <a class="code" href="struct__slope__list.html">slope_list_t</a>*</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<a class="code" href="group__List.html#ga770e1a1761295088a2e769f10c50e9e7">slope_list_prepend</a> (<a class="code" href="struct__slope__list.html">slope_list_t</a> *list, <span class="keywordtype">void</span> *data);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;slope_public <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<a class="code" href="group__List.html#gad1f8ec4bc7db2daff96765ed708437b2">slope_list_destroy</a> (<a class="code" href="struct__slope__list.html">slope_list_t</a> *list);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;slope_public slope_iterator_t*</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<a class="code" href="group__List.html#ga7fbf15803b6c95dc32989a0d9170f145">slope_list_first</a> (<span class="keyword">const</span> <a class="code" href="struct__slope__list.html">slope_list_t</a> *list);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;slope_public slope_iterator_t*</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<a class="code" href="group__List.html#ga3b742a38cf861650f7b1a15ae038fac9">slope_list_last</a> (<span class="keyword">const</span> <a class="code" href="struct__slope__list.html">slope_list_t</a> *list);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;slope_public <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<a class="code" href="group__List.html#gadbc1b27be93a2a166071c14ebb008359">slope_list_size</a> (<span class="keyword">const</span> <a class="code" href="struct__slope__list.html">slope_list_t</a> *list);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;slope_public slope_iterator_t*</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<a class="code" href="group__List.html#ga0066274727609b058da0b561743dc318">slope_list_remove</a> (<a class="code" href="struct__slope__list.html">slope_list_t</a> *list,</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                   slope_iterator_t *pos);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;SLOPE_END_DECLS</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*SLOPE_LIST_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">   46</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct__slope__iterator.html">_slope_iterator</a> <a class="code" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">slope_iterator_t</a>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="group__List.html#ga88326d377deca937191acac6784bff0e">   54</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct__slope__list.html">_slope_list</a> <a class="code" href="struct__slope__list.html">slope_list_t</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;slope_public <span class="keywordtype">void</span>*</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<a class="code" href="group__List.html#ga33ad9bae82e595e65a1ffe4bf7168a84">slope_iterator_data</a> (<span class="keyword">const</span> <a class="code" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">slope_iterator_t</a> *iter);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;slope_public <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<a class="code" href="group__List.html#gae0daa8d0f64b26df51cbae035578ca55">slope_iterator_next</a> (<a class="code" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">slope_iterator_t</a> **iter);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;slope_public <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<a class="code" href="group__List.html#ga32395735bd64e9e085a4e70ebaf96a1d">slope_iterator_previous</a> (<a class="code" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">slope_iterator_t</a> **iter);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;slope_public <a class="code" href="struct__slope__list.html">slope_list_t</a>*</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<a class="code" href="group__List.html#ga44d52be6db2e8321a4a81fb481212f54">slope_list_append</a> (<a class="code" href="struct__slope__list.html">slope_list_t</a> *list, <span class="keywordtype">void</span> *data);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;slope_public <a class="code" href="struct__slope__list.html">slope_list_t</a>*</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<a class="code" href="group__List.html#ga770e1a1761295088a2e769f10c50e9e7">slope_list_prepend</a> (<a class="code" href="struct__slope__list.html">slope_list_t</a> *list, <span class="keywordtype">void</span> *data);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;slope_public <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<a class="code" href="group__List.html#gad1f8ec4bc7db2daff96765ed708437b2">slope_list_destroy</a> (<a class="code" href="struct__slope__list.html">slope_list_t</a> *list);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;slope_public <a class="code" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">slope_iterator_t</a>*</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<a class="code" href="group__List.html#ga7fbf15803b6c95dc32989a0d9170f145">slope_list_first</a> (<span class="keyword">const</span> <a class="code" href="struct__slope__list.html">slope_list_t</a> *list);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;slope_public <a class="code" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">slope_iterator_t</a>*</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<a class="code" href="group__List.html#ga3b742a38cf861650f7b1a15ae038fac9">slope_list_last</a> (<span class="keyword">const</span> <a class="code" href="struct__slope__list.html">slope_list_t</a> *list);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;slope_public <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<a class="code" href="group__List.html#gadbc1b27be93a2a166071c14ebb008359">slope_list_size</a> (<span class="keyword">const</span> <a class="code" href="struct__slope__list.html">slope_list_t</a> *list);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;slope_public <a class="code" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">slope_iterator_t</a>*</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<a class="code" href="group__List.html#ga0066274727609b058da0b561743dc318">slope_list_remove</a> (<a class="code" href="struct__slope__list.html">slope_list_t</a> *list,</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                   <a class="code" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">slope_iterator_t</a> *pos);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;SLOPE_END_DECLS</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*SLOPE_LIST_H */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="group__List_html_ga32395735bd64e9e085a4e70ebaf96a1d"><div class="ttname"><a href="group__List.html#ga32395735bd64e9e085a4e70ebaf96a1d">slope_iterator_previous</a></div><div class="ttdeci">slope_public void slope_iterator_previous(slope_iterator_t **iter)</div><div class="ttdoc">Moves the iterator to the previous position. </div><div class="ttdef"><b>Definition:</b> list.c:59</div></div>
 <div class="ttc" id="group__List_html_gae0daa8d0f64b26df51cbae035578ca55"><div class="ttname"><a href="group__List.html#gae0daa8d0f64b26df51cbae035578ca55">slope_iterator_next</a></div><div class="ttdeci">slope_public void slope_iterator_next(slope_iterator_t **iter)</div><div class="ttdoc">Moves the iterator to the next position. </div><div class="ttdef"><b>Definition:</b> list.c:51</div></div>
 <div class="ttc" id="group__List_html_ga0066274727609b058da0b561743dc318"><div class="ttname"><a href="group__List.html#ga0066274727609b058da0b561743dc318">slope_list_remove</a></div><div class="ttdeci">slope_public slope_iterator_t * slope_list_remove(slope_list_t *list, slope_iterator_t *pos)</div><div class="ttdoc">Removes the element pointed to by iterator pos. </div><div class="ttdef"><b>Definition:</b> list.c:167</div></div>
 <div class="ttc" id="group__List_html_ga3b742a38cf861650f7b1a15ae038fac9"><div class="ttname"><a href="group__List.html#ga3b742a38cf861650f7b1a15ae038fac9">slope_list_last</a></div><div class="ttdeci">slope_public slope_iterator_t * slope_list_last(const slope_list_t *list)</div><div class="ttdoc">Access the iterator for the last element. </div><div class="ttdef"><b>Definition:</b> list.c:145</div></div>
+<div class="ttc" id="group__List_html_gaad13ce078b8dfe56e5a54bafc9aff9af"><div class="ttname"><a href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">slope_iterator_t</a></div><div class="ttdeci">typedefSLOPE_BEGIN_DECLS struct _slope_iterator slope_iterator_t</div><div class="ttdoc">A List node that contains pointers to the previous and next nodes as well as to the node data...</div><div class="ttdef"><b>Definition:</b> list.h:46</div></div>
 <div class="ttc" id="group__List_html_ga770e1a1761295088a2e769f10c50e9e7"><div class="ttname"><a href="group__List.html#ga770e1a1761295088a2e769f10c50e9e7">slope_list_prepend</a></div><div class="ttdeci">slope_public slope_list_t * slope_list_prepend(slope_list_t *list, void *data)</div><div class="ttdoc">Prepends an element to the begining of the list. </div><div class="ttdef"><b>Definition:</b> list.c:92</div></div>
 <div class="ttc" id="struct__slope__list_html"><div class="ttname"><a href="struct__slope__list.html">_slope_list</a></div><div class="ttdef"><b>Definition:</b> list.c:32</div></div>
 <div class="ttc" id="group__List_html_gadbc1b27be93a2a166071c14ebb008359"><div class="ttname"><a href="group__List.html#gadbc1b27be93a2a166071c14ebb008359">slope_list_size</a></div><div class="ttdeci">slope_public int slope_list_size(const slope_list_t *list)</div><div class="ttdoc">Access the size (element number) of the last. </div><div class="ttdef"><b>Definition:</b> list.c:156</div></div>
@@ -188,7 +189,7 @@ $(document).ready(function(){initNavTree('list_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b486b20c73a5631d156ab795507a462d.html">slope</a></li><li class="navelem"><a class="el" href="list_8h.html">list.h</a></li>
-    <li class="footer">Generated on Thu Jun 4 2015 11:10:44 for SLOPE by
+    <li class="footer">Generated on Thu Jun 4 2015 11:55:25 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>
