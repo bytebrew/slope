@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('group__Metrics.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -121,8 +121,8 @@ typedef struct <a class="el" href="struct__slope__metrics.html">_slope_metrics</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:gafd1cecb864b09319525ee096fc692dd4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Metrics.html#gafd1cecb864b09319525ee096fc692dd4">_slope_metrics_type</a> { <b>SLOPE_METRICS_INVALID</b> = 0, 
-<b>SLOPE_XYMETRICS</b> = 1
+<tr class="memitem:gafd1cecb864b09319525ee096fc692dd4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Metrics.html#gafd1cecb864b09319525ee096fc692dd4">_slope_metrics_type</a> { <a class="el" href="group__Metrics.html#ggafd1cecb864b09319525ee096fc692dd4ad8bd15dd877a322c323826524fad1d7b">SLOPE_METRICS_INVALID</a> = 0, 
+<a class="el" href="group__Metrics.html#ggafd1cecb864b09319525ee096fc692dd4a8054bd0c50ca93d0b3222b70b1284c37">SLOPE_XYMETRICS</a> = 1
  }</td></tr>
 <tr class="memdesc:gafd1cecb864b09319525ee096fc692dd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The metrics type tells the type of transformation from data space to figure coordinates.  <a href="group__Metrics.html#gafd1cecb864b09319525ee096fc692dd4">More...</a><br /></td></tr>
 <tr class="separator:gafd1cecb864b09319525ee096fc692dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,6 +168,14 @@ Functions</h2></td></tr>
 
 <p>The metrics type tells the type of transformation from data space to figure coordinates. </p>
 <p>The metrics type tells the type of transformation from data space to figure coordinates, the only transformation implemented at this time is slope_xymetrics_t, which performs the transformation from data in cartesian coordinates to cartesian figure coordinates. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="ggafd1cecb864b09319525ee096fc692dd4ad8bd15dd877a322c323826524fad1d7b"></a>SLOPE_METRICS_INVALID&#160;</td><td class="fielddoc">
+<p>Uninitialised metrics object </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="ggafd1cecb864b09319525ee096fc692dd4a8054bd0c50ca93d0b3222b70b1284c37"></a>SLOPE_XYMETRICS&#160;</td><td class="fielddoc">
+<p>XY or cartesian metrics object </p>
+</td></tr>
+</table>
 
 </div>
 </div>
@@ -189,7 +197,7 @@ Functions</h2></td></tr>
 <p>Destroys a metrics object and frees the memory. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">metrics</td><td>The metrics to be destroyed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">metrics</td><td>The metrics to be destroyed. </td></tr>
   </table>
   </dd>
 </dl>
@@ -201,7 +209,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 4 2015 11:55:25 for SLOPE by
+    <li class="footer">Generated on Fri Jun 5 2015 12:18:16 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

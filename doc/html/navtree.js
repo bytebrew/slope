@@ -1,6 +1,7 @@
 var NAVTREE =
 [
   [ "SLOPE", "index.html", [
+    [ "Slope, a free charting library that uses cairo", "index.html", null ],
     [ "SLOPE", "md_README.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Classes", null, [
@@ -14,6 +15,7 @@ var NAVTREE =
         [ "Functions", "globals_func.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
+        [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -23,7 +25,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"struct__slope__rect.html#aee8ea863cafdbee525219b26bd400177"
+"struct__slope__metrics.html#acdba84cfba06e6293e18ba29cc822e35"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

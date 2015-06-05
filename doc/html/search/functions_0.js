@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['slope_5fchart_5fcreate',['slope_chart_create',['../group__Util.html#ga77120ea4a95ebd421a60eac8f84c6a70',1,'slope_chart_create(const char *title, const char *xlabel, const char *ylabel):&#160;slope.c'],['../group__Util.html#ga77120ea4a95ebd421a60eac8f84c6a70',1,'slope_chart_create(const char *title, const char *xlabel, const char *ylabel):&#160;slope.c']]],
   ['slope_5ffigure_5fadd_5fmetrics',['slope_figure_add_metrics',['../group__Figure.html#ga08b6896169ef4a926e7d487ade3fe74e',1,'slope_figure_add_metrics(slope_figure_t *figure, slope_metrics_t *metrics):&#160;figure.c'],['../group__Figure.html#ga08b6896169ef4a926e7d487ade3fe74e',1,'slope_figure_add_metrics(slope_figure_t *figure, slope_metrics_t *metrics):&#160;figure.c']]],
   ['slope_5ffigure_5fcreate',['slope_figure_create',['../group__Figure.html#ga0534b5fef88fda65fd4b8feb33071cab',1,'slope_figure_create():&#160;figure.c'],['../group__Figure.html#ga0534b5fef88fda65fd4b8feb33071cab',1,'slope_figure_create():&#160;figure.c']]],
   ['slope_5ffigure_5fdestroy',['slope_figure_destroy',['../group__Figure.html#gada369b301fabc0c40ef172e22d4fcb85',1,'slope_figure_destroy(slope_figure_t *figure):&#160;figure.c'],['../group__Figure.html#gada369b301fabc0c40ef172e22d4fcb85',1,'slope_figure_destroy(slope_figure_t *figure):&#160;figure.c']]],

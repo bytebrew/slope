@@ -78,9 +78,9 @@ slope_figure_destroy (slope_figure_t *figure);
  * @ingroup Figure
  * @brief Draw the contents of this figure to one of cairo's backends via cr.
  * 
- * @param figure The figure to be drawn.
- * @param cr The cairo context to draw the figure.
- * @param rect The rectange that limits the area of the cairo_surface_t to draw figure.
+ * @param[in] figure The figure to be drawn.
+ * @param[in] cr The cairo context to draw the figure.
+ * @param[in] rect The rectange that limits the area of the cairo_surface_t to draw figure.
  */
 slope_public void
 slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
@@ -90,11 +90,11 @@ slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
  * @ingroup Figure
  * @brief Writes the figure to a png file
  * 
- * @param figure The figure to be drawn
- * @param The figure to be drawn.
- * @param filename The path to the png file to be output, include the .png ending.
- * @param width The width in pixels of the output file.
- * @param height The height in pixels of the output file.
+ * @param[in] figure The figure to be drawn
+ * @param[in] The figure to be drawn.
+ * @param[in] filename The path to the png file to be output, include the .png ending.
+ * @param[in] width The width in pixels of the output file.
+ * @param[in] height The height in pixels of the output file.
  */
 slope_public void
 slope_figure_write_to_png (slope_figure_t *figure,
@@ -105,10 +105,10 @@ slope_figure_write_to_png (slope_figure_t *figure,
  * @ingroup Figure
  * @brief The figure to be drawn.
  * 
- * @param figure The figure to be drawn
- * @param filename The path to the svg file to be output, include the .svg ending.
- * @param width The width in pixels of the output file.
- * @param height The height in pixels of the output file.
+ * @param[in] figure The figure to be drawn
+ * @param[in] filename The path to the svg file to be output, include the .svg ending.
+ * @param[in] width The width in pixels of the output file.
+ * @param[in] height The height in pixels of the output file.
  * 
  * @return The status of the operation
  */
@@ -121,10 +121,10 @@ slope_figure_write_to_svg (slope_figure_t *figure,
  * @ingroup Figure
  * @brief The figure to be drawn.
  * 
- * @param figure The figure to be drawn
- * @param filename The path to the pdf file to be output, include the .pdf ending.
- * @param width The width in pixels of the output file.
- * @param height The height in pixels of the output file.
+ * @param[in] figure The figure to be drawn
+ * @param[in] filename The path to the pdf file to be output, include the .pdf ending.
+ * @param[in] width The width in pixels of the output file.
+ * @param[in] height The height in pixels of the output file.
  * 
  * @return The status of the operation
  */
@@ -137,10 +137,10 @@ slope_figure_write_to_pdf (slope_figure_t *figure,
  * @ingroup Figure
  * @brief The figure to be drawn.
  * 
- * @param figure The figure to be drawn
- * @param filename The path to the postscript file to be output, include the .ps ending.
- * @param width The width in pixels of the output file.
- * @param height The height in pixels of the output file.
+ * @param[in] figure The figure to be drawn
+ * @param[in] filename The path to the postscript file to be output, include the .ps ending.
+ * @param[in] width The width in pixels of the output file.
+ * @param[in] height The height in pixels of the output file.
  * 
  * @return The status of the operation
  */
@@ -154,7 +154,7 @@ slope_figure_write_to_ps (slope_figure_t *figure,
  * @brief Retrieves the default metrics of the figure, normaly the last to be inserted.
  * It is the one that will place the legend
  * 
- * @param figure The figure from wich to get the default metrics.
+ * @param[in] figure The figure from wich to get the default metrics.
  * 
  * @return A pointer default metrics of figure.
  */
@@ -166,8 +166,8 @@ slope_figure_get_default_metrics (slope_figure_t *figure);
  * @brief Sets a callback to be called when some thing change on the figure,
  * e. g. useful to tell a widget to update it1s contents.
  * 
- * @param figure The figure in which some thing changed
- * @param callback A pointer to a function to be called when figure changes
+ * @param[in] figure The figure in which some thing changed
+ * @param[in] callback A pointer to a function to be called when figure changes
  */
 slope_public void
 slope_figure_set_change_callback (slope_figure_t *figure,

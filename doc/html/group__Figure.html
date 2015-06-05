@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('group__Figure.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -210,9 +210,9 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <p>Draw the contents of this figure to one of cairo's backends via cr. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">figure</td><td>The figure to be drawn. </td></tr>
-    <tr><td class="paramname">cr</td><td>The cairo context to draw the figure. </td></tr>
-    <tr><td class="paramname">rect</td><td>The rectange that limits the area of the cairo_surface_t to draw figure. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">figure</td><td>The figure to be drawn. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cr</td><td>The cairo context to draw the figure. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rect</td><td>The rectange that limits the area of the cairo_surface_t to draw figure. </td></tr>
   </table>
   </dd>
 </dl>
@@ -236,7 +236,7 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <p>Retrieves the default metrics of the figure, normaly the last to be inserted. It is the one that will place the legend. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">figure</td><td>The figure from wich to get the default metrics.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">figure</td><td>The figure from wich to get the default metrics.</td></tr>
   </table>
   </dd>
 </dl>
@@ -290,8 +290,8 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <p>Sets a callback to be called when some thing change on the figure, e. g. useful to tell a widget to update it1s contents. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">figure</td><td>The figure in which some thing changed </td></tr>
-    <tr><td class="paramname">callback</td><td>A pointer to a function to be called when figure changes </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">figure</td><td>The figure in which some thing changed </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>A pointer to a function to be called when figure changes </td></tr>
   </table>
   </dd>
 </dl>
@@ -337,10 +337,10 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <p>The figure to be drawn. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">figure</td><td>The figure to be drawn </td></tr>
-    <tr><td class="paramname">filename</td><td>The path to the pdf file to be output, include the .pdf ending. </td></tr>
-    <tr><td class="paramname">width</td><td>The width in pixels of the output file. </td></tr>
-    <tr><td class="paramname">height</td><td>The height in pixels of the output file.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">figure</td><td>The figure to be drawn </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>The path to the pdf file to be output, include the .pdf ending. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">width</td><td>The width in pixels of the output file. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">height</td><td>The height in pixels of the output file.</td></tr>
   </table>
   </dd>
 </dl>
@@ -387,11 +387,11 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <p>Writes the figure to a png file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">figure</td><td>The figure to be drawn </td></tr>
-    <tr><td class="paramname">The</td><td>figure to be drawn. </td></tr>
-    <tr><td class="paramname">filename</td><td>The path to the png file to be output, include the .png ending. </td></tr>
-    <tr><td class="paramname">width</td><td>The width in pixels of the output file. </td></tr>
-    <tr><td class="paramname">height</td><td>The height in pixels of the output file. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">figure</td><td>The figure to be drawn </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">The</td><td>figure to be drawn. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>The path to the png file to be output, include the .png ending. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">width</td><td>The width in pixels of the output file. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">height</td><td>The height in pixels of the output file. </td></tr>
   </table>
   </dd>
 </dl>
@@ -437,10 +437,10 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <p>The figure to be drawn. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">figure</td><td>The figure to be drawn </td></tr>
-    <tr><td class="paramname">filename</td><td>The path to the postscript file to be output, include the .ps ending. </td></tr>
-    <tr><td class="paramname">width</td><td>The width in pixels of the output file. </td></tr>
-    <tr><td class="paramname">height</td><td>The height in pixels of the output file.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">figure</td><td>The figure to be drawn </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>The path to the postscript file to be output, include the .ps ending. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">width</td><td>The width in pixels of the output file. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">height</td><td>The height in pixels of the output file.</td></tr>
   </table>
   </dd>
 </dl>
@@ -487,10 +487,10 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <p>The figure to be drawn. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">figure</td><td>The figure to be drawn </td></tr>
-    <tr><td class="paramname">filename</td><td>The path to the svg file to be output, include the .svg ending. </td></tr>
-    <tr><td class="paramname">width</td><td>The width in pixels of the output file. </td></tr>
-    <tr><td class="paramname">height</td><td>The height in pixels of the output file.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">figure</td><td>The figure to be drawn </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>The path to the svg file to be output, include the .svg ending. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">width</td><td>The width in pixels of the output file. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">height</td><td>The height in pixels of the output file.</td></tr>
   </table>
   </dd>
 </dl>
@@ -503,7 +503,7 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 4 2015 11:55:25 for SLOPE by
+    <li class="footer">Generated on Fri Jun 5 2015 12:18:16 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

@@ -52,8 +52,8 @@ SLOPE_BEGIN_DECLS
  */
 typedef enum _slope_metrics_type
 {
-    SLOPE_METRICS_INVALID = 0, /*< Uninitialised metrics object */
-    SLOPE_XYMETRICS       = 1  /*< XY or cartesian metrics object */
+    SLOPE_METRICS_INVALID = 0, /*!< Uninitialised metrics object */
+    SLOPE_XYMETRICS       = 1  /*!< XY or cartesian metrics object */
 }
 slope_metrics_type_t;
 
@@ -62,7 +62,7 @@ slope_metrics_type_t;
  * @ingroup Metrics
  * @brief Destroys a metrics object and frees the memory.
  * 
- * @param metrics The metrics to be destroyed.
+ * @param[in] metrics The metrics to be destroyed.
  */
 slope_public void
 slope_metrics_destroy (slope_metrics_t *metrics);

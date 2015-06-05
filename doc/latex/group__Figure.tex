@@ -82,12 +82,12 @@ A new figure instance.
 Draw the contents of this figure to one of cairo's backends via cr. 
 
 
-\begin{DoxyParams}{Parameters}
-{\em figure} & The figure to be drawn. \\
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure to be drawn. \\
 \hline
-{\em cr} & The cairo context to draw the figure. \\
+\mbox{\tt in}  & {\em cr} & The cairo context to draw the figure. \\
 \hline
-{\em rect} & The rectange that limits the area of the cairo\+\_\+surface\+\_\+t to draw figure. \\
+\mbox{\tt in}  & {\em rect} & The rectange that limits the area of the cairo\+\_\+surface\+\_\+t to draw figure. \\
 \hline
 \end{DoxyParams}
 \hypertarget{group__Figure_gae97736e589280dfdd5446500c576887a}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+metrics@{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+metrics}}
@@ -102,8 +102,8 @@ Draw the contents of this figure to one of cairo's backends via cr.
 Retrieves the default metrics of the figure, normaly the last to be inserted. It is the one that will place the legend. 
 
 
-\begin{DoxyParams}{Parameters}
-{\em figure} & The figure from wich to get the default metrics.\\
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure from wich to get the default metrics.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -136,10 +136,10 @@ The list of metrics in this figure.
 Sets a callback to be called when some thing change on the figure, e. g. useful to tell a widget to update it1s contents. 
 
 
-\begin{DoxyParams}{Parameters}
-{\em figure} & The figure in which some thing changed \\
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure in which some thing changed \\
 \hline
-{\em callback} & A pointer to a function to be called when figure changes \\
+\mbox{\tt in}  & {\em callback} & A pointer to a function to be called when figure changes \\
 \hline
 \end{DoxyParams}
 \hypertarget{group__Figure_ga3d70896b8765c2ea7058e5213daa17fd}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+write\+\_\+to\+\_\+pdf@{slope\+\_\+figure\+\_\+write\+\_\+to\+\_\+pdf}}
@@ -157,14 +157,14 @@ Sets a callback to be called when some thing change on the figure, e. g. useful 
 The figure to be drawn. 
 
 
-\begin{DoxyParams}{Parameters}
-{\em figure} & The figure to be drawn \\
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure to be drawn \\
 \hline
-{\em filename} & The path to the pdf file to be output, include the .pdf ending. \\
+\mbox{\tt in}  & {\em filename} & The path to the pdf file to be output, include the .pdf ending. \\
 \hline
-{\em width} & The width in pixels of the output file. \\
+\mbox{\tt in}  & {\em width} & The width in pixels of the output file. \\
 \hline
-{\em height} & The height in pixels of the output file.\\
+\mbox{\tt in}  & {\em height} & The height in pixels of the output file.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -185,16 +185,16 @@ The status of the operation
 Writes the figure to a png file. 
 
 
-\begin{DoxyParams}{Parameters}
-{\em figure} & The figure to be drawn \\
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure to be drawn \\
 \hline
-{\em The} & figure to be drawn. \\
+\mbox{\tt in}  & {\em The} & figure to be drawn. \\
 \hline
-{\em filename} & The path to the png file to be output, include the .png ending. \\
+\mbox{\tt in}  & {\em filename} & The path to the png file to be output, include the .png ending. \\
 \hline
-{\em width} & The width in pixels of the output file. \\
+\mbox{\tt in}  & {\em width} & The width in pixels of the output file. \\
 \hline
-{\em height} & The height in pixels of the output file. \\
+\mbox{\tt in}  & {\em height} & The height in pixels of the output file. \\
 \hline
 \end{DoxyParams}
 \hypertarget{group__Figure_gaad033abcd87cdbae258f073c6f43101b}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+write\+\_\+to\+\_\+ps@{slope\+\_\+figure\+\_\+write\+\_\+to\+\_\+ps}}
@@ -212,14 +212,14 @@ Writes the figure to a png file.
 The figure to be drawn. 
 
 
-\begin{DoxyParams}{Parameters}
-{\em figure} & The figure to be drawn \\
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure to be drawn \\
 \hline
-{\em filename} & The path to the postscript file to be output, include the .ps ending. \\
+\mbox{\tt in}  & {\em filename} & The path to the postscript file to be output, include the .ps ending. \\
 \hline
-{\em width} & The width in pixels of the output file. \\
+\mbox{\tt in}  & {\em width} & The width in pixels of the output file. \\
 \hline
-{\em height} & The height in pixels of the output file.\\
+\mbox{\tt in}  & {\em height} & The height in pixels of the output file.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -240,14 +240,14 @@ The status of the operation
 The figure to be drawn. 
 
 
-\begin{DoxyParams}{Parameters}
-{\em figure} & The figure to be drawn \\
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure to be drawn \\
 \hline
-{\em filename} & The path to the svg file to be output, include the .svg ending. \\
+\mbox{\tt in}  & {\em filename} & The path to the svg file to be output, include the .svg ending. \\
 \hline
-{\em width} & The width in pixels of the output file. \\
+\mbox{\tt in}  & {\em width} & The width in pixels of the output file. \\
 \hline
-{\em height} & The height in pixels of the output file.\\
+\mbox{\tt in}  & {\em height} & The height in pixels of the output file.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

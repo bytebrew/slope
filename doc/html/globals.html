@@ -78,6 +78,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals_func.html"><span>Functions</span></a></li>
       <li><a href="globals_type.html"><span>Typedefs</span></a></li>
       <li><a href="globals_enum.html"><span>Enumerations</span></a></li>
+      <li><a href="globals_eval.html"><span>Enumerator</span></a></li>
       <li><a href="globals_defs.html"><span>Macros</span></a></li>
     </ul>
   </div>
@@ -107,7 +108,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -127,6 +128,12 @@ $(document).ready(function(){initNavTree('globals.html','');});
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>slope_chart_create()
+: <a class="el" href="group__Util.html#ga77120ea4a95ebd421a60eac8f84c6a70">slope.h</a>
+</li>
+<li>SLOPE_CIRCLES
+: <a class="el" href="group__Item.html#gga7be66725a3a198bcbd9434e6d3ad70c5ad80e96cfe8b1fc4e166a9dd2916949a9">item.h</a>
+</li>
 <li>SLOPE_FALSE
 : <a class="el" href="group__Primitives.html#gae6284087e258abab2709107da8deef10">primitives.h</a>
 </li>
@@ -190,6 +197,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>slope_iterator_t
 : <a class="el" href="group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af">list.h</a>
 </li>
+<li>SLOPE_LINE
+: <a class="el" href="group__Item.html#gga7be66725a3a198bcbd9434e6d3ad70c5a54cf36614caf64fac788937a888664d7">item.h</a>
+</li>
 <li>slope_list_append()
 : <a class="el" href="group__List.html#ga44d52be6db2e8321a4a81fb481212f54">list.h</a>
 </li>
@@ -217,11 +227,17 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>slope_metrics_destroy()
 : <a class="el" href="group__Metrics.html#ga6c36874eecc6dbd3ac465da700c27d9f">metrics.h</a>
 </li>
+<li>SLOPE_METRICS_INVALID
+: <a class="el" href="group__Metrics.html#ggafd1cecb864b09319525ee096fc692dd4ad8bd15dd877a322c323826524fad1d7b">metrics.h</a>
+</li>
 <li>slope_metrics_t
 : <a class="el" href="group__Metrics.html#gab80787ee8ae8dc449e770249fe0e3c35">primitives.h</a>
 </li>
 <li>slope_metrics_type_t
 : <a class="el" href="group__Metrics.html#ga5f51fc24807a4b3d2b0d41f354bbcedf">metrics.h</a>
+</li>
+<li>SLOPE_PLUSSES
+: <a class="el" href="group__Item.html#gga7be66725a3a198bcbd9434e6d3ad70c5a9eb209c97e09aa4121f056641c60e56c">item.h</a>
 </li>
 <li>slope_rect_set()
 : <a class="el" href="primitives_8h.html#a30b271fd07025c5402baabc433e6d4c9">primitives.h</a>
@@ -229,8 +245,17 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>slope_scatter_t
 : <a class="el" href="group__Item.html#ga7be66725a3a198bcbd9434e6d3ad70c5">item.h</a>
 </li>
+<li>SLOPE_SQUARES
+: <a class="el" href="group__Item.html#gga7be66725a3a198bcbd9434e6d3ad70c5a5f482758196621c2a65e206ef287f030">item.h</a>
+</li>
+<li>SLOPE_TRIANGLES
+: <a class="el" href="group__Item.html#gga7be66725a3a198bcbd9434e6d3ad70c5a49e3d5b6cb489463f001bdf14d484315">item.h</a>
+</li>
 <li>SLOPE_TRUE
 : <a class="el" href="group__Primitives.html#gaf4724331c7139c35a340ef6c34d1d5b8">primitives.h</a>
+</li>
+<li>SLOPE_XYMETRICS
+: <a class="el" href="group__Metrics.html#ggafd1cecb864b09319525ee096fc692dd4a8054bd0c50ca93d0b3222b70b1284c37">metrics.h</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -238,7 +263,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 4 2015 11:55:25 for SLOPE by
+    <li class="footer">Generated on Fri Jun 5 2015 12:18:16 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

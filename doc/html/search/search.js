@@ -7,14 +7,15 @@
 
 var indexSectionsWithContent =
 {
-  0: "_filmps",
+  0: "_filmpsu",
   1: "_",
-  2: "filmp",
+  2: "filmps",
   3: "s",
   4: "s",
   5: "_s",
-  6: "filmp",
-  7: "s"
+  6: "s",
+  7: "filmpu",
+  8: "s"
 };
 
 var indexSectionNames =
@@ -25,8 +26,9 @@ var indexSectionNames =
   3: "functions",
   4: "typedefs",
   5: "enums",
-  6: "groups",
-  7: "pages"
+  6: "enumvalues",
+  7: "groups",
+  8: "pages"
 };
 
 function convertToId(search)

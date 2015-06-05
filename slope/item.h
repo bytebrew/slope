@@ -46,11 +46,11 @@ SLOPE_BEGIN_DECLS
  */
 typedef enum
 {
-    SLOPE_LINE       = 0, /*< The data points are joined by lines */
-    SLOPE_CIRCLES    = 1, /*< The data points are represent by circles, filled or not */
-    SLOPE_TRIANGLES  = 2, /*< The data points are represent by triangles, filled or not */
-    SLOPE_SQUARES    = 3, /*< The data points are represent by squares, filled or not */
-    SLOPE_PLUSSES    = 4  /*< The data points are represent by plus signs, filled or not */
+    SLOPE_LINE       = 0, /*!< The data points are joined by lines */
+    SLOPE_CIRCLES    = 1, /*!< The data points are represent by circles, filled or not */
+    SLOPE_TRIANGLES  = 2, /*!< The data points are represent by triangles, filled or not */
+    SLOPE_SQUARES    = 3, /*!< The data points are represent by squares, filled or not */
+    SLOPE_PLUSSES    = 4  /*!< The data points are represent by plus signs */
 }
 slope_scatter_t;
 
@@ -58,7 +58,7 @@ slope_scatter_t;
  * @ingroup Item
  * @brief Destroys an item and frees the memory
  * 
- * @param item The item to be destroyed.
+ * @param[in] item The item to be destroyed.
  */
 slope_public void
 slope_item_destroy (slope_item_t *item);
