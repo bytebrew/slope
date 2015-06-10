@@ -203,9 +203,9 @@ static gboolean on_button_release_event (GtkWidget *widget,
         double width = priv->move_start.x - priv->move_end.x;
         double height = priv->move_start.y - priv->move_end.y;
         if (width < 0.0) width = -width;
-        if (width < 3.0) return;
+        if (width < 3.0) return TRUE;
         if (height < 0.0) height = -height;
-        if (height < 3.0) return;
+        if (height < 3.0) return TRUE;
 
         /* if a good region was selected, let's track it! */
         slope_figure_track_region(
