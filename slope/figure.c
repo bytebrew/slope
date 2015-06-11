@@ -112,10 +112,10 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
     }
 
     /* draw legend */
-    slope_item_t *legend = figure->legend;
-    if (slope_item_get_visible(legend)
-        && figure->default_metrics != NULL) {
-            __slope_legend_draw(legend, cr, figure->default_metrics);
+    if (slope_item_get_visible(figure->legend)
+        && figure->default_metrics != NULL)
+    {
+        __slope_legend_draw(figure->legend, cr, figure->default_metrics);
     }
     cairo_restore(cr);
 }
