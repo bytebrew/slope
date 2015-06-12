@@ -75,6 +75,11 @@ slope_public GtkWidget* slope_view_new (void);
 slope_public GtkWidget*
 slope_view_new_for_figure (slope_figure_t *figure);
 
+/**
+ */
+slope_public void
+slope_view_set_mouse_zoom (GtkWidget *view, gboolean on);
+
 
 SLOPE_END_DECLS
 
