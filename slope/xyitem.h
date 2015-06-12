@@ -64,6 +64,21 @@ slope_xyitem_update_item (slope_item_t *item,
 slope_public void
 slope_xyitem_set_antialias (slope_item_t *item, int on);
 
+/**
+ */
+slope_public int
+slope_xyitem_get_point_number (slope_item_t *item);
+
+/**
+ */
+slope_public const double*
+slope_xyitem_get_x_array (slope_item_t *item);
+
+/**
+ */
+slope_public const double*
+slope_xyitem_get_y_array (slope_item_t *item);
+
 SLOPE_END_DECLS
 
-#endif /*SLOPE_XYDATA_H */
+#endif /* SLOPE_XYDATA_H */

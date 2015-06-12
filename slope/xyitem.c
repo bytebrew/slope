@@ -382,5 +382,28 @@ void slope_xyitem_set_antialias (slope_item_t *item, int on)
     slope_item_notify_appearence_change(item);
 }
 
-/* slope/xyitem.c */
 
+int slope_xyitem_get_point_number (slope_item_t *item)
+{
+    if (item == NULL) return 0;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    return self->n;
+}
+
+
+const double* slope_xyitem_get_x_array (slope_item_t *item)
+{
+    if (item == NULL) return NULL;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    return self->vx;
+}
+
+
+const double* slope_xyitem_get_y_array (slope_item_t *item)
+{
+    if (item == NULL) return NULL;
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    return self->vy;
+}
+
+/* slope/xyitem.c */
