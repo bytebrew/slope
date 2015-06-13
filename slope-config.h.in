@@ -17,9 +17,10 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_CONFIG_H
-#define __SLOPE_CONFIG_H
+#ifndef SLOPE_CONFIG_H
+#define SLOPE_CONFIG_H
 
-#define SLOPE_GTK @SLOPE_GTK@
+#define SLOPE_HAVE_GTK @SLOPE_HAVE_GTK@
+#define SLOPE_HAVE_PANGO @SLOPE_HAVE_PANGO@
 
-#endif /*__SLOPE_CONFIG_H */
+#endif /* SLOPE_CONFIG_H */

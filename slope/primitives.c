@@ -18,7 +18,12 @@
  */
 
 #include "slope/primitives.h"
+#include "slope-config.h"
+
 #include <cairo.h>
+#if SLOPE_HAVE_PANGO
+# include <pango/pangocairo.h>
+#endif
 
 
 void slope_rect_set (slope_rect_t *rect, double x,
@@ -104,6 +109,42 @@ void slope_cairo_rectangle(cairo_t *cr,
 {
     cairo_rectangle(cr, rect->x, rect->y,
                     rect->width, rect->height);
+}
+
+
+void slope_draw_text(cairo_t *cr,
+                     double x, double y,
+                     const char *text)
+{
+#if SLOPE_HAVE_PANGO
+    PangoLayout *layout = pango_cairo_create_layout(cr);
+    pango_layout_set_text(layout, text, -1);
+    pango_cairo_update_layout(cr, layout);
+    pango_cairo_show_layout(cr, layout);
+    g_object_unref(layout);
+#else
+    cairo_move_to(cr, x, y);
+    cairo_show_text(cr, text);
+#endif /* SLOPE_HAVE_PANGO */
+}
+
+
+void slope_get_text_rect(cairo_t *cr,
+                         slope_rect_t *rect, const char *text)
+{
+    #if SLOPE_HAVE_PANGO
+    PangoLayout *layout = pango_cairo_create_layout(cr);
+    pango_layout_set_text(layout, text, -1);
+    pango_cairo_update_layout(cr, layout);
+    rect->width = pango_layout_get_width(layout);
+    rect->height = pango_layout_get_height(layout);
+    g_object_unref(layout);
+    #else
+    cairo_text_extents_t txt_ext;
+    cairo_text_extents(cr, text, &txt_ext);
+    rect->width = txt_ext.width;
+    rect->height = txt_ext.height;
+    #endif /* SLOPE_HAVE_PANGO */
 }
 
 /* slope/primitives.c */

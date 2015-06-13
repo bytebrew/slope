@@ -201,6 +201,18 @@ slope_public void
 slope_cairo_rectangle(cairo_t *cr,
                       const slope_rect_t *rect);
 
+/**
+ */
+slope_public void
+slope_draw_text(cairo_t *cr,
+                double x, double y, const char *text);
+
+/**
+ */
+slope_public void
+slope_get_text_rect(cairo_t *cr,
+                    slope_rect_t *rect, const char *text);
+
 SLOPE_END_DECLS
 
-#endif /*SLOPE_PRIMITIVES_H */
+#endif /* SLOPE_PRIMITIVES_H */

@@ -1,11 +1,11 @@
 
-#include "build/config.h"
-#if SLOPE_GTK
+#include <slope-config.h>
+#if SLOPE_HAVE_GTK
 # include <slope/gtk.h>
 # include <slope/view.h>
 #else
 # include <slope/slope.h>
-#endif /* SLOPE_GTK */
+#endif /* SLOPE_HAVE_GTK */
 
 #include <math.h>
 #include <stdlib.h>
@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
     slope_chart_add_plot(chart, x, y2, N, "Noisy experiment data", "l+");
     slope_chart_add_plot(chart, x, y1, N, "Sine approximation", "r-");
 
-    #if SLOPE_GTK
+    #if SLOPE_HAVE_GTK
     /* put the scene in a gtk widget */
     gtk_init(&argc,&argv);
     GtkWidget *window = slope_create_window(chart, "Data and Model");
@@ -40,7 +40,7 @@ int main (int argc, char *argv[])
     #else
     /* save the chart in a png figure */
     slope_figure_write_to_png(chart, "figure.png", 500, 350);
-    #endif /* SLOPE_GTK */
+    #endif /* SLOPE_HAVE_GTK */
 
     slope_chart_destroy(chart);
     return 0;
