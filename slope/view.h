@@ -81,7 +81,8 @@ slope_view_new_for_figure (slope_figure_t *figure);
 /**
  */
 slope_public void
-slope_view_toggle_mouse_zoom (GtkWidget *view, gboolean on);
+slope_view_toggle_mouse_zoom (GtkWidget *view,
+                              slope_bool_t on);
 
 SLOPE_END_DECLS
 

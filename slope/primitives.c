@@ -18,12 +18,6 @@
  */
 
 #include "slope/primitives.h"
-#include "slope-config.h"
-
-#include <cairo.h>
-#if SLOPE_HAVE_PANGO
-# include <pango/pangocairo.h>
-#endif
 
 
 void slope_rect_set (slope_rect_t *rect, double x,
@@ -112,15 +106,15 @@ void slope_cairo_rectangle(cairo_t *cr,
 }
 
 
-void slope_draw_text(cairo_t *cr,
-                     double x, double y,
-                     const char *text)
+void slope_draw_text(cairo_t *cr, slope_font_t *font,
+                     double x, double y, const char *text)
 {
 #if SLOPE_HAVE_PANGO
     PangoLayout *layout = pango_cairo_create_layout(cr);
     pango_layout_set_text(layout, text, -1);
     pango_cairo_update_layout(cr, layout);
-    pango_cairo_show_layout(cr, layout);
+    cairo_move_to(cr, x, y);
+    pango_cairo_show_layout_line(cr, pango_layout_get_line (layout, 0));
     g_object_unref(layout);
 #else
     cairo_move_to(cr, x, y);
@@ -129,15 +123,17 @@ void slope_draw_text(cairo_t *cr,
 }
 
 
-void slope_get_text_rect(cairo_t *cr,
+void slope_get_text_rect(cairo_t *cr, slope_font_t *font,
                          slope_rect_t *rect, const char *text)
 {
     #if SLOPE_HAVE_PANGO
+    int width, height;
     PangoLayout *layout = pango_cairo_create_layout(cr);
     pango_layout_set_text(layout, text, -1);
     pango_cairo_update_layout(cr, layout);
-    rect->width = pango_layout_get_width(layout);
-    rect->height = pango_layout_get_height(layout);
+    pango_layout_get_pixel_size(layout, &width, &height);
+    rect->width = (double) width;
+    rect->height = (double) height;
     g_object_unref(layout);
     #else
     cairo_text_extents_t txt_ext;

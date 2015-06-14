@@ -85,12 +85,13 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
     slope_cairo_rectangle(cr, rect);
     cairo_clip(cr);
     
-    /*
+    /* use an easy font if toy API is used */
+    #if SLOPE_HAVE_PANGO == 0
     cairo_select_font_face(cr, "Sans",
         CAIRO_FONT_SLANT_NORMAL,
         CAIRO_FONT_WEIGHT_NORMAL);
-    cairo_set_font_size(cr, 11);
-    */
+    cairo_set_font_size(cr, 12);
+    #endif
 
     /* fill background if required */
     if (figure->fill_back) {
@@ -291,6 +292,13 @@ void slope_figure_update (slope_figure_t *figure)
         }
         slope_iterator_next(&metr_iter);
     }
+}
+
+
+slope_font_t* slope_figure_get_default_font (slope_figure_t *figure)
+{
+    if (figure == NULL) return NULL;
+    return &figure->default_font;
 }
 
 /* slope/figure.h */

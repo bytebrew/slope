@@ -113,4 +113,4 @@ slope_create_window (slope_figure_t *figure,
                      const char *title);
 #endif /* SLOPE_HAVE_GTK */
 
-#endif /*SLOPE_SLOPE_H */
+#endif /* SLOPE_SLOPE_H */

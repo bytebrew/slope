@@ -50,6 +50,7 @@ slope_item_t* slope_legend_create ()
     parent->klass = __slope_legend_get_class();
     parent->visible = SLOPE_TRUE;
     parent->has_thumb = SLOPE_FALSE;
+    parent->font = NULL;
     legend->position = SLOPE_LEGEND_TOPRIGHT;
 
     slope_color_set_name(&legend->fill_color, SLOPE_WHITE);
@@ -90,10 +91,11 @@ void __slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
                 }
                 
                 /* increment height and check for bigger width */
-                cairo_text_extents_t txt_ext;
-                cairo_text_extents(cr, slope_item_get_name(item), &txt_ext);
-                self->rect.height += txt_ext.height + 4.0;
-                if (txt_ext.width > max_width) max_width = txt_ext.width;
+                slope_rect_t txt_rec;
+                slope_get_text_rect(cr, item->font, &txt_rec,
+                                    slope_item_get_name(item));
+                self->rect.height += txt_rec.height + 4.0;
+                if (txt_rec.width > max_width) max_width = txt_rec.width;
                 
             slope_iterator_next(&item_iter);
         }
@@ -106,6 +108,14 @@ void __slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
     switch (self->position) {
         case SLOPE_LEGEND_TOPRIGHT:
             self->rect.x = metrics->xmax_figure - self->rect.width - 10.0;
+            self->rect.y = metrics->ymin_figure + 10.0;
+            break;
+        case SLOPE_LEGEND_TOPLEFT:
+            self->rect.x = metrics->xmin_figure + 10.0;
+            self->rect.y = metrics->ymin_figure + 10.0;
+            break;
+        case SLOPE_LEGEND_TOPRIGHT_OUTSIDE:
+            self->rect.x = metrics->xmax_figure + 200.0;
             self->rect.y = metrics->ymin_figure + 10.0;
             break;
         default: /* TOPRIGHT */
@@ -163,9 +173,9 @@ void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
             }
 
             /* position pen and delegate entry drawing to the item */
-            cairo_text_extents_t txt_ext;
-            cairo_text_extents(cr, entry, &txt_ext);
-            entry_pos.y += txt_ext.height + 4.0;
+            slope_rect_t txt_rec;
+            slope_get_text_rect(cr, item->font, &txt_rec, entry);
+            entry_pos.y += txt_rec.height + 4.0;
             __slope_item_draw_thumb(item, &entry_pos, cr);
 
             slope_iterator_next(&item_iter);
@@ -176,4 +186,3 @@ void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
 }
 
 /* slope/legend.c */
-

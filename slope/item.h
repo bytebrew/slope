@@ -77,7 +77,7 @@ slope_item_get_visible (const slope_item_t *item);
  * @brief Sets the visibility state of the item
  */
 slope_public void
-slope_item_set_visible (slope_item_t *item, int visible);
+slope_item_toggle_visible (slope_item_t *item, slope_bool_t visible);
 
 /**
  */

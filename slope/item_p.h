@@ -24,9 +24,11 @@
 
 SLOPE_BEGIN_DECLS
 
+
 /**
  */
 typedef struct _slope_item_class slope_item_class_t;
+
 
 /**
  */
@@ -39,6 +41,7 @@ struct _slope_item_class
     void (*draw_thumb_fn) (slope_item_t*, const slope_point_t*, cairo_t*);
 };
 
+
 /**
  */
 struct _slope_item
@@ -46,9 +49,11 @@ struct _slope_item
     slope_item_class_t *klass;
     slope_metrics_t *metrics;
     char *name;
-    int visible;
+    slope_font_t *font;
+    slope_bool_t visible;
     int has_thumb;
 };
+
 
 /**
  */

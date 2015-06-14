@@ -54,6 +54,7 @@ slope_item_t* slope_xyaxis_create (slope_metrics_t *metrics,
     parent->visible = SLOPE_TRUE;
     parent->has_thumb = SLOPE_FALSE;
     parent->metrics = metrics;
+    parent->font = NULL;
     parent->klass = __slope_xyaxis_get_class();
 
     return parent;
@@ -142,9 +143,10 @@ void __slope_xyaxis_draw_top (slope_item_t *item, cairo_t *cr,
         if (k%5 == 0) {
             sprintf(label, "%2.2lf", coord);
             slope_rect_t txtrec;
-            slope_get_text_rect(cr, &txtrec, label);
+            slope_get_text_rect(cr, item->font, &txtrec, label);
             cairo_line_to(cr, x, y+8.0);
-            slope_draw_text(cr, x-txtrec.width/2, y-txtrec.height, label);
+            slope_draw_text(cr, item->font, x-txtrec.width/2,
+                            y-txtrec.height, label);
         }
         else {
             cairo_line_to(cr, x, y+4.0);
@@ -154,10 +156,10 @@ void __slope_xyaxis_draw_top (slope_item_t *item, cairo_t *cr,
     }
     sprintf(label, "%s", item->name);
     slope_rect_t txtrec;
-    slope_get_text_rect(cr, &txtrec, item->name);
+    slope_get_text_rect(cr, item->font, &txtrec, item->name);
     x = metrics->xmin_figure + (metrics->width_figure - txtrec.width)/2.0;
     y = y - 3.0*txtrec.height;
-    slope_draw_text(cr, x, y, item->name);
+    slope_draw_text(cr, item->font, x, y, item->name);
     
     cairo_stroke(cr);
 }
@@ -183,9 +185,10 @@ void __slope_xyaxis_draw_bottom (slope_item_t *item, cairo_t *cr,
         if (k%5 == 0) {
             sprintf(label, "%2.2lf", coord);
             slope_rect_t txtrec;
-            slope_get_text_rect(cr, &txtrec, label);
+            slope_get_text_rect(cr, item->font, &txtrec, label);
             cairo_line_to(cr, x, y-8.0);
-            slope_draw_text(cr, x-txtrec.width/2, y+2*txtrec.height, label);
+            slope_draw_text(cr, item->font, x-txtrec.width/2,
+                            y+2*txtrec.height, label);
         }
         else {
             cairo_line_to(cr, x, y-4.0);
@@ -195,10 +198,10 @@ void __slope_xyaxis_draw_bottom (slope_item_t *item, cairo_t *cr,
     }
     sprintf(label, "%s", item->name);
     slope_rect_t txtrec;
-    slope_get_text_rect(cr, &txtrec, item->name);
+    slope_get_text_rect(cr, item->font, &txtrec, item->name);
     x = metrics->xmin_figure + (metrics->width_figure - txtrec.width)/2.0;
     y = y + 3.2*txtrec.height;
-    slope_draw_text(cr, x, y, item->name);
+    slope_draw_text(cr, item->font, x, y, item->name);
     
     cairo_stroke(cr);
 }
@@ -225,11 +228,11 @@ void __slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
         if (k%5 == 0) {
             sprintf(label, "%2.2lf", coord);
             slope_rect_t txtrec;
-            slope_get_text_rect(cr, &txtrec, label);
+            slope_get_text_rect(cr, item->font, &txtrec, label);
             if (txtrec.width > max_txt_wid) max_txt_wid = txtrec.width;
             cairo_line_to(cr, x+8.0, y);
             slope_draw_text(
-                cr, x-txtrec.width-txtrec.height,
+                cr, item->font, x-txtrec.width-txtrec.height,
                 y+0.5*txtrec.height, label);
         }
         else {
@@ -242,10 +245,10 @@ void __slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
     cairo_rotate(cr, -M_PI/2.0);
     sprintf(label, "%s", item->name);
     slope_rect_t txtrec;
-    slope_get_text_rect(cr, &txtrec, item->name);
+    slope_get_text_rect(cr, item->font, &txtrec, item->name);
     x = - metrics->ymin_figure - (metrics->height_figure + txtrec.width)/2.0;
     y = metrics->xmin_figure - max_txt_wid - 2.0*txtrec.height;
-    slope_draw_text(cr, x, y, item->name);
+    slope_draw_text(cr, item->font, x, y, item->name);
     cairo_restore(cr);
     cairo_stroke(cr);
 }
@@ -272,10 +275,10 @@ void __slope_xyaxis_draw_right (slope_item_t *item, cairo_t *cr,
         if (k%5 == 0) {
             sprintf(label, "%2.2lf", coord);
             slope_rect_t txtrec;
-            slope_get_text_rect(cr, &txtrec, label);
+            slope_get_text_rect(cr, item->font, &txtrec, label);
             if (txtrec.width > max_txt_wid) max_txt_wid = txtrec.width;
             cairo_line_to(cr, x-8.0, y);
-            slope_draw_text(cr, x+txtrec.height, y+0.5*txtrec.height, label);
+            slope_draw_text(cr, item->font, x+txtrec.height, y+0.5*txtrec.height, label);
         }
         else {
             cairo_line_to(cr, x-4.0, y);
@@ -287,10 +290,10 @@ void __slope_xyaxis_draw_right (slope_item_t *item, cairo_t *cr,
     cairo_rotate(cr, -M_PI/2.0);
     sprintf(label, "%s", item->name);
     slope_rect_t txtrec;
-    slope_get_text_rect(cr, &txtrec, item->name);
+    slope_get_text_rect(cr, item->font, &txtrec, item->name);
     x = - metrics->ymin_figure - (metrics->height_figure + txtrec.width)/2.0;
     y = metrics->xmax_figure + max_txt_wid + 2.6*txtrec.height;
-    slope_draw_text(cr, x, y, item->name);
+    slope_draw_text(cr, item->font, x, y, item->name);
     cairo_restore(cr);
     cairo_stroke(cr);
 }

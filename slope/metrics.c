@@ -42,15 +42,15 @@ int slope_metrics_get_visible (const slope_metrics_t *metrics)
 }
 
 
-slope_metrics_type_t slope_metrics_get_type (slope_metrics_t *metrics)
+slope_metrics_type_t slope_metrics_get_type (const slope_metrics_t *metrics)
 {
     if (metrics == NULL) return SLOPE_METRICS_INVALID;
     return metrics->type;
 }
 
 
-void slope_metrics_set_visible (slope_metrics_t *metrics,
-                                int visible)
+void slope_metrics_toggle_visible (slope_metrics_t *metrics,
+                                   slope_bool_t visible)
 {
     if (metrics == NULL) return;
     metrics->visible = visible;

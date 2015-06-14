@@ -21,7 +21,12 @@
 #define SLOPE_PRIMITIVES_H
 
 #include "slope/global.h"
+
+#include "slope-config.h"
 #include <cairo.h>
+#if SLOPE_HAVE_PANGO
+# include <pango/pangocairo.h>
+#endif
 
 SLOPE_BEGIN_DECLS
 
@@ -32,18 +37,6 @@ SLOPE_BEGIN_DECLS
  * @ingroup Primitives
  * @brief Some primitive geometric and visible objects like points and colors
  */
-
-/**
- * @ingroup Primitives
- * @brief The boolean false value
- */
-#define SLOPE_FALSE 0
-
-/**
- * @ingroup Primitives
- * @brief The boolean true value
- */
-#define SLOPE_TRUE  1
 
 
 /**
@@ -73,6 +66,42 @@ typedef struct _slope_item slope_item_t;
 /**
  */
 typedef void (*slope_callback_t) (slope_figure_t*);
+
+
+/**
+ * @ingroup Primitives
+ * @brief The boolean type
+ */
+typedef unsigned char slope_bool_t;
+
+
+/**
+ * @ingroup Primitives
+ * @brief The boolean false value
+ */
+#define SLOPE_FALSE 0
+
+
+/**
+ * @ingroup Primitives
+ * @brief The boolean true value
+ */
+#define SLOPE_TRUE  1
+
+
+/**
+ * @ingroup Primitives
+ * @brief A font descriptor interface for cairo toy api or pango
+ */
+typedef struct _slope_font
+{
+#if SLOPE_HAVE_PANGO
+    PangoFontDescription *font;
+#else
+    cairo_font_face_t *font;
+#endif
+}
+slope_font_t;
 
 
 /**
@@ -204,13 +233,13 @@ slope_cairo_rectangle(cairo_t *cr,
 /**
  */
 slope_public void
-slope_draw_text(cairo_t *cr,
+slope_draw_text(cairo_t *cr, slope_font_t *font,
                 double x, double y, const char *text);
 
 /**
  */
 slope_public void
-slope_get_text_rect(cairo_t *cr,
+slope_get_text_rect(cairo_t *cr, slope_font_t *font,
                     slope_rect_t *rect, const char *text);
 
 SLOPE_END_DECLS

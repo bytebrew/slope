@@ -48,8 +48,8 @@ int slope_item_get_visible (const slope_item_t *item)
 }
 
 
-void slope_item_set_visible (slope_item_t *item,
-                             int visible)
+void slope_item_toggle_visible (slope_item_t *item,
+                                slope_bool_t visible)
 {
     if (item == NULL) {
         return;
@@ -91,6 +91,10 @@ int slope_item_get_has_thumb (const slope_item_t *item)
 void __slope_item_draw (slope_item_t *item, cairo_t *cr,
                         const slope_metrics_t *metrics)
 {
+    if (item->font == NULL) {
+        slope_figure_t *figure = slope_item_get_figure(item);
+        item->font = slope_figure_get_default_font(figure);
+    }
     (*item->klass->draw_fn)(item, cr, metrics);
 }
 
@@ -98,6 +102,10 @@ void __slope_item_draw (slope_item_t *item, cairo_t *cr,
 void __slope_item_draw_thumb (slope_item_t *item,
                               const slope_point_t *pos, cairo_t *cr)
 {
+    if (item->font == NULL) {
+        slope_figure_t *figure = slope_item_get_figure(item);
+        item->font = slope_figure_get_default_font(figure);
+    }
     (*item->klass->draw_thumb_fn)(item, pos, cr);
 }
 

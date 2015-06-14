@@ -197,6 +197,12 @@ slope_figure_track_region (slope_figure_t *figure,
 slope_public void
 slope_figure_update (slope_figure_t *figure);
 
+/**
+ */
+slope_public slope_font_t*
+slope_figure_get_default_font (slope_figure_t *figure);
+
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_SCENE_H */

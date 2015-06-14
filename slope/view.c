@@ -63,7 +63,7 @@ struct _SlopeViewPrivate
     slope_point_t move_start;
     slope_point_t move_end;
     slope_color_t mouse_rec_color;
-    int mouse_zoom;
+    slope_bool_t mouse_zoom;
     int on_move;
     int press_sig_id;
     int move_sig_id;
@@ -97,9 +97,8 @@ slope_view_init(SlopeView *view)
                           |GDK_BUTTON_PRESS_MASK
                           |GDK_BUTTON_RELEASE_MASK);
 
-    g_signal_connect(G_OBJECT(view), "draw",
-                     G_CALLBACK(on_draw_event), NULL);
-    slope_view_toggle_mouse_zoom(widget, TRUE);
+    g_signal_connect(G_OBJECT(view), "draw", G_CALLBACK(on_draw_event), NULL);
+    slope_view_toggle_mouse_zoom(widget, SLOPE_TRUE);
 }
 
 
@@ -219,11 +218,11 @@ static gboolean on_button_release_event (GtkWidget *widget,
 }
 
 
-void slope_view_toggle_mouse_zoom (GtkWidget *view, gboolean on)
+void slope_view_toggle_mouse_zoom (GtkWidget *view, slope_bool_t on)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(view);
     
-    if (on == TRUE && priv->mouse_zoom == SLOPE_FALSE) {
+    if (on == SLOPE_TRUE && priv->mouse_zoom == SLOPE_FALSE) {
         priv->press_sig_id =
             g_signal_connect(G_OBJECT(view), "button-press-event",
                              G_CALLBACK(on_button_press_event), NULL);
@@ -234,7 +233,7 @@ void slope_view_toggle_mouse_zoom (GtkWidget *view, gboolean on)
             g_signal_connect(G_OBJECT(view), "button-release-event",
                              G_CALLBACK(on_button_release_event), NULL);
         priv->mouse_zoom = SLOPE_TRUE;
-    } else {
+    } else if (on == SLOPE_FALSE && priv->mouse_zoom == SLOPE_TRUE) {
         g_signal_handler_disconnect(view, priv->press_sig_id);
         g_signal_handler_disconnect(view, priv->move_sig_id);
         g_signal_handler_disconnect(view, priv->release_sig_id);
@@ -243,4 +242,3 @@ void slope_view_toggle_mouse_zoom (GtkWidget *view, gboolean on)
 }
 
 /* slope/view.c */
-

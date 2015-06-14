@@ -53,7 +53,7 @@ struct _slope_metrics
     double ymin_figure, ymax_figure;
     double width_figure, height_figure;
     /* show this metric's items? */
-    int visible;
+    slope_bool_t visible;
 };
 
 

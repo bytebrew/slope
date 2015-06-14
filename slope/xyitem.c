@@ -54,6 +54,7 @@ void __slope_xyitem_init (slope_item_t *parent)
     parent->visible = SLOPE_TRUE;
     parent->has_thumb = SLOPE_TRUE;
     parent->metrics = NULL;
+    parent->font = NULL;
     parent->klass = __slope_xyitem_get_class();
 }
 
@@ -348,8 +349,7 @@ void __slope_xyitem_draw_thumb (slope_item_t *item,
             cairo_line_to(cr, pos->x , pos->y + SYMBRAD - SYMBRAD);
             break;
     }
-    cairo_move_to(cr, pos->x + 17.0, pos->y);
-    cairo_show_text(cr, item->name);
+    slope_draw_text(cr, item->font, pos->x + 17.0, pos->y, item->name);
     cairo_stroke(cr);
 }
 

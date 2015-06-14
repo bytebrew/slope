@@ -75,4 +75,4 @@ TARGET_LINK_LIBRARIES(app slope -lm)
 
 INSTALL(TARGETS slope DESTINATION /usr/lib)
 INSTALL(FILES ${SLOPE_HDRS} DESTINATION /usr/include/slope)
-INSTALL(FILES "${PROJECT_BINARY_DIR}/config.h" DESTINATION /usr/include/slope)
+INSTALL(FILES "${PROJECT_BINARY_DIR}/slope-config.h" DESTINATION /usr/include/slope)
