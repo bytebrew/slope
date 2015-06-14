@@ -1,12 +1,4 @@
-
-#include <slope-config.h>
-#if SLOPE_HAVE_GTK
-# include <slope/gtk.h>
-# include <slope/view.h>
-#else
-# include <slope/slope.h>
-#endif /* SLOPE_HAVE_GTK */
-
+#include <slope/slope.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>

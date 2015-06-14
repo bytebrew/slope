@@ -47,8 +47,8 @@
  * mouse zooming enabled.
  */
 
-#ifndef SLOPE_H
-#define SLOPE_H
+#ifndef SLOPE_SLOPE_H
+#define SLOPE_SLOPE_H
 
 /* for figure object */
 #include "slope/figure.h"
@@ -56,6 +56,12 @@
 #include "slope/xymetrics.h"
 #include "slope/xyitem.h"
 #include "slope/xyaxis.h"
+
+/* gtk widget if available */
+#include "slope-config.h"
+#if SLOPE_HAVE_GTK
+# include "slope/view.h"
+#endif /* SLOPE_HAVE_GTK */
 
 
 /**
@@ -76,9 +82,35 @@ slope_chart_create (const char *title,
 slope_public void
 slope_chart_destroy (slope_figure_t *figure);
 
+/**
+ * @ingroup Util
+ * @brief Adds a xy scatter data item to a chart
+ * 
+ * @param[in] chart   The chart in wich to add the item
+ * @param[in] x       The array containing the x coordinates data
+ * @param[in] y       The array containing the y coordinates data
+ * @param[in] n       The number of points in the item
+ * @param[in] title   The title of the item as shown in the legend
+ * @param[in] fmt     A format string that sets the appearence and
+ *                    color of the item
+ */
 slope_public slope_item_t*
 slope_chart_add_plot (slope_figure_t *chart,
                       const double *x, const double *y, int n,
                       const char *title, const char *fmt);
 
-#endif /*SLOPE_H */
+#if SLOPE_HAVE_GTK
+/**
+ * @ingroup Util
+ * @brief Creates a GtkWindow containing a SlopeView to show
+ * a slope_figure_t's contents
+ * 
+ * @param[in] figure   The figure to show in the window
+ * @param[in] title    The window's title
+ */
+slope_public GtkWidget*
+slope_create_window (slope_figure_t *figure,
+                     const char *title);
+#endif /* SLOPE_HAVE_GTK */
+
+#endif /*SLOPE_SLOPE_H */

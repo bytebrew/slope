@@ -20,7 +20,10 @@
 #ifndef SLOPE_VIEW_H
 #define SLOPE_VIEW_H
 
-#include "slope/slope.h"
+#include "slope/figure.h"
+#include "slope/metrics.h"
+#include "slope/item.h"
+
 #include <glib-object.h>
 #include <gtk/gtk.h>
 

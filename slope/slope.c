@@ -58,5 +58,20 @@ slope_item_t* slope_chart_add_plot (slope_figure_t *chart,
     return plot;
 }
 
-/* slope/slope.h */
 
+#if SLOPE_HAVE_GTK
+GtkWidget* slope_create_window (slope_figure_t *figure,
+                                const char *title)
+{
+    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_default_size(GTK_WINDOW(window), 500, 350);
+    gtk_window_set_title(GTK_WINDOW(window), title);
+    gtk_widget_set_size_request(window, 200, 200);
+    GtkWidget *view = slope_view_new_for_figure(figure);
+    gtk_container_add(GTK_CONTAINER(window), view);
+    g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(gtk_main_quit), NULL);
+    return window;
+}
+#endif /* SLOPE_HAVE_GTK */
+
+/* slope/slope.h */
