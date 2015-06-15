@@ -1,4 +1,4 @@
 var struct__slope__font =
 [
-    [ "font", "struct__slope__font.html#af3871e332bc43be457903856c865ca2b", null ]
+    [ "font", "struct__slope__font.html#a2df0c59afeb530e3309fe3e3a45aa800", null ]
 ];

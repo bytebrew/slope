@@ -1,5 +1,10 @@
 var NAVTREEINDEX1 =
 {
+"struct__slope__legend.html#a9be59a3fcd403e9455211399c9dabe9e":[3,0,6,4],
+"struct__slope__legend.html#aac6517fed40bc604f90d188c88c39c8b":[3,0,6,2],
+"struct__slope__legend.html#aced1e1584bd8ba4cbe7ffc3ad0dadc44":[3,0,6,1],
+"struct__slope__legend.html#ae18a7deffb619252b055672110703bb9":[3,0,6,3],
+"struct__slope__list.html":[3,0,7],
 "struct__slope__list.html#a36ba8b99c1187709b8c489815bea4413":[3,0,7,2],
 "struct__slope__list.html#a83a3ca98c4f39466fec5a1caf37c975b":[3,0,7,1],
 "struct__slope__list.html#ae4755b2ce5e8e2894fd42f99a803b6ee":[3,0,7,0],

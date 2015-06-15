@@ -174,18 +174,38 @@ slope_figure_set_change_callback (slope_figure_t *figure,
                                   slope_callback_t callback);
 
 /**
+ * @ingroup Figure
+ * @brief The items use ths function to notify the figure that it's appearence
+ * changed
+ * 
+ * @param[in] figure    The figure in which the item is, and must be notified
+ * @param[in] item      The item that changed
  */
 slope_public void
 slope_figure_notify_appearence_change (slope_figure_t *figure,
                                        slope_item_t *item);
 
 /**
+ * @ingroup Figure
+ * @brief The items use ths function to notify the figure that it's data
+ * changed
+ * 
+ * @param[in] figure    The figure in which the item is, and must be notified
+ * @param[in] item      The item that changed
  */
 slope_public void
 slope_figure_notify_data_change (slope_figure_t *figure,
                                  slope_item_t *item);
 
 /**
+ * @ingroup Figure
+ * @brief Makes the figure focus on a specific region
+ * 
+ * @param[in] figure    The figure in which the region is to be shown
+ * @param[in] x1        The minimum x coordinate of the region
+ * @param[in] y1        The minimum y coordinate of the region
+ * @param[in] x2        The maximum x coordinate of the region
+ * @param[in] y2        The maximum y coordinate of the region
  */
 slope_public void
 slope_figure_track_region (slope_figure_t *figure,
@@ -193,11 +213,19 @@ slope_figure_track_region (slope_figure_t *figure,
                            double x2, double y2);
 
 /**
+ * @ingroup Figure
+ * @brief Makes all the metrics in the figure update their selves
+ * 
+ * @param[in] figure    The figure to update
  */
 slope_public void
 slope_figure_update (slope_figure_t *figure);
 
 /**
+ * @ingroup Figure
+ * @brief Retrieves the default font of the figure
+ * 
+ * @param[in] figure    The figure tfrom which to retrieve the default font
  */
 slope_public slope_font_t*
 slope_figure_get_default_font (slope_figure_t *figure);

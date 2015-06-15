@@ -1,7 +1,7 @@
 var group__Primitives =
 [
     [ "_slope_font", "struct__slope__font.html", [
-      [ "font", "struct__slope__font.html#af3871e332bc43be457903856c865ca2b", null ]
+      [ "font", "struct__slope__font.html#a2df0c59afeb530e3309fe3e3a45aa800", null ]
     ] ],
     [ "SLOPE_FALSE", "group__Primitives.html#gae6284087e258abab2709107da8deef10", null ],
     [ "SLOPE_TRUE", "group__Primitives.html#gaf4724331c7139c35a340ef6c34d1d5b8", null ],

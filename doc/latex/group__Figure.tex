@@ -39,7 +39,17 @@ slope\+\_\+public int \hyperlink{group__Figure_gaad033abcd87cdbae258f073c6f43101
 slope\+\_\+public \hyperlink{group__Metrics_gab80787ee8ae8dc449e770249fe0e3c35}{slope\+\_\+metrics\+\_\+t} $\ast$ \hyperlink{group__Figure_gae97736e589280dfdd5446500c576887a}{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+metrics} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure)
 \begin{DoxyCompactList}\small\item\em Retrieves the default metrics of the figure, normaly the last to be inserted. It is the one that will place the legend. \end{DoxyCompactList}\item 
 slope\+\_\+public void \hyperlink{group__Figure_gad9907caa20c827f090b140e389f3c077}{slope\+\_\+figure\+\_\+set\+\_\+change\+\_\+callback} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, slope\+\_\+callback\+\_\+t callback)
-\begin{DoxyCompactList}\small\item\em Sets a callback to be called when some thing change on the figure, e. g. useful to tell a widget to update it1s contents. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Sets a callback to be called when some thing change on the figure, e. g. useful to tell a widget to update it1s contents. \end{DoxyCompactList}\item 
+slope\+\_\+public void \hyperlink{group__Figure_ga78d439a1e8d367d8961c09643e16a6a7}{slope\+\_\+figure\+\_\+notify\+\_\+appearence\+\_\+change} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, \hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)
+\begin{DoxyCompactList}\small\item\em The items use ths function to notify the figure that it's appearence changed. \end{DoxyCompactList}\item 
+slope\+\_\+public void \hyperlink{group__Figure_ga9fdc8f75bd016087d559f3eff854bb92}{slope\+\_\+figure\+\_\+notify\+\_\+data\+\_\+change} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, \hyperlink{group__Item_ga2616141f0e164a876049da51ea3a8646}{slope\+\_\+item\+\_\+t} $\ast$item)
+\begin{DoxyCompactList}\small\item\em The items use ths function to notify the figure that it's data changed. \end{DoxyCompactList}\item 
+slope\+\_\+public void \hyperlink{group__Figure_gad5502c2dd6a1897b23659431f0dedd91}{slope\+\_\+figure\+\_\+track\+\_\+region} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure, double x1, double y1, double x2, double y2)
+\begin{DoxyCompactList}\small\item\em Makes the figure focus on a specific region. \end{DoxyCompactList}\item 
+slope\+\_\+public void \hyperlink{group__Figure_ga9a4978e9b4cb7cb7f27f6efb8fb06d9b}{slope\+\_\+figure\+\_\+update} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure)
+\begin{DoxyCompactList}\small\item\em Makes all the metrics in the figure update their selves. \end{DoxyCompactList}\item 
+slope\+\_\+public \hyperlink{group__Primitives_ga29945f78eef5fcab497a3d15908b4b73}{slope\+\_\+font\+\_\+t} $\ast$ \hyperlink{group__Figure_gae21bced2fcd97f81adf349514a5682b3}{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+font} (\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$figure)
+\begin{DoxyCompactList}\small\item\em Retrieves the default font of the figure. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -90,6 +100,22 @@ Draw the contents of this figure to one of cairo's backends via cr.
 \mbox{\tt in}  & {\em rect} & The rectange that limits the area of the cairo\+\_\+surface\+\_\+t to draw figure. \\
 \hline
 \end{DoxyParams}
+\hypertarget{group__Figure_gae21bced2fcd97f81adf349514a5682b3}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+font@{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+font}}
+\index{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+font@{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+font}!Figure@{Figure}}
+\subsubsection[{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+font}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public {\bf slope\+\_\+font\+\_\+t}$\ast$ slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+font (
+\begin{DoxyParamCaption}
+\item[{{\bf slope\+\_\+figure\+\_\+t} $\ast$}]{figure}
+\end{DoxyParamCaption}
+)}}\label{group__Figure_gae21bced2fcd97f81adf349514a5682b3}
+
+
+Retrieves the default font of the figure. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure tfrom which to retrieve the default font \\
+\hline
+\end{DoxyParams}
 \hypertarget{group__Figure_gae97736e589280dfdd5446500c576887a}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+metrics@{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+metrics}}
 \index{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+metrics@{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+metrics}!Figure@{Figure}}
 \subsubsection[{slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+metrics}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public {\bf slope\+\_\+metrics\+\_\+t}$\ast$ slope\+\_\+figure\+\_\+get\+\_\+default\+\_\+metrics (
@@ -123,6 +149,44 @@ Retrieves the metrics list of figure.
 \begin{DoxyReturn}{Returns}
 The list of metrics in this figure. 
 \end{DoxyReturn}
+\hypertarget{group__Figure_ga78d439a1e8d367d8961c09643e16a6a7}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+notify\+\_\+appearence\+\_\+change@{slope\+\_\+figure\+\_\+notify\+\_\+appearence\+\_\+change}}
+\index{slope\+\_\+figure\+\_\+notify\+\_\+appearence\+\_\+change@{slope\+\_\+figure\+\_\+notify\+\_\+appearence\+\_\+change}!Figure@{Figure}}
+\subsubsection[{slope\+\_\+figure\+\_\+notify\+\_\+appearence\+\_\+change}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public void slope\+\_\+figure\+\_\+notify\+\_\+appearence\+\_\+change (
+\begin{DoxyParamCaption}
+\item[{{\bf slope\+\_\+figure\+\_\+t} $\ast$}]{figure, }
+\item[{{\bf slope\+\_\+item\+\_\+t} $\ast$}]{item}
+\end{DoxyParamCaption}
+)}}\label{group__Figure_ga78d439a1e8d367d8961c09643e16a6a7}
+
+
+The items use ths function to notify the figure that it's appearence changed. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure in which the item is, and must be notified \\
+\hline
+\mbox{\tt in}  & {\em item} & The item that changed \\
+\hline
+\end{DoxyParams}
+\hypertarget{group__Figure_ga9fdc8f75bd016087d559f3eff854bb92}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+notify\+\_\+data\+\_\+change@{slope\+\_\+figure\+\_\+notify\+\_\+data\+\_\+change}}
+\index{slope\+\_\+figure\+\_\+notify\+\_\+data\+\_\+change@{slope\+\_\+figure\+\_\+notify\+\_\+data\+\_\+change}!Figure@{Figure}}
+\subsubsection[{slope\+\_\+figure\+\_\+notify\+\_\+data\+\_\+change}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public void slope\+\_\+figure\+\_\+notify\+\_\+data\+\_\+change (
+\begin{DoxyParamCaption}
+\item[{{\bf slope\+\_\+figure\+\_\+t} $\ast$}]{figure, }
+\item[{{\bf slope\+\_\+item\+\_\+t} $\ast$}]{item}
+\end{DoxyParamCaption}
+)}}\label{group__Figure_ga9fdc8f75bd016087d559f3eff854bb92}
+
+
+The items use ths function to notify the figure that it's data changed. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure in which the item is, and must be notified \\
+\hline
+\mbox{\tt in}  & {\em item} & The item that changed \\
+\hline
+\end{DoxyParams}
 \hypertarget{group__Figure_gad9907caa20c827f090b140e389f3c077}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+set\+\_\+change\+\_\+callback@{slope\+\_\+figure\+\_\+set\+\_\+change\+\_\+callback}}
 \index{slope\+\_\+figure\+\_\+set\+\_\+change\+\_\+callback@{slope\+\_\+figure\+\_\+set\+\_\+change\+\_\+callback}!Figure@{Figure}}
 \subsubsection[{slope\+\_\+figure\+\_\+set\+\_\+change\+\_\+callback}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public void slope\+\_\+figure\+\_\+set\+\_\+change\+\_\+callback (
@@ -140,6 +204,50 @@ Sets a callback to be called when some thing change on the figure, e. g. useful 
 \mbox{\tt in}  & {\em figure} & The figure in which some thing changed \\
 \hline
 \mbox{\tt in}  & {\em callback} & A pointer to a function to be called when figure changes \\
+\hline
+\end{DoxyParams}
+\hypertarget{group__Figure_gad5502c2dd6a1897b23659431f0dedd91}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+track\+\_\+region@{slope\+\_\+figure\+\_\+track\+\_\+region}}
+\index{slope\+\_\+figure\+\_\+track\+\_\+region@{slope\+\_\+figure\+\_\+track\+\_\+region}!Figure@{Figure}}
+\subsubsection[{slope\+\_\+figure\+\_\+track\+\_\+region}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public void slope\+\_\+figure\+\_\+track\+\_\+region (
+\begin{DoxyParamCaption}
+\item[{{\bf slope\+\_\+figure\+\_\+t} $\ast$}]{figure, }
+\item[{double}]{x1, }
+\item[{double}]{y1, }
+\item[{double}]{x2, }
+\item[{double}]{y2}
+\end{DoxyParamCaption}
+)}}\label{group__Figure_gad5502c2dd6a1897b23659431f0dedd91}
+
+
+Makes the figure focus on a specific region. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure in which the region is to be shown \\
+\hline
+\mbox{\tt in}  & {\em x1} & The minimum x coordinate of the region \\
+\hline
+\mbox{\tt in}  & {\em y1} & The minimum y coordinate of the region \\
+\hline
+\mbox{\tt in}  & {\em x2} & The maximum x coordinate of the region \\
+\hline
+\mbox{\tt in}  & {\em y2} & The maximum y coordinate of the region \\
+\hline
+\end{DoxyParams}
+\hypertarget{group__Figure_ga9a4978e9b4cb7cb7f27f6efb8fb06d9b}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+update@{slope\+\_\+figure\+\_\+update}}
+\index{slope\+\_\+figure\+\_\+update@{slope\+\_\+figure\+\_\+update}!Figure@{Figure}}
+\subsubsection[{slope\+\_\+figure\+\_\+update}]{\setlength{\rightskip}{0pt plus 5cm}slope\+\_\+public void slope\+\_\+figure\+\_\+update (
+\begin{DoxyParamCaption}
+\item[{{\bf slope\+\_\+figure\+\_\+t} $\ast$}]{figure}
+\end{DoxyParamCaption}
+)}}\label{group__Figure_ga9a4978e9b4cb7cb7f27f6efb8fb06d9b}
+
+
+Makes all the metrics in the figure update their selves. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em figure} & The figure to update \\
 \hline
 \end{DoxyParams}
 \hypertarget{group__Figure_ga3d70896b8765c2ea7058e5213daa17fd}{\index{Figure@{Figure}!slope\+\_\+figure\+\_\+write\+\_\+to\+\_\+pdf@{slope\+\_\+figure\+\_\+write\+\_\+to\+\_\+pdf}}
