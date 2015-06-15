@@ -2,6 +2,7 @@ var annotated =
 [
     [ "_slope_color", "struct__slope__color.html", "struct__slope__color" ],
     [ "_slope_figure", "struct__slope__figure.html", "struct__slope__figure" ],
+    [ "_slope_font", "struct__slope__font.html", "struct__slope__font" ],
     [ "_slope_item", "struct__slope__item.html", "struct__slope__item" ],
     [ "_slope_item_class", "struct__slope__item__class.html", "struct__slope__item__class" ],
     [ "_slope_iterator", "struct__slope__iterator.html", "struct__slope__iterator" ],

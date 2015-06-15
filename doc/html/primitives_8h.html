@@ -113,6 +113,7 @@ $(document).ready(function(){initNavTree('primitives_8h.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;slope/global.h&quot;</code><br />
+<code>#include &quot;slope-config.h&quot;</code><br />
 <code>#include &lt;cairo.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for primitives.h:</div>
@@ -133,6 +134,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__slope__font.html">_slope_font</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A font descriptor interface for cairo toy api or pango.  <a href="struct__slope__font.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__slope__point.html">_slope_point</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__slope__rect.html">_slope_rect</a></td></tr>
@@ -168,6 +172,14 @@ typedef struct <a class="el" href="struct__slope__item.html">_slope_item</a>&#16
 <tr class="memitem:a51f2b92d1dce9304be0cf46806a8e06a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a51f2b92d1dce9304be0cf46806a8e06a"></a>
 typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>slope_callback_t</b> )(<a class="el" href="group__Figure.html#ga507cc82eeca8255d6c0f603ffdaeb59e">slope_figure_t</a> *)</td></tr>
 <tr class="separator:a51f2b92d1dce9304be0cf46806a8e06a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac55afa016ca777119a6c343d1655d558"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac55afa016ca777119a6c343d1655d558"></a>
+typedef unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Primitives.html#gac55afa016ca777119a6c343d1655d558">slope_bool_t</a></td></tr>
+<tr class="memdesc:gac55afa016ca777119a6c343d1655d558"><td class="mdescLeft">&#160;</td><td class="mdescRight">The boolean type. <br /></td></tr>
+<tr class="separator:gac55afa016ca777119a6c343d1655d558"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29945f78eef5fcab497a3d15908b4b73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga29945f78eef5fcab497a3d15908b4b73"></a>
+typedef struct <a class="el" href="struct__slope__font.html">_slope_font</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Primitives.html#ga29945f78eef5fcab497a3d15908b4b73">slope_font_t</a></td></tr>
+<tr class="memdesc:ga29945f78eef5fcab497a3d15908b4b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">A font descriptor interface for cairo toy api or pango. <br /></td></tr>
+<tr class="separator:ga29945f78eef5fcab497a3d15908b4b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1df3e11b1569613c075b5088bf3266db"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1df3e11b1569613c075b5088bf3266db"></a>
 typedef struct <a class="el" href="struct__slope__point.html">_slope_point</a>&#160;</td><td class="memItemRight" valign="bottom"><b>slope_point_t</b></td></tr>
 <tr class="separator:a1df3e11b1569613c075b5088bf3266db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,6 +263,12 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><b>slope_ca
 <tr class="memitem:aadd5a1136fdf728fe3327db36dd09400"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aadd5a1136fdf728fe3327db36dd09400"></a>
 slope_public void&#160;</td><td class="memItemRight" valign="bottom"><b>slope_cairo_rectangle</b> (cairo_t *cr, const <a class="el" href="struct__slope__rect.html">slope_rect_t</a> *rect)</td></tr>
 <tr class="separator:aadd5a1136fdf728fe3327db36dd09400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf30294c63a8a376ddad16fb27724b3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf30294c63a8a376ddad16fb27724b3e"></a>
+slope_public void&#160;</td><td class="memItemRight" valign="bottom"><b>slope_draw_text</b> (cairo_t *cr, <a class="el" href="group__Primitives.html#ga29945f78eef5fcab497a3d15908b4b73">slope_font_t</a> *font, double x, double y, const char *text)</td></tr>
+<tr class="separator:aaf30294c63a8a376ddad16fb27724b3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05569ee23eac7321c0d04dfa9b076ba8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05569ee23eac7321c0d04dfa9b076ba8"></a>
+slope_public void&#160;</td><td class="memItemRight" valign="bottom"><b>slope_get_text_rect</b> (cairo_t *cr, <a class="el" href="group__Primitives.html#ga29945f78eef5fcab497a3d15908b4b73">slope_font_t</a> *font, <a class="el" href="struct__slope__rect.html">slope_rect_t</a> *rect, const char *text)</td></tr>
+<tr class="separator:a05569ee23eac7321c0d04dfa9b076ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a30b271fd07025c5402baabc433e6d4c9"></a>
@@ -303,8 +321,8 @@ slope_public void&#160;</td><td class="memItemRight" valign="bottom"><b>slope_ca
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68035e215b3efd8e3650626e65ae6895.html">slope</a></li><li class="navelem"><a class="el" href="primitives_8h.html">primitives.h</a></li>
-    <li class="footer">Generated on Fri Jun 5 2015 12:18:16 for SLOPE by
+    <li class="navelem"><a class="el" href="dir_b486b20c73a5631d156ab795507a462d.html">slope</a></li><li class="navelem"><a class="el" href="primitives_8h.html">primitives.h</a></li>
+    <li class="footer">Generated on Sun Jun 14 2015 12:44:55 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

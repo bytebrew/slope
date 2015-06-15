@@ -2,6 +2,7 @@ var searchData=
 [
   ['_5fslope_5fcolor',['_slope_color',['../struct__slope__color.html',1,'']]],
   ['_5fslope_5ffigure',['_slope_figure',['../struct__slope__figure.html',1,'']]],
+  ['_5fslope_5ffont',['_slope_font',['../struct__slope__font.html',1,'']]],
   ['_5fslope_5fitem',['_slope_item',['../struct__slope__item.html',1,'']]],
   ['_5fslope_5fitem_5fclass',['_slope_item_class',['../struct__slope__item__class.html',1,'']]],
   ['_5fslope_5fiterator',['_slope_iterator',['../struct__slope__iterator.html',1,'']]],

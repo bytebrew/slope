@@ -10,5 +10,5 @@ var group__Item =
     ] ],
     [ "slope_item_destroy", "group__Item.html#gaf048bd8c425893229133befa61831fd6", null ],
     [ "slope_item_get_visible", "group__Item.html#gaf9e09ab9591e1a2c3c41441f206ffd38", null ],
-    [ "slope_item_set_visible", "group__Item.html#ga05e1944a09f330d4f9c0aa5e51181742", null ]
+    [ "slope_item_toggle_visible", "group__Item.html#ga68b3c890dee408f284bb9c243b9dd0e9", null ]
 ];

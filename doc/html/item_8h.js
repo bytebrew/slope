@@ -16,5 +16,5 @@ var item_8h =
     [ "slope_item_notify_appearence_change", "item_8h.html#a5506b107d0f8d11fb926726339e85749", null ],
     [ "slope_item_notify_data_change", "item_8h.html#a3321bd4c28e14b8e8f577a191e17dbe2", null ],
     [ "slope_item_set_name", "item_8h.html#a08870dbf30eb459d1d3d003560c49a0a", null ],
-    [ "slope_item_set_visible", "group__Item.html#ga05e1944a09f330d4f9c0aa5e51181742", null ]
+    [ "slope_item_toggle_visible", "group__Item.html#ga68b3c890dee408f284bb9c243b9dd0e9", null ]
 ];

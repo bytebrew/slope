@@ -149,11 +149,11 @@ $(document).ready(function(){initNavTree('metrics_8h_source.html','');});
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;slope_metrics_get_visible (<span class="keyword">const</span> <a class="code" href="struct__slope__metrics.html">slope_metrics_t</a> *metrics);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;slope_public <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;slope_metrics_set_visible (<a class="code" href="struct__slope__metrics.html">slope_metrics_t</a> *metrics,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                           <span class="keywordtype">int</span> visible);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;slope_metrics_toggle_visible (<a class="code" href="struct__slope__metrics.html">slope_metrics_t</a> *metrics,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                              <a class="code" href="group__Primitives.html#gac55afa016ca777119a6c343d1655d558">slope_bool_t</a> visible);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;slope_public <a class="code" href="group__Metrics.html#ga5f51fc24807a4b3d2b0d41f354bbcedf">slope_metrics_type_t</a></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;slope_metrics_get_type (<a class="code" href="struct__slope__metrics.html">slope_metrics_t</a> *metrics);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;slope_metrics_get_type (<span class="keyword">const</span> <a class="code" href="struct__slope__metrics.html">slope_metrics_t</a> *metrics);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;slope_public <span class="keywordtype">void</span></div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;slope_metrics_update (<a class="code" href="struct__slope__metrics.html">slope_metrics_t</a> *metrics);</div>
@@ -177,6 +177,7 @@ $(document).ready(function(){initNavTree('metrics_8h_source.html','');});
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SLOPE_METRICS_H */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="group__Metrics_html_ggafd1cecb864b09319525ee096fc692dd4a8054bd0c50ca93d0b3222b70b1284c37"><div class="ttname"><a href="group__Metrics.html#ggafd1cecb864b09319525ee096fc692dd4a8054bd0c50ca93d0b3222b70b1284c37">SLOPE_XYMETRICS</a></div><div class="ttdef"><b>Definition:</b> metrics.h:56</div></div>
 <div class="ttc" id="primitives_8h_html"><div class="ttname"><a href="primitives_8h.html">primitives.h</a></div></div>
+<div class="ttc" id="group__Primitives_html_gac55afa016ca777119a6c343d1655d558"><div class="ttname"><a href="group__Primitives.html#gac55afa016ca777119a6c343d1655d558">slope_bool_t</a></div><div class="ttdeci">unsigned char slope_bool_t</div><div class="ttdoc">The boolean type. </div><div class="ttdef"><b>Definition:</b> primitives.h:75</div></div>
 <div class="ttc" id="group__Metrics_html_gafd1cecb864b09319525ee096fc692dd4"><div class="ttname"><a href="group__Metrics.html#gafd1cecb864b09319525ee096fc692dd4">_slope_metrics_type</a></div><div class="ttdeci">_slope_metrics_type</div><div class="ttdoc">The metrics type tells the type of transformation from data space to figure coordinates. </div><div class="ttdef"><b>Definition:</b> metrics.h:53</div></div>
 <div class="ttc" id="list_8h_html"><div class="ttname"><a href="list_8h.html">list.h</a></div></div>
 <div class="ttc" id="struct__slope__list_html"><div class="ttname"><a href="struct__slope__list.html">_slope_list</a></div><div class="ttdef"><b>Definition:</b> list.c:32</div></div>
@@ -184,15 +185,15 @@ $(document).ready(function(){initNavTree('metrics_8h_source.html','');});
 <div class="ttc" id="struct__slope__figure_html"><div class="ttname"><a href="struct__slope__figure.html">_slope_figure</a></div><div class="ttdef"><b>Definition:</b> figure_p.h:29</div></div>
 <div class="ttc" id="group__Metrics_html_ga5f51fc24807a4b3d2b0d41f354bbcedf"><div class="ttname"><a href="group__Metrics.html#ga5f51fc24807a4b3d2b0d41f354bbcedf">slope_metrics_type_t</a></div><div class="ttdeci">SLOPE_BEGIN_DECLS enum _slope_metrics_type slope_metrics_type_t</div><div class="ttdoc">The metrics type tells the type of transformation from data space to figure coordinates. </div></div>
 <div class="ttc" id="group__Metrics_html_ggafd1cecb864b09319525ee096fc692dd4ad8bd15dd877a322c323826524fad1d7b"><div class="ttname"><a href="group__Metrics.html#ggafd1cecb864b09319525ee096fc692dd4ad8bd15dd877a322c323826524fad1d7b">SLOPE_METRICS_INVALID</a></div><div class="ttdef"><b>Definition:</b> metrics.h:55</div></div>
-<div class="ttc" id="struct__slope__item_html"><div class="ttname"><a href="struct__slope__item.html">_slope_item</a></div><div class="ttdef"><b>Definition:</b> item_p.h:44</div></div>
+<div class="ttc" id="struct__slope__item_html"><div class="ttname"><a href="struct__slope__item.html">_slope_item</a></div><div class="ttdef"><b>Definition:</b> item_p.h:47</div></div>
 <div class="ttc" id="struct__slope__metrics_html"><div class="ttname"><a href="struct__slope__metrics.html">_slope_metrics</a></div><div class="ttdef"><b>Definition:</b> metrics_p.h:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68035e215b3efd8e3650626e65ae6895.html">slope</a></li><li class="navelem"><a class="el" href="metrics_8h.html">metrics.h</a></li>
-    <li class="footer">Generated on Fri Jun 5 2015 12:18:16 for SLOPE by
+    <li class="navelem"><a class="el" href="dir_b486b20c73a5631d156ab795507a462d.html">slope</a></li><li class="navelem"><a class="el" href="metrics_8h.html">metrics.h</a></li>
+    <li class="footer">Generated on Sun Jun 14 2015 12:44:55 for SLOPE by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

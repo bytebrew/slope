@@ -39,6 +39,14 @@ slope_figure_t* slope_figure_create()
     figure->legend = slope_legend_create();
     slope_color_set_name(&figure->back_color, SLOPE_WHITE);
     figure->fill_back = SLOPE_TRUE;
+    
+    #if SLOPE_HAVE_PANGO
+    figure->default_font.font =
+        pango_font_description_from_string("Sans 8");
+    #else
+    /* TODO */
+    #endif /* SLOPE_HAVE_PANGO */
+    
     return figure;
 }
 
@@ -48,6 +56,11 @@ void slope_figure_destroy (slope_figure_t *figure)
     if (figure == NULL) return;
     slope_item_destroy(figure->legend);
     slope_list_destroy(figure->metrics);
+    #if SLOPE_HAVE_PANGO
+    pango_font_description_free(figure->default_font.font);
+    #else
+    /* TODO */
+    #endif /* SLOPE_HAVE_PANGO */
     free(figure);
 }
 
@@ -86,12 +99,14 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
     cairo_clip(cr);
     
     /* use an easy font if toy API is used */
-    #if SLOPE_HAVE_PANGO == 0
+    #if SLOPE_HAVE_PANGO
+    /* nothing to do */
+    #else
     cairo_select_font_face(cr, "Sans",
         CAIRO_FONT_SLANT_NORMAL,
         CAIRO_FONT_WEIGHT_NORMAL);
-    cairo_set_font_size(cr, 12);
-    #endif
+    cairo_set_font_size(cr, 10);
+    #endif /* SLOPE_HAVE_PANGO */
 
     /* fill background if required */
     if (figure->fill_back) {

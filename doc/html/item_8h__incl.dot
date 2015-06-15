@@ -8,5 +8,7 @@ digraph "slope/item.h"
   Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="slope/global.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$global_8h_source.html"];
   Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node4 [label="cairo.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 [label="slope-config.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$slope-config_8h_source.html"];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="cairo.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
 }

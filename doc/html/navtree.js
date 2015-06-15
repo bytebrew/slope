@@ -25,7 +25,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"struct__slope__metrics.html#acdba84cfba06e6293e18ba29cc822e35"
+"struct__slope__list.html#a36ba8b99c1187709b8c489815bea4413"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

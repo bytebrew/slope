@@ -4,6 +4,7 @@ var figure_8h =
     [ "slope_figure_create", "group__Figure.html#ga0534b5fef88fda65fd4b8feb33071cab", null ],
     [ "slope_figure_destroy", "group__Figure.html#gada369b301fabc0c40ef172e22d4fcb85", null ],
     [ "slope_figure_draw", "group__Figure.html#ga386e261642ba2b0fdc39a550e3e94462", null ],
+    [ "slope_figure_get_default_font", "figure_8h.html#ae21bced2fcd97f81adf349514a5682b3", null ],
     [ "slope_figure_get_default_metrics", "group__Figure.html#gae97736e589280dfdd5446500c576887a", null ],
     [ "slope_figure_get_metrics_list", "group__Figure.html#gac7d6aaca4df6806f00f3cb130a78dcde", null ],
     [ "slope_figure_notify_appearence_change", "figure_8h.html#a78d439a1e8d367d8961c09643e16a6a7", null ],

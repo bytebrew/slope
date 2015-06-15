@@ -5,7 +5,7 @@ var struct__slope__metrics =
     [ "item_list", "struct__slope__metrics.html#a0a920646d930ff607bb8fc954b1cafbc", null ],
     [ "klass", "struct__slope__metrics.html#ac0be13f740c34881ef12ee711d02c4ab", null ],
     [ "type", "struct__slope__metrics.html#a3aa8ff6d674059c26e68980d6196d655", null ],
-    [ "visible", "struct__slope__metrics.html#a33d100a34f52fce1834dcb7766466fd0", null ],
+    [ "visible", "struct__slope__metrics.html#a28f142398e73765dbe70894078487c79", null ],
     [ "width_figure", "struct__slope__metrics.html#a6c276a074789c36f794b053afc0e7267", null ],
     [ "x_low_bound", "struct__slope__metrics.html#aa91b6061f72089b60903d8310d691464", null ],
     [ "x_up_bound", "struct__slope__metrics.html#a04c15859cae09965d4608144f87016c2", null ],

@@ -2,12 +2,15 @@
 \label{primitives_8h}\index{slope/primitives.\+h@{slope/primitives.\+h}}
 }
 {\ttfamily \#include \char`\"{}slope/global.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}slope-\/config.\+h\char`\"{}}\\*
 {\ttfamily \#include $<$cairo.\+h$>$}\\*
 Include dependency graph for primitives.\+h\+:
 This graph shows which files directly or indirectly include this file\+:
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+struct \hyperlink{struct__slope__font}{\+\_\+slope\+\_\+font}
+\begin{DoxyCompactList}\small\item\em A font descriptor interface for cairo toy api or pango. \end{DoxyCompactList}\item 
 struct \hyperlink{struct__slope__point}{\+\_\+slope\+\_\+point}
 \item 
 struct \hyperlink{struct__slope__rect}{\+\_\+slope\+\_\+rect}
@@ -38,6 +41,12 @@ struct \hyperlink{struct__slope__color}{\+\_\+slope\+\_\+color}
 \hypertarget{primitives_8h_a51f2b92d1dce9304be0cf46806a8e06a}{typedef void($\ast$ {\bfseries slope\+\_\+callback\+\_\+t} )(\hyperlink{group__Figure_ga507cc82eeca8255d6c0f603ffdaeb59e}{slope\+\_\+figure\+\_\+t} $\ast$)}\label{primitives_8h_a51f2b92d1dce9304be0cf46806a8e06a}
 
 \item 
+\hypertarget{group__Primitives_gac55afa016ca777119a6c343d1655d558}{typedef unsigned char \hyperlink{group__Primitives_gac55afa016ca777119a6c343d1655d558}{slope\+\_\+bool\+\_\+t}}\label{group__Primitives_gac55afa016ca777119a6c343d1655d558}
+
+\begin{DoxyCompactList}\small\item\em The boolean type. \end{DoxyCompactList}\item 
+\hypertarget{group__Primitives_ga29945f78eef5fcab497a3d15908b4b73}{typedef struct \hyperlink{struct__slope__font}{\+\_\+slope\+\_\+font} \hyperlink{group__Primitives_ga29945f78eef5fcab497a3d15908b4b73}{slope\+\_\+font\+\_\+t}}\label{group__Primitives_ga29945f78eef5fcab497a3d15908b4b73}
+
+\begin{DoxyCompactList}\small\item\em A font descriptor interface for cairo toy api or pango. \end{DoxyCompactList}\item 
 \hypertarget{primitives_8h_a1df3e11b1569613c075b5088bf3266db}{typedef struct \hyperlink{struct__slope__point}{\+\_\+slope\+\_\+point} {\bfseries slope\+\_\+point\+\_\+t}}\label{primitives_8h_a1df3e11b1569613c075b5088bf3266db}
 
 \item 
@@ -121,6 +130,12 @@ slope\+\_\+public void \hyperlink{primitives_8h_a30b271fd07025c5402baabc433e6d4c
 
 \item 
 \hypertarget{primitives_8h_aadd5a1136fdf728fe3327db36dd09400}{slope\+\_\+public void {\bfseries slope\+\_\+cairo\+\_\+rectangle} (cairo\+\_\+t $\ast$cr, const \hyperlink{struct__slope__rect}{slope\+\_\+rect\+\_\+t} $\ast$rect)}\label{primitives_8h_aadd5a1136fdf728fe3327db36dd09400}
+
+\item 
+\hypertarget{primitives_8h_aaf30294c63a8a376ddad16fb27724b3e}{slope\+\_\+public void {\bfseries slope\+\_\+draw\+\_\+text} (cairo\+\_\+t $\ast$cr, \hyperlink{group__Primitives_ga29945f78eef5fcab497a3d15908b4b73}{slope\+\_\+font\+\_\+t} $\ast$font, double x, double y, const char $\ast$text)}\label{primitives_8h_aaf30294c63a8a376ddad16fb27724b3e}
+
+\item 
+\hypertarget{primitives_8h_a05569ee23eac7321c0d04dfa9b076ba8}{slope\+\_\+public void {\bfseries slope\+\_\+get\+\_\+text\+\_\+rect} (cairo\+\_\+t $\ast$cr, \hyperlink{group__Primitives_ga29945f78eef5fcab497a3d15908b4b73}{slope\+\_\+font\+\_\+t} $\ast$font, \hyperlink{struct__slope__rect}{slope\+\_\+rect\+\_\+t} $\ast$rect, const char $\ast$text)}\label{primitives_8h_a05569ee23eac7321c0d04dfa9b076ba8}
 
 \end{DoxyCompactItemize}
 

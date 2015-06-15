@@ -22,5 +22,8 @@ digraph "_slope_legend"
   Node3 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" legend" ];
   Node8 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" back_color" ];
   Node8 [label="_slope_color",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$struct__slope__color.html"];
+  Node9 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" default_font" ];
+  Node9 [label="_slope_font",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$struct__slope__font.html",tooltip="A font descriptor interface for cairo toy api or pango. "];
+  Node9 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" font" ];
   Node8 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" fill_color\nstroke_color" ];
 }

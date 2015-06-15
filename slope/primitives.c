@@ -46,44 +46,31 @@ void slope_color_set_name (slope_color_t *color,
     color->alpha = 1.0;
     switch (name) {
         case SLOPE_BLACK:
-            color->red = 0.0;
-            color->green = 0.0;
-            color->blue = 0.0;
+            slope_color_set(color, 0.0, 0.0, 0.0, 1.0);
             break;
         case SLOPE_WHITE:
-            color->red = 1.0;
-            color->green = 1.0;
-            color->blue = 1.0;
+            slope_color_set(color, 1.0, 1.0, 1.0, 1.0);
             break;
         case SLOPE_RED:
-            color->red = 1.0;
-            color->green = 0.0;
-            color->blue = 0.0;
+            slope_color_set(color, 1.0, 0.0, 0.0, 1.0);
             break;
         case SLOPE_GREEN:
-            color->red = 0.0;
-            color->green = 1.0;
-            color->blue = 0.0;
+            slope_color_set(color, 0.0, 1.0, 0.0, 1.0);
             break;
         case SLOPE_BLUE:
-            color->red = 0.0;
-            color->green = 0.0;
-            color->blue = 1.0;
+            slope_color_set(color, 0.0, 0.0, 1.0, 1.0);
             break;
         case SLOPE_YELLOW:
-            color->red = 1.0;
-            color->green = 1.0;
-            color->blue = 0.0;
+            slope_color_set(color, 1.0, 1.0, 0.0, 1.0);
             break;
         case SLOPE_MAROON:
-            color->red = 0.5;
-            color->green = 0.0;
-            color->blue = 0.0;
+            slope_color_set(color, 0.5, 0.0, 0.0, 1.0);
             break;
         case SLOPE_GREY:
-            color->red = 0.5;
-            color->green = 0.5;
-            color->blue = 0.5;
+            slope_color_set(color, 0.5, 0.5, 0.5, 1.0);
+            break;
+        default: /* SLOPE_BLACK */
+            slope_color_set(color, 0.0, 0.0, 0.0, 1.0);
             break;
     }
 }
@@ -111,6 +98,7 @@ void slope_draw_text(cairo_t *cr, slope_font_t *font,
 {
 #if SLOPE_HAVE_PANGO
     PangoLayout *layout = pango_cairo_create_layout(cr);
+    pango_layout_set_font_description (layout, font->font);
     pango_layout_set_text(layout, text, -1);
     pango_cairo_update_layout(cr, layout);
     cairo_move_to(cr, x, y);
@@ -129,6 +117,7 @@ void slope_get_text_rect(cairo_t *cr, slope_font_t *font,
     #if SLOPE_HAVE_PANGO
     int width, height;
     PangoLayout *layout = pango_cairo_create_layout(cr);
+    pango_layout_set_font_description (layout, font->font);
     pango_layout_set_text(layout, text, -1);
     pango_cairo_update_layout(cr, layout);
     pango_layout_get_pixel_size(layout, &width, &height);

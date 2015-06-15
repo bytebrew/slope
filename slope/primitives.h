@@ -98,7 +98,7 @@ typedef struct _slope_font
 #if SLOPE_HAVE_PANGO
     PangoFontDescription *font;
 #else
-    cairo_font_face_t *font;
+    cairo_scaled_font_t *font;
 #endif
 }
 slope_font_t;

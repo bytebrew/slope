@@ -7,11 +7,11 @@ FIND_PACKAGE(PkgConfig REQUIRED)
 
 IF(SLOPE_USE_GTK3 MATCHES "TRUE")
     SET(SLOPE_HAVE_GTK 1)
-    SET(SLOPE_HAVE_PANGO 0) # pango support is still experimental
+    SET(SLOPE_HAVE_PANGO 1) # pango support is still experimental
     PKG_CHECK_MODULES(DEP "gtk+-3.0")
 ELSE()
     SET(SLOPE_HAVE_GTK 0)
-    SET(SLOPE_HAVE_PANGO 0)
+    SET(SLOPE_HAVE_PANGO 1)
     PKG_CHECK_MODULES(DEP "cairo")
 ENDIF()
 

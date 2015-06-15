@@ -1,6 +1,8 @@
 var searchData=
 [
+  ['slope_5fbool_5ft',['slope_bool_t',['../group__Primitives.html#gac55afa016ca777119a6c343d1655d558',1,'primitives.h']]],
   ['slope_5ffigure_5ft',['slope_figure_t',['../group__Figure.html#ga507cc82eeca8255d6c0f603ffdaeb59e',1,'primitives.h']]],
+  ['slope_5ffont_5ft',['slope_font_t',['../group__Primitives.html#ga29945f78eef5fcab497a3d15908b4b73',1,'primitives.h']]],
   ['slope_5fitem_5ft',['slope_item_t',['../group__Item.html#ga2616141f0e164a876049da51ea3a8646',1,'primitives.h']]],
   ['slope_5fiterator_5ft',['slope_iterator_t',['../group__List.html#gaad13ce078b8dfe56e5a54bafc9aff9af',1,'list.h']]],
   ['slope_5flist_5ft',['slope_list_t',['../group__List.html#ga88326d377deca937191acac6784bff0e',1,'list.h']]],

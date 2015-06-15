@@ -5,10 +5,12 @@ var primitives_8h =
     [ "_slope_color", "struct__slope__color.html", "struct__slope__color" ],
     [ "SLOPE_FALSE", "group__Primitives.html#gae6284087e258abab2709107da8deef10", null ],
     [ "SLOPE_TRUE", "group__Primitives.html#gaf4724331c7139c35a340ef6c34d1d5b8", null ],
+    [ "slope_bool_t", "group__Primitives.html#gac55afa016ca777119a6c343d1655d558", null ],
     [ "slope_callback_t", "primitives_8h.html#a51f2b92d1dce9304be0cf46806a8e06a", null ],
     [ "slope_color_name_t", "primitives_8h.html#ac8087f3ce8e8a945ba80cdba991d8627", null ],
     [ "slope_color_t", "primitives_8h.html#aae63a9f54e5753b7c9722854215c33e2", null ],
     [ "slope_figure_t", "group__Figure.html#ga507cc82eeca8255d6c0f603ffdaeb59e", null ],
+    [ "slope_font_t", "group__Primitives.html#ga29945f78eef5fcab497a3d15908b4b73", null ],
     [ "slope_item_t", "group__Item.html#ga2616141f0e164a876049da51ea3a8646", null ],
     [ "slope_metrics_t", "group__Metrics.html#gab80787ee8ae8dc449e770249fe0e3c35", null ],
     [ "slope_paper_orientation_t", "primitives_8h.html#a3291b9639b5653b1cc5df85112034d70", null ],
@@ -53,5 +55,7 @@ var primitives_8h =
     [ "slope_cairo_set_color", "primitives_8h.html#aab36420cbb71dddf152bbaeb3434651d", null ],
     [ "slope_color_set", "primitives_8h.html#ab2396e54321484bbe77362f0826aea42", null ],
     [ "slope_color_set_name", "primitives_8h.html#a2e3d5907d550e32103bee048d8826342", null ],
+    [ "slope_draw_text", "primitives_8h.html#aaf30294c63a8a376ddad16fb27724b3e", null ],
+    [ "slope_get_text_rect", "primitives_8h.html#a05569ee23eac7321c0d04dfa9b076ba8", null ],
     [ "slope_rect_set", "primitives_8h.html#a30b271fd07025c5402baabc433e6d4c9", null ]
 ];
