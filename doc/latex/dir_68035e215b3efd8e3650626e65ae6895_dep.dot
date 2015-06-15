@@ -1,6 +1,0 @@
-digraph "slope" {
-  compound=true
-  node [ fontsize="10", fontname="Helvetica"];
-  edge [ labelfontsize="10", labelfontname="Helvetica"];
-  dir_68035e215b3efd8e3650626e65ae6895 [shape=box, label="slope", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_68035e215b3efd8e3650626e65ae6895.html"];
-}
