@@ -39,14 +39,7 @@ slope_figure_t* slope_figure_create()
     figure->legend = slope_legend_create();
     slope_color_set_name(&figure->back_color, SLOPE_WHITE);
     figure->fill_back = SLOPE_TRUE;
-    
-    #if SLOPE_HAVE_PANGO
-    figure->default_font.font =
-        pango_font_description_from_string("Sans 8");
-    #else
-    /* TODO */
-    #endif /* SLOPE_HAVE_PANGO */
-    
+    figure->default_font = slope_font_create("Sans", 10);
     return figure;
 }
 
@@ -56,11 +49,7 @@ void slope_figure_destroy (slope_figure_t *figure)
     if (figure == NULL) return;
     slope_item_destroy(figure->legend);
     slope_list_destroy(figure->metrics);
-    #if SLOPE_HAVE_PANGO
-    pango_font_description_free(figure->default_font.font);
-    #else
-    /* TODO */
-    #endif /* SLOPE_HAVE_PANGO */
+    slope_font_destroy(figure->default_font);
     free(figure);
 }
 
@@ -98,16 +87,6 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
     slope_cairo_rectangle(cr, rect);
     cairo_clip(cr);
     
-    /* use an easy font if toy API is used */
-    #if SLOPE_HAVE_PANGO
-    /* nothing to do */
-    #else
-    cairo_select_font_face(cr, "Sans",
-        CAIRO_FONT_SLANT_NORMAL,
-        CAIRO_FONT_WEIGHT_NORMAL);
-    cairo_set_font_size(cr, 10);
-    #endif /* SLOPE_HAVE_PANGO */
-
     /* fill background if required */
     if (figure->fill_back) {
         slope_cairo_set_color(cr, &figure->back_color);
@@ -313,7 +292,7 @@ void slope_figure_update (slope_figure_t *figure)
 slope_font_t* slope_figure_get_default_font (slope_figure_t *figure)
 {
     if (figure == NULL) return NULL;
-    return &figure->default_font;
+    return figure->default_font;
 }
 
 /* slope/figure.h */

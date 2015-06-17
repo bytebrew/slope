@@ -52,6 +52,8 @@ slope_item_t* slope_legend_create ()
     parent->has_thumb = SLOPE_FALSE;
     parent->font = NULL;
     legend->position = SLOPE_LEGEND_TOPRIGHT;
+    legend->paint = SLOPE_TRUE;
+    legend->stroke = SLOPE_FALSE;
 
     slope_color_set_name(&legend->fill_color, SLOPE_WHITE);
     slope_color_set_name(&legend->stroke_color, SLOPE_BLACK);
@@ -136,15 +138,20 @@ void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
     __slope_legend_eval_geometry(item, cr, metrics);
     
     /* fill background */
-    slope_cairo_set_color(cr, &self->fill_color);
-    cairo_rectangle(cr, rec->x, rec->y, rec->width, rec->height);
-    cairo_fill_preserve(cr);
+    if (self->paint) {
+        slope_cairo_set_color(cr, &self->fill_color);
+        cairo_rectangle(cr, rec->x, rec->y, rec->width, rec->height);
+        cairo_fill(cr);
+    }
     
     /* paint outline */
-    slope_cairo_set_color(cr, &self->stroke_color);
-    cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
-    cairo_set_line_width(cr, 1.0);
-    cairo_stroke(cr);
+    if (self->stroke) {
+        slope_cairo_set_color(cr, &self->stroke_color);
+        cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
+        cairo_set_line_width(cr, 1.0);
+        cairo_rectangle(cr, rec->x, rec->y, rec->width, rec->height);
+        cairo_stroke(cr);
+    }
     
     /* finaly draw the legend entries */
     slope_point_t entry_pos;

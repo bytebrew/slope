@@ -30,7 +30,7 @@ struct _slope_figure
 {
     slope_list_t    *metrics;
     slope_metrics_t *default_metrics;
-    slope_font_t     default_font;
+    slope_font_t    *default_font;
     slope_item_t    *legend;
     slope_callback_t change_callback;
     slope_color_t    back_color;

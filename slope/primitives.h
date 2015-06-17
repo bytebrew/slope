@@ -22,11 +22,8 @@
 
 #include "slope/global.h"
 
-#include "slope-config.h"
+/* our only unavoidable and beloved dependency */
 #include <cairo.h>
-#if SLOPE_HAVE_PANGO
-# include <pango/pangocairo.h>
-#endif
 
 SLOPE_BEGIN_DECLS
 
@@ -93,15 +90,7 @@ typedef unsigned char slope_bool_t;
  * @ingroup Primitives
  * @brief A font descriptor interface for cairo toy api or pango
  */
-typedef struct _slope_font
-{
-#if SLOPE_HAVE_PANGO
-    PangoFontDescription *font;
-#else
-    cairo_scaled_font_t *font;
-#endif
-}
-slope_font_t;
+typedef struct _slope_font slope_font_t;
 
 
 /**
@@ -220,27 +209,43 @@ slope_color_set_name (slope_color_t *color,
 /**
  */
 slope_public void
-slope_cairo_set_color(cairo_t *cr,
-                      const slope_color_t *color);
+slope_cairo_set_color (cairo_t *cr,
+                       const slope_color_t *color);
 
 
 /**
  */
 slope_public void
-slope_cairo_rectangle(cairo_t *cr,
-                      const slope_rect_t *rect);
+slope_cairo_rectangle (cairo_t *cr,
+                       const slope_rect_t *rect);
+
+/**
+ */
+slope_public slope_font_t*
+slope_font_create (const char *family, int size);
 
 /**
  */
 slope_public void
-slope_draw_text(cairo_t *cr, slope_font_t *font,
-                double x, double y, const char *text);
+slope_font_select (slope_font_t *font,
+                   const char *family, int size);
 
 /**
  */
 slope_public void
-slope_get_text_rect(cairo_t *cr, slope_font_t *font,
-                    slope_rect_t *rect, const char *text);
+slope_font_destroy (slope_font_t *font);
+
+/**
+ */
+slope_public void
+slope_draw_text (cairo_t *cr, slope_font_t *font,
+                 double x, double y, const char *text);
+
+/**
+ */
+slope_public void
+slope_get_text_rect (cairo_t *cr, slope_font_t *font,
+                     slope_rect_t *rect, const char *text);
 
 SLOPE_END_DECLS
 

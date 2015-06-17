@@ -33,6 +33,7 @@ int main (int argc, char *argv[])
     /* save the chart in a png figure */
     slope_figure_write_to_png(chart, "figure.png", 500, 350);
     #endif /* SLOPE_HAVE_GTK */
+    slope_figure_write_to_png(chart, "figure.png", 500, 350);
 
     slope_chart_destroy(chart);
     return 0;

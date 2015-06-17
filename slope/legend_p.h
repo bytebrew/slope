@@ -34,7 +34,10 @@ struct _slope_legend
     slope_color_t fill_color;
     slope_color_t stroke_color;
     slope_legend_position_t position;
+    slope_bool_t paint;
+    slope_bool_t stroke;
 };
+
 
 /**
  */
