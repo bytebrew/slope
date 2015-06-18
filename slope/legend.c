@@ -20,6 +20,7 @@
 #include "slope/legend_p.h"
 #include "slope/figure_p.h"
 #include "slope/metrics_p.h"
+#include "slope/text.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

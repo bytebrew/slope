@@ -46,11 +46,11 @@ SLOPE_BEGIN_DECLS
  */
 typedef enum
 {
-    SLOPE_LINE       = 0, /*!< The data points are joined by lines */
-    SLOPE_CIRCLES    = 1, /*!< The data points are represent by circles, filled or not */
-    SLOPE_TRIANGLES  = 2, /*!< The data points are represent by triangles, filled or not */
-    SLOPE_SQUARES    = 3, /*!< The data points are represent by squares, filled or not */
-    SLOPE_PLUSSES    = 4  /*!< The data points are represent by plus signs */
+    SLOPE_LINE       = 1 << 1, /*!< The data points are joined by lines */
+    SLOPE_CIRCLES    = 1 << 2, /*!< The data points are represent by circles, filled or not */
+    SLOPE_TRIANGLES  = 1 << 3, /*!< The data points are represent by triangles, filled or not */
+    SLOPE_SQUARES    = 1 << 4, /*!< The data points are represent by squares, filled or not */
+    SLOPE_PLUSSES    = 1 << 5  /*!< The data points are represent by plus signs */
 }
 slope_scatter_t;
 

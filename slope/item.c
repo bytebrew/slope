@@ -150,6 +150,13 @@ int __slope_item_parse_color (const char *fmt)
         if (*fmt == 'r') return SLOPE_RED;
         if (*fmt == 'g') return SLOPE_GREEN;
         if (*fmt == 'l') return SLOPE_BLUE;
+        if (*fmt == 'm') return SLOPE_MAROON;
+        if (*fmt == 'p') return SLOPE_PURPLE;
+        if (*fmt == 'y') return SLOPE_YELLOW;
+        if (*fmt == 'e') return SLOPE_GREY;
+        if (*fmt == 'o') return SLOPE_OLIVE;
+        if (*fmt == 'a') return SLOPE_ORANGE;
+        if (*fmt == 't') return SLOPE_TEAL;
         ++fmt;
     }
     return SLOPE_BLACK;
@@ -158,13 +165,17 @@ int __slope_item_parse_color (const char *fmt)
 
 int __slope_item_parse_scatter (const char *fmt)
 {
+    int scatter = 0;
     while (*fmt) {
-        if (*fmt == '-') return SLOPE_LINE;
-        if (*fmt == '*') return SLOPE_CIRCLES;
-        if (*fmt == '+') return SLOPE_PLUSSES;
+        if (*fmt == '-') scatter |= SLOPE_LINE;
+        if (*fmt == '*') scatter |= SLOPE_CIRCLES;
+        if (*fmt == '+') scatter |= SLOPE_PLUSSES;
+        if (*fmt == '^') scatter |= SLOPE_TRIANGLES;
+        if (*fmt == '[') scatter |= SLOPE_SQUARES; 
         ++fmt;
     }
-    return SLOPE_LINE;
+    if (scatter == 0) scatter = SLOPE_LINE;
+    return scatter;
 }
 
 /* slope/item.c */

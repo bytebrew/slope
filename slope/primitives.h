@@ -21,8 +21,6 @@
 #define SLOPE_PRIMITIVES_H
 
 #include "slope/global.h"
-
-/* our only unavoidable and beloved dependency */
 #include <cairo.h>
 
 SLOPE_BEGIN_DECLS
@@ -87,13 +85,6 @@ typedef unsigned char slope_bool_t;
 
 
 /**
- * @ingroup Primitives
- * @brief A font descriptor interface for cairo toy api or pango
- */
-typedef struct _slope_font slope_font_t;
-
-
-/**
  */
 typedef struct _slope_point
 {
@@ -148,32 +139,6 @@ slope_color_name_t;
 
 /**
  */
-typedef enum _slope_paper_size
-{
-    SLOPE_PAPER_SIZE_A0      = 0,
-    SLOPE_PAPER_SIZE_A1      = 1,
-    SLOPE_PAPER_SIZE_A2      = 2,
-    SLOPE_PAPER_SIZE_A3      = 3,
-    SLOPE_PAPER_SIZE_A4      = 4,
-    SLOPE_PAPER_SIZE_LETTER  = 5,
-    SLOPE_PAPER_SIZE_B4      = 6,
-    SLOPE_PAPER_SIZE_B5      = 7
-}
-slope_paper_size_t;
-
-
-/**
- */
-typedef enum _slope_paper_orientation
-{
-    SLOPE_PAPER_ORIENTATION_PORTRAIT   = 0,
-    SLOPE_PAPER_ORIENTATION_LANDSCAPE  = 1
-}
-slope_paper_orientation_t;
-
-
-/**
- */
 typedef struct _slope_color
 {
     double red;
@@ -218,34 +183,6 @@ slope_cairo_set_color (cairo_t *cr,
 slope_public void
 slope_cairo_rectangle (cairo_t *cr,
                        const slope_rect_t *rect);
-
-/**
- */
-slope_public slope_font_t*
-slope_font_create (const char *family, int size);
-
-/**
- */
-slope_public void
-slope_font_select (slope_font_t *font,
-                   const char *family, int size);
-
-/**
- */
-slope_public void
-slope_font_destroy (slope_font_t *font);
-
-/**
- */
-slope_public void
-slope_draw_text (cairo_t *cr, slope_font_t *font,
-                 double x, double y, const char *text);
-
-/**
- */
-slope_public void
-slope_get_text_rect (cairo_t *cr, slope_font_t *font,
-                     slope_rect_t *rect, const char *text);
 
 SLOPE_END_DECLS
 

@@ -39,6 +39,7 @@
 
 #include "slope/list.h"
 #include "slope/primitives.h"
+#include "slope/text.h"
 
 SLOPE_BEGIN_DECLS
 

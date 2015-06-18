@@ -21,6 +21,7 @@
 #define SLOPE_DATA_P_H
 
 #include "slope/item.h"
+#include "slope/text.h"
 
 SLOPE_BEGIN_DECLS
 

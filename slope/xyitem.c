@@ -19,6 +19,7 @@
 
 #include "slope/xyitem_p.h"
 #include "slope/xymetrics_p.h"
+#include "slope/text.h"
 #include <stdlib.h>
 #include <string.h>
 
