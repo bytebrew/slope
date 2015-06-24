@@ -71,6 +71,18 @@ void slope_color_set_name (slope_color_t *color,
         case SLOPE_GREY:
             slope_color_set(color, 0.5, 0.5, 0.5, 1.0);
             break;
+        case SLOPE_PURPLE:
+            slope_color_set(color, 0.5, 0.0, 0.5, 1.0);
+            break;
+        case SLOPE_OLIVE:
+            slope_color_set(color, 0.5, 0.5, 0.0, 1.0);
+            break;
+        case SLOPE_TEAL:
+            slope_color_set(color, 0.0, 0.5, 0.5, 1.0);
+            break;
+        case SLOPE_ORANGE:
+            slope_color_set(color, 1, 0.65, 0.0, 1.0);
+            break;
         default: /* SLOPE_BLACK */
             slope_color_set(color, 0.0, 0.0, 0.0, 1.0);
             break;

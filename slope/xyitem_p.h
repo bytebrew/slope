@@ -78,6 +78,10 @@ void __slope_xyitem_draw_squares (slope_item_t *item, cairo_t *cr,
 void __slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics);
 
+/**
+ */
+void __slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
+                                       const slope_metrics_t *metrics);
 
 /**
  */

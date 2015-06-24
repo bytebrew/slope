@@ -69,7 +69,8 @@ slope_item_t* slope_xyitem_create()
 }
 
 
-slope_item_t* slope_xyitem_create_simple (const double *vx, const double *vy,
+slope_item_t* slope_xyitem_create_simple (const double *vx,
+                                          const double *vy,
                                           const int n,
                                           const char *name,
                                           const char *fmt)
@@ -159,6 +160,9 @@ void __slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
             break;
         case SLOPE_PLUSSES:
             __slope_xyitem_draw_plusses(item, cr, metrics);
+            break;
+        case SLOPE_LINE|SLOPE_CIRCLES:
+            __slope_xyitem_draw_line_circles(item, cr, metrics);
             break;
     }
 }
@@ -309,6 +313,44 @@ void __slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
             cairo_line_to(cr, x1+SYMBRAD, y1);
             cairo_move_to(cr, x1, y1-SYMBRAD);
             cairo_line_to(cr, x1, y1+SYMBRAD);
+            x1 = x2;
+            y1 = y2;
+        }
+    }
+    cairo_stroke(cr);
+}
+
+
+void __slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
+                                       const slope_metrics_t *metrics)
+{
+    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    
+    const double *vx = self->vx;
+    const double *vy = self->vy;
+    const int n = self->n;
+    
+    double x1 = slope_xymetrics_map_x(metrics, vx[0]);
+    double y1 = slope_xymetrics_map_y(metrics, vy[0]);
+    cairo_move_to(cr, x1+SYMBRAD, y1);
+    cairo_arc(cr, x1, y1, SYMBRAD, 0.0, 6.283185);
+    if (self->fill_symbol) cairo_fill(cr);
+    cairo_move_to(cr, x1, y1);
+    
+    int k;
+    for (k=1; k<n; k++) {
+        double x2 = slope_xymetrics_map_x(metrics, vx[k]);
+        double y2 = slope_xymetrics_map_y(metrics, vy[k]);
+        
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double distsqr = dx*dx + dy*dy;
+        
+        if (distsqr >= TWOSYMBRADSQR) {
+            cairo_line_to(cr, x2, y2);
+            cairo_move_to(cr, x2+SYMBRAD, y2);
+            cairo_arc(cr, x2, y2, SYMBRAD, 0.0, 6.283185);
+            if (self->fill_symbol) cairo_fill(cr);
             x1 = x2;
             y1 = y2;
         }
