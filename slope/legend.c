@@ -50,6 +50,8 @@ slope_item_t* slope_legend_create ()
 
     parent->klass = __slope_legend_get_class();
     parent->visible = SLOPE_TRUE;
+    parent->name = NULL;
+    parent->metrics = NULL;
     parent->has_thumb = SLOPE_FALSE;
     parent->font = NULL;
     legend->position = SLOPE_LEGEND_TOPRIGHT;
