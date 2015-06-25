@@ -4,4 +4,6 @@ build/*
 *.o
 *.out
 *.pyc
-
+tags
+.directory
+doc
