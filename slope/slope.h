@@ -63,6 +63,7 @@
 # include "slope/view.h"
 #endif /* SLOPE_HAVE_GTK */
 
+SLOPE_BEGIN_DECLS
 
 /**
  * @ingroup Util
@@ -112,5 +113,7 @@ slope_public GtkWidget*
 slope_create_window (slope_figure_t *figure,
                      const char *title);
 #endif /* SLOPE_HAVE_GTK */
+
+SLOPE_END_DECLS
 
 #endif /* SLOPE_SLOPE_H */
