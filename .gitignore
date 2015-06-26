@@ -7,3 +7,5 @@ build/*
 tags
 .directory
 doc
+*.swp
+
