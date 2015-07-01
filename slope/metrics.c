@@ -66,7 +66,7 @@ void slope_metrics_update (slope_metrics_t *metrics)
 }
 
 
-void __slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+void _slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                            const slope_rect_t *rect)
 {
     (*metrics->klass->draw_fn)(metrics, cr, rect);

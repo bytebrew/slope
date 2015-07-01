@@ -22,7 +22,7 @@
 
 /**
  */
-#ifdef __cplusplus
+#ifdef _cplusplus
 # define SLOPE_BEGIN_DECLS  extern "C" {
 # define SLOPE_END_DECLS    }
 #else
@@ -34,9 +34,9 @@
  */
 #if defined (_MSC_VER)
 # if defined (SLOPE_BUILD)
-#  define slope_public __declspec(dllexport)
+#  define slope_public _declspec(dllexport)
 # else
-#  define slope_public __declspec(dllimport)
+#  define slope_public _declspec(dllimport)
 # endif
 #else
 #  define slope_public

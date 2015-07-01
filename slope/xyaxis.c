@@ -26,14 +26,14 @@
 #include <math.h>
 
 
-slope_item_class_t* __slope_xyaxis_get_class()
+slope_item_class_t* _slope_xyaxis_get_class()
 {
     static int first_call = SLOPE_TRUE;
     static slope_item_class_t klass;
 
     if (first_call) {
         klass.destroy_fn = NULL;
-        klass.draw_fn = __slope_xyaxis_draw;
+        klass.draw_fn = _slope_xyaxis_draw;
         klass.draw_thumb_fn = NULL;
         first_call = SLOPE_FALSE;
     }
@@ -56,13 +56,13 @@ slope_item_t* slope_xyaxis_create (slope_metrics_t *metrics,
     parent->has_thumb = SLOPE_FALSE;
     parent->metrics = metrics;
     parent->font = NULL;
-    parent->klass = __slope_xyaxis_get_class();
+    parent->klass = _slope_xyaxis_get_class();
 
     return parent;
 }
 
 
-void __slope_xyaxis_setup_draw (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_setup_draw (slope_item_t *item, cairo_t *cr,
                                 const slope_metrics_t *metrics)
 {
     slope_xyaxis_t *axis = (slope_xyaxis_t*) item;
@@ -96,7 +96,7 @@ void __slope_xyaxis_setup_draw (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyaxis_draw (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_draw (slope_item_t *item, cairo_t *cr,
                           const slope_metrics_t *metrics)
 {
     slope_xyaxis_t *axis = (slope_xyaxis_t*) item;
@@ -105,26 +105,26 @@ void __slope_xyaxis_draw (slope_item_t *item, cairo_t *cr,
     cairo_set_line_width(cr, 1.0);
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
 
-    __slope_xyaxis_setup_draw(item, cr, metrics);
+    _slope_xyaxis_setup_draw(item, cr, metrics);
 
     switch (axis->type) {
         case SLOPE_XYAXIS_TOP:
-            __slope_xyaxis_draw_top(item, cr, metrics);
+            _slope_xyaxis_draw_top(item, cr, metrics);
             break;
         case SLOPE_XYAXIS_BOTTOM:
-            __slope_xyaxis_draw_bottom(item, cr, metrics);
+            _slope_xyaxis_draw_bottom(item, cr, metrics);
             break;
         case SLOPE_XYAXIS_LEFT:
-            __slope_xyaxis_draw_left(item, cr, metrics);
+            _slope_xyaxis_draw_left(item, cr, metrics);
             break;
         case SLOPE_XYAXIS_RIGHT:
-            __slope_xyaxis_draw_right(item, cr, metrics);
+            _slope_xyaxis_draw_right(item, cr, metrics);
             break;
     }
 }
 
 
-void __slope_xyaxis_draw_top (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_draw_top (slope_item_t *item, cairo_t *cr,
                               const slope_metrics_t *metrics)
 {
     slope_xyaxis_t *axis = (slope_xyaxis_t*) item;
@@ -166,7 +166,7 @@ void __slope_xyaxis_draw_top (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyaxis_draw_bottom (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_draw_bottom (slope_item_t *item, cairo_t *cr,
                                  const slope_metrics_t *metrics)
 {
     slope_xyaxis_t *axis = (slope_xyaxis_t*) item;
@@ -208,7 +208,7 @@ void __slope_xyaxis_draw_bottom (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
                                const slope_metrics_t *metrics)
 {
     slope_xyaxis_t *axis = (slope_xyaxis_t*) item;
@@ -255,7 +255,7 @@ void __slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyaxis_draw_right (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_draw_right (slope_item_t *item, cairo_t *cr,
                                 const slope_metrics_t *metrics)
 {
     slope_xyaxis_t *axis = (slope_xyaxis_t*) item;

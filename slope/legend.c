@@ -27,14 +27,14 @@
 #include <math.h>
 
 
-slope_item_class_t* __slope_legend_get_class()
+slope_item_class_t* _slope_legend_get_class()
 {
     static int first_call = SLOPE_TRUE;
     static slope_item_class_t klass;
 
     if (first_call) {
         klass.destroy_fn = NULL;
-        klass.draw_fn = __slope_legend_draw;
+        klass.draw_fn = _slope_legend_draw;
         klass.draw_thumb_fn = NULL;
         first_call = SLOPE_FALSE;
     }
@@ -48,7 +48,7 @@ slope_item_t* slope_legend_create ()
     slope_legend_t *legend = malloc(sizeof(slope_legend_t));
     slope_item_t *parent = (slope_item_t*) legend;
 
-    parent->klass = __slope_legend_get_class();
+    parent->klass = _slope_legend_get_class();
     parent->visible = SLOPE_TRUE;
     parent->name = NULL;
     parent->metrics = NULL;
@@ -65,7 +65,7 @@ slope_item_t* slope_legend_create ()
 }
 
 
-void __slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
+void _slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
                                    const slope_metrics_t *metrics)
 {
     slope_legend_t *self = (slope_legend_t*) item;
@@ -131,14 +131,14 @@ void __slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
+void _slope_legend_draw (slope_item_t *item, cairo_t *cr,
                           const slope_metrics_t *metrics)
 {
     slope_legend_t *self = (slope_legend_t*) item;
     slope_figure_t *figure = slope_metrics_get_figure(metrics);
     slope_rect_t *rec = &self->rect;
     
-    __slope_legend_eval_geometry(item, cr, metrics);
+    _slope_legend_eval_geometry(item, cr, metrics);
     
     /* fill background */
     if (self->paint) {
@@ -186,7 +186,7 @@ void __slope_legend_draw (slope_item_t *item, cairo_t *cr,
             slope_rect_t txt_rec;
             slope_get_text_rect(cr, item->font, &txt_rec, entry);
             entry_pos.y += txt_rec.height + 4.0;
-            __slope_item_draw_thumb(item, &entry_pos, cr);
+            _slope_item_draw_thumb(item, &entry_pos, cr);
 
             slope_iterator_next(&item_iter);
         }

@@ -101,7 +101,7 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
         slope_metrics_t *met = (slope_metrics_t*)
             slope_iterator_data(met_iter);
         if (slope_metrics_get_visible(met)) {
-            __slope_metrics_draw(met, cr, rect);
+            _slope_metrics_draw(met, cr, rect);
         }
         slope_iterator_next(&met_iter);
     }
@@ -110,7 +110,7 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
     if (slope_item_get_visible(figure->legend)
         && figure->default_metrics != NULL)
     {
-        __slope_legend_draw(figure->legend, cr, figure->default_metrics);
+        _slope_legend_draw(figure->legend, cr, figure->default_metrics);
     }
     cairo_restore(cr);
 }

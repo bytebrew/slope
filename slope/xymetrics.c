@@ -24,15 +24,15 @@
 #include <stdlib.h>
 
 
-slope_metrics_class_t* __slope_xymetrics_get_class()
+slope_metrics_class_t* _slope_xymetrics_get_class()
 {
     static int first_call = SLOPE_TRUE;
     static slope_metrics_class_t klass;
 
     if (first_call) {
-        klass.destroy_fn = __slope_xymetrics_destroy;
-        klass.update_fn = __slope_xymetrics_update;
-        klass.draw_fn = __slope_xymetrics_draw;
+        klass.destroy_fn = _slope_xymetrics_destroy;
+        klass.update_fn = _slope_xymetrics_update;
+        klass.draw_fn = _slope_xymetrics_draw;
         first_call = SLOPE_FALSE;
     }
 
@@ -45,7 +45,7 @@ slope_metrics_t* slope_xymetrics_create()
     slope_xymetrics_t *self = malloc(sizeof(slope_xymetrics_t));
     slope_metrics_t *metrics = (slope_metrics_t*) self;
 
-    metrics->klass = __slope_xymetrics_get_class();
+    metrics->klass = _slope_xymetrics_get_class();
     metrics->type = SLOPE_XYMETRICS;
     metrics->visible = SLOPE_TRUE;
     metrics->item_list = NULL;
@@ -73,7 +73,7 @@ slope_metrics_t* slope_xymetrics_create()
 }
 
 
-void __slope_xymetrics_destroy (slope_metrics_t *metrics)
+void _slope_xymetrics_destroy (slope_metrics_t *metrics)
 {
     slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
 
@@ -89,7 +89,7 @@ void __slope_xymetrics_destroy (slope_metrics_t *metrics)
 }
 
 
-void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                              const slope_rect_t *rect)
 {
     slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
@@ -113,7 +113,7 @@ void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
         slope_item_t *item = (slope_item_t*)
             slope_iterator_data(item_iter);
         if (slope_item_get_visible(item)) {
-            __slope_item_draw(item, cr, metrics);
+            _slope_item_draw(item, cr, metrics);
         }
         slope_iterator_next(&item_iter);
     }
@@ -126,14 +126,14 @@ void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
         slope_item_t *axis = (slope_item_t*)
             slope_iterator_data(axis_iter);
         if (slope_item_get_visible(axis)) {
-            __slope_item_draw(axis, cr, metrics);
+            _slope_item_draw(axis, cr, metrics);
         }
         slope_iterator_next(&axis_iter);
     }
 }
 
 
-void __slope_xymetrics_update (slope_metrics_t *metrics)
+void _slope_xymetrics_update (slope_metrics_t *metrics)
 {
     slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
     if (metrics->item_list == NULL) {

@@ -45,22 +45,22 @@ struct _slope_xymetrics
 
 /**
  */
-slope_metrics_class_t* __slope_xymetrics_get_class();
+slope_metrics_class_t* _slope_xymetrics_get_class();
 
 
 /**
  */
-void __slope_xymetrics_destroy (slope_metrics_t *metrics);
+void _slope_xymetrics_destroy (slope_metrics_t *metrics);
 
 
 /**
  */
-void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                              const slope_rect_t *rect);
 
 /**
  */
-void __slope_xymetrics_update (slope_metrics_t *metrics);
+void _slope_xymetrics_update (slope_metrics_t *metrics);
 
 SLOPE_END_DECLS
 

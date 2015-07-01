@@ -58,24 +58,24 @@ struct _slope_item
 
 /**
  */
-void __slope_item_draw (slope_item_t *item, cairo_t *cr,
+void _slope_item_draw (slope_item_t *item, cairo_t *cr,
                         const slope_metrics_t *metrics);
 
 
 /**
  */
-void __slope_item_draw_thumb (slope_item_t *item,
+void _slope_item_draw_thumb (slope_item_t *item,
                               const slope_point_t *pos, cairo_t *cr);
 
 
 /**
  */
-int __slope_item_parse_color (const char *fmt);
+int _slope_item_parse_color (const char *fmt);
 
 
 /**
  */
-int __slope_item_parse_scatter (const char *fmt);
+int _slope_item_parse_scatter (const char *fmt);
 
 SLOPE_END_DECLS
 

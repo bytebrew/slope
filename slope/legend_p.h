@@ -41,17 +41,17 @@ struct _slope_legend
 
 /**
  */
-slope_item_class_t* __slope_legend_get_class();
+slope_item_class_t* _slope_legend_get_class();
 
 
 /**
  */
-void __slope_legend_draw (slope_item_t *legend, cairo_t *cr,
+void _slope_legend_draw (slope_item_t *legend, cairo_t *cr,
                           const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_legend_eval_geometry (slope_item_t *legend, cairo_t *cr,
+void _slope_legend_eval_geometry (slope_item_t *legend, cairo_t *cr,
                                    const slope_metrics_t *metrics);
 
 SLOPE_END_DECLS

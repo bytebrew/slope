@@ -39,36 +39,36 @@ struct _slope_xyaxis
 
 /**
  */
-slope_item_class_t* __slope_xyaxis_get_class();
+slope_item_class_t* _slope_xyaxis_get_class();
 
 /**
  */
-void __slope_xyaxis_setup_draw (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_setup_draw (slope_item_t *item, cairo_t *cr,
                                 const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyaxis_draw (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_draw (slope_item_t *item, cairo_t *cr,
                           const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyaxis_draw_top (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_draw_top (slope_item_t *item, cairo_t *cr,
                               const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyaxis_draw_bottom (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_draw_bottom (slope_item_t *item, cairo_t *cr,
                                  const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
                                const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyaxis_draw_right (slope_item_t *item, cairo_t *cr,
+void _slope_xyaxis_draw_right (slope_item_t *item, cairo_t *cr,
                                 const slope_metrics_t *metrics);
 
 SLOPE_END_DECLS

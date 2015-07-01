@@ -44,63 +44,63 @@ struct _slope_xyitem
 
 /**
  */
-slope_item_class_t* __slope_xyitem_get_class();
+slope_item_class_t* _slope_xyitem_get_class();
 
-void __slope_xyitem_init (slope_item_t *item);
+void _slope_xyitem_init (slope_item_t *item);
 
 /**
  */
-void __slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
                           const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
                                const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
                                     const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyitem_draw_squares (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_squares (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
                                        const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,
                                          const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,
                                        const slope_metrics_t *metrics);
 
 /**
  */
-void __slope_xyitem_draw_thumb (slope_item_t *item,
+void _slope_xyitem_draw_thumb (slope_item_t *item,
                                 const slope_point_t *pos, cairo_t *cr);
 
 /**
  */
-void __slope_xyitem_check_ranges (slope_item_t *item);
+void _slope_xyitem_check_ranges (slope_item_t *item);
 
 SLOPE_END_DECLS
 

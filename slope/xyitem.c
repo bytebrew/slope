@@ -28,15 +28,15 @@
 #define TWOSYMBRADSQR 36.0
 
 
-slope_item_class_t* __slope_xyitem_get_class()
+slope_item_class_t* _slope_xyitem_get_class()
 {
     static int first_call = SLOPE_TRUE;
     static slope_item_class_t klass;
 
     if (first_call) {
         klass.destroy_fn = NULL;
-        klass.draw_fn = __slope_xyitem_draw;
-        klass.draw_thumb_fn = __slope_xyitem_draw_thumb;
+        klass.draw_fn = _slope_xyitem_draw;
+        klass.draw_thumb_fn = _slope_xyitem_draw_thumb;
         first_call = SLOPE_FALSE;
     }
 
@@ -44,7 +44,7 @@ slope_item_class_t* __slope_xyitem_get_class()
 }
 
 
-void __slope_xyitem_init (slope_item_t *parent)
+void _slope_xyitem_init (slope_item_t *parent)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) parent;
     self->antialias = SLOPE_TRUE;
@@ -56,7 +56,7 @@ void __slope_xyitem_init (slope_item_t *parent)
     parent->has_thumb = SLOPE_TRUE;
     parent->metrics = NULL;
     parent->font = NULL;
-    parent->klass = __slope_xyitem_get_class();
+    parent->klass = _slope_xyitem_get_class();
 }
 
 
@@ -64,7 +64,7 @@ slope_item_t* slope_xyitem_create()
 {
     slope_xyitem_t *self = malloc(sizeof(slope_xyitem_t));
     slope_item_t *parent = (slope_item_t*) self;
-    __slope_xyitem_init(parent);
+    _slope_xyitem_init(parent);
     return parent;
 }
 
@@ -77,7 +77,7 @@ slope_item_t* slope_xyitem_create_simple (const double *vx,
 {
     slope_xyitem_t *self = malloc(sizeof(slope_xyitem_t));
     slope_item_t *parent = (slope_item_t*) self;
-    __slope_xyitem_init(parent);
+    _slope_xyitem_init(parent);
     slope_xyitem_set(parent, vx, vy, n, name, fmt);
     return parent;
 }
@@ -97,9 +97,9 @@ void slope_xyitem_set (slope_item_t *item,
         free(item->name);
     }
     item->name = strdup(name);
-    slope_color_set_name(&self->color, __slope_item_parse_color(fmt));
-    self->scatter = __slope_item_parse_scatter(fmt);
-    __slope_xyitem_check_ranges(item);
+    slope_color_set_name(&self->color, _slope_item_parse_color(fmt));
+    self->scatter = _slope_item_parse_scatter(fmt);
+    _slope_xyitem_check_ranges(item);
     slope_item_notify_data_change(item);
 }
 
@@ -112,7 +112,7 @@ void slope_xyitem_set_item (slope_item_t *item,
     self->vx = vx;
     self->vy = vy;
     self->n = n;
-    __slope_xyitem_check_ranges(item);
+    _slope_xyitem_check_ranges(item);
     slope_item_notify_data_change(item);
 }
 
@@ -129,7 +129,7 @@ void slope_xyitem_update_item (slope_item_t *item,
 }
 
 
-void __slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
                           const slope_metrics_t *metrics)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
@@ -147,34 +147,34 @@ void __slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
 
     switch (self->scatter) {
         case SLOPE_LINE:
-            __slope_xyitem_draw_line(item, cr, metrics);
+            _slope_xyitem_draw_line(item, cr, metrics);
             break;
         case SLOPE_CIRCLES:
-            __slope_xyitem_draw_circles(item, cr, metrics);
+            _slope_xyitem_draw_circles(item, cr, metrics);
             break;
         case SLOPE_TRIANGLES:
-            __slope_xyitem_draw_triangles(item, cr, metrics);
+            _slope_xyitem_draw_triangles(item, cr, metrics);
             break;
         case SLOPE_SQUARES:
-            __slope_xyitem_draw_squares(item, cr, metrics);
+            _slope_xyitem_draw_squares(item, cr, metrics);
             break;
         case SLOPE_PLUSSES:
-            __slope_xyitem_draw_plusses(item, cr, metrics);
+            _slope_xyitem_draw_plusses(item, cr, metrics);
             break;
         case SLOPE_LINE|SLOPE_CIRCLES:
-            __slope_xyitem_draw_line_circles(item, cr, metrics);
+            _slope_xyitem_draw_line_circles(item, cr, metrics);
             break;
         case SLOPE_LINE|SLOPE_TRIANGLES:
-            __slope_xyitem_draw_line_triangles(item, cr, metrics);
+            _slope_xyitem_draw_line_triangles(item, cr, metrics);
             break;
         case SLOPE_LINE|SLOPE_PLUSSES:
-            __slope_xyitem_draw_line_plusses(item, cr, metrics);
+            _slope_xyitem_draw_line_plusses(item, cr, metrics);
             break;
     }
 }
 
 
-void __slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
                                const slope_metrics_t *metrics)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
@@ -206,7 +206,7 @@ void __slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
@@ -242,7 +242,7 @@ void __slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
                                     const slope_metrics_t *metrics)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
@@ -282,14 +282,14 @@ void __slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyitem_draw_squares (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_squares (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
     /* TODO */
 }
 
 
-void __slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
@@ -328,7 +328,7 @@ void __slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,
                                        const slope_metrics_t *metrics)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
@@ -371,7 +371,7 @@ void __slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
                                        const slope_metrics_t *metrics)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
@@ -411,7 +411,7 @@ void __slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,
+void _slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,
                                          const slope_metrics_t *metrics)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
@@ -455,7 +455,7 @@ void __slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_xyitem_draw_thumb (slope_item_t *item,
+void _slope_xyitem_draw_thumb (slope_item_t *item,
                                 const slope_point_t *pos, cairo_t *cr)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
@@ -507,7 +507,7 @@ void __slope_xyitem_draw_thumb (slope_item_t *item,
 }
 
 
-void __slope_xyitem_check_ranges (slope_item_t *item)
+void _slope_xyitem_check_ranges (slope_item_t *item)
 {
     slope_xyitem_t *self = (slope_xyitem_t*) item;
     const double *vx = self->vx;

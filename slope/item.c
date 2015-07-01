@@ -88,7 +88,7 @@ int slope_item_get_has_thumb (const slope_item_t *item)
 }
 
 
-void __slope_item_draw (slope_item_t *item, cairo_t *cr,
+void _slope_item_draw (slope_item_t *item, cairo_t *cr,
                         const slope_metrics_t *metrics)
 {
     if (item->font == NULL) {
@@ -99,7 +99,7 @@ void __slope_item_draw (slope_item_t *item, cairo_t *cr,
 }
 
 
-void __slope_item_draw_thumb (slope_item_t *item,
+void _slope_item_draw_thumb (slope_item_t *item,
                               const slope_point_t *pos, cairo_t *cr)
 {
     if (item->font == NULL) {
@@ -142,7 +142,7 @@ void slope_item_notify_data_change (slope_item_t *item)
 }
 
 
-int __slope_item_parse_color (const char *fmt)
+int _slope_item_parse_color (const char *fmt)
 {
     while (*fmt) {
         if (*fmt == 'b') return SLOPE_BLACK;
@@ -163,7 +163,7 @@ int __slope_item_parse_color (const char *fmt)
 }
 
 
-int __slope_item_parse_scatter (const char *fmt)
+int _slope_item_parse_scatter (const char *fmt)
 {
     int scatter = 0;
     while (*fmt) {

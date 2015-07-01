@@ -59,12 +59,12 @@ struct _slope_metrics
 
 /**
  */
-slope_metrics_class_t* __slope_metrics_get_class();
+slope_metrics_class_t* _slope_metrics_get_class();
 
 
 /**
  */
-void __slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+void _slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                            const slope_rect_t *rect);
 
 
