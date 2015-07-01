@@ -20,7 +20,7 @@ int main (int argc, char *argv[])
 
     /* this is all you need to know to crete a chart */
     slope_figure_t *chart = slope_chart_create("Sine and Random Noise", "phase", "amplitude");
-    slope_chart_add_plot(chart, x, y2, N, "Noisy experiment data", "l*");
+    slope_chart_add_plot(chart, x, y2, N, "Noisy experiment data", "l+");
     slope_chart_add_plot(chart, x, y1, N, "Sine approximation", "r-");
 
     #if SLOPE_HAVE_GTK

@@ -23,9 +23,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define SYMBRAD 3.0
-#define SYMBRADSQR 9.0
-#define TWOSYMBRADSQR 36.0
+
+#define CIRC_RAD          3.0
+#define CIRC_RAD_SQR      9.0
+#define TWO_CIRC_RAD_SQR  36.0
+
+#define TRI_RAD           4.0
+#define TRI_RAD_SQR       16.0
+#define TWO_TRI_RAD_SQR   64.0
+
+#define PLUS_RAD          5.0
+#define PLUS_RAD_SQR      25.0
+#define TWO_PLUS_RAD_SQR  100.0
 
 
 slope_item_class_t* _slope_xyitem_get_class()
@@ -196,7 +205,7 @@ void _slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
 
-        if (distsqr >= SYMBRADSQR) {
+        if (distsqr >= TWO_CIRC_RAD_SQR) {
             cairo_line_to(cr, x2, y2);
             x1 = x2;
             y1 = y2;
@@ -217,8 +226,8 @@ void _slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
 
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
-    cairo_move_to(cr, x1+SYMBRAD, y1);
-    cairo_arc(cr, x1, y1, SYMBRAD, 0.0, 6.283185);
+    cairo_move_to(cr, x1 + CIRC_RAD, y1);
+    cairo_arc(cr, x1, y1, CIRC_RAD, 0.0, 6.283185);
     if (self->fill_symbol) cairo_fill(cr);
 
     int k;
@@ -230,9 +239,9 @@ void _slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
 
-        if (distsqr >= TWOSYMBRADSQR) {
-            cairo_move_to(cr, x2+SYMBRAD, y2);
-            cairo_arc(cr, x2, y2, SYMBRAD, 0.0, 6.283185);
+        if (distsqr >= TWO_CIRC_RAD_SQR) {
+            cairo_move_to(cr, x2 + CIRC_RAD, y2);
+            cairo_arc(cr, x2, y2, CIRC_RAD, 0.0, 6.283185);
             if (self->fill_symbol) cairo_fill(cr);
             x1 = x2;
             y1 = y2;
@@ -253,9 +262,9 @@ void _slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
 
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
-    cairo_move_to(cr, x1-SYMBRAD, y1+SYMBRAD);
-    cairo_line_to(cr, x1+SYMBRAD, y1+SYMBRAD);
-    cairo_line_to(cr, x1, y1-SYMBRAD);
+    cairo_move_to(cr, x1 - TRI_RAD, y1 + TRI_RAD);
+    cairo_line_to(cr, x1 + TRI_RAD, y1 + TRI_RAD);
+    cairo_line_to(cr, x1, y1 - TRI_RAD);
     cairo_close_path(cr);
     if (self->fill_symbol) cairo_fill(cr);
 
@@ -268,10 +277,10 @@ void _slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
 
-        if (distsqr >= TWOSYMBRADSQR) {
-            cairo_move_to(cr, x2-SYMBRAD, y2+SYMBRAD);
-            cairo_line_to(cr, x2+SYMBRAD, y2+SYMBRAD);
-            cairo_line_to(cr, x2, y2-SYMBRAD);
+        if (distsqr >= TWO_TRI_RAD_SQR) {
+            cairo_move_to(cr, x2 - TRI_RAD, y2 + TRI_RAD);
+            cairo_line_to(cr, x2 + TRI_RAD, y2 + TRI_RAD);
+            cairo_line_to(cr, x2, y2 + TRI_RAD);
             cairo_close_path(cr);
             if (self->fill_symbol) cairo_fill(cr);
             x1 = x2;
@@ -302,10 +311,10 @@ void _slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
     
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
-    cairo_move_to(cr, x1-SYMBRAD, y1);
-    cairo_line_to(cr, x1+SYMBRAD, y1);
-    cairo_move_to(cr, x1, y1-SYMBRAD);
-    cairo_line_to(cr, x1, y1+SYMBRAD);
+    cairo_move_to(cr, x1 - PLUS_RAD, y1);
+    cairo_line_to(cr, x1 + PLUS_RAD, y1);
+    cairo_move_to(cr, x1, y1 - PLUS_RAD);
+    cairo_line_to(cr, x1, y1 + PLUS_RAD);
     int k;
     for (k=1; k<n; k++) {
         double x2 = slope_xymetrics_map_x(metrics, vx[k]);
@@ -315,11 +324,11 @@ void _slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
         
-        if (distsqr >= TWOSYMBRADSQR) {
-            cairo_move_to(cr, x1-SYMBRAD, y1);
-            cairo_line_to(cr, x1+SYMBRAD, y1);
-            cairo_move_to(cr, x1, y1-SYMBRAD);
-            cairo_line_to(cr, x1, y1+SYMBRAD);
+        if (distsqr >= TWO_PLUS_RAD_SQR) {
+            cairo_move_to(cr, x1 - PLUS_RAD, y1);
+            cairo_line_to(cr, x1 + PLUS_RAD, y1);
+            cairo_move_to(cr, x1, y1 - PLUS_RAD);
+            cairo_line_to(cr, x1, y1 + PLUS_RAD);
             x1 = x2;
             y1 = y2;
         }
@@ -341,11 +350,12 @@ void _slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,
     
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
-    cairo_move_to(cr, x1-SYMBRAD, y1);
-    cairo_line_to(cr, x1+SYMBRAD, y1);
-    cairo_move_to(cr, x1, y1-SYMBRAD);
-    cairo_line_to(cr, x1, y1+SYMBRAD);
+    cairo_move_to(cr, x1 - PLUS_RAD, y1);
+    cairo_line_to(cr, x1 - PLUS_RAD, y1);
+    cairo_move_to(cr, x1, y1 - PLUS_RAD);
+    cairo_line_to(cr, x1, y1 + PLUS_RAD);
     cairo_move_to(cr, x1, y1);
+
     int k;
     for (k=1; k<n; k++) {
         double x2 = slope_xymetrics_map_x(metrics, vx[k]);
@@ -355,13 +365,13 @@ void _slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
         
-        if (distsqr >= TWOSYMBRADSQR) {
+        if (distsqr >= TWO_PLUS_RAD_SQR) {
             cairo_line_to(cr, x2, y2);
             cairo_stroke(cr);
-            cairo_move_to(cr, x1-SYMBRAD, y1);
-            cairo_line_to(cr, x1+SYMBRAD, y1);
-            cairo_move_to(cr, x1, y1-SYMBRAD);
-            cairo_line_to(cr, x1, y1+SYMBRAD);
+            cairo_move_to(cr, x1 - PLUS_RAD, y1);
+            cairo_line_to(cr, x1 + PLUS_RAD, y1);
+            cairo_move_to(cr, x1, y1 - PLUS_RAD);
+            cairo_line_to(cr, x1, y1 + PLUS_RAD);
             cairo_move_to(cr, x2, y2);
             x1 = x2;
             y1 = y2;
@@ -382,8 +392,8 @@ void _slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
     
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
-    cairo_move_to(cr, x1+SYMBRAD, y1);
-    cairo_arc(cr, x1, y1, SYMBRAD, 0.0, 6.283185);
+    cairo_move_to(cr, x1 + CIRC_RAD, y1);
+    cairo_arc(cr, x1, y1, CIRC_RAD, 0.0, 6.283185);
     if (self->fill_symbol) cairo_fill(cr);
     cairo_move_to(cr, x1, y1);
     
@@ -396,11 +406,11 @@ void _slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
         
-        if (distsqr >= TWOSYMBRADSQR) {
+        if (distsqr >= TWO_CIRC_RAD_SQR) {
             cairo_line_to(cr, x2, y2);
             cairo_stroke(cr);
-            cairo_move_to(cr, x2+SYMBRAD, y2);
-            cairo_arc(cr, x2, y2, SYMBRAD, 0.0, 6.283185);
+            cairo_move_to(cr, x2 + CIRC_RAD, y2);
+            cairo_arc(cr, x2, y2, CIRC_RAD, 0.0, 6.283185);
             if (self->fill_symbol) cairo_fill(cr);
             cairo_move_to(cr, x2, y2);
             x1 = x2;
@@ -422,13 +432,12 @@ void _slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,
 
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
-    cairo_move_to(cr, x1-SYMBRAD, y1+SYMBRAD);
-    cairo_line_to(cr, x1+SYMBRAD, y1+SYMBRAD);
-    cairo_line_to(cr, x1, y1-SYMBRAD);
+    cairo_move_to(cr, x1 - TRI_RAD, y1 + TRI_RAD);
+    cairo_line_to(cr, x1 + TRI_RAD, y1 + TRI_RAD);
+    cairo_line_to(cr, x1, y1 - TRI_RAD);
     cairo_close_path(cr);
     if (self->fill_symbol) cairo_fill(cr);
     cairo_move_to(cr, x1, y1);
-
 
     int k;
     for (k=1; k<n; k++) {
@@ -439,12 +448,12 @@ void _slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
 
-        if (distsqr >= TWOSYMBRADSQR) {
+        if (distsqr >= TWO_TRI_RAD_SQR) {
             cairo_line_to(cr, x2, y2);
             cairo_stroke(cr);
-            cairo_move_to(cr, x2-SYMBRAD, y2+SYMBRAD);
-            cairo_line_to(cr, x2+SYMBRAD, y2+SYMBRAD);
-            cairo_line_to(cr, x2, y2-SYMBRAD);
+            cairo_move_to(cr, x2 - TRI_RAD, y2 + TRI_RAD);
+            cairo_line_to(cr, x2 + TRI_RAD, y2 + TRI_RAD);
+            cairo_line_to(cr, x2, y2 - TRI_RAD);
             cairo_close_path(cr);
             if (self->fill_symbol) cairo_fill(cr);
             cairo_move_to(cr, x2, y2);
@@ -471,35 +480,41 @@ void _slope_xyitem_draw_thumb (slope_item_t *item,
     }
     cairo_set_line_width(cr,self->line_width);
     
-    switch (self->scatter) {
+    switch (self->scatter)
+    {
         case SLOPE_LINE:
             cairo_move_to(cr, pos->x - 10.0, pos->y - 3.0);
             cairo_line_to(cr, pos->x + 10.0, pos->y - 3.0);
             break;
+
         case SLOPE_CIRCLES:
-            cairo_move_to(cr, pos->x + SYMBRAD, pos->y - SYMBRAD);
-            cairo_arc(cr, pos->x, pos->y - SYMBRAD, SYMBRAD, 0.0, 6.283185);
+            cairo_move_to(cr, pos->x + CIRC_RAD, pos->y - CIRC_RAD);
+            cairo_arc(cr, pos->x, pos->y - CIRC_RAD, CIRC_RAD, 0.0, 6.283185);
             cairo_fill(cr);
+            break;
+
         case SLOPE_PLUSSES:
             cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
-            cairo_move_to(cr, pos->x - SYMBRAD, pos->y - SYMBRAD);
-            cairo_line_to(cr, pos->x + SYMBRAD, pos->y - SYMBRAD);
-            cairo_move_to(cr, pos->x , pos->y - SYMBRAD - SYMBRAD);
-            cairo_line_to(cr, pos->x , pos->y + SYMBRAD - SYMBRAD);
+            cairo_move_to(cr, pos->x - PLUS_RAD, pos->y - PLUS_RAD);
+            cairo_line_to(cr, pos->x + PLUS_RAD, pos->y - PLUS_RAD);
+            cairo_move_to(cr, pos->x , pos->y - PLUS_RAD - PLUS_RAD);
+            cairo_line_to(cr, pos->x , pos->y + PLUS_RAD - PLUS_RAD);
             break;
+
         case SLOPE_LINE|SLOPE_CIRCLES:
-            cairo_move_to(cr, pos->x + SYMBRAD, pos->y - SYMBRAD);
-            cairo_arc(cr, pos->x, pos->y - SYMBRAD, SYMBRAD, 0.0, 6.283185);
+            cairo_move_to(cr, pos->x + CIRC_RAD, pos->y - CIRC_RAD);
+            cairo_arc(cr, pos->x, pos->y - CIRC_RAD, CIRC_RAD, 0.0, 6.283185);
             if (self->fill_symbol) cairo_fill(cr);
-            cairo_move_to(cr, pos->x - 3*SYMBRAD, pos->y - SYMBRAD);
-            cairo_line_to(cr, pos->x + 3*SYMBRAD, pos->y - SYMBRAD);
+            cairo_move_to(cr, pos->x - 3.0*CIRC_RAD, pos->y - CIRC_RAD);
+            cairo_line_to(cr, pos->x + 3.0*CIRC_RAD, pos->y - CIRC_RAD);
             break;
+
         case SLOPE_LINE|SLOPE_PLUSSES:
             cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
-            cairo_move_to(cr, pos->x - 3*SYMBRAD, pos->y - SYMBRAD);
-            cairo_line_to(cr, pos->x + 3*SYMBRAD, pos->y - SYMBRAD);
-            cairo_move_to(cr, pos->x , pos->y - SYMBRAD - SYMBRAD);
-            cairo_line_to(cr, pos->x , pos->y + SYMBRAD - SYMBRAD);
+            cairo_move_to(cr, pos->x - 3.0*PLUS_RAD, pos->y - PLUS_RAD);
+            cairo_line_to(cr, pos->x + 3.0*PLUS_RAD, pos->y - PLUS_RAD);
+            cairo_move_to(cr, pos->x , pos->y - PLUS_RAD - PLUS_RAD);
+            cairo_line_to(cr, pos->x , pos->y + PLUS_RAD - PLUS_RAD);
             break;
     }
     slope_draw_text(cr, item->font, pos->x + 17.0, pos->y, item->name);
