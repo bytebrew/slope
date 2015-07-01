@@ -73,8 +73,8 @@ endif()
 add_library(slope SHARED ${SLOPE_SRCS})
 target_link_libraries(slope ${DEP_LIBRARIES})
 
-add_executable(app test.c)
-target_link_libraries(app slope -lm)
+add_executable(demo demo.c)
+target_link_libraries(demo slope -lm)
 
 install(TARGETS slope DESTINATION /usr/lib)
 install(FILES ${SLOPE_HDRS} DESTINATION /usr/include/slope)

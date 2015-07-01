@@ -1,3 +1,9 @@
+/*
+ * Writen by Elvis M. Teixeira
+ *
+ * This program in in the public domain
+ */
+
 #include <slope/slope.h>
 #include <math.h>
 #include <stdlib.h>

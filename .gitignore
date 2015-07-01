@@ -8,4 +8,6 @@ tags
 .directory
 doc
 *.swp
+.kateproject
+.kateproject.d
 

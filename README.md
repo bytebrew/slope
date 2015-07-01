@@ -10,7 +10,7 @@ build will always be maintained.
 
 Slope is in it's early stages of development and still needs some optimization
 and polishing. Some accessor methods to objects properties are also absent. But here's
-what we already have: The following chart is the output of the test.c program in de
+what we already have: The following chart is the output of the demo.c program in de
 top level source repository.
 
 ![](https://github.com/exocode/slope/blob/master/figure.png)
