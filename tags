@@ -12,8 +12,8 @@ ARCHITECTURE_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	338;"	d	fi
 ARCHITECTURE_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	341;"	d	file:
 ARCHITECTURE_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	344;"	d	file:
 ARCHITECTURE_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	348;"	d	file:
-CIRC_RAD	slope/xyitem.c	27;"	d	file:
-CIRC_RAD_SQR	slope/xyitem.c	28;"	d	file:
+CIRC_RAD	slope/funcplot.c	27;"	d	file:
+CIRC_RAD_SQR	slope/funcplot.c	28;"	d	file:
 CMAKE_BINARY_DIR	build/Makefile	/^CMAKE_BINARY_DIR = \/home\/elvis\/devel\/slope\/build$/;"	m
 CMAKE_COMMAND	build/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_SOURCE_DIR	build/Makefile	/^CMAKE_SOURCE_DIR = \/home\/elvis\/devel\/slope$/;"	m
@@ -138,8 +138,8 @@ PLATFORM_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	306;"	d	file:
 PLATFORM_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	309;"	d	file:
 PLATFORM_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	312;"	d	file:
 PLATFORM_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	315;"	d	file:
-PLUS_RAD	slope/xyitem.c	35;"	d	file:
-PLUS_RAD_SQR	slope/xyitem.c	36;"	d	file:
+PLUS_RAD	slope/funcplot.c	35;"	d	file:
+PLUS_RAD_SQR	slope/funcplot.c	36;"	d	file:
 RM	build/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 SHELL	build/Makefile	/^SHELL = \/bin\/sh$/;"	m
 SIMULATE_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	27;"	d	file:
@@ -206,8 +206,8 @@ SLOPE_XYAXIS_LEFT	slope/xyaxis.h	/^    SLOPE_XYAXIS_LEFT    = 2,$/;"	e	enum:_slo
 SLOPE_XYAXIS_P_H	slope/xyaxis_p.h	21;"	d
 SLOPE_XYAXIS_RIGHT	slope/xyaxis.h	/^    SLOPE_XYAXIS_RIGHT   = 3$/;"	e	enum:_slope_xyaxis_type
 SLOPE_XYAXIS_TOP	slope/xyaxis.h	/^    SLOPE_XYAXIS_TOP     = 0,$/;"	e	enum:_slope_xyaxis_type
-SLOPE_XYDATA_H	slope/xyitem.h	21;"	d
-SLOPE_XYDATA_P_H	slope/xyitem_p.h	21;"	d
+SLOPE_XYDATA_H	slope/funcplot.h	21;"	d
+SLOPE_XYDATA_P_H	slope/funcplot_p.h	21;"	d
 SLOPE_XYMETRICS	slope/metrics.h	/^    SLOPE_XYMETRICS       = 1  \/*!< XY or cartesian metrics object *\/$/;"	e	enum:_slope_metrics_type
 SLOPE_XYMETRICS_H	slope/xymetrics.h	21;"	d
 SLOPE_XYMETRICS_P_H	slope/xymetrics_p.h	21;"	d
@@ -216,11 +216,11 @@ SUFFIXES	build/Makefile	/^SUFFIXES =$/;"	m
 SlopeView	slope/view.h	/^typedef struct _SlopeView SlopeView;$/;"	t	typeref:struct:_SlopeView
 SlopeViewClass	slope/view.h	/^typedef struct _SlopeViewClass SlopeViewClass;$/;"	t	typeref:struct:_SlopeViewClass
 SlopeViewPrivate	slope/view.c	/^typedef struct _SlopeViewPrivate SlopeViewPrivate;$/;"	t	typeref:struct:_SlopeViewPrivate	file:
-TRI_RAD	slope/xyitem.c	31;"	d	file:
-TRI_RAD_SQR	slope/xyitem.c	32;"	d	file:
-TWO_CIRC_RAD_SQR	slope/xyitem.c	29;"	d	file:
-TWO_PLUS_RAD_SQR	slope/xyitem.c	37;"	d	file:
-TWO_TRI_RAD_SQR	slope/xyitem.c	33;"	d	file:
+TRI_RAD	slope/funcplot.c	31;"	d	file:
+TRI_RAD_SQR	slope/funcplot.c	32;"	d	file:
+TWO_CIRC_RAD_SQR	slope/funcplot.c	29;"	d	file:
+TWO_PLUS_RAD_SQR	slope/funcplot.c	37;"	d	file:
+TWO_TRI_RAD_SQR	slope/funcplot.c	33;"	d	file:
 _SLOPE_TEXT_H_	slope/text.h	30;"	d
 _SlopeView	slope/view.h	/^struct _SlopeView$/;"	s
 _SlopeViewClass	slope/view.h	/^struct _SlopeViewClass$/;"	s
@@ -259,34 +259,34 @@ _slope_xyaxis_draw_top	slope/xyaxis.c	/^void _slope_xyaxis_draw_top (slope_item_
 _slope_xyaxis_get_class	slope/xyaxis.c	/^slope_item_class_t* _slope_xyaxis_get_class()$/;"	f
 _slope_xyaxis_setup_draw	slope/xyaxis.c	/^void _slope_xyaxis_setup_draw (slope_item_t *item, cairo_t *cr,$/;"	f
 _slope_xyaxis_type	slope/xyaxis.h	/^typedef enum _slope_xyaxis_type$/;"	g
-_slope_xyitem	slope/xyitem_p.h	/^struct _slope_xyitem$/;"	s
-_slope_xyitem_check_ranges	slope/xyitem.c	/^void _slope_xyitem_check_ranges (slope_item_t *item)$/;"	f
-_slope_xyitem_draw	slope/xyitem.c	/^void _slope_xyitem_draw (slope_item_t *item, cairo_t *cr,$/;"	f
-_slope_xyitem_draw_circles	slope/xyitem.c	/^void _slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,$/;"	f
-_slope_xyitem_draw_line	slope/xyitem.c	/^void _slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,$/;"	f
-_slope_xyitem_draw_line_circles	slope/xyitem.c	/^void _slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,$/;"	f
-_slope_xyitem_draw_line_plusses	slope/xyitem.c	/^void _slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,$/;"	f
-_slope_xyitem_draw_line_triangles	slope/xyitem.c	/^void _slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,$/;"	f
-_slope_xyitem_draw_plusses	slope/xyitem.c	/^void _slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,$/;"	f
-_slope_xyitem_draw_squares	slope/xyitem.c	/^void _slope_xyitem_draw_squares (slope_item_t *item, cairo_t *cr,$/;"	f
-_slope_xyitem_draw_thumb	slope/xyitem.c	/^void _slope_xyitem_draw_thumb (slope_item_t *item,$/;"	f
-_slope_xyitem_draw_triangles	slope/xyitem.c	/^void _slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,$/;"	f
-_slope_xyitem_get_class	slope/xyitem.c	/^slope_item_class_t* _slope_xyitem_get_class()$/;"	f
-_slope_xyitem_init	slope/xyitem.c	/^void _slope_xyitem_init (slope_item_t *parent)$/;"	f
+_slope_funcplot	slope/funcplot_p.h	/^struct _slope_funcplot$/;"	s
+_slope_funcplot_check_ranges	slope/funcplot.c	/^void _slope_funcplot_check_ranges (slope_item_t *item)$/;"	f
+_slope_funcplot_draw	slope/funcplot.c	/^void _slope_funcplot_draw (slope_item_t *item, cairo_t *cr,$/;"	f
+_slope_funcplot_draw_circles	slope/funcplot.c	/^void _slope_funcplot_draw_circles (slope_item_t *item, cairo_t *cr,$/;"	f
+_slope_funcplot_draw_line	slope/funcplot.c	/^void _slope_funcplot_draw_line (slope_item_t *item, cairo_t *cr,$/;"	f
+_slope_funcplot_draw_line_circles	slope/funcplot.c	/^void _slope_funcplot_draw_line_circles (slope_item_t *item, cairo_t *cr,$/;"	f
+_slope_funcplot_draw_line_plusses	slope/funcplot.c	/^void _slope_funcplot_draw_line_plusses (slope_item_t *item, cairo_t *cr,$/;"	f
+_slope_funcplot_draw_line_triangles	slope/funcplot.c	/^void _slope_funcplot_draw_line_triangles (slope_item_t *item, cairo_t *cr,$/;"	f
+_slope_funcplot_draw_plusses	slope/funcplot.c	/^void _slope_funcplot_draw_plusses (slope_item_t *item, cairo_t *cr,$/;"	f
+_slope_funcplot_draw_squares	slope/funcplot.c	/^void _slope_funcplot_draw_squares (slope_item_t *item, cairo_t *cr,$/;"	f
+_slope_funcplot_draw_thumb	slope/funcplot.c	/^void _slope_funcplot_draw_thumb (slope_item_t *item,$/;"	f
+_slope_funcplot_draw_triangles	slope/funcplot.c	/^void _slope_funcplot_draw_triangles (slope_item_t *item, cairo_t *cr,$/;"	f
+_slope_funcplot_get_class	slope/funcplot.c	/^slope_item_class_t* _slope_funcplot_get_class()$/;"	f
+_slope_funcplot_init	slope/funcplot.c	/^void _slope_funcplot_init (slope_item_t *parent)$/;"	f
 _slope_xymetrics	slope/xymetrics_p.h	/^struct _slope_xymetrics$/;"	s
 _slope_xymetrics_destroy	slope/xymetrics.c	/^void _slope_xymetrics_destroy (slope_metrics_t *metrics)$/;"	f
 _slope_xymetrics_draw	slope/xymetrics.c	/^void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,$/;"	f
 _slope_xymetrics_get_class	slope/xymetrics.c	/^slope_metrics_class_t* _slope_xymetrics_get_class()$/;"	f
 _slope_xymetrics_update	slope/xymetrics.c	/^void _slope_xymetrics_update (slope_metrics_t *metrics)$/;"	f
 alpha	slope/primitives.h	/^    double alpha;$/;"	m	struct:_slope_color
-antialias	slope/xyitem_p.h	/^    int             antialias;$/;"	m	struct:_slope_xyitem
+antialias	slope/funcplot_p.h	/^    int             antialias;$/;"	m	struct:_slope_funcplot
 axis_list	slope/xymetrics_p.h	/^    slope_list_t *axis_list;$/;"	m	struct:_slope_xymetrics
 back_color	slope/figure_p.h	/^    slope_color_t    back_color;$/;"	m	struct:_slope_figure
 back_surf	slope/view.c	/^    cairo_surface_t *back_surf;$/;"	m	struct:_SlopeViewPrivate	file:
 blue	slope/primitives.h	/^    double blue;$/;"	m	struct:_slope_color
 change_callback	slope/figure_p.h	/^    slope_callback_t change_callback;$/;"	m	struct:_slope_figure
 color	slope/xyaxis_p.h	/^    slope_color_t color;$/;"	m	struct:_slope_xyaxis
-color	slope/xyitem_p.h	/^    slope_color_t   color;$/;"	m	struct:_slope_xyitem
+color	slope/funcplot_p.h	/^    slope_color_t   color;$/;"	m	struct:_slope_funcplot
 data	slope/list.c	/^    void *data;$/;"	m	struct:_slope_iterator	file:
 default_font	slope/figure_p.h	/^    slope_font_t    *default_font;$/;"	m	struct:_slope_figure
 default_metrics	slope/figure_p.h	/^    slope_metrics_t *default_metrics;$/;"	m	struct:_slope_figure
@@ -302,7 +302,7 @@ figure	slope/metrics_p.h	/^    slope_figure_t *figure;$/;"	m	struct:_slope_metri
 figure	slope/view.c	/^    slope_figure_t *figure;$/;"	m	struct:_SlopeViewPrivate	file:
 fill_back	slope/figure_p.h	/^    int              fill_back;$/;"	m	struct:_slope_figure
 fill_color	slope/legend_p.h	/^    slope_color_t fill_color;$/;"	m	struct:_slope_legend
-fill_symbol	slope/xyitem_p.h	/^    int             fill_symbol;$/;"	m	struct:_slope_xyitem
+fill_symbol	slope/funcplot_p.h	/^    int             fill_symbol;$/;"	m	struct:_slope_funcplot
 first	slope/list.c	/^    struct _slope_iterator *first;$/;"	m	struct:_slope_list	typeref:struct:_slope_list::_slope_iterator	file:
 font	slope/item_p.h	/^    slope_font_t *font;$/;"	m	struct:_slope_item
 green	slope/primitives.h	/^    double green;$/;"	m	struct:_slope_color
@@ -322,7 +322,7 @@ klass	slope/metrics_p.h	/^    slope_metrics_class_t *klass;$/;"	m	struct:_slope_
 last	slope/list.c	/^    struct _slope_iterator *last;$/;"	m	struct:_slope_list	typeref:struct:_slope_list::_slope_iterator	file:
 legend	slope/figure_p.h	/^    slope_item_t    *legend;$/;"	m	struct:_slope_figure
 length	slope/xyaxis_p.h	/^    double length;$/;"	m	struct:_slope_xyaxis
-line_width	slope/xyitem_p.h	/^    double          line_width;$/;"	m	struct:_slope_xyitem
+line_width	slope/funcplot_p.h	/^    double          line_width;$/;"	m	struct:_slope_funcplot
 main	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	/^int main(int argc, char* argv[])$/;"	f
 main	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	/^void main() {}$/;"	f
 main	demo.c	/^int main (int argc, char *argv[])$/;"	f
@@ -333,7 +333,7 @@ mouse_zoom	slope/view.c	/^    slope_bool_t mouse_zoom;$/;"	m	struct:_SlopeViewPr
 move_end	slope/view.c	/^    slope_point_t move_end;$/;"	m	struct:_SlopeViewPrivate	file:
 move_sig_id	slope/view.c	/^    int move_sig_id;$/;"	m	struct:_SlopeViewPrivate	file:
 move_start	slope/view.c	/^    slope_point_t move_start;$/;"	m	struct:_SlopeViewPrivate	file:
-n	slope/xyitem_p.h	/^    int             n;$/;"	m	struct:_slope_xyitem
+n	slope/funcplot_p.h	/^    int             n;$/;"	m	struct:_slope_funcplot
 nalloc	slope/vector.h	/^    int nalloc;$/;"	m	struct:_slope_vector
 name	slope/item_p.h	/^    char *name;$/;"	m	struct:_slope_item
 next	slope/list.c	/^    struct _slope_iterator *next;$/;"	m	struct:_slope_iterator	typeref:struct:_slope_iterator::_slope_iterator	file:
@@ -347,7 +347,7 @@ parent	slope/legend_p.h	/^    slope_item_t parent;$/;"	m	struct:_slope_legend
 parent	slope/view.h	/^    GtkDrawingArea parent;$/;"	m	struct:_SlopeView
 parent	slope/view.h	/^    GtkDrawingAreaClass parent;$/;"	m	struct:_SlopeViewClass
 parent	slope/xyaxis_p.h	/^    slope_item_t parent;$/;"	m	struct:_slope_xyaxis
-parent	slope/xyitem_p.h	/^    slope_item_t    parent;$/;"	m	struct:_slope_xyitem
+parent	slope/funcplot_p.h	/^    slope_item_t    parent;$/;"	m	struct:_slope_funcplot
 parent	slope/xymetrics_p.h	/^    slope_metrics_t parent;$/;"	m	struct:_slope_xymetrics
 position	slope/legend_p.h	/^    slope_legend_position_t position;$/;"	m	struct:_slope_legend
 press_sig_id	slope/view.c	/^    int press_sig_id;$/;"	m	struct:_SlopeViewPrivate	file:
@@ -356,8 +356,8 @@ qnxnto	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	/^char const* qnxnt
 rect	slope/legend_p.h	/^    slope_rect_t rect;$/;"	m	struct:_slope_legend
 red	slope/primitives.h	/^    double red;$/;"	m	struct:_slope_color
 release_sig_id	slope/view.c	/^    int release_sig_id;$/;"	m	struct:_SlopeViewPrivate	file:
-rescalable	slope/xyitem_p.h	/^    int             rescalable;$/;"	m	struct:_slope_xyitem
-scatter	slope/xyitem_p.h	/^    slope_scatter_t scatter;$/;"	m	struct:_slope_xyitem
+rescalable	slope/funcplot_p.h	/^    int             rescalable;$/;"	m	struct:_slope_funcplot
+scatter	slope/funcplot_p.h	/^    slope_scatter_t scatter;$/;"	m	struct:_slope_funcplot
 size	slope/list.c	/^    int size;$/;"	m	struct:_slope_list	file:
 size	slope/vector.h	/^    int size;$/;"	m	struct:_slope_vector
 slope_bool_t	slope/primitives.h	/^typedef unsigned char slope_bool_t;$/;"	t
@@ -452,16 +452,16 @@ slope_xyaxis_create	slope/xyaxis.c	/^slope_item_t* slope_xyaxis_create (slope_me
 slope_xyaxis_get_type	slope/xyaxis.c	/^slope_xyaxis_type_t slope_xyaxis_get_type (slope_item_t *item)$/;"	f
 slope_xyaxis_t	slope/xyaxis_p.h	/^typedef struct _slope_xyaxis slope_xyaxis_t;$/;"	t	typeref:struct:_slope_xyaxis
 slope_xyaxis_type_t	slope/xyaxis.h	/^slope_xyaxis_type_t;$/;"	t	typeref:enum:_slope_xyaxis_type
-slope_xyitem_create	slope/xyitem.c	/^slope_item_t* slope_xyitem_create()$/;"	f
-slope_xyitem_create_simple	slope/xyitem.c	/^slope_item_t* slope_xyitem_create_simple (const double *vx,$/;"	f
-slope_xyitem_get_point_number	slope/xyitem.c	/^int slope_xyitem_get_point_number (slope_item_t *item)$/;"	f
-slope_xyitem_get_x_array	slope/xyitem.c	/^const double* slope_xyitem_get_x_array (slope_item_t *item)$/;"	f
-slope_xyitem_get_y_array	slope/xyitem.c	/^const double* slope_xyitem_get_y_array (slope_item_t *item)$/;"	f
-slope_xyitem_set	slope/xyitem.c	/^void slope_xyitem_set (slope_item_t *item,$/;"	f
-slope_xyitem_set_antialias	slope/xyitem.c	/^void slope_xyitem_set_antialias (slope_item_t *item, int on)$/;"	f
-slope_xyitem_set_item	slope/xyitem.c	/^void slope_xyitem_set_item (slope_item_t *item,$/;"	f
-slope_xyitem_t	slope/xyitem_p.h	/^typedef struct _slope_xyitem slope_xyitem_t;$/;"	t	typeref:struct:_slope_xyitem
-slope_xyitem_update_item	slope/xyitem.c	/^void slope_xyitem_update_item (slope_item_t *item,$/;"	f
+slope_funcplot_create	slope/funcplot.c	/^slope_item_t* slope_funcplot_create()$/;"	f
+slope_funcplot_create_simple	slope/funcplot.c	/^slope_item_t* slope_funcplot_create_simple (const double *vx,$/;"	f
+slope_funcplot_get_point_number	slope/funcplot.c	/^int slope_funcplot_get_point_number (slope_item_t *item)$/;"	f
+slope_funcplot_get_x_array	slope/funcplot.c	/^const double* slope_funcplot_get_x_array (slope_item_t *item)$/;"	f
+slope_funcplot_get_y_array	slope/funcplot.c	/^const double* slope_funcplot_get_y_array (slope_item_t *item)$/;"	f
+slope_funcplot_set	slope/funcplot.c	/^void slope_funcplot_set (slope_item_t *item,$/;"	f
+slope_funcplot_set_antialias	slope/funcplot.c	/^void slope_funcplot_set_antialias (slope_item_t *item, int on)$/;"	f
+slope_funcplot_set_item	slope/funcplot.c	/^void slope_funcplot_set_item (slope_item_t *item,$/;"	f
+slope_funcplot_t	slope/funcplot_p.h	/^typedef struct _slope_funcplot slope_funcplot_t;$/;"	t	typeref:struct:_slope_funcplot
+slope_funcplot_update_item	slope/funcplot.c	/^void slope_funcplot_update_item (slope_item_t *item,$/;"	f
 slope_xymetrics_create	slope/xymetrics.c	/^slope_metrics_t* slope_xymetrics_create()$/;"	f
 slope_xymetrics_get_axis	slope/xymetrics.c	/^slope_item_t* slope_xymetrics_get_axis (slope_metrics_t *metrics,$/;"	f
 slope_xymetrics_map_x	slope/xymetrics.c	/^double slope_xymetrics_map_x (const slope_metrics_t *metrics, double x)$/;"	f
@@ -481,8 +481,8 @@ update_fn	slope/metrics_p.h	/^    void (*update_fn) (slope_metrics_t*);$/;"	m	st
 v	slope/vector.h	/^    double *v;$/;"	m	struct:_slope_vector
 visible	slope/item_p.h	/^    slope_bool_t visible;$/;"	m	struct:_slope_item
 visible	slope/metrics_p.h	/^    slope_bool_t visible;$/;"	m	struct:_slope_metrics
-vx	slope/xyitem_p.h	/^    const double   *vx, *vy;$/;"	m	struct:_slope_xyitem
-vy	slope/xyitem_p.h	/^    const double   *vx, *vy;$/;"	m	struct:_slope_xyitem
+vx	slope/funcplot_p.h	/^    const double   *vx, *vy;$/;"	m	struct:_slope_funcplot
+vy	slope/funcplot_p.h	/^    const double   *vx, *vy;$/;"	m	struct:_slope_funcplot
 width	slope/primitives.h	/^    double width;$/;"	m	struct:_slope_rect
 width	slope/xymetrics_p.h	/^    double width, height;$/;"	m	struct:_slope_xymetrics
 width_figure	slope/metrics_p.h	/^    double width_figure, height_figure;$/;"	m	struct:_slope_metrics
@@ -490,19 +490,19 @@ x	slope/primitives.h	/^    double x;$/;"	m	struct:_slope_point
 x	slope/primitives.h	/^    double x;$/;"	m	struct:_slope_rect
 x_low_bound	slope/metrics_p.h	/^    double x_low_bound, x_up_bound;$/;"	m	struct:_slope_metrics
 x_up_bound	slope/metrics_p.h	/^    double x_low_bound, x_up_bound;$/;"	m	struct:_slope_metrics
-xmax	slope/xyitem_p.h	/^    double          xmin, xmax;$/;"	m	struct:_slope_xyitem
+xmax	slope/funcplot_p.h	/^    double          xmin, xmax;$/;"	m	struct:_slope_funcplot
 xmax	slope/xymetrics_p.h	/^    double xmin, xmax;$/;"	m	struct:_slope_xymetrics
 xmax_figure	slope/metrics_p.h	/^    double xmin_figure, xmax_figure;$/;"	m	struct:_slope_metrics
-xmin	slope/xyitem_p.h	/^    double          xmin, xmax;$/;"	m	struct:_slope_xyitem
+xmin	slope/funcplot_p.h	/^    double          xmin, xmax;$/;"	m	struct:_slope_funcplot
 xmin	slope/xymetrics_p.h	/^    double xmin, xmax;$/;"	m	struct:_slope_xymetrics
 xmin_figure	slope/metrics_p.h	/^    double xmin_figure, xmax_figure;$/;"	m	struct:_slope_metrics
 y	slope/primitives.h	/^    double y;$/;"	m	struct:_slope_point
 y	slope/primitives.h	/^    double y;$/;"	m	struct:_slope_rect
 y_low_bound	slope/metrics_p.h	/^    double y_low_bound, y_up_bound;$/;"	m	struct:_slope_metrics
 y_up_bound	slope/metrics_p.h	/^    double y_low_bound, y_up_bound;$/;"	m	struct:_slope_metrics
-ymax	slope/xyitem_p.h	/^    double          ymin, ymax;$/;"	m	struct:_slope_xyitem
+ymax	slope/funcplot_p.h	/^    double          ymin, ymax;$/;"	m	struct:_slope_funcplot
 ymax	slope/xymetrics_p.h	/^    double ymin, ymax;$/;"	m	struct:_slope_xymetrics
 ymax_figure	slope/metrics_p.h	/^    double ymin_figure, ymax_figure;$/;"	m	struct:_slope_metrics
-ymin	slope/xyitem_p.h	/^    double          ymin, ymax;$/;"	m	struct:_slope_xyitem
+ymin	slope/funcplot_p.h	/^    double          ymin, ymax;$/;"	m	struct:_slope_funcplot
 ymin	slope/xymetrics_p.h	/^    double ymin, ymax;$/;"	m	struct:_slope_xymetrics
 ymin_figure	slope/metrics_p.h	/^    double ymin_figure, ymax_figure;$/;"	m	struct:_slope_metrics

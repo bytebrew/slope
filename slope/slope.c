@@ -49,7 +49,7 @@ slope_item_t* slope_chart_add_plot (slope_figure_t *chart,
                                     const char *title, const char *fmt)
 {
     slope_item_t *plot =
-        slope_xyitem_create_simple(x, y, n, title, fmt);
+        slope_funcplot_create_simple(x, y, n, title, fmt);
     slope_iterator_t *iter =
         slope_list_first(slope_figure_get_metrics_list(chart));
     slope_metrics_t *metrics =

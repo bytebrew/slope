@@ -17,17 +17,17 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_XYDATA_P_H
-#define SLOPE_XYDATA_P_H
+#ifndef SLOPE_FUNCPLOT_P_H
+#define SLOPE_FUNCPLOT_P_H
 
-#include "slope/xyitem.h"
+#include "slope/funcplot.h"
 #include "slope/item_p.h"
 
 SLOPE_BEGIN_DECLS
 
-typedef struct _slope_xyitem slope_xyitem_t;
+typedef struct _slope_funcplot slope_funcplot_t;
 
-struct _slope_xyitem
+struct _slope_funcplot
 {
     slope_item_t    parent;
     int             rescalable;
@@ -44,64 +44,65 @@ struct _slope_xyitem
 
 /**
  */
-slope_item_class_t* _slope_xyitem_get_class();
+slope_item_class_t* _slope_funcplot_get_class();
 
-void _slope_xyitem_init (slope_item_t *item);
+void _slope_funcplot_init (slope_item_t *item);
 
 /**
  */
-void _slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw (slope_item_t *item, cairo_t *cr,
                           const slope_metrics_t *metrics);
 
 /**
  */
-void _slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_line (slope_item_t *item, cairo_t *cr,
                                const slope_metrics_t *metrics);
 
 /**
  */
-void _slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_circles (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics);
 
 /**
  */
-void _slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_triangles (slope_item_t *item, cairo_t *cr,
                                     const slope_metrics_t *metrics);
 
 /**
  */
-void _slope_xyitem_draw_squares (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_squares (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics);
 
 /**
  */
-void _slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_plusses (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics);
 
 /**
  */
-void _slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_line_circles (slope_item_t *item, cairo_t *cr,
                                        const slope_metrics_t *metrics);
 
 /**
  */
-void _slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_line_triangles (slope_item_t *item, cairo_t *cr,
                                          const slope_metrics_t *metrics);
 
 /**
  */
-void _slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_line_plusses (slope_item_t *item, cairo_t *cr,
                                        const slope_metrics_t *metrics);
 
 /**
  */
-void _slope_xyitem_draw_thumb (slope_item_t *item,
+void _slope_funcplot_draw_thumb (slope_item_t *item,
                                 const slope_point_t *pos, cairo_t *cr);
 
 /**
  */
-void _slope_xyitem_check_ranges (slope_item_t *item);
+void _slope_funcplot_check_ranges (slope_item_t *item);
+
 
 SLOPE_END_DECLS
 
-#endif /*SLOPE_XYDATA_P_H */
+#endif /*SLOPE_FUNCPLOT_P_H */

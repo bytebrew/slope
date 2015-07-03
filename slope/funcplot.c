@@ -17,7 +17,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/xyitem_p.h"
+#include "slope/funcplot_p.h"
 #include "slope/xymetrics_p.h"
 #include "slope/text.h"
 #include <stdlib.h>
@@ -37,15 +37,15 @@
 #define TWO_PLUS_RAD_SQR  100.0
 
 
-slope_item_class_t* _slope_xyitem_get_class()
+slope_item_class_t* _slope_funcplot_get_class()
 {
     static int first_call = SLOPE_TRUE;
     static slope_item_class_t klass;
 
     if (first_call) {
         klass.destroy_fn = NULL;
-        klass.draw_fn = _slope_xyitem_draw;
-        klass.draw_thumb_fn = _slope_xyitem_draw_thumb;
+        klass.draw_fn = _slope_funcplot_draw;
+        klass.draw_thumb_fn = _slope_funcplot_draw_thumb;
         first_call = SLOPE_FALSE;
     }
 
@@ -53,9 +53,9 @@ slope_item_class_t* _slope_xyitem_get_class()
 }
 
 
-void _slope_xyitem_init (slope_item_t *parent)
+void _slope_funcplot_init (slope_item_t *parent)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) parent;
+    slope_funcplot_t *self = (slope_funcplot_t*) parent;
     self->antialias = SLOPE_TRUE;
     self->line_width = 1.0;
     self->fill_symbol = SLOPE_TRUE;
@@ -65,40 +65,40 @@ void _slope_xyitem_init (slope_item_t *parent)
     parent->has_thumb = SLOPE_TRUE;
     parent->metrics = NULL;
     parent->font = NULL;
-    parent->klass = _slope_xyitem_get_class();
+    parent->klass = _slope_funcplot_get_class();
 }
 
 
-slope_item_t* slope_xyitem_create()
+slope_item_t* slope_funcplot_create()
 {
-    slope_xyitem_t *self = malloc(sizeof(slope_xyitem_t));
+    slope_funcplot_t *self = malloc(sizeof(slope_funcplot_t));
     slope_item_t *parent = (slope_item_t*) self;
-    _slope_xyitem_init(parent);
+    _slope_funcplot_init(parent);
     return parent;
 }
 
 
-slope_item_t* slope_xyitem_create_simple (const double *vx,
+slope_item_t* slope_funcplot_create_simple (const double *vx,
                                           const double *vy,
                                           const int n,
                                           const char *name,
                                           const char *fmt)
 {
-    slope_xyitem_t *self = malloc(sizeof(slope_xyitem_t));
+    slope_funcplot_t *self = malloc(sizeof(slope_funcplot_t));
     slope_item_t *parent = (slope_item_t*) self;
-    _slope_xyitem_init(parent);
-    slope_xyitem_set(parent, vx, vy, n, name, fmt);
+    _slope_funcplot_init(parent);
+    slope_funcplot_set(parent, vx, vy, n, name, fmt);
     return parent;
 }
 
 
-void slope_xyitem_set (slope_item_t *item,
+void slope_funcplot_set (slope_item_t *item,
                        const double *vx, const double *vy,
                        const int n,
                        const char *name,
                        const char *fmt)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     self->vx = vx;
     self->vy = vy;
     self->n = n;
@@ -108,29 +108,29 @@ void slope_xyitem_set (slope_item_t *item,
     item->name = strdup(name);
     slope_color_set_name(&self->color, _slope_item_parse_color(fmt));
     self->scatter = _slope_item_parse_scatter(fmt);
-    _slope_xyitem_check_ranges(item);
+    _slope_funcplot_check_ranges(item);
     slope_item_notify_data_change(item);
 }
 
 
-void slope_xyitem_set_item (slope_item_t *item,
+void slope_funcplot_set_item (slope_item_t *item,
                             const double *vx, const double *vy,
                             const int n)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     self->vx = vx;
     self->vy = vy;
     self->n = n;
-    _slope_xyitem_check_ranges(item);
+    _slope_funcplot_check_ranges(item);
     slope_item_notify_data_change(item);
 }
 
 
-void slope_xyitem_update_item (slope_item_t *item,
+void slope_funcplot_update_item (slope_item_t *item,
                                const double *vx, const double *vy,
                                const int n)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     self->vx = vx;
     self->vy = vy;
     self->n = n;
@@ -138,10 +138,10 @@ void slope_xyitem_update_item (slope_item_t *item,
 }
 
 
-void _slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw (slope_item_t *item, cairo_t *cr,
                           const slope_metrics_t *metrics)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
 
     slope_cairo_set_color(cr, &self->color);
     if (self->antialias) {
@@ -156,37 +156,37 @@ void _slope_xyitem_draw (slope_item_t *item, cairo_t *cr,
 
     switch (self->scatter) {
         case SLOPE_LINE:
-            _slope_xyitem_draw_line(item, cr, metrics);
+            _slope_funcplot_draw_line(item, cr, metrics);
             break;
         case SLOPE_CIRCLES:
-            _slope_xyitem_draw_circles(item, cr, metrics);
+            _slope_funcplot_draw_circles(item, cr, metrics);
             break;
         case SLOPE_TRIANGLES:
-            _slope_xyitem_draw_triangles(item, cr, metrics);
+            _slope_funcplot_draw_triangles(item, cr, metrics);
             break;
         case SLOPE_SQUARES:
-            _slope_xyitem_draw_squares(item, cr, metrics);
+            _slope_funcplot_draw_squares(item, cr, metrics);
             break;
         case SLOPE_PLUSSES:
-            _slope_xyitem_draw_plusses(item, cr, metrics);
+            _slope_funcplot_draw_plusses(item, cr, metrics);
             break;
         case SLOPE_LINE|SLOPE_CIRCLES:
-            _slope_xyitem_draw_line_circles(item, cr, metrics);
+            _slope_funcplot_draw_line_circles(item, cr, metrics);
             break;
         case SLOPE_LINE|SLOPE_TRIANGLES:
-            _slope_xyitem_draw_line_triangles(item, cr, metrics);
+            _slope_funcplot_draw_line_triangles(item, cr, metrics);
             break;
         case SLOPE_LINE|SLOPE_PLUSSES:
-            _slope_xyitem_draw_line_plusses(item, cr, metrics);
+            _slope_funcplot_draw_line_plusses(item, cr, metrics);
             break;
     }
 }
 
 
-void _slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_line (slope_item_t *item, cairo_t *cr,
                                const slope_metrics_t *metrics)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
 
     const double *vx = self->vx;
     const double *vy = self->vy;
@@ -215,10 +215,10 @@ void _slope_xyitem_draw_line (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_circles (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
 
     const double *vx = self->vx;
     const double *vy = self->vy;
@@ -251,10 +251,10 @@ void _slope_xyitem_draw_circles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_triangles (slope_item_t *item, cairo_t *cr,
                                     const slope_metrics_t *metrics)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
 
     const double *vx = self->vx;
     const double *vy = self->vy;
@@ -291,17 +291,17 @@ void _slope_xyitem_draw_triangles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_xyitem_draw_squares (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_squares (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
     /* TODO */
 }
 
 
-void _slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_plusses (slope_item_t *item, cairo_t *cr,
                                   const slope_metrics_t *metrics)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
 
     
@@ -337,10 +337,10 @@ void _slope_xyitem_draw_plusses (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_line_plusses (slope_item_t *item, cairo_t *cr,
                                        const slope_metrics_t *metrics)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
 
     
@@ -381,10 +381,10 @@ void _slope_xyitem_draw_line_plusses (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_line_circles (slope_item_t *item, cairo_t *cr,
                                        const slope_metrics_t *metrics)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     
     const double *vx = self->vx;
     const double *vy = self->vy;
@@ -421,10 +421,10 @@ void _slope_xyitem_draw_line_circles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,
+void _slope_funcplot_draw_line_triangles (slope_item_t *item, cairo_t *cr,
                                          const slope_metrics_t *metrics)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
 
     const double *vx = self->vx;
     const double *vy = self->vy;
@@ -464,10 +464,10 @@ void _slope_xyitem_draw_line_triangles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_xyitem_draw_thumb (slope_item_t *item,
+void _slope_funcplot_draw_thumb (slope_item_t *item,
                                 const slope_point_t *pos, cairo_t *cr)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     
     slope_cairo_set_color(cr, &self->color);
     if (self->antialias) {
@@ -522,9 +522,9 @@ void _slope_xyitem_draw_thumb (slope_item_t *item,
 }
 
 
-void _slope_xyitem_check_ranges (slope_item_t *item)
+void _slope_funcplot_check_ranges (slope_item_t *item)
 {
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     const double *vx = self->vx;
     const double *vy = self->vy;
     const int n = self->n;
@@ -540,38 +540,38 @@ void _slope_xyitem_check_ranges (slope_item_t *item)
 }
 
 
-void slope_xyitem_set_antialias (slope_item_t *item, int on)
+void slope_funcplot_set_antialias (slope_item_t *item, int on)
 {
     if (item == NULL) {
         return;
     }
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     self->antialias = on;
     slope_item_notify_appearence_change(item);
 }
 
 
-int slope_xyitem_get_point_number (slope_item_t *item)
+int slope_funcplot_get_point_number (slope_item_t *item)
 {
     if (item == NULL) return 0;
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     return self->n;
 }
 
 
-const double* slope_xyitem_get_x_array (slope_item_t *item)
+const double* slope_funcplot_get_x_array (slope_item_t *item)
 {
     if (item == NULL) return NULL;
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     return self->vx;
 }
 
 
-const double* slope_xyitem_get_y_array (slope_item_t *item)
+const double* slope_funcplot_get_y_array (slope_item_t *item)
 {
     if (item == NULL) return NULL;
-    slope_xyitem_t *self = (slope_xyitem_t*) item;
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
     return self->vy;
 }
 
-/* slope/xyitem.c */
+/* slope/funcplot.c */

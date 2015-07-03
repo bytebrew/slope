@@ -54,7 +54,7 @@
 #include "slope/figure.h"
 /* for xy charts */
 #include "slope/xymetrics.h"
-#include "slope/xyitem.h"
+#include "slope/funcplot.h"
 #include "slope/xyaxis.h"
 
 /* gtk widget if available */

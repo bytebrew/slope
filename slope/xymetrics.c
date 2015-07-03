@@ -18,7 +18,7 @@
  */
 
 #include "slope/xymetrics_p.h"
-#include "slope/xyitem_p.h"
+#include "slope/funcplot_p.h"
 #include "slope/list.h"
 #include <cairo.h>
 #include <stdlib.h>
@@ -147,11 +147,11 @@ void _slope_xymetrics_update (slope_metrics_t *metrics)
     }
 
     slope_iterator_t *iter = slope_list_first(metrics->item_list);
-    slope_xyitem_t *item = (slope_xyitem_t*) slope_iterator_data(iter);
+    slope_funcplot_t *item = (slope_funcplot_t*) slope_iterator_data(iter);
 
     while (item->rescalable == SLOPE_FALSE) {
         slope_iterator_next(&iter);
-        item = (slope_xyitem_t*) slope_iterator_data(iter);
+        item = (slope_funcplot_t*) slope_iterator_data(iter);
     }
 
     self->xmin = item->xmin;
@@ -161,7 +161,7 @@ void _slope_xymetrics_update (slope_metrics_t *metrics)
 
     slope_iterator_next(&iter);
     while (iter) {
-        item = (slope_xyitem_t*) slope_iterator_data(iter);
+        item = (slope_funcplot_t*) slope_iterator_data(iter);
         if (item->rescalable == SLOPE_FALSE) {
             slope_iterator_next(&iter);
             continue;
