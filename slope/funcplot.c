@@ -507,7 +507,6 @@ _slope_funcplot_draw_thumb (slope_item_t *item,
             break;
 
         case SLOPE_PLUSSES:
-            cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
             cairo_move_to(cr, pos->x - PLUS_RAD, pos->y - PLUS_RAD);
             cairo_line_to(cr, pos->x + PLUS_RAD, pos->y - PLUS_RAD);
             cairo_move_to(cr, pos->x , pos->y - PLUS_RAD - PLUS_RAD);
@@ -523,7 +522,6 @@ _slope_funcplot_draw_thumb (slope_item_t *item,
             break;
 
         case SLOPE_LINE|SLOPE_PLUSSES:
-            cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
             cairo_move_to(cr, pos->x - 3.0*PLUS_RAD, pos->y - PLUS_RAD);
             cairo_line_to(cr, pos->x + 3.0*PLUS_RAD, pos->y - PLUS_RAD);
             cairo_move_to(cr, pos->x , pos->y - PLUS_RAD - PLUS_RAD);
