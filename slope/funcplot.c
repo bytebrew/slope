@@ -37,7 +37,8 @@
 #define TWO_PLUS_RAD_SQR  100.0
 
 
-slope_item_class_t* _slope_funcplot_get_class()
+slope_item_class_t*
+_slope_funcplot_get_class()
 {
     static int first_call = SLOPE_TRUE;
     static slope_item_class_t klass;
@@ -53,7 +54,8 @@ slope_item_class_t* _slope_funcplot_get_class()
 }
 
 
-void _slope_funcplot_init (slope_item_t *parent)
+void
+_slope_funcplot_init (slope_item_t *parent)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) parent;
     self->antialias = SLOPE_TRUE;
@@ -69,7 +71,8 @@ void _slope_funcplot_init (slope_item_t *parent)
 }
 
 
-slope_item_t* slope_funcplot_create()
+slope_item_t*
+slope_funcplot_create()
 {
     slope_funcplot_t *self = malloc(sizeof(slope_funcplot_t));
     slope_item_t *parent = (slope_item_t*) self;
@@ -78,11 +81,12 @@ slope_item_t* slope_funcplot_create()
 }
 
 
-slope_item_t* slope_funcplot_create_simple (const double *vx,
-                                          const double *vy,
-                                          const int n,
-                                          const char *name,
-                                          const char *fmt)
+slope_item_t*
+slope_funcplot_create_simple (const double *vx,
+                              const double *vy,
+                              const int n,
+                              const char *name,
+                              const char *fmt)
 {
     slope_funcplot_t *self = malloc(sizeof(slope_funcplot_t));
     slope_item_t *parent = (slope_item_t*) self;
@@ -92,11 +96,12 @@ slope_item_t* slope_funcplot_create_simple (const double *vx,
 }
 
 
-void slope_funcplot_set (slope_item_t *item,
-                       const double *vx, const double *vy,
-                       const int n,
-                       const char *name,
-                       const char *fmt)
+void
+slope_funcplot_set (slope_item_t *item,
+                    const double *vx, const double *vy,
+                    const int n,
+                    const char *name,
+                    const char *fmt)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
     self->vx = vx;
@@ -113,9 +118,10 @@ void slope_funcplot_set (slope_item_t *item,
 }
 
 
-void slope_funcplot_set_item (slope_item_t *item,
-                            const double *vx, const double *vy,
-                            const int n)
+void
+slope_funcplot_set_item (slope_item_t *item,
+                         const double *vx, const double *vy,
+                         const int n)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
     self->vx = vx;
@@ -126,9 +132,10 @@ void slope_funcplot_set_item (slope_item_t *item,
 }
 
 
-void slope_funcplot_update_item (slope_item_t *item,
-                               const double *vx, const double *vy,
-                               const int n)
+void
+slope_funcplot_update_item (slope_item_t *item,
+                            const double *vx, const double *vy,
+                            const int n)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
     self->vx = vx;
@@ -138,8 +145,9 @@ void slope_funcplot_update_item (slope_item_t *item,
 }
 
 
-void _slope_funcplot_draw (slope_item_t *item, cairo_t *cr,
-                          const slope_metrics_t *metrics)
+void
+_slope_funcplot_draw (slope_item_t *item, cairo_t *cr,
+                      const slope_metrics_t *metrics)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
 
@@ -183,8 +191,9 @@ void _slope_funcplot_draw (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_funcplot_draw_line (slope_item_t *item, cairo_t *cr,
-                               const slope_metrics_t *metrics)
+void
+_slope_funcplot_draw_line (slope_item_t *item, cairo_t *cr,
+                           const slope_metrics_t *metrics)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
 
@@ -215,8 +224,9 @@ void _slope_funcplot_draw_line (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_funcplot_draw_circles (slope_item_t *item, cairo_t *cr,
-                                  const slope_metrics_t *metrics)
+void
+_slope_funcplot_draw_circles (slope_item_t *item, cairo_t *cr,
+                              const slope_metrics_t *metrics)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
 
@@ -251,8 +261,9 @@ void _slope_funcplot_draw_circles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_funcplot_draw_triangles (slope_item_t *item, cairo_t *cr,
-                                    const slope_metrics_t *metrics)
+void
+_slope_funcplot_draw_triangles (slope_item_t *item, cairo_t *cr,
+                                const slope_metrics_t *metrics)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
 
@@ -291,19 +302,19 @@ void _slope_funcplot_draw_triangles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_funcplot_draw_squares (slope_item_t *item, cairo_t *cr,
-                                  const slope_metrics_t *metrics)
+void
+_slope_funcplot_draw_squares (slope_item_t *item, cairo_t *cr,
+                              const slope_metrics_t *metrics)
 {
     /* TODO */
 }
 
 
-void _slope_funcplot_draw_plusses (slope_item_t *item, cairo_t *cr,
-                                  const slope_metrics_t *metrics)
+void
+_slope_funcplot_draw_plusses (slope_item_t *item, cairo_t *cr,
+                              const slope_metrics_t *metrics)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
-    cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
-
     
     const double *vx = self->vx;
     const double *vy = self->vy;
@@ -337,52 +348,9 @@ void _slope_funcplot_draw_plusses (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_funcplot_draw_line_plusses (slope_item_t *item, cairo_t *cr,
-                                       const slope_metrics_t *metrics)
-{
-    slope_funcplot_t *self = (slope_funcplot_t*) item;
-    cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
-
-    
-    const double *vx = self->vx;
-    const double *vy = self->vy;
-    const int n = self->n;
-    
-    double x1 = slope_xymetrics_map_x(metrics, vx[0]);
-    double y1 = slope_xymetrics_map_y(metrics, vy[0]);
-    cairo_move_to(cr, x1 - PLUS_RAD, y1);
-    cairo_line_to(cr, x1 - PLUS_RAD, y1);
-    cairo_move_to(cr, x1, y1 - PLUS_RAD);
-    cairo_line_to(cr, x1, y1 + PLUS_RAD);
-    cairo_move_to(cr, x1, y1);
-
-    int k;
-    for (k=1; k<n; k++) {
-        double x2 = slope_xymetrics_map_x(metrics, vx[k]);
-        double y2 = slope_xymetrics_map_y(metrics, vy[k]);
-        
-        double dx = x2 - x1;
-        double dy = y2 - y1;
-        double distsqr = dx*dx + dy*dy;
-        
-        if (distsqr >= TWO_PLUS_RAD_SQR) {
-            cairo_line_to(cr, x2, y2);
-            cairo_stroke(cr);
-            cairo_move_to(cr, x1 - PLUS_RAD, y1);
-            cairo_line_to(cr, x1 + PLUS_RAD, y1);
-            cairo_move_to(cr, x1, y1 - PLUS_RAD);
-            cairo_line_to(cr, x1, y1 + PLUS_RAD);
-            cairo_move_to(cr, x2, y2);
-            x1 = x2;
-            y1 = y2;
-        }
-    }
-    cairo_stroke(cr);
-}
-
-
-void _slope_funcplot_draw_line_circles (slope_item_t *item, cairo_t *cr,
-                                       const slope_metrics_t *metrics)
+void
+_slope_funcplot_draw_line_circles (slope_item_t *item, cairo_t *cr,
+                                   const slope_metrics_t *metrics)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
     
@@ -421,8 +389,9 @@ void _slope_funcplot_draw_line_circles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_funcplot_draw_line_triangles (slope_item_t *item, cairo_t *cr,
-                                         const slope_metrics_t *metrics)
+void
+_slope_funcplot_draw_line_triangles (slope_item_t *item, cairo_t *cr,
+                                     const slope_metrics_t *metrics)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
 
@@ -464,8 +433,52 @@ void _slope_funcplot_draw_line_triangles (slope_item_t *item, cairo_t *cr,
 }
 
 
-void _slope_funcplot_draw_thumb (slope_item_t *item,
-                                const slope_point_t *pos, cairo_t *cr)
+void
+_slope_funcplot_draw_line_plusses (slope_item_t *item, cairo_t *cr,
+                                   const slope_metrics_t *metrics)
+{
+    slope_funcplot_t *self = (slope_funcplot_t*) item;
+    
+    const double *vx = self->vx;
+    const double *vy = self->vy;
+    const int n = self->n;
+    
+    double x1 = slope_xymetrics_map_x(metrics, vx[0]);
+    double y1 = slope_xymetrics_map_y(metrics, vy[0]);
+    cairo_move_to(cr, x1 - PLUS_RAD, y1);
+    cairo_line_to(cr, x1 - PLUS_RAD, y1);
+    cairo_move_to(cr, x1, y1 - PLUS_RAD);
+    cairo_line_to(cr, x1, y1 + PLUS_RAD);
+    cairo_move_to(cr, x1, y1);
+
+    int k;
+    for (k=1; k<n; k++) {
+        double x2 = slope_xymetrics_map_x(metrics, vx[k]);
+        double y2 = slope_xymetrics_map_y(metrics, vy[k]);
+        
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double distsqr = dx*dx + dy*dy;
+        
+        if (distsqr >= TWO_PLUS_RAD_SQR) {
+            cairo_line_to(cr, x2, y2);
+            cairo_stroke(cr);
+            cairo_move_to(cr, x1 - PLUS_RAD, y1);
+            cairo_line_to(cr, x1 + PLUS_RAD, y1);
+            cairo_move_to(cr, x1, y1 - PLUS_RAD);
+            cairo_line_to(cr, x1, y1 + PLUS_RAD);
+            cairo_move_to(cr, x2, y2);
+            x1 = x2;
+            y1 = y2;
+        }
+    }
+    cairo_stroke(cr);
+}
+
+
+void
+_slope_funcplot_draw_thumb (slope_item_t *item,
+                            const slope_point_t *pos, cairo_t *cr)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
     
@@ -522,7 +535,8 @@ void _slope_funcplot_draw_thumb (slope_item_t *item,
 }
 
 
-void _slope_funcplot_check_ranges (slope_item_t *item)
+void
+_slope_funcplot_check_ranges (slope_item_t *item)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
     const double *vx = self->vx;
@@ -540,7 +554,8 @@ void _slope_funcplot_check_ranges (slope_item_t *item)
 }
 
 
-void slope_funcplot_set_antialias (slope_item_t *item, int on)
+void
+slope_funcplot_set_antialias (slope_item_t *item, int on)
 {
     if (item == NULL) {
         return;
@@ -551,7 +566,8 @@ void slope_funcplot_set_antialias (slope_item_t *item, int on)
 }
 
 
-int slope_funcplot_get_point_number (slope_item_t *item)
+int
+slope_funcplot_get_point_number (slope_item_t *item)
 {
     if (item == NULL) return 0;
     slope_funcplot_t *self = (slope_funcplot_t*) item;
@@ -559,7 +575,8 @@ int slope_funcplot_get_point_number (slope_item_t *item)
 }
 
 
-const double* slope_funcplot_get_x_array (slope_item_t *item)
+const double*
+slope_funcplot_get_x_array (slope_item_t *item)
 {
     if (item == NULL) return NULL;
     slope_funcplot_t *self = (slope_funcplot_t*) item;
@@ -567,7 +584,8 @@ const double* slope_funcplot_get_x_array (slope_item_t *item)
 }
 
 
-const double* slope_funcplot_get_y_array (slope_item_t *item)
+const double*
+slope_funcplot_get_y_array (slope_item_t *item)
 {
     if (item == NULL) return NULL;
     slope_funcplot_t *self = (slope_funcplot_t*) item;
