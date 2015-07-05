@@ -39,6 +39,7 @@ set(SLOPE_HDRS
     slope/funcplot.h
     slope/xyaxis.h
     slope/legend.h
+    slope/custom-item.h
     slope/slope.h
 )
 
@@ -60,6 +61,7 @@ set(SLOPE_SRCS
     slope/funcplot.c
     slope/xyaxis.c
     slope/legend.c
+    slope/custom-item.c
     slope/slope.c
 )
 
