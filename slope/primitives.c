@@ -18,7 +18,8 @@
  */
 
 #include "slope/primitives.h"
-#include <cairo.h>
+#include <stdlib.h>
+
 
 
 void slope_rect_set (slope_rect_t *rect, double x,
@@ -47,71 +48,44 @@ void slope_color_set_name (slope_color_t *color,
     color->alpha = 1.0;
     switch (name) {
         case SLOPE_BLACK:
-            color->red = 0.0;
-            color->green = 0.0;
-            color->blue = 0.0;
+            slope_color_set(color, 0.0, 0.0, 0.0, 1.0);
             break;
         case SLOPE_WHITE:
-            color->red = 1.0;
-            color->green = 1.0;
-            color->blue = 1.0;
+            slope_color_set(color, 1.0, 1.0, 1.0, 1.0);
             break;
         case SLOPE_RED:
-            color->red = 1.0;
-            color->green = 0.0;
-            color->blue = 0.0;
+            slope_color_set(color, 1.0, 0.0, 0.0, 1.0);
             break;
         case SLOPE_GREEN:
-            color->red = 0.0;
-            color->green = 1.0;
-            color->blue = 0.0;
+            slope_color_set(color, 0.0, 1.0, 0.0, 1.0);
             break;
         case SLOPE_BLUE:
-            color->red = 0.0;
-            color->green = 0.0;
-            color->blue = 1.0;
+            slope_color_set(color, 0.0, 0.0, 1.0, 1.0);
             break;
         case SLOPE_YELLOW:
-            color->red = 1.0;
-            color->green = 1.0;
-            color->blue = 0.0;
+            slope_color_set(color, 1.0, 1.0, 0.0, 1.0);
             break;
         case SLOPE_MAROON:
-            color->red = 0.5;
-            color->green = 0.0;
-            color->blue = 0.0;
+            slope_color_set(color, 0.5, 0.0, 0.0, 1.0);
             break;
         case SLOPE_GREY:
-            color->red = 0.5;
-            color->green = 0.5;
-            color->blue = 0.5;
+            slope_color_set(color, 0.5, 0.5, 0.5, 1.0);
             break;
         case SLOPE_PURPLE:
-            color->red = 0.5;
-            color->green = 0.0;
-            color->blue = 0.5;
+            slope_color_set(color, 0.5, 0.0, 0.5, 1.0);
             break;
         case SLOPE_OLIVE:
-            color->red = 0.5;
-            color->green = 0.5;
-            color->blue = 0.0;
+            slope_color_set(color, 0.5, 0.5, 0.0, 1.0);
             break;
         case SLOPE_TEAL:
-            color->red = 0.0;
-            color->green = 0.5;
-            color->blue = 0.5;
+            slope_color_set(color, 0.0, 0.5, 0.5, 1.0);
             break;
         case SLOPE_ORANGE:
-            color->red = 1.0;
-            color->green = 0.65;
-            color->blue = 0.0;
+            slope_color_set(color, 1, 0.65, 0.0, 1.0);
             break;
-        default:
-            color->red = 0.0;
-            color->green = 0.0;
-            color->blue = 0.0;
+        default: /* SLOPE_BLACK */
+            slope_color_set(color, 0.0, 0.0, 0.0, 1.0);
             break;
-
     }
 }
 
@@ -120,7 +94,7 @@ void slope_cairo_set_color(cairo_t *cr,
                            const slope_color_t *color)
 {
     cairo_set_source_rgba(
-        cr, color->red, color->green,
+        cr, color->red, color->green, 
         color->blue, color->alpha);
 }
 
@@ -132,5 +106,5 @@ void slope_cairo_rectangle(cairo_t *cr,
                     rect->width, rect->height);
 }
 
-/* slope/primitives.c */
 
+/* slope/primitives.c */

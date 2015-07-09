@@ -17,16 +17,19 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_DATA_P_H
-#define __SLOPE_DATA_P_H
+#ifndef SLOPE_DATA_P_H
+#define SLOPE_DATA_P_H
 
 #include "slope/item.h"
+#include "slope/text.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
+
 
 /**
  */
 typedef struct _slope_item_class slope_item_class_t;
+
 
 /**
  */
@@ -34,9 +37,11 @@ struct _slope_item_class
 {
     void (*destroy_fn) (slope_item_t*);
 
-    void (*draw_fn) (slope_item_t*, cairo_t*,
-                     const slope_metrics_t*);
+    void (*draw_fn) (slope_item_t*, cairo_t*, const slope_metrics_t*);
+
+    void (*draw_thumb_fn) (slope_item_t*, const slope_point_t*, cairo_t*);
 };
+
 
 /**
  */
@@ -45,24 +50,34 @@ struct _slope_item
     slope_item_class_t *klass;
     slope_metrics_t *metrics;
     char *name;
-    int visible;
+    slope_font_t *font;
+    slope_bool_t visible;
     int has_thumb;
 };
 
+
 /**
  */
-void __slope_item_draw (slope_item_t *item, cairo_t *cr,
+void _slope_item_draw (slope_item_t *item, cairo_t *cr,
                         const slope_metrics_t *metrics);
 
-/**
- */
-int __slope_item_parse_color (const char *fmt);
 
 /**
  */
-int __slope_item_parse_scatter (const char *fmt);
+void _slope_item_draw_thumb (slope_item_t *item,
+                              const slope_point_t *pos, cairo_t *cr);
 
-__SLOPE_END_DECLS
 
-#endif /*__SLOPE_DATA_P_H */
+/**
+ */
+int _slope_item_parse_color (const char *fmt);
+
+
+/**
+ */
+int _slope_item_parse_scatter (const char *fmt);
+
+SLOPE_END_DECLS
+
+#endif /*SLOPE_DATA_P_H */
 

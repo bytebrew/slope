@@ -17,15 +17,52 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_METRICS_H
-#define __SLOPE_METRICS_H
+/**
+ * @file slope/metrics.h
+ * @defgroup Metrics
+ * @ingroup Metrics
+ * 
+ * @author Elvis Teixeira
+ * @date 18 Jan 2015
+ * 
+ * @brief The base class for metrics objects.
+ * 
+ * Metrics are used to scale the datasets to the size of the figure and to
+ * help place and anchor the various items to the appropriate figure layout.
+ */
+
+
+#ifndef SLOPE_METRICS_H
+#define SLOPE_METRICS_H
 
 #include "slope/list.h"
 #include "slope/primitives.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
+
 
 /**
+ * @ingroup Metrics
+ * 
+ * @brief The metrics type tells the type of transformation from data space to figure coordinates
+ * 
+ * The metrics type tells the type of transformation from data space to figure coordinates,
+ * the only transformation implemented at this time is slope_xymetrics_t, which performs the
+ * transformation from data in cartesian coordinates to cartesian figure coordinates.
+ */
+typedef enum _slope_metrics_type
+{
+    SLOPE_METRICS_INVALID = 0, /*!< Uninitialised metrics object */
+    SLOPE_XYMETRICS       = 1  /*!< XY or cartesian metrics object */
+}
+slope_metrics_type_t;
+
+
+/**
+ * @ingroup Metrics
+ * @brief Destroys a metrics object and frees the memory.
+ * 
+ * @param[in] metrics The metrics to be destroyed.
  */
 slope_public void
 slope_metrics_destroy (slope_metrics_t *metrics);
@@ -33,13 +70,18 @@ slope_metrics_destroy (slope_metrics_t *metrics);
 /**
  */
 slope_public int
-slope_metrics_get_visible (slope_metrics_t *metrics);
+slope_metrics_get_visible (const slope_metrics_t *metrics);
 
 /**
  */
 slope_public void
-slope_metrics_set_visible (slope_metrics_t *metrics,
-                           int visible);
+slope_metrics_toggle_visible (slope_metrics_t *metrics,
+                              slope_bool_t visible);
+
+/**
+ */
+slope_public slope_metrics_type_t
+slope_metrics_get_type (const slope_metrics_t *metrics);
 
 /**
  */
@@ -54,14 +96,20 @@ slope_metrics_add_item (slope_metrics_t *metrics,
 
 /**
  */
+slope_public void
+slope_metrics_remove_item (slope_metrics_t *metrics,
+                           slope_item_t *item);
+
+/**
+ */
 slope_public slope_list_t*
-slope_metrics_get_item_list (slope_metrics_t *metrics);
+slope_metrics_get_item_list (const slope_metrics_t *metrics);
 
 /**
  */
 slope_public slope_figure_t*
-slope_metrics_get_figure (slope_metrics_t *metrics);
+slope_metrics_get_figure (const slope_metrics_t *metrics);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_METRICS_H */
+#endif /* SLOPE_METRICS_H */

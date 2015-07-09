@@ -17,23 +17,26 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_SCENE_P_H
-#define __SLOPE_SCENE_P_H
+#ifndef SLOPE_SCENE_P_H
+#define SLOPE_SCENE_P_H
 
 #include "slope/figure.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
 struct _slope_figure
 {
     slope_list_t    *metrics;
+    slope_metrics_t *default_metrics;
+    slope_font_t    *default_font;
+    slope_item_t    *legend;
+    slope_callback_t change_callback;
     slope_color_t    back_color;
     int              fill_back;
-    slope_callback_t change_callback;
 };
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_SCENE_P_H */
+#endif /*SLOPE_SCENE_P_H */

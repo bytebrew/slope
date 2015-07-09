@@ -17,85 +17,120 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_LIST_H
-#define __SLOPE_LIST_H
+/**
+ * @file slope/list.h
+ * @defgroup List
+ * @ingroup List
+ * 
+ * @author Elvis Teixeira
+ * @date 18 Jan 2015
+ *
+ * @brief Functions to create and manipulate linked lists of pointers
+ * Used to store and iterate over linked lists of pointers to slope's
+ * objects.
+ */
+
+#ifndef SLOPE_LIST_H
+#define SLOPE_LIST_H
 
 #include "slope/global.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
+/**
+ * @ingroup List
+ * 
+ * @brief A List node that contains pointers to the previous and next nodes
+ * as well as to the node data
+ */
 typedef struct _slope_iterator slope_iterator_t;
 
+/**
+ * @ingroup List
+ * 
+ * @brief An doubly linked list, contains pointers to the first and last nodes
+ * and the current number of nodes.
+ */
 typedef struct _slope_list slope_list_t;
 
 /**
- * Access the item pointed to by iter
- * @return an untyped pointer to the item pointed to by iter
+ * @ingroup List
+ * @brief Access the data pointed to by iter
+ * @return an untyped pointer to the data pointed to by iter
  */
 slope_public void*
-slope_iterator_item (slope_iterator_t *iter);
+slope_iterator_data (const slope_iterator_t *iter);
 
 /**
- * Moves the iterator to the next position
+ * @ingroup List
+ * @brief Moves the iterator to the next position
  */
 slope_public void
 slope_iterator_next (slope_iterator_t **iter);
 
 /**
- * Moves the iterator to the previous position
+ * @ingroup List
+ * @brief Moves the iterator to the previous position
  */
 slope_public void
 slope_iterator_previous (slope_iterator_t **iter);
 
 /**
- * Appends an element to the end of the list
+ * @ingroup List
+ * @brief Appends an element to the end of the list
  * @return the newly allocated list
  */
 slope_public slope_list_t*
-slope_list_append (slope_list_t *list, void *item);
+slope_list_append (slope_list_t *list, void *data);
 
 /**
- * Prepends an element to the begining of the list
+ * @ingroup List
+ * @brief Prepends an element to the begining of the list
  * @return the newly allocated list
  */
 slope_public slope_list_t*
-slope_list_prepend (slope_list_t *list, void *item);
+slope_list_prepend (slope_list_t *list, void *data);
 
 /**
- * Destroys list
+ * @ingroup List
+ * @brief Destroys list
  */
 slope_public void
 slope_list_destroy (slope_list_t *list);
 
 /**
- * Access the iterator for the first element
+ * @ingroup List
+ * @brief Access the iterator for the first element
  * @return an iterator pointing to the first element
  */
 slope_public slope_iterator_t*
-slope_list_first (slope_list_t *list);
+slope_list_first (const slope_list_t *list);
 
 /**
- * Access the iterator for the last element
+ * @ingroup List
+ * @brief Access the iterator for the last element
  * @return an iterator pointing to the last element
  */
 slope_public slope_iterator_t*
-slope_list_last (slope_list_t *list);
+slope_list_last (const slope_list_t *list);
 
 /**
- * Access the size (element number) of the last
+ * @ingroup List
+ * @brief Access the size (element number) of the last
  * @return the size of the string
  */
 slope_public int
-slope_list_size (slope_list_t *list);
+slope_list_size (const slope_list_t *list);
 
 /**
- * Removes the element pointed to by iterator pos
+ * @ingroup List
+ * @brief Removes the element pointed to by iterator pos
  * @return the next valid element, NULL the list ended
  */
 slope_public slope_iterator_t*
 slope_list_remove (slope_list_t *list,
                    slope_iterator_t *pos);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_LIST_H */
+#endif /*SLOPE_LIST_H */

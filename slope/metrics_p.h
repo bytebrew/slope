@@ -17,12 +17,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_METRICS_P_H
-#define __SLOPE_METRICS_P_H
+#ifndef SLOPE_METRICS_P_H
+#define SLOPE_METRICS_P_H
 
 #include "slope/metrics.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
@@ -42,20 +42,32 @@ struct _slope_metrics_class
 struct _slope_metrics
 {
     slope_metrics_class_t *klass;
+    slope_metrics_type_t type;
     slope_figure_t *figure;
-    int visible;
     slope_list_t *item_list;
+    /* boundary between item image and figure frontier */
+    double x_low_bound, x_up_bound;
+    double y_low_bound, y_up_bound;
+    /* figure geometry attributes */
+    double xmin_figure, xmax_figure;
+    double ymin_figure, ymax_figure;
+    double width_figure, height_figure;
+    /* show this metric's items? */
+    slope_bool_t visible;
 };
 
-/**
- */
-slope_metrics_class_t* __slope_metrics_get_class();
 
 /**
  */
-void __slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+slope_metrics_class_t* _slope_metrics_get_class();
+
+
+/**
+ */
+void _slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                            const slope_rect_t *rect);
 
-__SLOPE_END_DECLS
 
-#endif /*__SLOPE_METRICS_P_H */
+SLOPE_END_DECLS
+
+#endif /*SLOPE_METRICS_P_H */

@@ -17,22 +17,10 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_GTK_H
-#define __SLOPE_GTK_H
+#ifndef SLOPE_CONFIG_H
+#define SLOPE_CONFIG_H
 
-#include "slope/slope.h"
-#include <gtk/gtk.h>
+#define SLOPE_HAVE_GTK @SLOPE_HAVE_GTK@
+#define SLOPE_HAVE_PANGO @SLOPE_HAVE_PANGO@
 
-__SLOPE_BEGIN_DECLS
-
-typedef struct _slope_window slope_window_t;
-
-/**
- */
-slope_public GtkWidget*
-slope_create_window (slope_figure_t *figure,
-                     const char *title);
-
-__SLOPE_END_DECLS
-
-#endif //__SLOPE_GTK_H
+#endif /* SLOPE_CONFIG_H */

@@ -39,7 +39,7 @@ void slope_item_destroy (slope_item_t *item)
 }
 
 
-int slope_item_get_visible (slope_item_t *item)
+int slope_item_get_visible (const slope_item_t *item)
 {
     if (item == NULL) {
         return SLOPE_FALSE;
@@ -48,8 +48,8 @@ int slope_item_get_visible (slope_item_t *item)
 }
 
 
-void slope_item_set_visible (slope_item_t *item,
-                             int visible)
+void slope_item_toggle_visible (slope_item_t *item,
+                                slope_bool_t visible)
 {
     if (item == NULL) {
         return;
@@ -59,7 +59,7 @@ void slope_item_set_visible (slope_item_t *item,
 }
 
 
-const char* slope_item_get_name (slope_item_t *item)
+const char* slope_item_get_name (const slope_item_t *item)
 {
     if (item == NULL) {
         return NULL;
@@ -81,14 +81,36 @@ void slope_item_set_name (slope_item_t *item, const char *name)
 }
 
 
-void __slope_item_draw (slope_item_t *item, cairo_t *cr,
+int slope_item_get_has_thumb (const slope_item_t *item)
+{
+    if (item == NULL) return SLOPE_FALSE;
+    return item->has_thumb;
+}
+
+
+void _slope_item_draw (slope_item_t *item, cairo_t *cr,
                         const slope_metrics_t *metrics)
 {
+    if (item->font == NULL) {
+        slope_figure_t *figure = slope_item_get_figure(item);
+        item->font = slope_figure_get_default_font(figure);
+    }
     (*item->klass->draw_fn)(item, cr, metrics);
 }
 
 
-slope_metrics_t* slope_item_get_metrics (slope_item_t *item)
+void _slope_item_draw_thumb (slope_item_t *item,
+                              const slope_point_t *pos, cairo_t *cr)
+{
+    if (item->font == NULL) {
+        slope_figure_t *figure = slope_item_get_figure(item);
+        item->font = slope_figure_get_default_font(figure);
+    }
+    (*item->klass->draw_thumb_fn)(item, pos, cr);
+}
+
+
+slope_metrics_t* slope_item_get_metrics (const slope_item_t *item)
 {
     if (item == NULL) {
         return NULL;
@@ -97,7 +119,7 @@ slope_metrics_t* slope_item_get_metrics (slope_item_t *item)
 }
 
 
-slope_figure_t* slope_item_get_figure (slope_item_t *item)
+slope_figure_t* slope_item_get_figure (const slope_item_t *item)
 {
     if (item == NULL) {
         return NULL;
@@ -113,52 +135,47 @@ void slope_item_notify_appearence_change (slope_item_t *item)
 }
 
 
-void slope_item_notify_item_change (slope_item_t *item)
+void slope_item_notify_data_change (slope_item_t *item)
 {
     slope_figure_t *figure = slope_item_get_figure(item);
-    slope_figure_notify_item_change(figure, item);
+    slope_figure_notify_data_change(figure, item);
 }
 
 
-int __slope_item_parse_color (const char *fmt)
+int _slope_item_parse_color (const char *fmt)
 {
-    static int undefine_color=SLOPE_WHITE;
     while (*fmt) {
         if (*fmt == 'b') return SLOPE_BLACK;
         if (*fmt == 'w') return SLOPE_WHITE;
         if (*fmt == 'r') return SLOPE_RED;
         if (*fmt == 'g') return SLOPE_GREEN;
         if (*fmt == 'l') return SLOPE_BLUE;
-        if (*fmt == 'y') return SLOPE_YELLOW;
         if (*fmt == 'm') return SLOPE_MAROON;
-        if (*fmt == 'e') return SLOPE_GREY;
         if (*fmt == 'p') return SLOPE_PURPLE;
-        if (*fmt == 'i') return SLOPE_OLIVE;
+        if (*fmt == 'y') return SLOPE_YELLOW;
+        if (*fmt == 'e') return SLOPE_GREY;
+        if (*fmt == 'o') return SLOPE_OLIVE;
+        if (*fmt == 'a') return SLOPE_ORANGE;
         if (*fmt == 't') return SLOPE_TEAL;
-        if (*fmt == 'o') return SLOPE_ORANGE;
-        if (*fmt == 'u')
-        {
-            ++undefine_color;
-            if (undefine_color == SLOPE_LAST_COLOR)
-                undefine_color=SLOPE_RED;
-            return undefine_color;
-        }
         ++fmt;
     }
     return SLOPE_BLACK;
 }
 
 
-int __slope_item_parse_scatter (const char *fmt)
+int _slope_item_parse_scatter (const char *fmt)
 {
+    int scatter = 0;
     while (*fmt) {
-        if (*fmt == '-') return SLOPE_LINE;
-        if (*fmt == '*') return SLOPE_CIRCLES;
-        if (*fmt == '+') return SLOPE_PLUSSES;
+        if (*fmt == '-') scatter |= SLOPE_LINE;
+        if (*fmt == '*') scatter |= SLOPE_CIRCLES;
+        if (*fmt == '+') scatter |= SLOPE_PLUSSES;
+        if (*fmt == '^') scatter |= SLOPE_TRIANGLES;
+        if (*fmt == '[') scatter |= SLOPE_SQUARES; 
         ++fmt;
     }
-    return SLOPE_LINE;
+    if (scatter == 0) scatter = SLOPE_LINE;
+    return scatter;
 }
 
 /* slope/item.c */
-

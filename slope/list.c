@@ -25,7 +25,7 @@ struct _slope_iterator
 {
     struct _slope_iterator *next;
     struct _slope_iterator *prev;
-    void *item;
+    void *data;
 };
 
 
@@ -38,11 +38,11 @@ struct _slope_list
 
 
 /*
- * Access the item pointed to by iter
+ * Access the data pointed to by iter
  */
-void* slope_iterator_item (slope_iterator_t *iter)
+void* slope_iterator_data (const slope_iterator_t *iter)
 {
-    return iter->item;
+    return iter->data;
 }
 
 /*
@@ -64,13 +64,13 @@ void slope_iterator_previous (slope_iterator_t **iter)
 /*
  * Appends an element to the end of the list
  */
-slope_list_t* slope_list_append (slope_list_t *list, void *item)
+slope_list_t* slope_list_append (slope_list_t *list, void *data)
 {
     slope_iterator_t *iter =
         malloc(sizeof(slope_iterator_t));
     iter->prev = NULL;
     iter->next = NULL;
-    iter->item = item;
+    iter->data = data;
     if (list == NULL) {
         list = malloc(sizeof(slope_list_t));
         list->first = iter;
@@ -89,13 +89,13 @@ slope_list_t* slope_list_append (slope_list_t *list, void *item)
 /*
  * Prepends an element to the begining of the list
  */
-slope_list_t* slope_list_prepend (slope_list_t *list, void *item)
+slope_list_t* slope_list_prepend (slope_list_t *list, void *data)
 {
     slope_iterator_t *iter =
         malloc(sizeof(slope_iterator_t));
     iter->prev = NULL;
     iter->next = NULL;
-    iter->item = item;
+    iter->data = data;
     if (list == NULL) {
         list = malloc(sizeof(slope_list_t));
         list->first = iter;
@@ -131,7 +131,7 @@ void slope_list_destroy (slope_list_t *list)
 /*
  * Access the iterator for the first element
  */
-slope_iterator_t* slope_list_first (slope_list_t *list)
+slope_iterator_t* slope_list_first (const slope_list_t *list)
 {
     if (list == NULL) {
         return NULL;
@@ -142,7 +142,7 @@ slope_iterator_t* slope_list_first (slope_list_t *list)
 /*
  * Access the iterator for the last element
  */
-slope_iterator_t* slope_list_last (slope_list_t *list)
+slope_iterator_t* slope_list_last (const slope_list_t *list)
 {
     if (list == NULL) {
         return NULL;
@@ -153,7 +153,7 @@ slope_iterator_t* slope_list_last (slope_list_t *list)
 /**
  * Access the size (element number) of the last
  */
-int slope_list_size (slope_list_t *list)
+int slope_list_size (const slope_list_t *list)
 {
     if (list == NULL) {
         return 0;

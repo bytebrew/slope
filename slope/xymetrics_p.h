@@ -17,13 +17,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_XYMETRICS_P_H
-#define __SLOPE_XYMETRICS_P_H
+#ifndef SLOPE_XYMETRICS_P_H
+#define SLOPE_XYMETRICS_P_H
 
 #include "slope/xymetrics.h"
 #include "slope/metrics_p.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
@@ -36,36 +36,32 @@ struct _slope_xymetrics
     slope_metrics_t parent;
     /* axis list */
     slope_list_t *axis_list;
-    /* boundary between item image and figure frontier */
-    double x_low_bound, x_up_bound;
-    double y_low_bound, y_up_bound;
     /* item space geometry attributes */
     double xmin, xmax;
     double ymin, ymax;
     double width, height;
-    /* figure geometry attributes */
-    double xmin_figure, xmax_figure;
-    double ymin_figure, ymax_figure;
-    double width_figure, height_figure;
 };
 
-/**
- */
-slope_metrics_class_t* __slope_xymetrics_get_class();
 
 /**
  */
-void __slope_xymetrics_destroy (slope_metrics_t *metrics);
+slope_metrics_class_t* _slope_xymetrics_get_class();
+
 
 /**
  */
-void __slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+void _slope_xymetrics_destroy (slope_metrics_t *metrics);
+
+
+/**
+ */
+void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                              const slope_rect_t *rect);
 
 /**
  */
-void __slope_xymetrics_update (slope_metrics_t *metrics);
+void _slope_xymetrics_update (slope_metrics_t *metrics);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif /*__SLOPE_XYMETRICS_P_H */
+#endif /*SLOPE_XYMETRICS_P_H */

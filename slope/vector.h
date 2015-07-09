@@ -17,9 +17,30 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_CONFIG_H
-#define __SLOPE_CONFIG_H
+#ifndef SLOPE_VECTOR_H
+#define SLOPE_VECTOR_H
 
-#define SLOPE_GTK @SLOPE_GTK@
+#include "slope/global.h"
 
-#endif /*__SLOPE_CONFIG_H */
+SLOPE_BEGIN_DECLS
+
+/**
+ */
+typedef struct _slope_vector
+{
+    double *v;
+    int nalloc;
+    int size;
+}
+slope_vector_t;
+
+
+slope_public slope_vector_t* slope_vector_create (int size);
+
+slope_public void slope_vector_destroy (slope_vector_t *vector);
+
+slope_public void slope_vector_append (slope_vector_t *vector, double value);
+
+SLOPE_END_DECLS
+
+#endif /* SLOPE_VECTOR_H */

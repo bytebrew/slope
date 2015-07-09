@@ -17,33 +17,72 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_PRIMITIVES_H
-#define __SLOPE_PRIMITIVES_H
+#ifndef SLOPE_PRIMITIVES_H
+#define SLOPE_PRIMITIVES_H
 
 #include "slope/global.h"
 #include <cairo.h>
 
-__SLOPE_BEGIN_DECLS
-
-#define SLOPE_FALSE 0
-#define SLOPE_TRUE  1
-
+SLOPE_BEGIN_DECLS
 
 /**
+ * @file primitives.h
+ * @defgroup Primitives
+ * 
+ * @ingroup Primitives
+ * @brief Some primitive geometric and visible objects like points and colors
  */
-typedef void (*slope_callback_t) (void*);
+
 
 /**
+ * @ingroup Figure
+ * @brief The figure type represents the final drawable of slopes architecture
+ * This is the final product os a user operation, it can dre drawn in any cairo backend
+ * like GtkWidgets or one of many graphics file formats
  */
 typedef struct _slope_figure slope_figure_t;
 
+
 /**
+ * @ingroup Metrics
+ * @brief Metrics objects scale the data representations to the fiure's rect and helps items
+ * to place themselves around
  */
 typedef struct _slope_metrics slope_metrics_t;
 
+
 /**
+ * @ingroup Item
+ * @brief Every thing that can be drawn to a figure is a subclass of slope_item_t
  */
 typedef struct _slope_item slope_item_t;
+
+
+/**
+ */
+typedef void (*slope_callback_t) (slope_figure_t*);
+
+
+/**
+ * @ingroup Primitives
+ * @brief The boolean type
+ */
+typedef unsigned char slope_bool_t;
+
+
+/**
+ * @ingroup Primitives
+ * @brief The boolean false value
+ */
+#define SLOPE_FALSE 0
+
+
+/**
+ * @ingroup Primitives
+ * @brief The boolean true value
+ */
+#define SLOPE_TRUE  1
+
 
 /**
  */
@@ -53,6 +92,7 @@ typedef struct _slope_point
     double y;
 }
 slope_point_t;
+
 
 /**
  */
@@ -65,25 +105,37 @@ typedef struct _slope_rect
 }
 slope_rect_t;
 
+
+/**
+ */
+typedef enum _slope_status
+{
+    SLOPE_SUCCESS = 0,
+    SLOPE_ERROR = 1
+}
+slope_status_t;
+
+
 /**
  */
 typedef enum _slope_color_name
 {
-    SLOPE_WHITE             = 0,
-    SLOPE_BLACK             = 1,
-    SLOPE_RED               = 2,
-    SLOPE_GREEN             = 3,
-    SLOPE_BLUE              = 4,
-    SLOPE_MAROON            = 5,
-    SLOPE_PURPLE            = 6,
-    SLOPE_YELLOW            = 7,
-    SLOPE_GREY              = 8,
-    SLOPE_OLIVE             = 9,
-    SLOPE_ORANGE            = 10,
-    SLOPE_TEAL              = 11,
-    SLOPE_LAST_COLOR        = 12
+    SLOPE_BLACK          = 0,
+    SLOPE_WHITE          = 1,
+    SLOPE_RED            = 2,
+    SLOPE_GREEN          = 3,
+    SLOPE_BLUE           = 4,
+    SLOPE_MAROON         = 5,
+    SLOPE_PURPLE         = 6,
+    SLOPE_YELLOW         = 7,
+    SLOPE_GREY           = 8,
+    SLOPE_OLIVE          = 9,
+    SLOPE_ORANGE         = 10,
+    SLOPE_TEAL           = 11,
+    SLOPE_LAST_COLOR     = 12
 }
 slope_color_name_t;
+
 
 /**
  */
@@ -98,36 +150,12 @@ slope_color_t;
 
 
 /**
- */
-typedef enum _slope_paper_size
-{
-    SLOPE_A0      = 0,
-    SLOPE_A1      = 1,
-    SLOPE_A2      = 2,
-    SLOPE_A3      = 3,
-    SLOPE_A4      = 4,
-    SLOPE_LETTER  = 5,
-    SLOPE_B4      = 6,
-    SLOPE_B5      = 7
-}
-slope_paper_size_t;
-
-/**
- */
-typedef enum _slope_paper_orientation
-{
-    SLOPE_PORTRAIT   = 0,
-    SLOPE_LANDSCAPE  = 1
-}
-slope_paper_orientation_t;
-
-
-/**
  * Sets the coordinates of a rectangle
  */
 slope_public void
 slope_rect_set (slope_rect_t *rect, double x,
                 double y, double w, double h);
+
 
 /**
  */
@@ -135,24 +163,27 @@ slope_public void
 slope_color_set (slope_color_t *color, double r,
                  double g, double b, double a);
 
+
 /**
  */
 slope_public void
 slope_color_set_name (slope_color_t *color,
                       slope_color_name_t name);
 
-/**
- */
-slope_public void
-slope_cairo_set_color(cairo_t *cr,
-                      const slope_color_t *color);
 
 /**
  */
 slope_public void
-slope_cairo_rectangle(cairo_t *cr,
-                      const slope_rect_t *rect);
+slope_cairo_set_color (cairo_t *cr,
+                       const slope_color_t *color);
 
-__SLOPE_END_DECLS
 
-#endif /*__SLOPE_PRIMITIVES_H */
+/**
+ */
+slope_public void
+slope_cairo_rectangle (cairo_t *cr,
+                       const slope_rect_t *rect);
+
+SLOPE_END_DECLS
+
+#endif /* SLOPE_PRIMITIVES_H */

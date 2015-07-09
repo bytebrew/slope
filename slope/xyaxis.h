@@ -17,12 +17,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_XYAXIS_H
-#define __SLOPE_XYAXIS_H
+#ifndef SLOPE_XYAXIS_H
+#define SLOPE_XYAXIS_H
 
 #include "slope/item.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
@@ -47,6 +47,6 @@ slope_xyaxis_create (slope_metrics_t *metrics,
 slope_public slope_xyaxis_type_t
 slope_xyaxis_get_type (slope_item_t *axis);
 
-__SLOPE_END_DECLS
+SLOPE_END_DECLS
 
-#endif //__SLOPE_XYAXIS_H
+#endif //SLOPE_XYAXIS_H

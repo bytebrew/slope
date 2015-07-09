@@ -17,21 +17,21 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_XYDATA_H
-#define __SLOPE_XYDATA_H
+#ifndef SLOPE_FUNCPLOT_H
+#define SLOPE_FUNCPLOT_H
 
 #include "slope/item.h"
 
-__SLOPE_BEGIN_DECLS
+SLOPE_BEGIN_DECLS
 
 /**
  */
-slope_public slope_item_t* slope_xyitem_create ();
+slope_public slope_item_t* slope_funcplot_create ();
 
 /**
  */
 slope_public slope_item_t*
-slope_xyitem_create_simple (const double *vx, const double *vy,
+slope_funcplot_create_simple (const double *vx, const double *vy,
                             const int n,
                             const char *name,
                             const char *fmt);
@@ -39,7 +39,7 @@ slope_xyitem_create_simple (const double *vx, const double *vy,
 /**
  */
 slope_public void
-slope_xyitem_set (slope_item_t *item,
+slope_funcplot_set (slope_item_t *item,
                   const double *vx, const double *vy,
                   const int n,
                   const char *name,
@@ -48,22 +48,37 @@ slope_xyitem_set (slope_item_t *item,
 /**
  */
 slope_public void
-slope_xyitem_set_item (slope_item_t *item,
+slope_funcplot_set_item (slope_item_t *item,
                        const double *vx, const double *vy,
                        const int n);
 
 /**
  */
 slope_public void
-slope_xyitem_update_item (slope_item_t *item,
+slope_funcplot_update_item (slope_item_t *item,
                           const double *vx, const double *vy,
                           const int n);
 
 /**
  */
 slope_public void
-slope_xyitem_set_antialias (slope_item_t *item, int on);
+slope_funcplot_set_antialias (slope_item_t *item, int on);
 
-__SLOPE_END_DECLS
+/**
+ */
+slope_public int
+slope_funcplot_get_point_number (slope_item_t *item);
 
-#endif /*__SLOPE_XYDATA_H */
+/**
+ */
+slope_public const double*
+slope_funcplot_get_x_array (slope_item_t *item);
+
+/**
+ */
+slope_public const double*
+slope_funcplot_get_y_array (slope_item_t *item);
+
+SLOPE_END_DECLS
+
+#endif /* SLOPE_FUNCPLOT_H */

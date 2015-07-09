@@ -26,9 +26,7 @@
 
 void slope_metrics_destroy (slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return;
-    }
+    if (metrics == NULL) return;
     if (metrics->klass->destroy_fn) {
         (*metrics->klass->destroy_fn)(metrics);
     }
@@ -37,37 +35,38 @@ void slope_metrics_destroy (slope_metrics_t *metrics)
 }
 
 
-int slope_metrics_get_visible(slope_metrics_t *metrics)
+int slope_metrics_get_visible (const slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return SLOPE_FALSE;
-    }
+    if (metrics == NULL) return SLOPE_FALSE;
     return metrics->visible;
 }
 
 
-void slope_metrics_set_visible (slope_metrics_t *metrics,
-                                int visible)
+slope_metrics_type_t slope_metrics_get_type (const slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return;
-    }
+    if (metrics == NULL) return SLOPE_METRICS_INVALID;
+    return metrics->type;
+}
+
+
+void slope_metrics_toggle_visible (slope_metrics_t *metrics,
+                                   slope_bool_t visible)
+{
+    if (metrics == NULL) return;
     metrics->visible = visible;
 }
 
 
 void slope_metrics_update (slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return;
-    }
+    if (metrics == NULL) return;
     if (metrics->klass->update_fn) {
         (*metrics->klass->update_fn)(metrics);
     }
 }
 
 
-void __slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+void _slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                            const slope_rect_t *rect)
 {
     (*metrics->klass->draw_fn)(metrics, cr, rect);
@@ -84,23 +83,44 @@ void slope_metrics_add_item (slope_metrics_t *metrics,
     metrics->item_list = slope_list_append(
         metrics->item_list, item);
     slope_metrics_update(metrics);
+    slope_figure_notify_appearence_change(metrics->figure);
 }
 
 
-slope_list_t* slope_metrics_get_item_list (slope_metrics_t *metrics)
+void slope_metrics_remove_item (slope_metrics_t *metrics,
+                                slope_item_t *item)
 {
-    if (metrics == NULL) {
-        return NULL;
+    if (metrics == NULL || item == NULL) {
+        return;
     }
+    int change = SLOPE_FALSE;
+    slope_iterator_t *iter = slope_list_first(metrics->item_list);
+    while (iter) {
+        slope_item_t *curr_item = (slope_item_t*) slope_iterator_data(iter);
+        if (curr_item == item) {
+            iter = slope_list_remove(metrics->item_list, iter);
+            change = SLOPE_TRUE;
+        } else {
+            slope_iterator_next(&iter);
+        }
+    }
+    if (change) {
+        slope_metrics_update(metrics);
+        slope_figure_notify_appearence_change(metrics->figure);
+    }
+}
+
+
+slope_list_t* slope_metrics_get_item_list (const slope_metrics_t *metrics)
+{
+    if (metrics == NULL) return NULL;
     return metrics->item_list;
 }
 
 
-slope_figure_t* slope_metrics_get_figure (slope_metrics_t *metrics)
+slope_figure_t* slope_metrics_get_figure (const slope_metrics_t *metrics)
 {
-    if (metrics == NULL) {
-        return NULL;
-    }
+    if (metrics == NULL) return NULL;
     return metrics->figure;
 }
 
