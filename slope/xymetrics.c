@@ -86,6 +86,7 @@ void _slope_xymetrics_destroy (slope_metrics_t *metrics)
         slope_item_destroy(axis);
         slope_iterator_next(&axis_iter);
     }
+    slope_list_destroy(self->axis_list);
 }
 
 
