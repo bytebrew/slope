@@ -59,7 +59,7 @@ void slope_figure_add_metrics (slope_figure_t *figure,
 {
     if (figure == NULL) return;
     if (metrics == NULL) return;
-    
+
     metrics->figure = figure;
     figure->metrics = slope_list_append(figure->metrics, metrics);
     figure->default_metrics = metrics;
@@ -86,7 +86,7 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
     cairo_save(cr);
     slope_cairo_rectangle(cr, rect);
     cairo_clip(cr);
-    
+
     /* fill background if required */
     if (figure->fill_back) {
         slope_cairo_set_color(cr, &figure->back_color);
@@ -116,19 +116,22 @@ void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
 }
 
 
-void slope_figure_write_to_png (slope_figure_t *figure,
+int slope_figure_write_to_png (slope_figure_t *figure,
                                 const char *filename,
                                 int width, int height)
 {
+    int ret = SLOPE_SUCCESS;
     cairo_surface_t *surf = cairo_image_surface_create(
         CAIRO_FORMAT_ARGB32, width, height);
     cairo_t *cr = cairo_create(surf);
     slope_rect_t rect;
     slope_rect_set(&rect, 0.0, 0.0, width, height);
     slope_figure_draw(figure, cr, &rect);
-    cairo_surface_write_to_png(surf, filename);
+    if (cairo_surface_write_to_png(surf, filename) != CAIRO_STATUS_SUCCESS)
+        ret = SLOPE_ERROR;
     cairo_destroy(cr);
     cairo_surface_destroy(surf);
+    return ret;
 }
 
 
@@ -156,18 +159,18 @@ int slope_figure_write_to_pdf (slope_figure_t *figure,
 {
     cairo_surface_t *surf = cairo_pdf_surface_create(
         filename, width, height);
-    
+
     if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS)
         return SLOPE_ERROR;
-    
+
     cairo_t *cr = cairo_create(surf);
     slope_rect_t rect;
     slope_rect_set(&rect, 0.0, 0.0, width, height);
     slope_figure_draw(figure, cr, &rect);
-    
+
     cairo_destroy(cr);
     cairo_surface_destroy(surf);
-    
+
     return SLOPE_SUCCESS;
 }
 
@@ -178,18 +181,18 @@ int slope_figure_write_to_ps (slope_figure_t *figure,
 {
     cairo_surface_t *surf = cairo_ps_surface_create(
         filename, width, height);
-    
+
     if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS)
         return SLOPE_ERROR;
-    
+
     cairo_t *cr = cairo_create(surf);
     slope_rect_t rect;
     slope_rect_set(&rect, 0.0, 0.0, width, height);
     slope_figure_draw(figure, cr, &rect);
-    
+
     cairo_destroy(cr);
     cairo_surface_destroy(surf);
-    
+
     return SLOPE_SUCCESS;
 }
 
@@ -214,7 +217,7 @@ void slope_figure_notify_appearence_change (slope_figure_t *figure,
 {
     if (figure == NULL) return;
     (void) item; /* reserved for possible future use */
-    
+
     if (figure->change_callback) {
         (*figure->change_callback)(figure);
     }
@@ -225,7 +228,7 @@ void slope_figure_notify_data_change (slope_figure_t *figure,
                                       slope_item_t *item)
 {
     if (figure == NULL) return;
-        
+
     slope_metrics_t *metrics = slope_item_get_metrics(item);
     slope_metrics_update(metrics);
     if (figure->change_callback) {
@@ -239,7 +242,7 @@ void slope_figure_track_region (slope_figure_t *figure,
                                 double x2, double y2)
 {
     if (figure == NULL) return;
-    
+
     if (x2 < x1) {
         double tmp = x2;
         x2 = x1;
@@ -250,13 +253,13 @@ void slope_figure_track_region (slope_figure_t *figure,
         y2 = y1;
         y1 = tmp;
     }
-    
+
     slope_iterator_t *metr_iter =
         slope_list_first(figure->metrics);
     while (metr_iter) {
         slope_metrics_t *metrics =
             slope_iterator_data(metr_iter);
-        
+
         /* cartesian coordinates (xymetrics) */
         if (slope_metrics_get_type(metrics) == SLOPE_XYMETRICS) {
             slope_xymetrics_set_x_range(metrics,
@@ -275,7 +278,7 @@ void slope_figure_track_region (slope_figure_t *figure,
 void slope_figure_update (slope_figure_t *figure)
 {
     if (figure == NULL) return;
-    
+
     slope_iterator_t *metr_iter =
     slope_list_first(figure->metrics);
     while (metr_iter) {
