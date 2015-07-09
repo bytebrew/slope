@@ -162,7 +162,7 @@ _slope_funcplot_draw (slope_item_t *item, cairo_t *cr,
     }
     cairo_set_line_width(cr,self->line_width);
 
-    switch (self->scatter) {
+    switch ((int)self->scatter) {
         case SLOPE_LINE:
             _slope_funcplot_draw_line(item, cr, metrics);
             break;
@@ -315,11 +315,11 @@ _slope_funcplot_draw_plusses (slope_item_t *item, cairo_t *cr,
                               const slope_metrics_t *metrics)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
-    
+
     const double *vx = self->vx;
     const double *vy = self->vy;
     const int n = self->n;
-    
+
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
     cairo_move_to(cr, x1 - PLUS_RAD, y1);
@@ -330,11 +330,11 @@ _slope_funcplot_draw_plusses (slope_item_t *item, cairo_t *cr,
     for (k=1; k<n; k++) {
         double x2 = slope_xymetrics_map_x(metrics, vx[k]);
         double y2 = slope_xymetrics_map_y(metrics, vy[k]);
-        
+
         double dx = x2 - x1;
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
-        
+
         if (distsqr >= TWO_PLUS_RAD_SQR) {
             cairo_move_to(cr, x1 - PLUS_RAD, y1);
             cairo_line_to(cr, x1 + PLUS_RAD, y1);
@@ -353,27 +353,27 @@ _slope_funcplot_draw_line_circles (slope_item_t *item, cairo_t *cr,
                                    const slope_metrics_t *metrics)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
-    
+
     const double *vx = self->vx;
     const double *vy = self->vy;
     const int n = self->n;
-    
+
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
     cairo_move_to(cr, x1 + CIRC_RAD, y1);
     cairo_arc(cr, x1, y1, CIRC_RAD, 0.0, 6.283185);
     if (self->fill_symbol) cairo_fill(cr);
     cairo_move_to(cr, x1, y1);
-    
+
     int k;
     for (k=1; k<n; k++) {
         double x2 = slope_xymetrics_map_x(metrics, vx[k]);
         double y2 = slope_xymetrics_map_y(metrics, vy[k]);
-        
+
         double dx = x2 - x1;
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
-        
+
         if (distsqr >= TWO_CIRC_RAD_SQR) {
             cairo_line_to(cr, x2, y2);
             cairo_stroke(cr);
@@ -438,11 +438,11 @@ _slope_funcplot_draw_line_plusses (slope_item_t *item, cairo_t *cr,
                                    const slope_metrics_t *metrics)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
-    
+
     const double *vx = self->vx;
     const double *vy = self->vy;
     const int n = self->n;
-    
+
     double x1 = slope_xymetrics_map_x(metrics, vx[0]);
     double y1 = slope_xymetrics_map_y(metrics, vy[0]);
     cairo_move_to(cr, x1 - PLUS_RAD, y1);
@@ -455,11 +455,11 @@ _slope_funcplot_draw_line_plusses (slope_item_t *item, cairo_t *cr,
     for (k=1; k<n; k++) {
         double x2 = slope_xymetrics_map_x(metrics, vx[k]);
         double y2 = slope_xymetrics_map_y(metrics, vy[k]);
-        
+
         double dx = x2 - x1;
         double dy = y2 - y1;
         double distsqr = dx*dx + dy*dy;
-        
+
         if (distsqr >= TWO_PLUS_RAD_SQR) {
             cairo_line_to(cr, x2, y2);
             cairo_stroke(cr);
@@ -481,7 +481,7 @@ _slope_funcplot_draw_thumb (slope_item_t *item,
                             const slope_point_t *pos, cairo_t *cr)
 {
     slope_funcplot_t *self = (slope_funcplot_t*) item;
-    
+
     slope_cairo_set_color(cr, &self->color);
     if (self->antialias) {
         cairo_set_antialias(
@@ -492,8 +492,8 @@ _slope_funcplot_draw_thumb (slope_item_t *item,
             cr, CAIRO_ANTIALIAS_NONE);
     }
     cairo_set_line_width(cr,self->line_width);
-    
-    switch (self->scatter)
+
+    switch ((int)self->scatter)
     {
         case SLOPE_LINE:
             cairo_move_to(cr, pos->x - 10.0, pos->y - 3.0);

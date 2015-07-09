@@ -177,7 +177,7 @@ slope_figure_set_change_callback (slope_figure_t *figure,
 
 /**
  * @ingroup Figure
- * @brief The items use ths function to notify the figure that it's appearence
+ * @brief The items use the function to notify the figure that it's appearence
  * changed
  *
  * @param[in] figure    The figure in which the item is, and must be notified
@@ -189,7 +189,7 @@ slope_figure_notify_appearence_change (slope_figure_t *figure,
 
 /**
  * @ingroup Figure
- * @brief The items use ths function to notify the figure that it's data
+ * @brief The items use the function to notify the figure that it's data
  * changed
  *
  * @param[in] figure    The figure in which the item is, and must be notified
