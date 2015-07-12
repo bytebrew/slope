@@ -22,88 +22,93 @@
 
 
 
-void slope_rect_set (slope_rect_t *rect, double x,
-                     double y, double w, double h)
+void
+slope_rect_set (slope_rect_t *rect, double x,
+                double y, double w, double h)
 {
-    rect->x = x;
-    rect->y = y;
-    rect->width = w;
-    rect->height = h;
+  rect->x = x;
+  rect->y = y;
+  rect->width = w;
+  rect->height = h;
 }
 
 
-void slope_color_set (slope_color_t *color, double r,
-                      double g, double b, double a)
+void
+slope_color_set (slope_color_t *color, double r,
+                 double g, double b, double a)
 {
-    color->red = r;
-    color->green = g;
-    color->blue = b;
-    color->alpha = a;
+  color->red = r;
+  color->green = g;
+  color->blue = b;
+  color->alpha = a;
 }
 
 
-void slope_color_set_name (slope_color_t *color,
-                           slope_color_name_t name)
+void
+slope_color_set_name (slope_color_t *color,
+                      slope_color_name_t name)
 {
-    color->alpha = 1.0;
-    switch (name) {
-        case SLOPE_BLACK:
-            slope_color_set(color, 0.0, 0.0, 0.0, 1.0);
-            break;
-        case SLOPE_WHITE:
-            slope_color_set(color, 1.0, 1.0, 1.0, 1.0);
-            break;
-        case SLOPE_RED:
-            slope_color_set(color, 1.0, 0.0, 0.0, 1.0);
-            break;
-        case SLOPE_GREEN:
-            slope_color_set(color, 0.0, 1.0, 0.0, 1.0);
-            break;
-        case SLOPE_BLUE:
-            slope_color_set(color, 0.0, 0.0, 1.0, 1.0);
-            break;
-        case SLOPE_YELLOW:
-            slope_color_set(color, 1.0, 1.0, 0.0, 1.0);
-            break;
-        case SLOPE_MAROON:
-            slope_color_set(color, 0.5, 0.0, 0.0, 1.0);
-            break;
-        case SLOPE_GREY:
-            slope_color_set(color, 0.5, 0.5, 0.5, 1.0);
-            break;
-        case SLOPE_PURPLE:
-            slope_color_set(color, 0.5, 0.0, 0.5, 1.0);
-            break;
-        case SLOPE_OLIVE:
-            slope_color_set(color, 0.5, 0.5, 0.0, 1.0);
-            break;
-        case SLOPE_TEAL:
-            slope_color_set(color, 0.0, 0.5, 0.5, 1.0);
-            break;
-        case SLOPE_ORANGE:
-            slope_color_set(color, 1, 0.65, 0.0, 1.0);
-            break;
-        default: /* SLOPE_BLACK */
-            slope_color_set(color, 0.0, 0.0, 0.0, 1.0);
-            break;
-    }
+  color->alpha = 1.0;
+  switch (name) {
+    case SLOPE_BLACK:
+      slope_color_set(color, 0.0, 0.0, 0.0, 1.0);
+      break;
+    case SLOPE_WHITE:
+      slope_color_set(color, 1.0, 1.0, 1.0, 1.0);
+      break;
+    case SLOPE_RED:
+      slope_color_set(color, 1.0, 0.0, 0.0, 1.0);
+      break;
+    case SLOPE_GREEN:
+      slope_color_set(color, 0.0, 1.0, 0.0, 1.0);
+      break;
+    case SLOPE_BLUE:
+      slope_color_set(color, 0.0, 0.0, 1.0, 1.0);
+      break;
+    case SLOPE_YELLOW:
+      slope_color_set(color, 1.0, 1.0, 0.0, 1.0);
+      break;
+    case SLOPE_MAROON:
+      slope_color_set(color, 0.5, 0.0, 0.0, 1.0);
+      break;
+    case SLOPE_GREY:
+      slope_color_set(color, 0.5, 0.5, 0.5, 1.0);
+      break;
+    case SLOPE_PURPLE:
+      slope_color_set(color, 0.5, 0.0, 0.5, 1.0);
+      break;
+    case SLOPE_OLIVE:
+      slope_color_set(color, 0.5, 0.5, 0.0, 1.0);
+      break;
+    case SLOPE_TEAL:
+      slope_color_set(color, 0.0, 0.5, 0.5, 1.0);
+      break;
+    case SLOPE_ORANGE:
+      slope_color_set(color, 1, 0.65, 0.0, 1.0);
+      break;
+    default: /* SLOPE_BLACK */
+      slope_color_set(color, 0.0, 0.0, 0.0, 1.0);
+      break;
+  }
 }
 
 
-void slope_cairo_set_color(cairo_t *cr,
-                           const slope_color_t *color)
+void
+slope_cairo_set_color (cairo_t *cr,
+                       const slope_color_t *color)
 {
-    cairo_set_source_rgba(
-        cr, color->red, color->green, 
-        color->blue, color->alpha);
+  cairo_set_source_rgba(
+      cr, color->red, color->green, 
+      color->blue, color->alpha);
 }
 
 
-void slope_cairo_rectangle(cairo_t *cr,
-                           const slope_rect_t *rect)
+void
+slope_cairo_rectangle (cairo_t *cr,
+                       const slope_rect_t *rect)
 {
-    cairo_rectangle(cr, rect->x, rect->y,
-                    rect->width, rect->height);
+  cairo_rectangle(cr, rect->x, rect->y,
+      rect->width, rect->height);
 }
 
 

@@ -23,17 +23,17 @@
 
 struct _slope_iterator
 {
-    struct _slope_iterator *next;
-    struct _slope_iterator *prev;
-    void *data;
+  struct _slope_iterator *next;
+  struct _slope_iterator *prev;
+  void *data;
 };
 
 
 struct _slope_list
 {
-    struct _slope_iterator *first;
-    struct _slope_iterator *last;
-    int size;
+  struct _slope_iterator *first;
+  struct _slope_iterator *last;
+  int size;
 };
 
 
@@ -43,7 +43,7 @@ struct _slope_list
 void*
 slope_iterator_data (const slope_iterator_t *iter)
 {
-    return iter->data;
+  return iter->data;
 }
 
 /*
@@ -52,7 +52,7 @@ slope_iterator_data (const slope_iterator_t *iter)
 void
 slope_iterator_next (slope_iterator_t **iter)
 {
-    *iter = (*iter)->next;
+  *iter = (*iter)->next;
 }
 
 /*
@@ -61,7 +61,7 @@ slope_iterator_next (slope_iterator_t **iter)
 void
 slope_iterator_previous (slope_iterator_t **iter)
 {
-    *iter = (*iter)->prev;
+  *iter = (*iter)->prev;
 }
 
 /*
@@ -70,24 +70,24 @@ slope_iterator_previous (slope_iterator_t **iter)
 slope_list_t*
 slope_list_append (slope_list_t *list, void *data)
 {
-    slope_iterator_t *iter =
-        malloc(sizeof(slope_iterator_t));
-    iter->prev = NULL;
-    iter->next = NULL;
-    iter->data = data;
-    if (list == NULL) {
-        list = malloc(sizeof(slope_list_t));
-        list->first = iter;
-        list->last = iter;
-        list->size = 1;
-    }
-    else {
-        list->last->next = iter;
-        iter->prev = list->last;
-        list->last = iter;
-        list->size += 1;
-    }
-    return list;
+  slope_iterator_t *iter =
+    malloc(sizeof(slope_iterator_t));
+  iter->prev = NULL;
+  iter->next = NULL;
+  iter->data = data;
+  if (list == NULL) {
+    list = malloc(sizeof(slope_list_t));
+    list->first = iter;
+    list->last = iter;
+    list->size = 1;
+  }
+  else {
+    list->last->next = iter;
+    iter->prev = list->last;
+    list->last = iter;
+    list->size += 1;
+  }
+  return list;
 }
 
 /*
@@ -96,24 +96,24 @@ slope_list_append (slope_list_t *list, void *data)
 slope_list_t*
 slope_list_prepend (slope_list_t *list, void *data)
 {
-    slope_iterator_t *iter =
-        malloc(sizeof(slope_iterator_t));
-    iter->prev = NULL;
-    iter->next = NULL;
-    iter->data = data;
-    if (list == NULL) {
-        list = malloc(sizeof(slope_list_t));
-        list->first = iter;
-        list->last = iter;
-        list->size = 1;
-    }
-    else {
-        list->first->prev = iter;
-        iter->next = list->first;
-        list->first = iter;
-        list->size += 1;
-    }
-    return list;
+  slope_iterator_t *iter =
+    malloc(sizeof(slope_iterator_t));
+  iter->prev = NULL;
+  iter->next = NULL;
+  iter->data = data;
+  if (list == NULL) {
+    list = malloc(sizeof(slope_list_t));
+    list->first = iter;
+    list->last = iter;
+    list->size = 1;
+  }
+  else {
+    list->first->prev = iter;
+    iter->next = list->first;
+    list->first = iter;
+    list->size += 1;
+  }
+  return list;
 }
 
 /*
@@ -122,16 +122,16 @@ slope_list_prepend (slope_list_t *list, void *data)
 void
 slope_list_destroy (slope_list_t *list)
 {
-    if (list == NULL) {
-        return;
-    }
-    slope_iterator_t *iter = list->first;
-    while (iter) {
-        slope_iterator_t *next = iter->next;
-        free(iter);
-        iter = next;
-    }
-    free(list);
+  if (list == NULL) {
+    return;
+  }
+  slope_iterator_t *iter = list->first;
+  while (iter) {
+    slope_iterator_t *next = iter->next;
+    free(iter);
+    iter = next;
+  }
+  free(list);
 }
 
 /*
@@ -140,10 +140,10 @@ slope_list_destroy (slope_list_t *list)
 slope_iterator_t*
 slope_list_first (const slope_list_t *list)
 {
-    if (list == NULL) {
-        return NULL;
-    }
-    return list->first;
+  if (list == NULL) {
+    return NULL;
+  }
+  return list->first;
 }
 
 /*
@@ -152,10 +152,10 @@ slope_list_first (const slope_list_t *list)
 slope_iterator_t*
 slope_list_last (const slope_list_t *list)
 {
-    if (list == NULL) {
-        return NULL;
-    }
-    return list->last;
+  if (list == NULL) {
+    return NULL;
+  }
+  return list->last;
 }
 
 /**
@@ -164,10 +164,10 @@ slope_list_last (const slope_list_t *list)
 int
 slope_list_size (const slope_list_t *list)
 {
-    if (list == NULL) {
-        return 0;
-    }
-    return list->size;
+  if (list == NULL) {
+    return 0;
+  }
+  return list->size;
 }
 
 /**
@@ -177,28 +177,28 @@ slope_iterator_t*
 slope_list_remove (slope_list_t *list,
                    slope_iterator_t *pos)
 {
-    slope_iterator_t *next = pos->next;
-    slope_iterator_t *prev = pos->prev;
-    free(pos);
-    list->size -= 1;
-    if (prev == NULL) {
-        if (next == NULL) {
-            list->first = NULL;
-            list->last = NULL;
-            return NULL;
-        }
-        list->first = next;
-        next->prev = NULL;
-        return next;
-    }
+  slope_iterator_t *next = pos->next;
+  slope_iterator_t *prev = pos->prev;
+  free(pos);
+  list->size -= 1;
+  if (prev == NULL) {
     if (next == NULL) {
-        list->last = prev;
-        prev->next = NULL;
-        return NULL;
+      list->first = NULL;
+      list->last = NULL;
+      return NULL;
     }
-    next->prev = prev;
-    prev->next = next;
+    list->first = next;
+    next->prev = NULL;
     return next;
+  }
+  if (next == NULL) {
+    list->last = prev;
+    prev->next = NULL;
+    return NULL;
+  }
+  next->prev = prev;
+  prev->next = next;
+  return next;
 }
 
 /* slope/list.c */
