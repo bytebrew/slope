@@ -14,9 +14,9 @@ ARCHITECTURE_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	344;"	d	fi
 ARCHITECTURE_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	348;"	d	file:
 CIRC_RAD	slope/funcplot.c	27;"	d	file:
 CIRC_RAD_SQR	slope/funcplot.c	28;"	d	file:
-CMAKE_BINARY_DIR	build/Makefile	/^CMAKE_BINARY_DIR = \/home\/elvis\/devel\/C\/slope\/build$/;"	m
+CMAKE_BINARY_DIR	build/Makefile	/^CMAKE_BINARY_DIR = \/home\/elvis\/devel\/slope\/build$/;"	m
 CMAKE_COMMAND	build/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
-CMAKE_SOURCE_DIR	build/Makefile	/^CMAKE_SOURCE_DIR = \/home\/elvis\/devel\/C\/slope$/;"	m
+CMAKE_SOURCE_DIR	build/Makefile	/^CMAKE_SOURCE_DIR = \/home\/elvis\/devel\/slope$/;"	m
 COMPILER_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	106;"	d	file:
 COMPILER_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	109;"	d	file:
 COMPILER_ID	build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c	111;"	d	file:
@@ -154,6 +154,7 @@ SLOPE_BLACK	slope/primitives.h	/^    SLOPE_BLACK          = 0,$/;"	e	enum:_slope
 SLOPE_BLUE	slope/primitives.h	/^    SLOPE_BLUE           = 4,$/;"	e	enum:_slope_color_name
 SLOPE_CIRCLES	slope/item.h	/^    SLOPE_CIRCLES    = 1 << 2, \/*!< The data points are represent by circles, filled or not *\/$/;"	e	enum:__anon1
 SLOPE_CONFIG_H	build/slope-config.h	21;"	d
+SLOPE_CUSTOM_ITEM_H	slope/custom-item.h	30;"	d
 SLOPE_DATA_H	slope/item.h	37;"	d
 SLOPE_DATA_P_H	slope/item_p.h	21;"	d
 SLOPE_END_DECLS	slope/global.h	27;"	d
@@ -225,8 +226,11 @@ _SLOPE_TEXT_H_	slope/text.h	30;"	d
 _SlopeView	slope/view.h	/^struct _SlopeView$/;"	s
 _SlopeViewClass	slope/view.h	/^struct _SlopeViewClass$/;"	s
 _SlopeViewPrivate	slope/view.c	/^struct _SlopeViewPrivate$/;"	s	file:
+_fake_draw	slope/custom-item.c	/^_fake_draw (slope_item_t *self, cairo_t *cr,$/;"	f	file:
+_fake_draw_thumb	slope/custom-item.c	/^_fake_draw_thumb (slope_item_t *self,$/;"	f	file:
 _slope_color	slope/primitives.h	/^typedef struct _slope_color$/;"	s
 _slope_color_name	slope/primitives.h	/^typedef enum _slope_color_name$/;"	g
+_slope_custom_item_get_class	slope/custom-item.c	/^_slope_custom_item_get_class()$/;"	f	file:
 _slope_figure	slope/figure_p.h	/^struct _slope_figure$/;"	s
 _slope_font	slope/text.c	/^struct _slope_font$/;"	s	file:
 _slope_funcplot	slope/funcplot_p.h	/^struct _slope_funcplot$/;"	s
@@ -372,12 +376,17 @@ slope_color_set	slope/primitives.c	/^void slope_color_set (slope_color_t *color,
 slope_color_set_name	slope/primitives.c	/^void slope_color_set_name (slope_color_t *color,$/;"	f
 slope_color_t	slope/primitives.h	/^slope_color_t;$/;"	t	typeref:struct:_slope_color
 slope_create_window	slope/slope.c	/^GtkWidget* slope_create_window (slope_figure_t *figure,$/;"	f
+slope_custom_item_create	slope/custom-item.c	/^slope_custom_item_create()$/;"	f
+slope_custom_item_register_draw_func	slope/custom-item.c	/^slope_custom_item_register_draw_func (slope_item_t *self,$/;"	f
+slope_custom_item_register_draw_thumb_func	slope/custom-item.c	/^slope_custom_item_register_draw_thumb_func (slope_item_t *self,$/;"	f
+slope_draw_func_t	slope/custom-item.h	/^typedef void (*slope_draw_func_t) (slope_item_t *item,$/;"	t
 slope_draw_text	slope/text.c	/^void slope_draw_text(cairo_t *cr, slope_font_t *font,$/;"	f
+slope_draw_thumb_func_t	slope/custom-item.h	/^typedef void (*slope_draw_thumb_func_t) (slope_item_t *item,$/;"	t
 slope_figure_add_metrics	slope/figure.c	/^void slope_figure_add_metrics (slope_figure_t *figure,$/;"	f
 slope_figure_create	slope/figure.c	/^slope_figure_t* slope_figure_create()$/;"	f
 slope_figure_destroy	slope/figure.c	/^void slope_figure_destroy (slope_figure_t *figure)$/;"	f
 slope_figure_draw	slope/figure.c	/^void slope_figure_draw (slope_figure_t *figure, cairo_t *cr,$/;"	f
-slope_figure_get_default_font	slope/figure.c	/^slope_font_t* slope_figure_get_default_font (slope_figure_t *figure)$/;"	f
+slope_figure_get_default_font	slope/figure.c	/^slope_figure_get_default_font (slope_figure_t *figure)$/;"	f
 slope_figure_get_default_metrics	slope/figure.c	/^slope_metrics_t* slope_figure_get_default_metrics (slope_figure_t *figure)$/;"	f
 slope_figure_get_metrics_list	slope/figure.c	/^slope_list_t* slope_figure_get_metrics_list (const slope_figure_t *figure)$/;"	f
 slope_figure_notify_appearence_change	slope/figure.c	/^void slope_figure_notify_appearence_change (slope_figure_t *figure,$/;"	f
@@ -385,7 +394,7 @@ slope_figure_notify_data_change	slope/figure.c	/^void slope_figure_notify_data_c
 slope_figure_set_change_callback	slope/figure.c	/^void slope_figure_set_change_callback (slope_figure_t *figure,$/;"	f
 slope_figure_t	slope/primitives.h	/^typedef struct _slope_figure slope_figure_t;$/;"	t	typeref:struct:_slope_figure
 slope_figure_track_region	slope/figure.c	/^void slope_figure_track_region (slope_figure_t *figure,$/;"	f
-slope_figure_update	slope/figure.c	/^void slope_figure_update (slope_figure_t *figure)$/;"	f
+slope_figure_update	slope/figure.c	/^slope_figure_update (slope_figure_t *figure)$/;"	f
 slope_figure_write_to_pdf	slope/figure.c	/^int slope_figure_write_to_pdf (slope_figure_t *figure,$/;"	f
 slope_figure_write_to_png	slope/figure.c	/^void slope_figure_write_to_png (slope_figure_t *figure,$/;"	f
 slope_figure_write_to_ps	slope/figure.c	/^int slope_figure_write_to_ps (slope_figure_t *figure,$/;"	f
