@@ -33,56 +33,56 @@
 slope_figure_t*
 slope_figure_create()
 {
-  slope_figure_t *figure = malloc(sizeof(slope_figure_t));
-  figure->metrics = NULL;
-  figure->default_metrics = NULL;
-  figure->change_callback = NULL;
-  figure->legend = slope_legend_create();
-  slope_color_set_name(&figure->back_color, SLOPE_WHITE);
-  figure->fill_back = SLOPE_TRUE;
-  figure->default_font = slope_font_create("Sans", 10);
-  return figure;
+  slope_figure_t *self = malloc(sizeof(slope_figure_t));
+  self->metrics = NULL;
+  self->default_metrics = NULL;
+  self->change_callback = NULL;
+  self->legend = slope_legend_create();
+  slope_color_set_name(&self->back_color, SLOPE_WHITE);
+  self->fill_back = SLOPE_TRUE;
+  self->default_font = slope_font_create("Sans", 10);
+  return self;
 }
 
 
 void
-slope_figure_destroy (slope_figure_t *figure)
+slope_figure_destroy (slope_figure_t *self)
 {
-  if (figure == NULL) return;
-  slope_item_destroy(figure->legend);
-  slope_list_destroy(figure->metrics);
-  slope_font_destroy(figure->default_font);
-  free(figure);
+  if (self == NULL) return;
+  slope_item_destroy(self->legend);
+  slope_list_destroy(self->metrics);
+  slope_font_destroy(self->default_font);
+  free(self);
 }
 
 
 void
-slope_figure_add_metrics (slope_figure_t *figure,
+slope_figure_add_metrics (slope_figure_t *self,
                           slope_metrics_t *metrics)
 {
-  if (figure == NULL) return;
+  if (self == NULL) return;
   if (metrics == NULL) return;
 
-  metrics->figure = figure;
-  figure->metrics = slope_list_append(figure->metrics, metrics);
-  figure->default_metrics = metrics;
+  metrics->figure = self;
+  self->metrics = slope_list_append(self->metrics, metrics);
+  self->default_metrics = metrics;
 
-  if (figure->change_callback) {
-    (*figure->change_callback)(figure);
+  if (self->change_callback) {
+    self->change_callback(self);
   }
 }
 
 
 slope_list_t*
-slope_figure_get_metrics_list (const slope_figure_t *figure)
+slope_figure_get_metrics_list (const slope_figure_t *self)
 {
-  if (figure == NULL) return NULL;
-  return figure->metrics;
+  if (self == NULL) return NULL;
+  return self->metrics;
 }
 
 
 void
-slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
+slope_figure_draw (slope_figure_t *self, cairo_t *cr,
                    const slope_rect_t *rect)
 {
   /* perform any pending drawing and clip to the figure's
@@ -93,15 +93,14 @@ slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
   cairo_clip(cr);
 
   /* fill background if required */
-  if (figure->fill_back) {
-    slope_cairo_set_color(cr, &figure->back_color);
+  if (self->fill_back) {
+    slope_cairo_set_color(cr, &self->back_color);
     cairo_paint(cr);
   }
-  cairo_stroke(cr);
 
   /* draw main items */
   slope_iterator_t *met_iter =
-    slope_list_first(figure->metrics);
+    slope_list_first(self->metrics);
   while (met_iter) {
     slope_metrics_t *met = (slope_metrics_t*)
       slope_iterator_data(met_iter);
@@ -112,29 +111,46 @@ slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
   }
 
   /* draw legend */
-  if (slope_item_get_visible(figure->legend)
-      && figure->default_metrics != NULL)
+  if (slope_item_get_visible(self->legend)
+      && self->default_metrics != NULL)
   {
-    _slope_legend_draw(figure->legend, cr, figure->default_metrics);
+    _slope_legend_draw(self->legend, cr, self->default_metrics);
   }
   cairo_restore(cr);
 }
 
 
-void
+int
 slope_figure_write_to_png (slope_figure_t *figure,
                            const char *filename,
                            int width, int height)
 {
-  cairo_surface_t *surf = cairo_image_surface_create(
-      CAIRO_FORMAT_ARGB32, width, height);
-  cairo_t *cr = cairo_create(surf);
+  cairo_surface_t *surf;
+  cairo_t *cr;
   slope_rect_t rect;
+  
+  surf = cairo_image_surface_create(
+      CAIRO_FORMAT_ARGB32, width, height);
+  if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
+  cr = cairo_create(surf);
+  if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
   slope_rect_set(&rect, 0.0, 0.0, width, height);
   slope_figure_draw(figure, cr, &rect);
   cairo_surface_write_to_png(surf, filename);
-  cairo_destroy(cr);
+  
+  if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
   cairo_surface_destroy(surf);
+  cairo_destroy(cr);
+  return SLOPE_SUCCESS;
 }
 
 
@@ -143,16 +159,30 @@ slope_figure_write_to_svg (slope_figure_t *figure,
                            const char *filename,
                            int width, int height)
 {
-  cairo_surface_t *surf = cairo_svg_surface_create(
-      filename, width, height);
-  if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS)
-    return SLOPE_ERROR;
-  cairo_t *cr = cairo_create(surf);
+  cairo_surface_t *surf;
+  cairo_t *cr;
   slope_rect_t rect;
+  
+  surf = cairo_svg_surface_create(
+      filename, width, height);
+  if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
+  cr = cairo_create(surf);
+  if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
   slope_rect_set(&rect, 0.0, 0.0, width, height);
   slope_figure_draw(figure, cr, &rect);
-  cairo_destroy(cr);
+  
+  if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
   cairo_surface_destroy(surf);
+  cairo_destroy(cr);
   return SLOPE_SUCCESS;
 }
 
@@ -162,20 +192,30 @@ slope_figure_write_to_pdf (slope_figure_t *figure,
                            const char *filename,
                            int width, int height)
 {
-  cairo_surface_t *surf = cairo_pdf_surface_create(
-      filename, width, height);
-
-  if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS)
-    return SLOPE_ERROR;
-
-  cairo_t *cr = cairo_create(surf);
+  cairo_surface_t *surf;
+  cairo_t *cr;
   slope_rect_t rect;
+  
+  surf = cairo_pdf_surface_create(
+      filename, width, height);
+  if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
+  cr = cairo_create(surf);
+  if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
   slope_rect_set(&rect, 0.0, 0.0, width, height);
   slope_figure_draw(figure, cr, &rect);
 
-  cairo_destroy(cr);
+  if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
   cairo_surface_destroy(surf);
-
+  cairo_destroy(cr);
   return SLOPE_SUCCESS;
 }
 
@@ -185,20 +225,30 @@ slope_figure_write_to_ps (slope_figure_t *figure,
                           const char *filename,
                           int width, int height)
 {
-  cairo_surface_t *surf = cairo_ps_surface_create(
-      filename, width, height);
-
-  if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS)
-    return SLOPE_ERROR;
-
-  cairo_t *cr = cairo_create(surf);
+  cairo_surface_t *surf;
+  cairo_t *cr;
   slope_rect_t rect;
+  
+  surf = cairo_ps_surface_create(
+      filename, width, height);
+  if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+
+  cr = cairo_create(surf);
+  if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
   slope_rect_set(&rect, 0.0, 0.0, width, height);
   slope_figure_draw(figure, cr, &rect);
 
-  cairo_destroy(cr);
+  if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    return SLOPE_ERROR;
+  }
+  
   cairo_surface_destroy(surf);
-
+  cairo_destroy(cr);
   return SLOPE_SUCCESS;
 }
 
@@ -212,37 +262,37 @@ slope_figure_get_default_metrics (slope_figure_t *figure)
 
 
 void
-slope_figure_set_change_callback (slope_figure_t *figure,
+slope_figure_set_change_callback (slope_figure_t *self,
                                   slope_callback_t callback)
 {
-  if (figure == NULL) return;
-  figure->change_callback = callback;
+  if (self == NULL) return;
+  self->change_callback = callback;
 }
 
 
 void
-slope_figure_notify_appearence_change (slope_figure_t *figure,
+slope_figure_notify_appearence_change (slope_figure_t *self,
                                        slope_item_t *item)
 {
-  if (figure == NULL) return;
+  if (self == NULL) return;
   (void) item; /* reserved for possible future use */
 
-  if (figure->change_callback) {
-    (*figure->change_callback)(figure);
+  if (self->change_callback) {
+    self->change_callback(self);
   }
 }
 
 
 void
-slope_figure_notify_data_change (slope_figure_t *figure,
+slope_figure_notify_data_change (slope_figure_t *self,
                                  slope_item_t *item)
 {
-  if (figure == NULL) return;
+  if (self == NULL) return;
 
   slope_metrics_t *metrics = slope_item_get_metrics(item);
   slope_metrics_update(metrics);
-  if (figure->change_callback) {
-    (*figure->change_callback)(figure);
+  if (self->change_callback) {
+    self->change_callback(self);
   }
 }
 

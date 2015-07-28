@@ -58,14 +58,14 @@ slope_public slope_figure_t* slope_figure_create();
  * @returns The list of metrics in this figure.
  */
 slope_public slope_list_t*
-slope_figure_get_metrics_list (const slope_figure_t *figure);
+slope_figure_get_metrics_list (const slope_figure_t *self);
 
 /**
  * @ingroup Figure
  * @brief Adds a metrics the metrics list of figure.
  */
 slope_public void
-slope_figure_add_metrics (slope_figure_t *figure,
+slope_figure_add_metrics (slope_figure_t *self,
                           slope_metrics_t *metrics);
 
 /**
@@ -73,7 +73,7 @@ slope_figure_add_metrics (slope_figure_t *figure,
  * @brief Destroys any figure object and frees the memory used by it.
  */
 slope_public void
-slope_figure_destroy (slope_figure_t *figure);
+slope_figure_destroy (slope_figure_t *self);
 
 /**
  * @ingroup Figure
@@ -84,7 +84,7 @@ slope_figure_destroy (slope_figure_t *figure);
  * @param[in] rect The rectange that limits the area of the cairo_surface_t to draw figure.
  */
 slope_public void
-slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
+slope_figure_draw (slope_figure_t *self, cairo_t *cr,
                    const slope_rect_t *rect);
 
 /**
@@ -97,8 +97,8 @@ slope_figure_draw (slope_figure_t *figure, cairo_t *cr,
  * @param[in] width The width in pixels of the output file.
  * @param[in] height The height in pixels of the output file.
  */
-slope_public void
-slope_figure_write_to_png (slope_figure_t *figure,
+slope_public int
+slope_figure_write_to_png (slope_figure_t *self,
                           const char *filename,
                           int width, int height);
 
@@ -114,7 +114,7 @@ slope_figure_write_to_png (slope_figure_t *figure,
  * @return The status of the operation
  */
 slope_public int
-slope_figure_write_to_svg (slope_figure_t *figure,
+slope_figure_write_to_svg (slope_figure_t *self,
                            const char *filename,
                            int width, int height);
 
@@ -130,7 +130,7 @@ slope_figure_write_to_svg (slope_figure_t *figure,
  * @return The status of the operation
  */
 slope_public int
-slope_figure_write_to_pdf (slope_figure_t *figure,
+slope_figure_write_to_pdf (slope_figure_t *self,
                            const char *filename,
                            int width, int height);
 
@@ -146,7 +146,7 @@ slope_figure_write_to_pdf (slope_figure_t *figure,
  * @return The status of the operation
  */
 slope_public int
-slope_figure_write_to_ps (slope_figure_t *figure,
+slope_figure_write_to_ps (slope_figure_t *self,
                           const char *filename,
                           int width, int height);
 
@@ -160,7 +160,7 @@ slope_figure_write_to_ps (slope_figure_t *figure,
  * @return A pointer default metrics of figure.
  */
 slope_public slope_metrics_t*
-slope_figure_get_default_metrics (slope_figure_t *figure);
+slope_figure_get_default_metrics (slope_figure_t *self);
 
 /**
  * @ingroup Figure
@@ -171,7 +171,7 @@ slope_figure_get_default_metrics (slope_figure_t *figure);
  * @param[in] callback A pointer to a function to be called when figure changes
  */
 slope_public void
-slope_figure_set_change_callback (slope_figure_t *figure,
+slope_figure_set_change_callback (slope_figure_t *self,
                                   slope_callback_t callback);
 
 /**
@@ -183,7 +183,7 @@ slope_figure_set_change_callback (slope_figure_t *figure,
  * @param[in] item      The item that changed
  */
 slope_public void
-slope_figure_notify_appearence_change (slope_figure_t *figure,
+slope_figure_notify_appearence_change (slope_figure_t *self,
                                        slope_item_t *item);
 
 /**
@@ -195,7 +195,7 @@ slope_figure_notify_appearence_change (slope_figure_t *figure,
  * @param[in] item      The item that changed
  */
 slope_public void
-slope_figure_notify_data_change (slope_figure_t *figure,
+slope_figure_notify_data_change (slope_figure_t *self,
                                  slope_item_t *item);
 
 /**
@@ -209,7 +209,7 @@ slope_figure_notify_data_change (slope_figure_t *figure,
  * @param[in] y2        The maximum y coordinate of the region
  */
 slope_public void
-slope_figure_track_region (slope_figure_t *figure,
+slope_figure_track_region (slope_figure_t *self,
                            double x1, double y1,
                            double x2, double y2);
 
@@ -220,7 +220,7 @@ slope_figure_track_region (slope_figure_t *figure,
  * @param[in] figure    The figure to update
  */
 slope_public void
-slope_figure_update (slope_figure_t *figure);
+slope_figure_update (slope_figure_t *self);
 
 /**
  * @ingroup Figure
@@ -229,7 +229,7 @@ slope_figure_update (slope_figure_t *figure);
  * @param[in] figure    The figure tfrom which to retrieve the default font
  */
 slope_public slope_font_t*
-slope_figure_get_default_font (slope_figure_t *figure);
+slope_figure_get_default_font (slope_figure_t *self);
 
 
 SLOPE_END_DECLS
