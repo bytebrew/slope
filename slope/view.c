@@ -271,14 +271,17 @@ slope_view_toggle_mouse_zoom (GtkWidget *view, slope_bool_t on)
 static void
 _view_dispose (GObject *self)
 {
+  /*
   GObjectClass *klass = G_OBJECT_GET_CLASS (self);
   klass->dispose(self);
+  */
 }
 
 
 static void
 _view_finalize (GObject *self)
 {
+  /*
   GObjectClass *klass = G_OBJECT_GET_CLASS (self);
   SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE( SLOPE_VIEW(self));
   
@@ -286,6 +289,7 @@ _view_finalize (GObject *self)
     slope_figure_destroy(priv->figure);
   }
   klass->finalize(self);
+  */
 }
 
 /* slope/view.c */
