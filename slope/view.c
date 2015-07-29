@@ -28,28 +28,41 @@
 /**
  */
 static gboolean
-on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data);
+_on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data);
 
 
 /**
  */
 static gboolean
-on_button_press_event (GtkWidget *widget, GdkEventButton *event,
+_on_button_press_event (GtkWidget *widget, GdkEventButton *event,
+                        gpointer *data);
+
+
+/**
+ */
+static gboolean
+_on_button_move_event (GtkWidget *widget, GdkEventButton *event,
                        gpointer *data);
 
 
 /**
  */
 static gboolean
-on_button_move_event (GtkWidget *widget, GdkEventButton *event,
-                      gpointer *data);
+_on_button_release_event (GtkWidget *widget, GdkEventButton *event,
+                          gpointer *data);
+
+/**
+ *
+ */
+static void
+_view_dispose (GObject *self);
 
 
 /**
+ *
  */
-static gboolean
-on_button_release_event (GtkWidget *widget, GdkEventButton *event,
-                         gpointer *data);
+static void
+_view_finalize (GObject *self);
 
 
 /**
@@ -67,6 +80,7 @@ struct _SlopeViewPrivate
   slope_point_t move_end;
   slope_color_t mouse_rec_color;
   slope_bool_t mouse_zoom;
+  slope_bool_t own_figure;
   int on_move;
   int press_sig_id;
   int move_sig_id;
@@ -80,7 +94,11 @@ G_DEFINE_TYPE(SlopeView, slope_view, GTK_TYPE_DRAWING_AREA);
 static void
 slope_view_class_init (SlopeViewClass *klass)
 {
+  GObjectClass *object_klass = G_OBJECT_CLASS (klass);
   g_type_class_add_private(klass, sizeof(SlopeViewPrivate));
+
+  object_klass->dispose = _view_dispose;
+  object_klass->finalize = _view_finalize;
 }
 
 
@@ -100,7 +118,7 @@ slope_view_init (SlopeView *view)
       |GDK_BUTTON_PRESS_MASK
       |GDK_BUTTON_RELEASE_MASK);
 
-  g_signal_connect(G_OBJECT(view), "draw", G_CALLBACK(on_draw_event), NULL);
+  g_signal_connect(G_OBJECT(view), "draw", G_CALLBACK(_on_draw_event), NULL);
   slope_view_toggle_mouse_zoom(widget, SLOPE_TRUE);
 }
 
@@ -111,6 +129,7 @@ slope_view_new ()
   GtkWidget *view = GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
   SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (view);
   priv->figure = slope_figure_create();
+  priv->own_figure = SLOPE_TRUE;
   return view;
 }
 
@@ -121,12 +140,13 @@ slope_view_new_for_figure (slope_figure_t *figure)
   GtkWidget *view = GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
   SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (view);
   priv->figure = figure;
+  priv->own_figure = SLOPE_FALSE;
   return view;
 }
 
 
 static gboolean
-on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data)
+_on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data)
 {
   SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (widget);
   int width, height;
@@ -157,7 +177,7 @@ on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data)
 
 
 static gboolean
-on_button_press_event (GtkWidget *widget, GdkEventButton *event,
+_on_button_press_event (GtkWidget *widget, GdkEventButton *event,
                        gpointer *data)
 {
   SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
@@ -177,8 +197,8 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 }
 
 
-static
-gboolean on_button_move_event (GtkWidget *widget, GdkEventButton *event,
+static gboolean
+_on_button_move_event (GtkWidget *widget, GdkEventButton *event,
                                gpointer *data)
 {
   SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
@@ -192,9 +212,9 @@ gboolean on_button_move_event (GtkWidget *widget, GdkEventButton *event,
 }
 
 
-static
-gboolean on_button_release_event (GtkWidget *widget, GdkEventButton *event,
-                                  gpointer *data)
+static gboolean
+_on_button_release_event (GtkWidget *widget, GdkEventButton *event,
+                          gpointer *data)
 {
   SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
 
@@ -232,13 +252,13 @@ slope_view_toggle_mouse_zoom (GtkWidget *view, slope_bool_t on)
   if (on == SLOPE_TRUE && priv->mouse_zoom == SLOPE_FALSE) {
     priv->press_sig_id =
       g_signal_connect(G_OBJECT(view), "button-press-event",
-          G_CALLBACK(on_button_press_event), NULL);
+          G_CALLBACK(_on_button_press_event), NULL);
     priv->move_sig_id =
       g_signal_connect(G_OBJECT(view), "motion-notify-event",
-          G_CALLBACK(on_button_move_event), NULL);
+          G_CALLBACK(_on_button_move_event), NULL);
     priv->release_sig_id =
       g_signal_connect(G_OBJECT(view), "button-release-event",
-          G_CALLBACK(on_button_release_event), NULL);
+          G_CALLBACK(_on_button_release_event), NULL);
     priv->mouse_zoom = SLOPE_TRUE;
   } else if (on == SLOPE_FALSE && priv->mouse_zoom == SLOPE_TRUE) {
     g_signal_handler_disconnect(view, priv->press_sig_id);
@@ -246,6 +266,26 @@ slope_view_toggle_mouse_zoom (GtkWidget *view, slope_bool_t on)
     g_signal_handler_disconnect(view, priv->release_sig_id);
     priv->mouse_zoom = SLOPE_FALSE;
   }
+}
+
+static void
+_view_dispose (GObject *self)
+{
+  GObjectClass *klass = G_OBJECT_GET_CLASS (self);
+  klass->dispose(self);
+}
+
+
+static void
+_view_finalize (GObject *self)
+{
+  GObjectClass *klass = G_OBJECT_GET_CLASS (self);
+  SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE( SLOPE_VIEW(self));
+  
+  if (priv->own_figure) {
+    slope_figure_destroy(priv->figure);
+  }
+  klass->finalize(self);
 }
 
 /* slope/view.c */
