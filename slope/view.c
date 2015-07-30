@@ -20,8 +20,8 @@
 #include "slope/view.h"
 
 
-#define SLOPE_VIEW_PRIVATE(obj)        \
-  (G_TYPE_INSTANCE_GET_PRIVATE((obj),  \
+#define SLOPE_VIEW_GET_PRIVATE(obj)     \
+  (G_TYPE_INSTANCE_GET_PRIVATE((obj),   \
    SLOPE_VIEW_TYPE, SlopeViewPrivate))
 
 
@@ -51,18 +51,12 @@ static gboolean
 _on_button_release_event (GtkWidget *widget, GdkEventButton *event,
                           gpointer *data);
 
-/**
- *
- */
-static void
-_view_dispose (GObject *self);
-
 
 /**
  *
  */
 static void
-_view_finalize (GObject *self);
+_view_destroy (GtkWidget *widget);
 
 
 /**
@@ -94,18 +88,18 @@ G_DEFINE_TYPE(SlopeView, slope_view, GTK_TYPE_DRAWING_AREA);
 static void
 slope_view_class_init (SlopeViewClass *klass)
 {
-  GObjectClass *object_klass = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_klass = GTK_WIDGET_CLASS (klass);
+
   g_type_class_add_private(klass, sizeof(SlopeViewPrivate));
 
-  object_klass->dispose = _view_dispose;
-  object_klass->finalize = _view_finalize;
+  widget_klass->destroy = _view_destroy;
 }
 
 
 static void
 slope_view_init (SlopeView *view)
 {
-  SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (view);
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE (view);
   GtkWidget *widget = GTK_WIDGET (view);
 
   priv->on_move = SLOPE_FALSE;
@@ -127,7 +121,7 @@ GtkWidget *
 slope_view_new ()
 {
   GtkWidget *view = GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
-  SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (view);
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE (view);
   priv->figure = slope_figure_create();
   priv->own_figure = SLOPE_TRUE;
   return view;
@@ -135,20 +129,32 @@ slope_view_new ()
 
 
 GtkWidget *
-slope_view_new_for_figure (slope_figure_t *figure)
+slope_view_new_for_figure (slope_figure_t *figure, slope_bool_t own_figure)
 {
   GtkWidget *view = GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
-  SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (view);
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE (view);
   priv->figure = figure;
-  priv->own_figure = SLOPE_FALSE;
+  priv->own_figure = own_figure;
   return view;
+}
+
+
+slope_figure_t*
+slope_view_get_figure (GtkWidget *view)
+{
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE (view);
+
+  if (priv != NULL) {
+    return priv->figure;
+  }
+  return NULL;
 }
 
 
 static gboolean
 _on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer *data)
 {
-  SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE (widget);
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE (widget);
   int width, height;
   slope_rect_t rect;
   width = gtk_widget_get_allocated_width(widget);
@@ -180,7 +186,7 @@ static gboolean
 _on_button_press_event (GtkWidget *widget, GdkEventButton *event,
                        gpointer *data)
 {
-  SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(widget);
 
   if (event->button == 1 /*left button*/) {
     priv->move_start.x = event->x;
@@ -201,7 +207,7 @@ static gboolean
 _on_button_move_event (GtkWidget *widget, GdkEventButton *event,
                                gpointer *data)
 {
-  SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(widget);
 
   if (priv->on_move) {
     priv->move_end.x = event->x;
@@ -216,7 +222,7 @@ static gboolean
 _on_button_release_event (GtkWidget *widget, GdkEventButton *event,
                           gpointer *data)
 {
-  SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(widget);
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(widget);
 
   if (priv->on_move) {
     priv->on_move = SLOPE_FALSE;
@@ -247,7 +253,7 @@ _on_button_release_event (GtkWidget *widget, GdkEventButton *event,
 void
 slope_view_toggle_mouse_zoom (GtkWidget *view, slope_bool_t on)
 {
-  SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE(view);
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(view);
 
   if (on == SLOPE_TRUE && priv->mouse_zoom == SLOPE_FALSE) {
     priv->press_sig_id =
@@ -268,28 +274,21 @@ slope_view_toggle_mouse_zoom (GtkWidget *view, slope_bool_t on)
   }
 }
 
-static void
-_view_dispose (GObject *self)
-{
-  /*
-  GObjectClass *klass = G_OBJECT_GET_CLASS (self);
-  klass->dispose(self);
-  */
-}
-
 
 static void
-_view_finalize (GObject *self)
+_view_destroy (GtkWidget *widget)
 {
-  /*
-  GObjectClass *klass = G_OBJECT_GET_CLASS (self);
-  SlopeViewPrivate *priv = SLOPE_VIEW_PRIVATE( SLOPE_VIEW(self));
-  
+  GtkWidgetClass *widget_klass = GTK_WIDGET_GET_CLASS (widget);
+  SlopeView *view = SLOPE_VIEW (widget);
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE (view);
+ 
   if (priv->own_figure) {
+    puts("cleaning");
     slope_figure_destroy(priv->figure);
+    priv->own_figure = SLOPE_FALSE;
   }
-  klass->finalize(self);
-  */
+ 
+  /* widget_klass->destroy(widget); Why it breaks? */
 }
 
 /* slope/view.c */

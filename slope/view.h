@@ -29,11 +29,11 @@
 
 SLOPE_BEGIN_DECLS
 
-#define SLOPE_VIEW_TYPE            (slope_view_get_type())
-#define SLOPE_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_VIEW_TYPE, SlopeView))
-#define SLOPE_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_VIEW_TYPE, SlopeViewClass))
-#define SLOPE_IS_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_VIEW_TYPE))
-#define SLOPE_IS_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_VIEW_TYPE))
+#define SLOPE_VIEW_TYPE              (slope_view_get_type())
+#define SLOPE_VIEW(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_VIEW_TYPE, SlopeView))
+#define SLOPE_VIEW_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_VIEW_TYPE, SlopeViewClass))
+#define SLOPE_IS_VIEW(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_VIEW_TYPE))
+#define SLOPE_IS_VIEW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_VIEW_TYPE))
 
 
 /**
@@ -76,7 +76,13 @@ slope_public GtkWidget* slope_view_new (void);
 /**
  */
 slope_public GtkWidget*
-slope_view_new_for_figure (slope_figure_t *figure);
+slope_view_new_for_figure (slope_figure_t *figure, slope_bool_t own_figure);
+
+/**
+ *
+ */
+slope_public slope_figure_t*
+slope_view_get_figure (GtkWidget *view);
 
 /**
  */
