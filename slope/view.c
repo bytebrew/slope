@@ -282,13 +282,16 @@ _view_destroy (GtkWidget *widget)
   SlopeView *view = SLOPE_VIEW (widget);
   SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE (view);
  
+  /*
   if (priv->own_figure) {
     puts("cleaning");
     slope_figure_destroy(priv->figure);
     priv->own_figure = SLOPE_FALSE;
   }
  
-  /* widget_klass->destroy(widget); Why it breaks? */
+   widget_klass->destroy(widget);
+   
+   Why does it break? */
 }
 
 /* slope/view.c */
