@@ -52,12 +52,6 @@ _on_button_release_event (GtkWidget *widget, GdkEventButton *event,
                           gpointer *data);
 
 
-/**
- *
- */
-static void
-_view_destroy (GtkWidget *widget);
-
 
 /**
  */
@@ -91,8 +85,6 @@ slope_view_class_init (SlopeViewClass *klass)
   GtkWidgetClass *widget_klass = GTK_WIDGET_CLASS (klass);
 
   g_type_class_add_private(klass, sizeof(SlopeViewPrivate));
-
-  widget_klass->destroy = _view_destroy;
 }
 
 
@@ -274,24 +266,5 @@ slope_view_toggle_mouse_zoom (GtkWidget *view, slope_bool_t on)
   }
 }
 
-
-static void
-_view_destroy (GtkWidget *widget)
-{
-  GtkWidgetClass *widget_klass = GTK_WIDGET_GET_CLASS (widget);
-  SlopeView *view = SLOPE_VIEW (widget);
-  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE (view);
- 
-  /*
-  if (priv->own_figure) {
-    puts("cleaning");
-    slope_figure_destroy(priv->figure);
-    priv->own_figure = SLOPE_FALSE;
-  }
- 
-   widget_klass->destroy(widget);
-   
-   Why does it break? */
-}
 
 /* slope/view.c */
