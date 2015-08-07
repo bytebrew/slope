@@ -137,6 +137,7 @@ slope_figure_write_to_png (slope_figure_t *figure,
   
   cr = cairo_create(surf);
   if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    cairo_surface_destroy(surf);
     return SLOPE_ERROR;
   }
   
@@ -145,6 +146,8 @@ slope_figure_write_to_png (slope_figure_t *figure,
   cairo_surface_write_to_png(surf, filename);
   
   if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    cairo_surface_destroy(surf);
+    cairo_destroy(cr);
     return SLOPE_ERROR;
   }
   
@@ -171,6 +174,7 @@ slope_figure_write_to_svg (slope_figure_t *figure,
   
   cr = cairo_create(surf);
   if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    cairo_surface_destroy(surf);
     return SLOPE_ERROR;
   }
   
@@ -178,6 +182,8 @@ slope_figure_write_to_svg (slope_figure_t *figure,
   slope_figure_draw(figure, cr, &rect);
   
   if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    cairo_surface_destroy(surf);
+    cairo_destroy(cr);
     return SLOPE_ERROR;
   }
   
@@ -204,6 +210,7 @@ slope_figure_write_to_pdf (slope_figure_t *figure,
   
   cr = cairo_create(surf);
   if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    cairo_surface_destroy(surf);
     return SLOPE_ERROR;
   }
   
@@ -211,6 +218,8 @@ slope_figure_write_to_pdf (slope_figure_t *figure,
   slope_figure_draw(figure, cr, &rect);
 
   if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    cairo_surface_destroy(surf);
+    cairo_destroy(cr);
     return SLOPE_ERROR;
   }
   
@@ -237,6 +246,7 @@ slope_figure_write_to_ps (slope_figure_t *figure,
 
   cr = cairo_create(surf);
   if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    cairo_surface_destroy(surf);
     return SLOPE_ERROR;
   }
   
@@ -244,6 +254,8 @@ slope_figure_write_to_ps (slope_figure_t *figure,
   slope_figure_draw(figure, cr, &rect);
 
   if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+    cairo_surface_destroy(surf);
+    cairo_destroy(cr);
     return SLOPE_ERROR;
   }
   
