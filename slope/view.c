@@ -52,6 +52,11 @@ _on_button_release_event (GtkWidget *widget, GdkEventButton *event,
                           gpointer *data);
 
 
+/**
+ *
+ */
+static void _on_finalize (GObject *object);
+
 
 /**
  */
@@ -83,7 +88,10 @@ static void
 slope_view_class_init (SlopeViewClass *klass)
 {
   GtkWidgetClass *widget_klass = GTK_WIDGET_CLASS (klass);
+  GObjectClass *object_klass = G_OBJECT_CLASS(klass);
 
+  object_klass->finalize = _on_finalize;
+  
   g_type_class_add_private(klass, sizeof(SlopeViewPrivate));
 }
 
@@ -266,5 +274,18 @@ slope_view_toggle_mouse_zoom (GtkWidget *view, slope_bool_t on)
   }
 }
 
+
+static void _on_finalize (GObject *object)
+{
+  SlopeView *view = SLOPE_VIEW (object);
+  SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE (view);
+
+  if (priv != NULL) {
+    if (priv->own_figure == SLOPE_TRUE) {
+      slope_figure_destroy(priv->figure);
+      priv->own_figure = SLOPE_FALSE;
+    }
+  }
+}
 
 /* slope/view.c */

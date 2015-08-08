@@ -43,3 +43,4 @@ int main (int argc, char *argv[])
     slope_chart_destroy(chart);
     return 0;
 }
+
