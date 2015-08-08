@@ -35,6 +35,13 @@
 
 #include "slope/global.h"
 
+
+#define SLOPE_LIST_FOREACH(iterator, list) \
+  for(iterator = slope_list_first(list);   \
+      iterator != NULL;                    \
+      slope_iterator_next(&iterator))
+
+
 SLOPE_BEGIN_DECLS
 
 /**

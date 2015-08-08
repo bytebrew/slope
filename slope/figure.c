@@ -85,6 +85,8 @@ void
 slope_figure_draw (slope_figure_t *self, cairo_t *cr,
                    const slope_rect_t *rect)
 {
+  slope_iterator_t *met_iter;
+
   /* perform any pending drawing and clip to the figure's
      rectangle */
   cairo_stroke(cr);
@@ -99,15 +101,12 @@ slope_figure_draw (slope_figure_t *self, cairo_t *cr,
   }
 
   /* draw main items */
-  slope_iterator_t *met_iter =
-    slope_list_first(self->metrics);
-  while (met_iter) {
-    slope_metrics_t *met = (slope_metrics_t*)
-      slope_iterator_data(met_iter);
+  SLOPE_LIST_FOREACH (met_iter, self->metrics) {
+    slope_metrics_t *met;
+    met = (slope_metrics_t*) slope_iterator_data(met_iter);
     if (slope_metrics_get_visible(met)) {
       _slope_metrics_draw(met, cr, rect);
     }
-    slope_iterator_next(&met_iter);
   }
 
   /* draw legend */
