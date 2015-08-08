@@ -298,9 +298,11 @@ void
 slope_figure_notify_data_change (slope_figure_t *self,
                                  slope_item_t *item)
 {
+  slope_metrics_t *metrics;
+
   if (self == NULL) return;
 
-  slope_metrics_t *metrics = slope_item_get_metrics(item);
+  metrics = slope_item_get_metrics(item);
   slope_metrics_update(metrics);
   if (self->change_callback) {
     self->change_callback(self);
@@ -313,6 +315,8 @@ slope_figure_track_region (slope_figure_t *figure,
                            double x1, double y1,
                            double x2, double y2)
 {
+  slope_iterator_t *metr_iter;
+
   if (figure == NULL) return;
 
   if (x2 < x1) {
@@ -326,11 +330,9 @@ slope_figure_track_region (slope_figure_t *figure,
     y1 = tmp;
   }
 
-  slope_iterator_t *metr_iter =
-    slope_list_first(figure->metrics);
-  while (metr_iter) {
-    slope_metrics_t *metrics =
-      slope_iterator_data(metr_iter);
+  SLOPE_LIST_FOREACH (metr_iter, figure->metrics) {
+    slope_metrics_t *metrics;
+    metrics = slope_iterator_data(metr_iter);
 
     /* cartesian coordinates (xymetrics) */
     if (slope_metrics_get_type(metrics) == SLOPE_XYMETRICS) {
@@ -341,8 +343,6 @@ slope_figure_track_region (slope_figure_t *figure,
           slope_xymetrics_unmap_y(metrics, y1),
           slope_xymetrics_unmap_y(metrics, y2));
     }
-
-    slope_iterator_next(&metr_iter);
   }
 }
 
@@ -350,17 +350,16 @@ slope_figure_track_region (slope_figure_t *figure,
 void
 slope_figure_update (slope_figure_t *figure)
 {
+  slope_iterator_t *metr_iter;
+
   if (figure == NULL) return;
 
-  slope_iterator_t *metr_iter =
-    slope_list_first(figure->metrics);
-  while (metr_iter) {
-    slope_metrics_t *metrics =
-      slope_iterator_data(metr_iter);
+  SLOPE_LIST_FOREACH (metr_iter, figure->metrics) {
+    slope_metrics_t *metrics;
+    metrics = (slope_metrics_t*) slope_iterator_data(metr_iter);
     if (slope_metrics_get_visible(metrics)) {
       slope_metrics_update(metrics);
     }
-    slope_iterator_next(&metr_iter);
   }
 }
 

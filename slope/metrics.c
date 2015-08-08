@@ -29,7 +29,7 @@ slope_metrics_destroy (slope_metrics_t *metrics)
 {
   if (metrics == NULL) return;
   if (metrics->klass->destroy_fn) {
-    (*metrics->klass->destroy_fn)(metrics);
+    metrics->klass->destroy_fn(metrics);
   }
   slope_list_destroy(metrics->item_list);
   free(metrics);
@@ -66,7 +66,7 @@ slope_metrics_update (slope_metrics_t *metrics)
 {
   if (metrics == NULL) return;
   if (metrics->klass->update_fn) {
-    (*metrics->klass->update_fn)(metrics);
+    metrics->klass->update_fn(metrics);
   }
 }
 
@@ -75,7 +75,7 @@ void
 _slope_metrics_draw (slope_metrics_t *metrics, cairo_t *cr,
                      const slope_rect_t *rect)
 {
-  (*metrics->klass->draw_fn)(metrics, cr, rect);
+  metrics->klass->draw_fn(metrics, cr, rect);
 }
 
 
@@ -87,8 +87,7 @@ slope_metrics_add_item (slope_metrics_t *metrics,
     return;
   }
   item->metrics = metrics;
-  metrics->item_list = slope_list_append(
-      metrics->item_list, item);
+  metrics->item_list = slope_list_append(metrics->item_list, item);
   slope_metrics_update(metrics);
   slope_figure_notify_appearence_change(metrics->figure);
 }

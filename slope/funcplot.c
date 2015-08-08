@@ -113,6 +113,7 @@ slope_funcplot_set (slope_item_t *item,
   item->name = strdup(name);
   slope_color_set_name(&self->color, _slope_item_parse_color(fmt));
   self->scatter = _slope_item_parse_scatter(fmt);
+  if (self->scatter == SLOPE_PLUSSES) self->antialias = SLOPE_FALSE;
   _slope_funcplot_check_ranges(item);
   slope_item_notify_data_change(item);
 }
