@@ -19,7 +19,7 @@
 
 #include "slope/custom-item.h"
 #include "slope/item_p.h"
-#include "stdlib.h"
+#include <stdlib.h>
 
 
 static void

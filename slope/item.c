@@ -31,7 +31,7 @@ slope_item_destroy (slope_item_t *item)
     return;
   }
   if (item->klass->destroy_fn) {
-    (*item->klass->destroy_fn)(item);
+    item->klass->destroy_fn(item);
   }
   if (item->name) {
     free(item->name);
@@ -102,7 +102,7 @@ _slope_item_draw (slope_item_t *item, cairo_t *cr,
     slope_figure_t *figure = slope_item_get_figure(item);
     item->font = slope_figure_get_default_font(figure);
   }
-  (*item->klass->draw_fn)(item, cr, metrics);
+  item->klass->draw_fn(item, cr, metrics);
 }
 
 
@@ -114,7 +114,7 @@ _slope_item_draw_thumb (slope_item_t *item,
     slope_figure_t *figure = slope_item_get_figure(item);
     item->font = slope_figure_get_default_font(figure);
   }
-  (*item->klass->draw_thumb_fn)(item, pos, cr);
+  item->klass->draw_thumb_fn(item, pos, cr);
 }
 
 
