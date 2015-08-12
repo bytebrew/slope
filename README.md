@@ -8,9 +8,6 @@ widget and some utilities so create simple chart windows and animations, such as
 time data display. This build of course makes slope **Gtk** dependent. The cairo only
 build will always be maintained.
 
-If you prefer a C++/Qt approach, try Qsl <https://github.com/elvismt/Qsl>, It
-follows, as close as possible, slope's principles.
-
 Slope is in it's early stages of development and still needs some optimization
 and polishing. Some accessor methods to objects properties are also absent. But here's
 what we already have: The following chart is the output of the demo.c program in de
