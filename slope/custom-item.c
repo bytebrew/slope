@@ -39,6 +39,14 @@ _fake_draw_thumb (slope_item_t *self,
 }
 
 
+static void
+_fake_get_rect (slope_item_t *self,
+                slope_rect_t *rect)
+{
+    /* do nothing */
+}
+
+
 static slope_item_class_t*
 _slope_custom_item_get_class()
 {
@@ -49,6 +57,7 @@ _slope_custom_item_get_class()
         klass.destroy_fn = NULL;
         klass.draw_fn = _fake_draw;
         klass.draw_thumb_fn = _fake_draw_thumb;
+        klass.get_rect_fn = _fake_get_rect;
         first_call = SLOPE_FALSE;
     }
 

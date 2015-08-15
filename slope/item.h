@@ -113,6 +113,18 @@ slope_item_notify_appearence_change (slope_item_t *item);
 slope_public void
 slope_item_notify_data_change (slope_item_t *item);
 
+/**
+ *
+ */
+slope_public void
+slope_item_get_rect (slope_item_t *item, slope_rect_t *rect);
+
+/**
+ *
+ */
+slope_public int
+slope_item_get_rescalable (slope_item_t *item);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_DATA_H */

@@ -154,6 +154,22 @@ slope_item_notify_data_change (slope_item_t *item)
 }
 
 
+void
+slope_item_get_rect (slope_item_t *item, slope_rect_t *rect)
+{
+  if (item == NULL) return;
+  item->klass->get_rect_fn(item, rect);
+}
+
+
+int
+slope_item_get_rescalable (slope_item_t *item)
+{
+  if (item == NULL) return SLOPE_FALSE;
+  return item->rescalable;
+}
+
+
 int
 _slope_item_parse_color (const char *fmt)
 {

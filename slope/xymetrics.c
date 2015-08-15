@@ -128,6 +128,10 @@ _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
 void _slope_xymetrics_update (slope_metrics_t *metrics)
 {
   slope_xymetrics_t *self = (slope_xymetrics_t*) metrics;
+  slope_iterator_t *iterator = NULL;
+  slope_item_t *item = NULL;
+  slope_rect_t rect;
+
   if (metrics->item_list == NULL) {
     self->xmin = 0.0;
     self->xmax = 1.0;
@@ -138,32 +142,41 @@ void _slope_xymetrics_update (slope_metrics_t *metrics)
     return;
   }
 
-  slope_iterator_t *iter = slope_list_first(metrics->item_list);
-  slope_funcplot_t *item = (slope_funcplot_t*) slope_iterator_data(iter);
+  iterator = slope_list_first(metrics->item_list);
+  item = (slope_item_t*) slope_iterator_data(iterator);
 
-  while (item->rescalable == SLOPE_FALSE) {
-    slope_iterator_next(&iter);
-    item = (slope_funcplot_t*) slope_iterator_data(iter);
+  while (slope_item_get_rescalable(item) == SLOPE_FALSE) {
+    slope_iterator_next(&iterator);
+    item = (slope_item_t*) slope_iterator_data(iterator);
   }
 
-  self->xmin = item->xmin;
-  self->xmax = item->xmax;
-  self->ymin = item->ymin;
-  self->ymax = item->ymax;
+  slope_item_get_rect(item, &rect);
 
-  slope_iterator_next(&iter);
-  while (iter) {
-    item = (slope_funcplot_t*) slope_iterator_data(iter);
-    if (item->rescalable == SLOPE_FALSE) {
-      slope_iterator_next(&iter);
+  self->xmin = rect.x;
+  self->xmax = rect.x + rect.width;
+  self->ymin = rect.y;
+  self->ymax = rect.y + rect.height;
+
+  slope_iterator_next(&iterator);
+
+  while (iterator) {
+    item = (slope_item_t*) slope_iterator_data(iterator);
+
+    if (slope_item_get_rescalable(item) == SLOPE_FALSE) {
+      slope_iterator_next(&iterator);
       continue;
     }
-    if (item->xmin < self->xmin) self->xmin = item->xmin;
-    if (item->xmax > self->xmax) self->xmax = item->xmax;
-    if (item->ymin < self->ymin) self->ymin = item->ymin;
-    if (item->ymax > self->ymax) self->ymax = item->ymax;
-    slope_iterator_next(&iter);
+
+    slope_item_get_rect(item, &rect);
+
+    if (rect.x               < self->xmin) self->xmin = rect.x;
+    if (rect.x + rect.width  > self->xmax) self->xmax = rect.x + rect.width;
+    if (rect.y               < self->ymin) self->ymin = rect.y;
+    if (rect.y + rect.height < self->ymax) self->ymax = rect.y + rect.height;
+
+    slope_iterator_next(&iterator);
   }
+
   double xbound = (self->xmax - self->xmin) /20.0;
   self->xmin -= xbound;
   self->xmax += xbound;

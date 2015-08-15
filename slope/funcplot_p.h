@@ -102,6 +102,11 @@ void _slope_funcplot_draw_thumb (slope_item_t *item,
  */
 void _slope_funcplot_check_ranges (slope_item_t *item);
 
+/**
+ *
+ */
+void _slope_funcplot_get_rect (slope_item_t *item, slope_rect_t *rect);
+
 
 SLOPE_END_DECLS
 

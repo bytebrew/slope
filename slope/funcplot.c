@@ -47,6 +47,7 @@ _slope_funcplot_get_class()
     klass.destroy_fn = NULL;
     klass.draw_fn = _slope_funcplot_draw;
     klass.draw_thumb_fn = _slope_funcplot_draw_thumb;
+    klass.get_rect_fn = _slope_funcplot_get_rect;
     first_call = SLOPE_FALSE;
   }
 
@@ -65,6 +66,7 @@ _slope_funcplot_init (slope_item_t *parent)
   parent->name = NULL;
   parent->visible = SLOPE_TRUE;
   parent->has_thumb = SLOPE_TRUE;
+  parent->rescalable = SLOPE_TRUE;
   parent->metrics = NULL;
   parent->font = NULL;
   parent->klass = _slope_funcplot_get_class();
@@ -589,6 +591,16 @@ slope_funcplot_get_y_array (slope_item_t *item)
   if (item == NULL) return NULL;
   slope_funcplot_t *self = (slope_funcplot_t*) item;
   return self->vy;
+}
+
+
+void _slope_funcplot_get_rect (slope_item_t *item, slope_rect_t *rect)
+{
+  slope_funcplot_t *self = (slope_funcplot_t*) item;
+  rect->x = self->xmin;
+  rect->y = self->ymin;
+  rect->width = self->xmax - self->xmin;
+  rect->height = self->ymax - self->ymin;
 }
 
 /* slope/funcplot.c */

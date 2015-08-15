@@ -40,6 +40,8 @@ struct _slope_item_class
     void (*draw_fn) (slope_item_t*, cairo_t*, const slope_metrics_t*);
 
     void (*draw_thumb_fn) (slope_item_t*, const slope_point_t*, cairo_t*);
+
+    void (*get_rect_fn) (slope_item_t*, slope_rect_t*);
 };
 
 
@@ -52,6 +54,7 @@ struct _slope_item
     char *name;
     slope_font_t *font;
     slope_bool_t visible;
+    slope_bool_t rescalable;
     int has_thumb;
 };
 
