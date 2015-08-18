@@ -71,43 +71,38 @@ void
 _slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
                              const slope_metrics_t *metrics)
 {
-  slope_legend_t *self = (slope_legend_t*) item;
-  slope_figure_t *figure = slope_metrics_get_figure(metrics);
+  slope_iterator_t *met_iter;
+  slope_iterator_t *item_iter;
+  slope_legend_t *self;
+  slope_figure_t *figure;
+
+  self = (slope_legend_t*) item;
+  figure = slope_metrics_get_figure(metrics);
 
   double max_width = 0.0;
   self->rect.width = 0.0;
   self->rect.height = 0.0;
 
-  slope_iterator_t *met_iter = slope_list_first(
-      slope_figure_get_metrics_list(figure));
   /* for each metrics in the figure */
-  while (met_iter) {
-    slope_metrics_t *metrics = (slope_metrics_t*)
-      slope_iterator_data(met_iter);
-    slope_iterator_t *item_iter = slope_list_first(
-        slope_metrics_get_item_list(metrics));
+  SLOPE_LIST_FOREACH (met_iter, slope_figure_get_metrics_list(figure)) {
+    slope_metrics_t *metrics = (slope_metrics_t*) slope_iterator_data(met_iter);
     /* for each item in the metrics */
-    while (item_iter) {
-      slope_item_t *item = (slope_item_t*)
-        slope_iterator_data(item_iter);
+    SLOPE_LIST_FOREACH (item_iter, slope_metrics_get_item_list(metrics)) {
+      slope_item_t *item = (slope_item_t*) slope_iterator_data(item_iter);
 
       /* check if item is visible and has a legend thumb */
       if (slope_item_get_visible(item) == SLOPE_FALSE
           || slope_item_get_has_thumb(item) == SLOPE_FALSE) {
-        slope_iterator_next(&item_iter);
         continue;
       }
 
       /* increment height and check for bigger width */
       slope_rect_t txt_rec;
       slope_get_text_rect(cr, item->font, &txt_rec,
-          slope_item_get_name(item));
+                          slope_item_get_name(item));
       self->rect.height += txt_rec.height + 4.0;
       if (txt_rec.width > max_width) max_width = txt_rec.width;
-
-      slope_iterator_next(&item_iter);
     }
-    slope_iterator_next(&met_iter);
   }
 
   self->rect.width = max_width + 40.0;
@@ -138,9 +133,15 @@ void
 _slope_legend_draw (slope_item_t *item, cairo_t *cr,
                     const slope_metrics_t *metrics)
 {
-  slope_legend_t *self = (slope_legend_t*) item;
-  slope_figure_t *figure = slope_metrics_get_figure(metrics);
-  slope_rect_t *rec = &self->rect;
+  slope_iterator_t *met_iter;
+  slope_iterator_t *item_iter;
+  slope_legend_t *self;
+  slope_figure_t *figure;
+  slope_rect_t *rec;
+
+  self = (slope_legend_t*) item;
+  figure = slope_metrics_get_figure(metrics);
+  rec = &self->rect;
 
   _slope_legend_eval_geometry(item, cr, metrics);
 
@@ -165,24 +166,18 @@ _slope_legend_draw (slope_item_t *item, cairo_t *cr,
   entry_pos.x = self->rect.x + 15.0;
   entry_pos.y = self->rect.y;
 
-  slope_iterator_t *met_iter = slope_list_first(
-      slope_figure_get_metrics_list(figure));
   /* for each metrics in the figure */
-  while (met_iter) {
-    slope_metrics_t *metrics = (slope_metrics_t*)
-      slope_iterator_data(met_iter);
-    slope_iterator_t *item_iter = slope_list_first(
-        slope_metrics_get_item_list(metrics));
+  SLOPE_LIST_FOREACH (met_iter, slope_figure_get_metrics_list(figure)) {
+    slope_metrics_t *metrics = (slope_metrics_t*) slope_iterator_data(met_iter);
     /* for each item in the metrics */
-    while (item_iter) {
-      slope_item_t *item = (slope_item_t*)
-        slope_iterator_data(item_iter);
+    SLOPE_LIST_FOREACH (item_iter, slope_metrics_get_item_list(metrics)) {
+      slope_item_t *item = (slope_item_t*) slope_iterator_data(item_iter);
+
       const char *entry = slope_item_get_name(item);
 
       /* check if item is visible and has a legend thumb */
       if (slope_item_get_visible(item) == SLOPE_FALSE
           || slope_item_get_has_thumb(item) == SLOPE_FALSE) {
-        slope_iterator_next(&item_iter);
         continue;
       }
 
@@ -191,10 +186,7 @@ _slope_legend_draw (slope_item_t *item, cairo_t *cr,
       slope_get_text_rect(cr, item->font, &txt_rec, entry);
       entry_pos.y += txt_rec.height + 4.0;
       _slope_item_draw_thumb(item, &entry_pos, cr);
-
-      slope_iterator_next(&item_iter);
     }
-    slope_iterator_next(&met_iter);
   }
   cairo_stroke(cr);
 }
