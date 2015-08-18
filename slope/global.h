@@ -22,7 +22,7 @@
 
 /**
  */
-#ifdef _cplusplus
+#ifdef __cplusplus
 # define SLOPE_BEGIN_DECLS  extern "C" {
 # define SLOPE_END_DECLS    }
 #else

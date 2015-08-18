@@ -20,6 +20,7 @@
 #include "slope/metrics_p.h"
 #include "slope/item_p.h"
 #include "slope/list.h"
+#include "slope/figure.h"
 #include <cairo.h>
 #include <stdlib.h>
 
