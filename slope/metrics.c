@@ -90,7 +90,7 @@ slope_metrics_add_item (slope_metrics_t *metrics,
   item->metrics = metrics;
   metrics->item_list = slope_list_append(metrics->item_list, item);
   slope_metrics_update(metrics);
-  slope_figure_notify_appearence_change(metrics->figure);
+  slope_figure_notify_appearence_change(metrics->figure, item);
 }
 
 
@@ -114,7 +114,7 @@ slope_metrics_remove_item (slope_metrics_t *metrics,
   }
   if (change) {
     slope_metrics_update(metrics);
-    slope_figure_notify_appearence_change(metrics->figure);
+    slope_figure_notify_appearence_change(metrics->figure, item);
   }
 }
 
