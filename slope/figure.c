@@ -89,8 +89,8 @@ slope_figure_draw (slope_figure_t *self, cairo_t *cr,
 
   /* perform any pending drawing and clip to the figure's
      rectangle */
-  cairo_stroke(cr);
   cairo_save(cr);
+  cairo_new_path(cr);
   slope_cairo_rectangle(cr, rect);
   cairo_clip(cr);
 
@@ -102,10 +102,11 @@ slope_figure_draw (slope_figure_t *self, cairo_t *cr,
 
   /* draw main items */
   SLOPE_LIST_FOREACH (met_iter, self->metrics) {
-    slope_metrics_t *met;
-    met = (slope_metrics_t*) slope_iterator_data(met_iter);
-    if (slope_metrics_get_visible(met)) {
-      _slope_metrics_draw(met, cr, rect);
+    slope_metrics_t *metrics
+    metrics = (slope_metrics_t*) slope_iterator_data(met_iter);
+
+    if (slope_metrics_get_visible(metrics)) {
+      _slope_metrics_draw(metrics, cr, rect);
     }
   }
 
