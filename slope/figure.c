@@ -102,7 +102,7 @@ slope_figure_draw (slope_figure_t *self, cairo_t *cr,
 
   /* draw main items */
   SLOPE_LIST_FOREACH (met_iter, self->metrics) {
-    slope_metrics_t *metrics
+    slope_metrics_t *metrics;
     metrics = (slope_metrics_t*) slope_iterator_data(met_iter);
 
     if (slope_metrics_get_visible(metrics)) {
