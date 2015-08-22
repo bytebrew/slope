@@ -49,8 +49,13 @@ typedef void (*slope_draw_thumb_func_t) (slope_item_t *item,
 
 /**
  */
-slope_public slope_item_t* slope_custom_item_create();
+typedef void (*slope_get_rect_func_t) (slope_item_t *item,
+                                       slope_rect_t *rect);
 
+
+/**
+ */
+slope_public slope_item_t* slope_custom_item_create();
 
 /**
  */
@@ -58,12 +63,17 @@ slope_public void
 slope_custom_item_register_draw_func (slope_item_t *self,
                                       slope_draw_func_t func);
 
-
 /**
  */
 slope_public void
 slope_custom_item_register_draw_thumb_func (slope_item_t *self,
                                             slope_draw_thumb_func_t func);
+
+/**
+ */
+slope_public void
+slope_custom_item_register_get_rect_func (slope_item_t *self,
+                                          slope_get_rect_func_t func);
 
 SLOPE_END_DECLS
 
