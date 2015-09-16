@@ -40,8 +40,18 @@
 #include "slope/list.h"
 #include "slope/primitives.h"
 #include "slope/text.h"
+#include "slope/object.h"
 
 SLOPE_BEGIN_DECLS
+
+
+typedef struct _slope_figure_private slope_figure_private_t;
+
+struct _slope_figure
+{
+  slope_object_t parent;
+  slope_figure_private_t *data;
+};
 
 /**
  * @ingroup Figure

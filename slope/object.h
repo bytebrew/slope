@@ -17,31 +17,33 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_GLOBAL_H
-#define SLOPE_GLOBAL_H
+#ifndef SLOPE_OBJECT_H
+#define SLOPE_OBJECT_H
 
-/**
- */
-#ifdef __cplusplus
-# define SLOPE_BEGIN_DECLS  extern "C" {
-# define SLOPE_END_DECLS    }
-#else
-# define SLOPE_BEGIN_DECLS
-# define SLOPE_END_DECLS
-#endif
+#include "slope/global.h"
 
-/**
- */
-#if defined (_MSC_VER)
-# if defined (SLOPE_LIB_BUILD)
-#  define slope_public _declspec(dllexport)
-# elif defined (SLOPE_LIB)
-#  define slope_public _declspec(dllimport)
-# else
-#  define slope_public
-# endif
-#else
-#  define slope_public
-#endif
+SLOPE_BEGIN_DECLS
 
-#endif /*SLOPE_GLOBAL_H */
+typedef struct _slope_object       slope_object_t;
+typedef struct _slope_object_class slope_object_class_t;
+
+
+struct _slope_object
+{
+  slope_object_class_t *klass;
+};
+
+
+struct _slope_object_class
+{
+  void (*destroy) (slope_object_t *self);
+};
+
+
+slope_public void
+slope_object_destroy (slope_object_t *self);
+
+
+SLOPE_END_DECLS
+
+#endif /* SLOPE_OBJECT_H */

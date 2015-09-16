@@ -32,6 +32,7 @@ set(SLOPE_HDRS
     slope/primitives.h
     slope/text.h
     slope/list.h
+    slope/object.h
     slope/figure.h
     slope/metrics.h
     slope/item.h
@@ -39,7 +40,6 @@ set(SLOPE_HDRS
     slope/funcplot.h
     slope/xyaxis.h
     slope/legend.h
-    slope/custom-item.h
     slope/slope.h
 )
 
@@ -54,6 +54,7 @@ set(SLOPE_SRCS
     slope/primitives.c
     slope/text.c
     slope/list.c
+    slope/object.c
     slope/figure.c
     slope/metrics.c
     slope/item.c
@@ -61,7 +62,6 @@ set(SLOPE_SRCS
     slope/funcplot.c
     slope/xyaxis.c
     slope/legend.c
-    slope/custom-item.c
     slope/slope.c
 )
 
