@@ -17,16 +17,15 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_SCENE_P_H
-#define SLOPE_SCENE_P_H
+#ifndef SLOPE_FIGURE_P_H
+#define SLOPE_FIGURE_P_H
 
 #include "slope/figure.h"
 
 SLOPE_BEGIN_DECLS
 
-/**
- */
-struct _slope_figure
+
+struct _slope_figure_private
 {
     slope_list_t    *metrics;
     slope_metrics_t *default_metrics;
@@ -37,6 +36,10 @@ struct _slope_figure
     int              fill_back;
 };
 
+
+void
+_slope_figure_destroy (slope_object_t *self);
+
 SLOPE_END_DECLS
 
-#endif /*SLOPE_SCENE_P_H */
+#endif /*SLOPE_FIGURE_P_H */

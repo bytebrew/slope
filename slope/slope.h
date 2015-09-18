@@ -56,7 +56,6 @@
 #include "slope/xymetrics.h"
 #include "slope/funcplot.h"
 #include "slope/xyaxis.h"
-#include "slope/custom-item.h"
 
 /* gtk widget if available */
 #include "slope-config.h"

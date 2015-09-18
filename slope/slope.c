@@ -61,7 +61,7 @@ slope_chart_destroy (slope_figure_t *figure)
     }
     slope_metrics_destroy(metrics);
   }
-  slope_figure_destroy(figure);
+  slope_object_destroy((slope_object_t*) figure);
 }
 
 

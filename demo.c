@@ -18,6 +18,7 @@ int main (int argc, char *argv[])
     const double step = 2.0*M_PI/N;
     double x[N], y1[N], y2[N];
     int k;
+    
     for (k=0; k<N; k++) {
         x[k] = k*step;
         y1[k] = sin(x[k]);
@@ -43,4 +44,3 @@ int main (int argc, char *argv[])
     slope_chart_destroy(chart);
     return 0;
 }
-

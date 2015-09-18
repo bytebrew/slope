@@ -282,7 +282,7 @@ static void _on_finalize (GObject *object)
 
   if (priv != NULL) {
     if (priv->own_figure == SLOPE_TRUE) {
-      slope_figure_destroy(priv->figure);
+      slope_object_destroy((slope_object_t*) priv->figure);
       priv->own_figure = SLOPE_FALSE;
     }
   }
