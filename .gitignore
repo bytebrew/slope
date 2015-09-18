@@ -10,4 +10,6 @@ doc
 *.swp
 .kateproject
 .kateproject.d
-
+.kdev4
+.kdev4*
+*.kdev4
