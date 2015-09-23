@@ -42,7 +42,7 @@ struct _slope_metrics_class
     slope_object_class_t parent;
     void (*update_fn) (slope_metrics_t*);
     void (*draw_fn) (slope_metrics_t*, cairo_t*, const slope_rect_t*);
-    void (*get_data_rect) (const slope_metrics_t*, slope_rect_t*);
+    void (*get_data_rect_fn) (const slope_metrics_t*, slope_rect_t*);
 };
 
 

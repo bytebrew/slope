@@ -34,7 +34,7 @@ _slope_xymetrics_get_class()
     ((slope_object_class_t*) &klass)->destroy_fn = _slope_xymetrics_destroy;
     klass.update_fn = _slope_xymetrics_update;
     klass.draw_fn = _slope_xymetrics_draw;
-    klass.get_data_rect = _slope_xymetrics_get_data_rect;
+    klass.get_data_rect_fn = _slope_xymetrics_get_data_rect;
     first_call = SLOPE_FALSE;
   }
 
@@ -47,11 +47,11 @@ slope_xymetrics_create()
 {
   slope_xymetrics_t *self = malloc(sizeof(slope_xymetrics_t));
   slope_metrics_t *metrics = (slope_metrics_t*) self;
-  slope_xymetrics_private_t *priv = SLOPE_XYMETRICS_GET_PRIVATE(self);
+  slope_xymetrics_private_t *priv = malloc(sizeof(slope_xymetrics_private_t));
   slope_metrics_private_t *metrics_priv = (slope_metrics_private_t*) priv;
 
-  ((slope_object_t*) self)->klass =
-    (slope_object_class_t*) _slope_xymetrics_get_class();
+  ((slope_object_t*) self)->klass = (slope_object_class_t*) _slope_xymetrics_get_class();
+  ((slope_object_t*) self)->priv = (slope_object_private_t*) priv;
     
   metrics_priv->type = SLOPE_XYMETRICS;
   metrics_priv->visible = SLOPE_TRUE;
@@ -94,6 +94,7 @@ _slope_xymetrics_destroy (slope_object_t *metrics)
     slope_item_destroy(axis);
   }
   slope_list_destroy(priv->axis_list);
+  free(priv);
 }
 
 

@@ -199,7 +199,7 @@ slope_metrics_get_data_rect (const slope_metrics_t *metrics,
     if (metrics == NULL) return;
     
     klass = SLOPE_METRICS_GET_CLASS(metrics);
-    klass->get_data_rect (metrics, rect);
+    klass->get_data_rect_fn (metrics, rect);
 }
 
 
