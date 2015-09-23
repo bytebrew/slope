@@ -37,7 +37,7 @@ _slope_figure_get_class ()
     static int first_call = SLOPE_TRUE;
 
     if (first_call == SLOPE_TRUE) {
-        klass.destroy = _slope_figure_destroy;
+        klass.destroy_fn = _slope_figure_destroy;
         first_call = SLOPE_FALSE;
     }
 
@@ -53,7 +53,7 @@ slope_figure_create()
     slope_object_t *object = (slope_object_t*) self;
 
     object->klass = _slope_figure_get_class();
-    self->priv = data;
+    object->priv = (slope_object_private_t*) data;
 
     data->metrics = NULL;
     data->default_metrics = NULL;
@@ -68,15 +68,22 @@ slope_figure_create()
 
 
 void
+slope_figure_destroy (slope_figure_t *figure)
+{
+    slope_object_destroy ((slope_object_t*) figure);
+}
+
+
+void
 _slope_figure_destroy (slope_object_t *object)
 {
     slope_figure_t *self = (slope_figure_t*) object;
-    slope_figure_private_t *data = (slope_figure_private_t*) self->priv;
+    slope_figure_private_t *data = SLOPE_FIGURE_GET_PRIVATE(object);
 
-    slope_item_destroy(data->legend);
-    slope_list_destroy(data->metrics);
-    slope_font_destroy(data->default_font);
-    free(data);
+    slope_item_destroy (data->legend);
+    slope_list_destroy (data->metrics);
+    slope_font_destroy (data->default_font);
+    free (data);
 }
 
 
@@ -89,9 +96,9 @@ slope_figure_add_metrics (slope_figure_t *self,
     if (self == NULL) return;
     if (metrics == NULL) return;
 
-    data = (slope_figure_private_t*) self->priv;
+    data = SLOPE_FIGURE_GET_PRIVATE(self);
 
-    metrics->figure = self;
+    _slope_metrics_set_figure(metrics, self);
     data->metrics = slope_list_append(data->metrics, metrics);
     data->default_metrics = metrics;
 
@@ -108,7 +115,7 @@ slope_figure_get_metrics_list (const slope_figure_t *self)
 
     if (self == NULL) return NULL;
 
-    data = (slope_figure_private_t*) self->priv;
+    data = SLOPE_FIGURE_GET_PRIVATE(self);
     return data->metrics;
 }
 
@@ -120,7 +127,7 @@ slope_figure_draw (slope_figure_t *self, cairo_t *cr,
     slope_iterator_t *met_iter;
     slope_figure_private_t *data;
 
-    data = (slope_figure_private_t*) self->priv;
+    data = SLOPE_FIGURE_GET_PRIVATE(self);
 
     /* perform any pending drawing and clip to the figure's
        rectangle */
@@ -164,11 +171,8 @@ slope_figure_write_to_png (
     cairo_surface_t *surf;
     cairo_t *cr;
     slope_rect_t rect;
-    slope_figure_private_t *data;
 
     if (self == NULL) return;
-
-    data = (slope_figure_private_t*) self->priv;
 
     surf = cairo_image_surface_create(
             CAIRO_FORMAT_ARGB32, width, height);
@@ -207,11 +211,8 @@ slope_figure_write_to_svg (
     cairo_surface_t *surf;
     cairo_t *cr;
     slope_rect_t rect;
-    slope_figure_private_t *data;
 
     if (self == NULL) return;
-
-    data = (slope_figure_private_t*) self->priv;
 
     surf = cairo_svg_surface_create(
             filename, width, height);
@@ -249,11 +250,8 @@ slope_figure_write_to_pdf (
     cairo_surface_t *surf;
     cairo_t *cr;
     slope_rect_t rect;
-    slope_figure_private_t *data;
 
     if (self == NULL) return;
-
-    data = (slope_figure_private_t*) self->priv;
 
     surf = cairo_pdf_surface_create(filename, width, height);
     if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
@@ -327,7 +325,7 @@ slope_figure_get_default_metrics (slope_figure_t *self)
 
     if (self == NULL) return NULL;
 
-    data = (slope_figure_private_t*) self->priv;
+    data = SLOPE_FIGURE_GET_PRIVATE(self);
     return data->default_metrics;
 }
 
@@ -341,7 +339,7 @@ slope_figure_set_change_callback (
 
     if (self == NULL) return;
 
-    data = (slope_figure_private_t*) self->priv;
+    data = SLOPE_FIGURE_GET_PRIVATE(self);
     data->change_callback = callback;
 }
 
@@ -356,8 +354,9 @@ slope_figure_notify_appearence_change (
     if (self == NULL) return;
     (void) item; /* reserved for possible future use */
 
-    data = (slope_figure_private_t*) self->priv;
-    if (data->change_callback) {
+    data = SLOPE_FIGURE_GET_PRIVATE(self);
+    
+    if (data->change_callback != NULL) {
         data->change_callback(self);
     }
 }
@@ -373,10 +372,12 @@ slope_figure_notify_data_change (
 
     if (self == NULL) return;
 
-    data = (slope_figure_private_t*) self->priv;
+    data = SLOPE_FIGURE_GET_PRIVATE(self);
     metrics = slope_item_get_metrics(item);
+    
     slope_metrics_update(metrics);
-    if (data->change_callback) {
+    
+    if (data->change_callback != NULL) {
         data->change_callback(self);
     }
 }
@@ -393,7 +394,7 @@ slope_figure_track_region (
 
     if (self == NULL) return;
 
-    data = (slope_figure_private_t*) self->priv;
+    data = SLOPE_FIGURE_GET_PRIVATE(self);
 
     if (x2 < x1) {
         double tmp = x2;
@@ -431,7 +432,7 @@ slope_figure_update (slope_figure_t *self)
 
     if (self == NULL) return;
 
-    data = (slope_figure_private_t*) self->priv;
+    data = SLOPE_FIGURE_GET_PRIVATE(self);
 
     SLOPE_LIST_FOREACH (metr_iter, data->metrics) {
         slope_metrics_t *metrics;
@@ -450,7 +451,8 @@ slope_figure_get_default_font (slope_figure_t *self)
 
     if (self == NULL) return NULL;
 
-    data = (slope_figure_private_t*) self->priv;
+    data = SLOPE_FIGURE_GET_PRIVATE(self);
+    
     return data->default_font;
 }
 

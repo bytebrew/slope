@@ -22,18 +22,24 @@
 
 #include "slope/figure.h"
 
+
+#define SLOPE_FIGURE_GET_PRIVATE(figure) \
+    ((slope_figure_private_t*) ((slope_object_t*) (figure))->priv)
+
+
 SLOPE_BEGIN_DECLS
 
+typedef struct _slope_figure_private slope_figure_private_t;
 
 struct _slope_figure_private
 {
-    slope_list_t    *metrics;
-    slope_metrics_t *default_metrics;
-    slope_font_t    *default_font;
-    slope_item_t    *legend;
-    slope_callback_t change_callback;
-    slope_color_t    back_color;
-    int              fill_back;
+    slope_list_t     *metrics;
+    slope_metrics_t  *default_metrics;
+    slope_font_t     *default_font;
+    slope_item_t     *legend;
+    slope_callback_t  change_callback;
+    slope_color_t     back_color;
+    int               fill_back;
 };
 
 

@@ -32,9 +32,9 @@ slope_chart_create (const char *title,
   figure = slope_figure_create();
   metrics = slope_xymetrics_create();
 
-  slope_item_set_name(slope_xymetrics_get_axis(metrics, SLOPE_XYAXIS_TOP), title);
-  slope_item_set_name(slope_xymetrics_get_axis(metrics, SLOPE_XYAXIS_BOTTOM), xlabel);
-  slope_item_set_name(slope_xymetrics_get_axis(metrics, SLOPE_XYAXIS_LEFT), ylabel);
+  slope_item_set_name (slope_xymetrics_get_axis (metrics, SLOPE_XYAXIS_TOP), title);
+  slope_item_set_name (slope_xymetrics_get_axis (metrics, SLOPE_XYAXIS_BOTTOM), xlabel);
+  slope_item_set_name (slope_xymetrics_get_axis (metrics, SLOPE_XYAXIS_LEFT), ylabel);
 
   slope_figure_add_metrics(figure, metrics);
   return figure;
@@ -57,11 +57,11 @@ slope_chart_destroy (slope_figure_t *figure)
       slope_item_t *plot;
       plot = (slope_item_t*) slope_iterator_data(plot_iter);
 
-      slope_item_destroy(plot);
+      slope_item_destroy (plot);
     }
-    slope_metrics_destroy(metrics);
+    slope_metrics_destroy (metrics);
   }
-  slope_object_destroy((slope_object_t*) figure);
+  slope_figure_destroy (figure);
 }
 
 

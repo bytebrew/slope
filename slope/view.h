@@ -35,57 +35,33 @@ SLOPE_BEGIN_DECLS
 #define SLOPE_IS_VIEW(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_VIEW_TYPE))
 #define SLOPE_IS_VIEW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_VIEW_TYPE))
 
-
-/**
- */
 typedef struct _SlopeView SlopeView;
-
-
-/**
- */
 typedef struct _SlopeViewClass SlopeViewClass;
 
-
-/**
- */
 struct _SlopeView
 {
     GtkDrawingArea parent;
 };
 
-
-/**
- */
 struct _SlopeViewClass
 {
     GtkDrawingAreaClass parent;
+
+    /* padding for future expansion */
+    gpointer padding;
 };
 
-
-/**
- */
 slope_public GType
 slope_view_get_type(void) G_GNUC_CONST;
 
-
-/**
- */
 slope_public GtkWidget* slope_view_new (void);
 
-
-/**
- */
 slope_public GtkWidget*
 slope_view_new_for_figure (slope_figure_t *figure, slope_bool_t own_figure);
 
-/**
- *
- */
 slope_public slope_figure_t*
 slope_view_get_figure (GtkWidget *view);
 
-/**
- */
 slope_public void
 slope_view_toggle_mouse_zoom (GtkWidget *view,
                               slope_bool_t on);

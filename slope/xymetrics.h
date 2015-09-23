@@ -25,6 +25,13 @@
 
 SLOPE_BEGIN_DECLS
 
+
+struct _slope_xymetrics
+{
+    slope_metrics_t parent;
+};
+
+
 /**
  */
 slope_public slope_metrics_t* slope_xymetrics_create();

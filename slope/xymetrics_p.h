@@ -23,19 +23,25 @@
 #include "slope/xymetrics.h"
 #include "slope/metrics_p.h"
 
+
+#define SLOPE_XYMETRICS_GET_PRIVATE(metrics) \
+    ((slope_xymetrics_private_t*) ((slope_object_t*) (metrics))->priv)
+
+
 SLOPE_BEGIN_DECLS
 
-/**
- */
-typedef struct _slope_xymetrics slope_xymetrics_t;
 
-/**
- */
-struct _slope_xymetrics
+typedef struct _slope_xymetrics slope_xymetrics_t;
+typedef struct _slope_xymetrics_private slope_xymetrics_private_t;
+
+
+struct _slope_xymetrics_private
 {
-    slope_metrics_t parent;
+    slope_metrics_private_t parent;
+    
     /* axis list */
     slope_list_t *axis_list;
+    
     /* item space geometry attributes */
     double xmin, xmax;
     double ymin, ymax;
@@ -43,24 +49,26 @@ struct _slope_xymetrics
 };
 
 
-/**
- */
-slope_metrics_class_t* _slope_xymetrics_get_class();
+slope_metrics_class_t*
+_slope_xymetrics_get_class();
 
 
-/**
- */
-void _slope_xymetrics_destroy (slope_metrics_t *metrics);
+void
+_slope_xymetrics_destroy (slope_object_t *metrics);
 
 
-/**
- */
-void _slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
-                             const slope_rect_t *rect);
+void
+_slope_xymetrics_draw (slope_metrics_t *metrics, cairo_t *cr,
+                       const slope_rect_t *rect);
 
-/**
- */
-void _slope_xymetrics_update (slope_metrics_t *metrics);
+
+void
+_slope_xymetrics_update (slope_metrics_t *metrics);
+
+
+void
+_slope_xymetrics_get_data_rect (const slope_metrics_t *metrics,
+                                slope_rect_t *rect);
 
 SLOPE_END_DECLS
 

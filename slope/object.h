@@ -24,19 +24,21 @@
 
 SLOPE_BEGIN_DECLS
 
-typedef struct _slope_object       slope_object_t;
-typedef struct _slope_object_class slope_object_class_t;
+typedef struct _slope_object         slope_object_t;
+typedef struct _slope_object_class   slope_object_class_t;
+typedef struct _slope_object_private slope_object_private_t;
 
 
 struct _slope_object
 {
   slope_object_class_t *klass;
+  slope_object_private_t *priv;
 };
 
 
 struct _slope_object_class
 {
-  void (*destroy) (slope_object_t *self);
+  void (*destroy_fn) (slope_object_t *self);
 };
 
 

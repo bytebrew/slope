@@ -44,14 +44,9 @@
 
 SLOPE_BEGIN_DECLS
 
-
-// typedef struct _slope_figure slope_figure_t;
-typedef struct _slope_figure_private slope_figure_private_t;
-
 struct _slope_figure
 {
   slope_object_t parent;
-  slope_figure_private_t *priv;
 };
 
 /**
@@ -60,7 +55,15 @@ struct _slope_figure
  *
  * @returns A new figure instance.
  */
-slope_public slope_figure_t* slope_figure_create();
+slope_public slope_figure_t*
+slope_figure_create();
+
+/**
+ * @ingroup Figure
+ * @brief Destroys a figure
+ */
+slope_public void
+slope_figure_destroy (slope_figure_t *figure);
 
 /**
  * @ingroup Figure

@@ -70,28 +70,32 @@ _slope_xyaxis_setup_draw (slope_item_t *item, cairo_t *cr,
 {
   slope_xyaxis_t *axis = (slope_xyaxis_t*) item;
   const slope_xymetrics_t *xymetr = (const slope_xymetrics_t*) metrics;
+  slope_rect_t data_rect, fig_rect;
+  
+  slope_metrics_get_data_rect(metrics, &data_rect);
+  slope_metrics_get_figure_rect(metrics, &fig_rect);
 
   switch (axis->type) {
     case SLOPE_XYAXIS_TOP:
-      axis->length = metrics->width_figure;
-      axis->divlen = xymetr->xmax - xymetr->xmin;
+      axis->length = fig_rect.width;
+      axis->divlen = data_rect.width;
       axis->divnum = axis->length / 70.0;
       break;
     case SLOPE_XYAXIS_BOTTOM:
-      axis->length = metrics->width_figure;
-      axis->divlen = xymetr->xmax - xymetr->xmin;
-      axis->divnum = axis->length / 70.0;
-      break;
+        axis->length = fig_rect.width;
+        axis->divlen = data_rect.width;
+        axis->divnum = axis->length / 70.0;
+        break;
     case SLOPE_XYAXIS_LEFT:
-      axis->length = metrics->height_figure;
-      axis->divlen = xymetr->ymax - xymetr->ymin;
-      axis->divnum = axis->length / 50.0;
-      break;
+        axis->length = fig_rect.height;
+        axis->divlen = data_rect.height;
+        axis->divnum = axis->length / 50.0;
+        break;
     case SLOPE_XYAXIS_RIGHT:
-      axis->length = metrics->height_figure;
-      axis->divlen = xymetr->ymax - xymetr->ymin;
-      axis->divnum = axis->length / 50.0;
-      break;
+        axis->length = fig_rect.height;
+        axis->divlen = data_rect.height;
+        axis->divnum = axis->length / 50.0;
+        break;
   }
   axis->divlen /= axis->divnum;
   axis->divnum *= 5.0;
@@ -134,10 +138,14 @@ _slope_xyaxis_draw_top (slope_item_t *item, cairo_t *cr,
 {
   slope_xyaxis_t *axis = (slope_xyaxis_t*) item;
   const slope_xymetrics_t *xymetr = (const slope_xymetrics_t*) metrics;
+  slope_rect_t data_rect, fig_rect;
+  
+  slope_metrics_get_data_rect(metrics, &data_rect);
+  slope_metrics_get_figure_rect(metrics, &fig_rect);
 
-  double x = metrics->xmin_figure;
-  double y = metrics->ymin_figure;
-  double coord = xymetr->xmin;
+  double x = fig_rect.x;
+  double y = fig_rect.y;
+  double coord = data_rect.x;
   char label[32];
 
   cairo_move_to(cr, x, y);
@@ -163,7 +171,7 @@ _slope_xyaxis_draw_top (slope_item_t *item, cairo_t *cr,
   sprintf(label, "%s", item->name);
   slope_rect_t txtrec;
   slope_get_text_rect(cr, item->font, &txtrec, item->name);
-  x = metrics->xmin_figure + (metrics->width_figure - txtrec.width)/2.0;
+  x = fig_rect.x + (fig_rect.width - txtrec.width)/2.0;
   y = y - 3.0*txtrec.height;
   slope_draw_text(cr, item->font, x, y, item->name);
 
@@ -177,10 +185,14 @@ _slope_xyaxis_draw_bottom (slope_item_t *item, cairo_t *cr,
 {
   slope_xyaxis_t *axis = (slope_xyaxis_t*) item;
   const slope_xymetrics_t *xymetr = (const slope_xymetrics_t*) metrics;
+  slope_rect_t data_rect, fig_rect;
+  
+  slope_metrics_get_data_rect(metrics, &data_rect);
+  slope_metrics_get_figure_rect(metrics, &fig_rect);
 
-  double x = metrics->xmin_figure;
-  double y = metrics->ymax_figure;
-  double coord = xymetr->xmin;
+  double x = fig_rect.x;
+  double y = fig_rect.y;
+  double coord = data_rect.x;
   char label[32];
 
   cairo_move_to(cr, x, y);
@@ -206,7 +218,7 @@ _slope_xyaxis_draw_bottom (slope_item_t *item, cairo_t *cr,
   sprintf(label, "%s", item->name);
   slope_rect_t txtrec;
   slope_get_text_rect(cr, item->font, &txtrec, item->name);
-  x = metrics->xmin_figure + (metrics->width_figure - txtrec.width)/2.0;
+  x = fig_rect.x + (fig_rect.width - txtrec.width)/2.0;
   y = y + 3.2*txtrec.height;
   slope_draw_text(cr, item->font, x, y, item->name);
 
@@ -220,10 +232,14 @@ _slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
 {
   slope_xyaxis_t *axis = (slope_xyaxis_t*) item;
   const slope_xymetrics_t *xymetr = (const slope_xymetrics_t*) metrics;
+  slope_rect_t data_rect, fig_rect;
+  
+  slope_metrics_get_data_rect(metrics, &data_rect);
+  slope_metrics_get_figure_rect(metrics, &fig_rect);
 
-  double x = metrics->xmin_figure;
-  double y = metrics->ymax_figure;
-  double coord = xymetr->ymin;
+  double x = fig_rect.x;
+  double y = fig_rect.y;
+  double coord = data_rect.y;
   char label[32];
   double max_txt_wid = 0.0;
 
@@ -254,8 +270,8 @@ _slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
   sprintf(label, "%s", item->name);
   slope_rect_t txtrec;
   slope_get_text_rect(cr, item->font, &txtrec, item->name);
-  x = - metrics->ymin_figure - (metrics->height_figure + txtrec.width)/2.0;
-  y = metrics->xmin_figure - max_txt_wid - 2.0*txtrec.height;
+  x = - fig_rect.y - (fig_rect.height + txtrec.width)/2.0;
+  y = fig_rect.x - max_txt_wid - 2.0*txtrec.height;
   slope_draw_text(cr, item->font, x, y, item->name);
   cairo_restore(cr);
   cairo_stroke(cr);
@@ -268,10 +284,14 @@ _slope_xyaxis_draw_right (slope_item_t *item, cairo_t *cr,
 {
   slope_xyaxis_t *axis = (slope_xyaxis_t*) item;
   const slope_xymetrics_t *xymetr = (const slope_xymetrics_t*) metrics;
+  slope_rect_t data_rect, fig_rect;
+  
+  slope_metrics_get_data_rect(metrics, &data_rect);
+  slope_metrics_get_figure_rect(metrics, &fig_rect);
 
-  double x = metrics->xmax_figure;
-  double y = metrics->ymax_figure;
-  double coord = xymetr->ymin;
+  double x = fig_rect.x;
+  double y = fig_rect.y;
+  double coord = data_rect.y;
   char label[32];
   double max_txt_wid = 0.0;
 
@@ -300,8 +320,8 @@ _slope_xyaxis_draw_right (slope_item_t *item, cairo_t *cr,
   sprintf(label, "%s", item->name);
   slope_rect_t txtrec;
   slope_get_text_rect(cr, item->font, &txtrec, item->name);
-  x = - metrics->ymin_figure - (metrics->height_figure + txtrec.width)/2.0;
-  y = metrics->xmax_figure + max_txt_wid + 2.6*txtrec.height;
+  x = - fig_rect.y - (fig_rect.height + txtrec.width)/2.0;
+  y = fig_rect.x + fig_rect.width + max_txt_wid + 2.6*txtrec.height;
   slope_draw_text(cr, item->font, x, y, item->name);
   cairo_restore(cr);
   cairo_stroke(cr);

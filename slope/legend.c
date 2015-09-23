@@ -75,6 +75,10 @@ _slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
   slope_iterator_t *item_iter;
   slope_legend_t *self;
   slope_figure_t *figure;
+  slope_rect_t data_rect, fig_rect;
+  
+  slope_metrics_get_data_rect(metrics, &data_rect);
+  slope_metrics_get_figure_rect(metrics, &fig_rect);
 
   self = (slope_legend_t*) item;
   figure = slope_metrics_get_figure(metrics);
@@ -110,20 +114,20 @@ _slope_legend_eval_geometry (slope_item_t *item, cairo_t *cr,
 
   switch (self->position) {
     case SLOPE_LEGEND_TOPRIGHT:
-      self->rect.x = metrics->xmax_figure - self->rect.width - 10.0;
-      self->rect.y = metrics->ymin_figure + 10.0;
+      self->rect.x = fig_rect.x + fig_rect.width - self->rect.width - 10.0;
+      self->rect.y = fig_rect.y + 10.0;
       break;
     case SLOPE_LEGEND_TOPLEFT:
-      self->rect.x = metrics->xmin_figure + 10.0;
-      self->rect.y = metrics->ymin_figure + 10.0;
+      self->rect.x = fig_rect.y + 10.0;
+      self->rect.y = fig_rect.y + 10.0;
       break;
     case SLOPE_LEGEND_TOPRIGHT_OUTSIDE:
-      self->rect.x = metrics->xmax_figure + 200.0;
-      self->rect.y = metrics->ymin_figure + 10.0;
+      self->rect.x = fig_rect.x + fig_rect.width + 200.0;
+      self->rect.y = fig_rect.y + 10.0;
       break;
     default: /* TOPRIGHT */
-      self->rect.x = metrics->xmax_figure - self->rect.width - 10.0;
-      self->rect.y = metrics->ymin_figure + 10.0;
+        self->rect.x = fig_rect.x + fig_rect.width - self->rect.width - 10.0;
+        self->rect.y = fig_rect.y + 10.0;
       break;
   }
 }

@@ -26,8 +26,8 @@ slope_object_destroy (slope_object_t *self)
 {
   if (self == NULL) return;
 
-  if (self->klass != NULL && self->klass->destroy != NULL) {
-    self->klass->destroy (self);
+  if (self->klass != NULL && self->klass->destroy_fn != NULL) {
+    self->klass->destroy_fn (self);
   }
 
   free(self);

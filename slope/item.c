@@ -208,4 +208,12 @@ _slope_item_parse_scatter (const char *fmt)
   return scatter;
 }
 
+
+void
+_slope_item_set_metrics (slope_item_t *item, slope_metrics_t *metrics)
+{
+    if (item == NULL) return;
+    item->metrics = metrics;
+}
+
 /* slope/item.c */

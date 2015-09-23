@@ -80,7 +80,11 @@ int _slope_item_parse_color (const char *fmt);
  */
 int _slope_item_parse_scatter (const char *fmt);
 
+
+void
+_slope_item_set_metrics (slope_item_t *item, slope_metrics_t *metrics);
+
+
 SLOPE_END_DECLS
 
 #endif /*SLOPE_DATA_P_H */
-

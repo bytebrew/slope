@@ -36,10 +36,10 @@
 #define SLOPE_METRICS_H
 
 #include "slope/list.h"
+#include "slope/object.h"
 #include "slope/primitives.h"
 
 SLOPE_BEGIN_DECLS
-
 
 /**
  * @ingroup Metrics
@@ -56,6 +56,12 @@ typedef enum _slope_metrics_type
     SLOPE_XYMETRICS       = 1  /*!< XY or cartesian metrics object */
 }
 slope_metrics_type_t;
+
+
+struct _slope_metrics
+{
+    slope_object_t parent;
+};
 
 
 /**
@@ -109,6 +115,18 @@ slope_metrics_get_item_list (const slope_metrics_t *metrics);
  */
 slope_public slope_figure_t*
 slope_metrics_get_figure (const slope_metrics_t *metrics);
+
+/**
+ */
+slope_public void
+slope_metrics_get_data_rect (const slope_metrics_t *metrics,
+                             slope_rect_t *rect);
+
+/**
+ */
+slope_public void
+slope_metrics_get_figure_rect (const slope_metrics_t *metrics,
+                               slope_rect_t *rect);
 
 SLOPE_END_DECLS
 
