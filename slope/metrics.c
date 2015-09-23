@@ -26,14 +26,6 @@
 
 
 void
-_slope_metrics_destroy (slope_metrics_t *metrics)
-{
-    slope_metrics_private_t *priv = SLOPE_METRICS_GET_PRIVATE(metrics);
-    slope_list_destroy(priv->item_list);
-}
-
-
-void
 slope_metrics_destroy (slope_metrics_t *metrics)
 {
     slope_object_destroy((slope_object_t*) metrics);

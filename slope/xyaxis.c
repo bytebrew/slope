@@ -146,7 +146,7 @@ _slope_xyaxis_draw_top (slope_item_t *item, cairo_t *cr,
   double x = fig_rect.x;
   double y = fig_rect.y;
   double coord = data_rect.x;
-  char label[32];
+  char label[64];
 
   cairo_move_to(cr, x, y);
   cairo_line_to(cr, x+axis->length, y);
@@ -191,7 +191,7 @@ _slope_xyaxis_draw_bottom (slope_item_t *item, cairo_t *cr,
   slope_metrics_get_figure_rect(metrics, &fig_rect);
 
   double x = fig_rect.x;
-  double y = fig_rect.y;
+  double y = fig_rect.y + fig_rect.height;
   double coord = data_rect.x;
   char label[32];
 
@@ -238,7 +238,7 @@ _slope_xyaxis_draw_left (slope_item_t *item, cairo_t *cr,
   slope_metrics_get_figure_rect(metrics, &fig_rect);
 
   double x = fig_rect.x;
-  double y = fig_rect.y;
+  double y = fig_rect.y + fig_rect.height;
   double coord = data_rect.y;
   char label[32];
   double max_txt_wid = 0.0;
@@ -289,8 +289,8 @@ _slope_xyaxis_draw_right (slope_item_t *item, cairo_t *cr,
   slope_metrics_get_data_rect(metrics, &data_rect);
   slope_metrics_get_figure_rect(metrics, &fig_rect);
 
-  double x = fig_rect.x;
-  double y = fig_rect.y;
+  double x = fig_rect.x + fig_rect.width;
+  double y = fig_rect.y + fig_rect.height;
   double coord = data_rect.y;
   char label[32];
   double max_txt_wid = 0.0;
