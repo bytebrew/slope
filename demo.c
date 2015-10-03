@@ -1,7 +1,7 @@
 /*
  * Writen by Elvis M. Teixeira
  *
- * This program in in the public domain
+ * This program is in the public domain
  */
 
 #include <slope/slope.h>
@@ -31,16 +31,20 @@ int main (int argc, char *argv[])
     slope_chart_add_plot(chart, x, y1, N, "Sine approximation", "r-");
 
     #if SLOPE_HAVE_GTK
-    /* put the scene in a gtk widget */
+    /* put the scene in a gtk widget if you want */
     gtk_init(&argc,&argv);
     GtkWidget *window = slope_create_window(chart, "Data and Model");
     gtk_widget_show_all(window);
     gtk_main();
-    #else
-    /* save the chart in a png figure */
-    slope_figure_write_to_png(chart, "figure.png", 500, 350);
     #endif /* SLOPE_HAVE_GTK */
+    
+    /* and save the chart in some image format */
+    slope_figure_write_to_png(chart, "figure.png", 500, 350);
+    slope_figure_write_to_ps(chart, "figure.ps", 500, 350);
+    slope_figure_write_to_pdf(chart, "figure.pdf", 500, 350);
+    slope_figure_write_to_svg(chart, "figure.svg", 500, 350);
 
     slope_chart_destroy(chart);
     return 0;
 }
+
