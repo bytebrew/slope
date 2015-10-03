@@ -48,10 +48,9 @@ struct _slope_metrics_class
 
 struct _slope_metrics_private
 {
-    slope_metrics_class_t *klass;
-    slope_metrics_type_t   type;
-    slope_figure_t        *figure;
-    slope_list_t          *item_list;
+    slope_metrics_type_t  type;
+    slope_figure_t       *figure;
+    slope_list_t         *item_list;
     
     /* boundary between item image and figure frontier */
     double x_low_bound, x_up_bound;
@@ -65,6 +64,10 @@ struct _slope_metrics_private
     /* show this metric's items? */
     slope_bool_t visible;
 };
+
+
+void
+_slope_metrics_init (slope_object_t *object);
 
 
 void

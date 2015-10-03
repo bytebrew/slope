@@ -54,6 +54,10 @@ _slope_xymetrics_get_class();
 
 
 void
+_slope_xymetrics_init (slope_object_t *object);
+
+
+void
 _slope_xymetrics_destroy (slope_object_t *metrics);
 
 

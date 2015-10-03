@@ -81,8 +81,8 @@ slope_metrics_get_visible (const slope_metrics_t *metrics);
 /**
  */
 slope_public void
-slope_metrics_toggle_visible (slope_metrics_t *metrics,
-                              slope_bool_t visible);
+slope_metrics_set_visible (slope_metrics_t *metrics,
+                           slope_bool_t visible);
 
 /**
  */

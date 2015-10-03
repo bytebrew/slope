@@ -38,6 +38,7 @@ struct _slope_object
 
 struct _slope_object_class
 {
+    void (*init_fn) (slope_object_t *self);
   void (*destroy_fn) (slope_object_t *self);
 };
 
