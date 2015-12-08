@@ -21,4 +21,4 @@ to stroke the resulting chart via a **cairo_t**.
 
 Contributions to slope are welcome, propose your's to elvismtt@gmail.com
 
-Special thanks to Remi Bertho (remi.bertho@openmailbox.org) for his contributions
+If you prefer a Qt/C++ approach. Check out my other project, Kdv, at <github.com/elvismt/Kdv>
