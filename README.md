@@ -13,7 +13,8 @@ and polishing. Some accessor methods to objects properties are also absent. But 
 what we already have: The following chart is the output of the demo.c program in de
 top level source repository.
 
-![](https://github.com/exocode/slope/blob/master/figure.png)
+![](https://github.com/elvismt/slope/blob/master/demos/quick.png)
+![](https://github.com/elvismt/slope/blob/master/demos/custom.png)
 
 Slope's basic usage is: create a **slope_figure_t**, add one or more **slope_metrics_t**
 to it and add some **slope_item_t** to the metrics, then use function **slope_figure_draw()**

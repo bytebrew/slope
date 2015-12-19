@@ -1,0 +1,63 @@
+#include <math.h>
+#include <gtk/gtk.h>
+#include <slope/widget.h>
+#include <stdio.h>
+
+
+#define NPTS 50
+
+
+int main(int argc, char *argv[])
+{
+    GtkWidget *window;
+    GtkWidget *slope;
+
+    slope_figure_t *figure;
+    slope_scale_t *scale;
+    slope_item_t *log1_series;
+    slope_item_t *log2_series;
+    slope_item_t *log3_series;
+    
+    const double step = 2.0*M_PI/(NPTS-1);
+    double x[NPTS], y1[NPTS], y2[NPTS], y3[NPTS];
+    int k;
+    for (k=0; k<NPTS; k++) {
+        x[k] = 1.0 + k*step;
+        y1[k] = log(x[k]);
+        y2[k] = log(2.0*x[k]);
+        y3[k] = log(3.0*x[k]);
+    }
+
+    /* create series (plot) representation and place it in a scale */
+    log1_series = slope_series_new_for_data(x, y1, NPTS, "log(x)", SLOPE_RED, SLOPE_GREEN);
+    log2_series = slope_series_new_for_data(x, y2, NPTS, "log(2x)", SLOPE_GREEN, SLOPE_GREEN);
+    log3_series = slope_series_new_for_data(x, y3, NPTS, "log(3x)", SLOPE_BLUE, SLOPE_GREEN);
+
+    scale = slope_linear_new("linear scale");
+    slope_scale_add_item(scale, log1_series);
+    slope_scale_add_item(scale, log2_series);
+    slope_scale_add_item(scale, log3_series);
+
+    /* set up window */
+    gtk_init (&argc, &argv);
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    slope = slope_widget_new();
+    figure = slope_widget_get_figure(slope);
+    slope_figure_set_name(figure, "Y = Log(n*X)");
+    slope_figure_add_scale(figure, scale);
+
+    gtk_container_add(GTK_CONTAINER(window), slope);
+    gtk_window_set_default_size(GTK_WINDOW(window), 500, 350);
+    gtk_widget_set_size_request(window, 200, 200);
+    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+
+    gtk_widget_show_all(window);
+    gtk_main();
+
+    /* clean up */
+    slope_scale_destroy(scale);
+    slope_item_destroy(log1_series);
+    slope_item_destroy(log2_series);
+    slope_item_destroy(log3_series);
+    return 0;
+}
