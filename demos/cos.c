@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     }
 
     /* create series (plot) representation and place it in a scale */
-    cos_series = slope_series_new_for_data(x, y, NPTS, "cos(x)", SLOPE_RED, SLOPE_GREEN);
+    cos_series = slope_series_new_for_data(x, y, NPTS, "cos(x)", SLOPE_BLUE, SLOPE_ORANGE);
     slope_series_set_style(cos_series, SLOPE_SERIES_AREAUNDER);
     scale = slope_linear_new("linear scale");
     slope_linear_set_show_grid(scale, SLOPE_TRUE);

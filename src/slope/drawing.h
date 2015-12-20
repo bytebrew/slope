@@ -24,24 +24,38 @@
 #include <slope/global.h>
 #include <cairo/cairo.h>
 
-#define SLOPE_RGBA(r,g,b,a) ((slope_color_t) (((r)&0xff)<<24 | ((g)&0xff)<<16 | ((b)&0xff)<<8 | (a)))
+/* shortcut for creating a color from bgba values */
+#define SLOPE_RGBA(r,g,b,a) \
+    ((slope_color_t) (((r)&0xff)<<24 \
+                   | ((g)&0xff)<<16 \
+                   | ((b)&0xff)<<8 \
+                   | (a)))
 
-#define SLOPE_BLACK       SLOPE_RGBA(0,0,0,255)
-#define SLOPE_WHITE       SLOPE_RGBA(255,255,255,255)
-#define SLOPE_GRAY        SLOPE_RGBA(127,127,127,255)
-#define SLOPE_LIGHTGRAY   SLOPE_RGBA(80,80,80,80)
-#define SLOPE_DARKGRAY    SLOPE_RGBA(190,190,190,255)
-#define SLOPE_RED         SLOPE_RGBA(255,0,0,255)
-#define SLOPE_GREEN       SLOPE_RGBA(0,255,0,255)
-#define SLOPE_BLUE        SLOPE_RGBA(0,0,255,255)
-#define SLOPE_COLOR_NULL  SLOPE_RGBA(0,0,0,0)
+/* named color values */
+#define SLOPE_BLACK       0x000000FF
+#define SLOPE_WHITE       0xFFFFFFFF
+#define SLOPE_GRAY        0x888888FF
+#define SLOPE_LIGHTGRAY   0x66666666
+#define SLOPE_DARKGRAY    0xAAAAAAAA
+#define SLOPE_RED         0xFF0000FF
+#define SLOPE_GREEN       0x00FF00FF
+#define SLOPE_BLUE        0x0000FFFF
+#define SLOPE_YELLOW      0xFFFF00FF
+#define SLOPE_MAGENTA     0xFF00FFFF
+#define SLOPE_CYAN        0x00FFFFFF
+#define SLOPE_AZURE       0xF0FFFFFF
+#define SLOPE_VIOLET      0xEE82FFFF
+#define SLOPE_ORANGE      0xFF8C00FF
+#define SLOPE_COLOR_NULL  0x00000000
 
+/* get rgb components from color */
 #define SLOPE_COLOR_GET_RED(color)    (((color) >> 24) & 0xff)
 #define SLOPE_COLOR_GET_GREEN(color)  (((color) >> 16) & 0xff)
 #define SLOPE_COLOR_GET_BLUE(color)   (((color) >> 8) & 0xff)
 #define SLOPE_COLOR_GET_ALPHA(color)  ((color) & 0xff)
 
-#define SLOPE_COLOR_IS_NULL(color) (SLOPE_COLOR_GET_ALPHA(color) == 0)
+/* a null color name, totally transparent */
+#define SLOPE_COLOR_IS_NULL(color) ((color) == SLOPE_COLOR_NULL)
 
 SLOPE_BEGIN_DECLS
 
