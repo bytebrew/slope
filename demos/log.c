@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 
     slope_figure_t *figure;
     slope_scale_t *scale;
+    slope_item_t *legend;
     slope_item_t *log1_series;
     slope_item_t *log2_series;
     slope_item_t *log3_series;
@@ -43,8 +44,12 @@ int main(int argc, char *argv[])
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     slope = slope_widget_new();
     figure = slope_widget_get_figure(slope);
+    /* get figure from widget and set it's scale and title */
     slope_figure_set_name(figure, "Y = Log(n*X)");
     slope_figure_add_scale(figure, scale);
+    /* put legend bellow the curves */
+    legend = slope_figure_get_legend(figure);
+    slope_legend_set_position_policy(legend, SLOPE_LEGEND_BOTTOMRIGHT);
 
     gtk_container_add(GTK_CONTAINER(window), slope);
     gtk_window_set_default_size(GTK_WINDOW(window), 500, 350);

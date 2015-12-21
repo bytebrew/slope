@@ -58,6 +58,9 @@ slope_item_t* slope_legend_new(slope_figure_t *figure);
 void slope_legend_init (slope_item_t *self);
 void slope_legend_finalize (slope_item_t *self);
 
+void slope_legend_set_position_policy (slope_item_t *self, slope_legend_position_policy_t policy);
+void slope_legend_set_position (slope_item_t *self, double x, double y);
+
 SLOPE_END_DECLS
 
 #endif /*__SLOPE_LEGEND__*/

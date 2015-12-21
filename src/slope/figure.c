@@ -225,4 +225,10 @@ slope_scale_t* slope_figure_get_reference_scale (const slope_figure_t *self)
     return SLOPE_FIGURE_GET_PRIVATE(self)->ref_scale;
 }
 
+
+slope_item_t* slope_figure_get_legend (const slope_figure_t *self)
+{
+    return SLOPE_FIGURE_GET_PRIVATE(self)->legend;
+}
+
 /* slope/figure.c */

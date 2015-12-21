@@ -71,6 +71,8 @@ void slope_legend_init (slope_item_t *self)
     priv->position_policy = SLOPE_LEGEND_TOPRIGHT;
     priv->fill_color = SLOPE_WHITE;
     priv->stroke_color = SLOPE_BLACK;
+    priv->x = -1.0;
+    priv->y = -1.0;
 }
 
 
@@ -192,7 +194,23 @@ static void _slope_legend_eval_rect (slope_item_t *self, cairo_t *cr)
             priv->rect.x = fig_rect.x + fig_rect.width - priv->rect.width - 10.0;
             priv->rect.y = fig_rect.y + fig_rect.height - priv->rect.height - 10.0;
             break;
+        /* TODO: rest of cases */
     }
+}
+
+
+void slope_legend_set_position_policy (slope_item_t *self, slope_legend_position_policy_t policy)
+{
+    SLOPE_LEGEND_GET_PRIVATE(self)->position_policy = policy;
+}
+
+
+void slope_legend_set_position (slope_item_t *self, double x, double y)
+{
+    slope_legend_private_t *priv = SLOPE_LEGEND_GET_PRIVATE(self);
+    priv->position_policy = SLOPE_LEGEND_CUSTOMPOS;
+    priv->x = x;
+    priv->y = y;
 }
 
 /* slope/legend.c */

@@ -36,11 +36,14 @@ struct _slope_legend_private {
 
    slope_figure_t *figure;
    slope_rect_t rect;
-   slope_legend_position_policy_t position_policy;
    double line_height;
    int line_count;
    slope_color_t fill_color;
    slope_color_t stroke_color;
+   
+   double x;
+   double y;
+   slope_legend_position_policy_t position_policy;
 };
 
 SLOPE_END_DECLS

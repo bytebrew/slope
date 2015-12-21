@@ -1,1 +1,0 @@
--mms-bitfields -IC:/Gtk/include/gtk-3.0 -IC:/Gtk/include/cairo -IC:/Gtk/include/pango-1.0 -IC:/Gtk/include/atk-1.0 -IC:/Gtk/include/cairo -IC:/Gtk/include/pixman-1 -IC:/Gtk/include -IC:/Gtk/include/freetype2 -IC:/Gtk/include -IC:/Gtk/include/libpng15 -IC:/Gtk/include/gdk-pixbuf-2.0 -IC:/Gtk/include/libpng15 -IC:/Gtk/include/glib-2.0 -IC:/Gtk/lib/glib-2.0/include 
