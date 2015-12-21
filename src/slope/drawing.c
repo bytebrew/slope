@@ -51,6 +51,13 @@ void slope_cairo_line (cairo_t *cr, const slope_point_t *p1, const slope_point_t
 }
 
 
+void slope_cairo_circle (cairo_t *cr, const slope_point_t *center, double radius)
+{
+    cairo_move_to(cr, center->x + radius, center->y);
+    cairo_arc(cr, center->x, center->y, radius, 0.0, 6.283185307179587);
+}
+
+
 void slope_cairo_set_color (cairo_t *cr, const slope_color_t color)
 {
     int a = SLOPE_COLOR_GET_ALPHA(color);

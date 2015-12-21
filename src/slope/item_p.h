@@ -39,6 +39,7 @@ struct _slope_item_private {
 
 void _slope_item_draw (slope_item_t *self, cairo_t *cr);
 void _slope_item_draw_thumb (slope_item_t *self, const slope_point_t *point, cairo_t *cr);
+void _slope_item_draw_thumb_dummy_impl (slope_item_t *self, const slope_point_t *point, cairo_t *cr);
 void _slope_item_set_scale (slope_item_t *self, slope_scale_t *scale);
 
 SLOPE_END_DECLS

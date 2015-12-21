@@ -45,6 +45,7 @@ struct _slope_series_private {
 
    double xmin, xmax;
    double ymin, ymax;
+   double symbol_radius;
 };
 
 SLOPE_END_DECLS

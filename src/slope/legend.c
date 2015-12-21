@@ -41,6 +41,7 @@ static slope_item_class_t* _slope_legend_get_class()
         item_class.init = slope_legend_init;
         item_class.finalize = slope_legend_finalize;
         item_class.draw = _slope_legend_draw;
+        item_class.draw_thumb = _slope_item_draw_thumb_dummy_impl;
         item_class.get_data_rect = _slope_legend_get_data_rect;
         item_class.get_figure_rect = _slope_legend_get_figure_rect;
         first_call = SLOPE_FALSE;

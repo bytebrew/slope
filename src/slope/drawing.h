@@ -80,6 +80,7 @@ void slope_rect_set (slope_rect_t *self, double x, double y, double width, doubl
 void slope_rect_copy (slope_rect_t *dest, const slope_rect_t *source);
 void slope_cairo_rect (cairo_t *cr, const slope_rect_t *rect);
 void slope_cairo_line (cairo_t *cr, const slope_point_t *p1, const slope_point_t *p2);
+void slope_cairo_circle (cairo_t *cr, const slope_point_t *center, double radius);
 void slope_cairo_set_color (cairo_t *cr, const slope_color_t color);
 
 SLOPE_END_DECLS

@@ -78,6 +78,15 @@ void _slope_item_draw_thumb (slope_item_t *self, const slope_point_t *point, cai
 }
 
 
+void _slope_item_draw_thumb_dummy_impl (slope_item_t *self, const slope_point_t *point, cairo_t *cr)
+{
+    /* DO NOTHING */
+    (void) self;
+    (void) point;
+    (void) cr;
+}
+
+
 void slope_item_get_data_rect (const slope_item_t *self, slope_rect_t *rect)
 {
     if (self == NULL)

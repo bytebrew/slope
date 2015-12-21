@@ -318,6 +318,14 @@ void slope_linear_set_show_grid (slope_scale_t *self, slope_bool_t show)
     elements = show ? slope_axis_get_elements(axis) | SLOPE_AXIS_GRID :
                       slope_axis_get_elements(axis) & ~SLOPE_AXIS_GRID;
     slope_axis_set_elements(axis, elements);
+    
+    axis = slope_linear_get_axis (self, SLOPE_AXIS_TOP);
+    elements = slope_axis_get_elements(axis) & ~SLOPE_AXIS_GRID;
+    slope_axis_set_elements(axis, elements);
+    
+    axis = slope_linear_get_axis (self, SLOPE_AXIS_RIGHT);
+    elements = slope_axis_get_elements(axis) & ~SLOPE_AXIS_GRID;
+    slope_axis_set_elements(axis, elements);
 }
 
 /* slope/linear.c */

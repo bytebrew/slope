@@ -43,6 +43,7 @@ static slope_item_class_t* _slope_axis_get_class()
         item_class.init = slope_axis_init;
         item_class.finalize = slope_axis_finalize;
         item_class.draw = _slope_axis_draw;
+        item_class.draw_thumb = _slope_item_draw_thumb_dummy_impl;
         item_class.get_data_rect = _slope_axis_get_data_rect;
         item_class.get_figure_rect = _slope_axis_get_figure_rect;
         first_call = SLOPE_FALSE;
