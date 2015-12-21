@@ -36,7 +36,7 @@
 #define SLOPE_WHITE       0xFFFFFFFF
 #define SLOPE_GRAY        0x888888FF
 #define SLOPE_LIGHTGRAY   0x66666666
-#define SLOPE_DARKGRAY    0xAAAAAAAA
+#define SLOPE_DARKGRAY    0xAAAAAAFF
 #define SLOPE_RED         0xFF0000FF
 #define SLOPE_GREEN       0x00FF00FF
 #define SLOPE_BLUE        0x0000FFFF
@@ -46,6 +46,7 @@
 #define SLOPE_AZURE       0xF0FFFFFF
 #define SLOPE_VIOLET      0xEE82FFFF
 #define SLOPE_ORANGE      0xFF8C00FF
+#define SLOPE_INDIGO      0x4B0082FF
 #define SLOPE_COLOR_NULL  0x00000000
 
 /* get rgb components from color */

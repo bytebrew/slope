@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
     /* create series (plot) representation and place it in a scale */
     log1_series = slope_series_new_for_data(x, y1, NPTS, "log(x)", SLOPE_RED, SLOPE_GREEN);
-    log2_series = slope_series_new_for_data(x, y2, NPTS, "log(2x)", SLOPE_GREEN, SLOPE_GREEN);
+    log2_series = slope_series_new_for_data(x, y2, NPTS, "log(2x)", SLOPE_INDIGO, SLOPE_GREEN);
     log3_series = slope_series_new_for_data(x, y3, NPTS, "log(3x)", SLOPE_BLUE, SLOPE_GREEN);
 
     scale = slope_linear_new("linear scale");

@@ -37,6 +37,7 @@ struct _slope_series_private {
    slope_series_style_t style;
    slope_color_t stroke_color;
    slope_color_t fill_color;
+   double line_width;
 
    const double *vx;
    const double *vy;

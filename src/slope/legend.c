@@ -98,7 +98,7 @@ static void _slope_legend_draw (slope_item_t *self, cairo_t *cr)
     slope_cairo_set_color(cr, priv->stroke_color);
     cairo_stroke(cr);
     
-    y = priv->rect.y + priv->line_height + 5.0;
+    y = priv->rect.y + priv->line_height;
     x = priv->rect.x + 40.0;
     scale_list = slope_figure_get_scale_list(priv->figure);
     SLOPE_LIST_FOREACH(scale_iter, scale_list) {
@@ -115,7 +115,7 @@ static void _slope_legend_draw (slope_item_t *self, cairo_t *cr)
             }
 
             thumb_pos.x = x - 20.0;
-            thumb_pos.y = y - 0.5*priv->line_height;
+            thumb_pos.y = y - 0.25*priv->line_height;
             _slope_item_draw_thumb(curr_item, &thumb_pos, cr);
 
             cairo_move_to(cr, x, y);
@@ -154,10 +154,10 @@ static void _slope_legend_eval_rect (slope_item_t *self, cairo_t *cr)
     
     /* work around crazy heights returned when no ascii symbols are present */
     cairo_text_extents(cr, "dummy", &txt_ext);
-    txt_hei = 0.66 * txt_ext.height;
-    
+    txt_hei = txt_ext.height;    
     scale_list = slope_figure_get_scale_list(priv->figure);
     priv->line_count = 0;
+
     SLOPE_LIST_FOREACH(scale_iter, scale_list) {
         slope_scale_t *curr_scale = SLOPE_SCALE(slope_iterator_data(scale_iter));
         item_list = slope_scale_get_item_list(curr_scale);
@@ -179,13 +179,18 @@ static void _slope_legend_eval_rect (slope_item_t *self, cairo_t *cr)
     if (priv->line_count == 0)
         return;
     priv->rect.width = max_wid + 50.0;
-    priv->rect.height = 1.5 * txt_hei * priv->line_count + 15.0;
-    priv->line_height = 1.5 * txt_hei;
+    txt_hei += 3.0;
+    priv->rect.height = priv->line_count*txt_hei + 8.0;
+    priv->line_height = txt_hei;
 
     switch (priv->position_policy) {
         case SLOPE_LEGEND_TOPRIGHT:
-            priv->rect.x = fig_rect.x + fig_rect.width - priv->rect.width - 12.0;
-            priv->rect.y = fig_rect.y + 12.0;
+            priv->rect.x = fig_rect.x + fig_rect.width - priv->rect.width - 10.0;
+            priv->rect.y = fig_rect.y + 10.0;
+            break;
+        case SLOPE_LEGEND_BOTTOMRIGHT:
+            priv->rect.x = fig_rect.x + fig_rect.width - priv->rect.width - 10.0;
+            priv->rect.y = fig_rect.y + fig_rect.height - priv->rect.height - 10.0;
             break;
     }
 }

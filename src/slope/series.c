@@ -76,12 +76,13 @@ slope_item_t* slope_series_new_for_data (const double *vx, const double *vy,
 void slope_series_init (slope_item_t *self)
 {
     slope_series_private_t *priv = SLOPE_SERIES_GET_PRIVATE(self);
-    slope_item_init(self);
+    slope_item_init(self); 
     
     priv->xmin = 0.0;
     priv->xmax = 1.0;
     priv->ymin = 0.0;
     priv->ymax = 1.0;
+    priv->line_width = 2.0;
 }
 
 
@@ -118,19 +119,21 @@ static void _slope_series_draw_thumb (slope_item_t *self, const slope_point_t *p
             cairo_move_to(cr, point->x-10.0, point->y);
             cairo_line_to(cr, point->x+10.0, point->y);
             slope_cairo_set_color(cr, priv->stroke_color);
+            cairo_set_line_width(cr, priv->line_width);
             cairo_stroke(cr);
             break;
         case SLOPE_SERIES_AREAUNDER:
-            cairo_move_to(cr, point->x-10.0, point->y-5.0);
-            cairo_line_to(cr, point->x+10.0, point->y-5.0);
-            cairo_line_to(cr, point->x+10.0, point->y+5.0);
-            cairo_line_to(cr, point->x-10.0, point->y+5.0);
+            cairo_move_to(cr, point->x-10.0, point->y-2.0);
+            cairo_line_to(cr, point->x+10.0, point->y-2.0);
+            cairo_line_to(cr, point->x+10.0, point->y+4.0);
+            cairo_line_to(cr, point->x-10.0, point->y+4.0);
             cairo_close_path(cr);
             slope_cairo_set_color(cr, priv->fill_color);
             cairo_fill(cr);
-            cairo_move_to(cr, point->x-10.0, point->y-5.0);
-            cairo_line_to(cr, point->x+10.0, point->y-5.0);
+            cairo_move_to(cr, point->x-10.0, point->y-3.0);
+            cairo_line_to(cr, point->x+10.0, point->y-3.0);
             slope_cairo_set_color(cr, priv->stroke_color);
+            cairo_set_line_width(cr, priv->line_width);
             cairo_stroke(cr);
             break;
     }
@@ -164,6 +167,7 @@ static void _slope_series_draw_line (slope_item_t *self, cairo_t *cr)
         cairo_line_to(cr, x2, y2);
     }
     slope_cairo_set_color(cr, priv->stroke_color);
+    cairo_set_line_width(cr, priv->line_width);
     cairo_stroke(cr);
 }
 
@@ -215,6 +219,7 @@ static void _slope_series_draw_area_under (slope_item_t *self, cairo_t *cr)
     cairo_fill(cr);
     slope_cairo_set_color(cr, priv->stroke_color);
     cairo_append_path(cr, path);
+    cairo_set_line_width(cr, priv->line_width);
     cairo_stroke(cr);
     cairo_path_destroy(path);
 }
