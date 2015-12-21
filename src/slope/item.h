@@ -33,6 +33,7 @@ struct _slope_item_class {
    void (*init) (slope_item_t*);
    void (*finalize) (slope_item_t*);
    void (*draw) (slope_item_t*, cairo_t*);
+   void (*draw_thumb) (slope_item_t*, const slope_point_t*, cairo_t*);
    void (*get_data_rect) (const slope_item_t*, slope_rect_t*);
    void (*get_figure_rect) (const slope_item_t*, slope_rect_t*);
 };
@@ -48,6 +49,7 @@ void slope_item_destroy (slope_item_t *self);
 void slope_item_init (slope_item_t *self);
 void slope_item_finalize (slope_item_t *self);
 slope_bool_t slope_item_get_visible (const slope_item_t *self);
+slope_bool_t slope_item_has_thumb (const slope_item_t *self);
 void slope_item_set_name (slope_item_t *self, const char *name);
 const char* slope_item_get_name (const slope_item_t *self);
 void slope_item_get_data_rect (const slope_item_t *self, slope_rect_t *rect);

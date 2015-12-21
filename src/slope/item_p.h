@@ -33,10 +33,12 @@ typedef struct _slope_item_private slope_item_private_t;
 struct _slope_item_private {
     slope_scale_t *scale;
     slope_bool_t visible;
+    slope_bool_t has_thumb;
     char *name;
 };
 
 void _slope_item_draw (slope_item_t *self, cairo_t *cr);
+void _slope_item_draw_thumb (slope_item_t *self, const slope_point_t *point, cairo_t *cr);
 void _slope_item_set_scale (slope_item_t *self, slope_scale_t *scale);
 
 SLOPE_END_DECLS

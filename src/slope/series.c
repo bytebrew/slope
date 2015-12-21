@@ -26,6 +26,7 @@ static void _slope_series_get_data_rect (const slope_item_t *self, slope_rect_t 
 static void _slope_series_get_figure_rect (const slope_item_t *self, slope_rect_t *rect);
 static void _slope_series_check_ranges (slope_series_t *self);
 static void _slope_series_draw (slope_item_t *self, cairo_t *cr);
+static void _slope_series_draw_thumb (slope_item_t *self, const slope_point_t *point, cairo_t *cr);
 static void _slope_series_draw_line (slope_item_t *self, cairo_t *cr);
 static void _slope_series_draw_area_under (slope_item_t *self, cairo_t *cr);
 
@@ -39,6 +40,7 @@ static slope_item_class_t* _slope_series_get_class()
         item_class.init = slope_series_init;
         item_class.finalize = slope_series_finalize;
         item_class.draw = _slope_series_draw;
+        item_class.draw_thumb = _slope_series_draw_thumb;
         item_class.get_data_rect = _slope_series_get_data_rect;
         item_class.get_figure_rect = _slope_series_get_figure_rect;
         first_call = SLOPE_FALSE;
@@ -103,6 +105,34 @@ static void _slope_series_draw (slope_item_t *self, cairo_t *cr)
     case SLOPE_SERIES_AREAUNDER:
         _slope_series_draw_area_under(self, cr);
         break;
+    }
+}
+
+
+static void _slope_series_draw_thumb (slope_item_t *self, const slope_point_t *point, cairo_t *cr)
+{
+    slope_series_private_t *priv = SLOPE_SERIES_GET_PRIVATE(self);
+
+    switch (priv->style) {
+        case SLOPE_SERIES_LINE:
+            cairo_move_to(cr, point->x-10.0, point->y);
+            cairo_line_to(cr, point->x+10.0, point->y);
+            slope_cairo_set_color(cr, priv->stroke_color);
+            cairo_stroke(cr);
+            break;
+        case SLOPE_SERIES_AREAUNDER:
+            cairo_move_to(cr, point->x-10.0, point->y-5.0);
+            cairo_line_to(cr, point->x+10.0, point->y-5.0);
+            cairo_line_to(cr, point->x+10.0, point->y+5.0);
+            cairo_line_to(cr, point->x-10.0, point->y+5.0);
+            cairo_close_path(cr);
+            slope_cairo_set_color(cr, priv->fill_color);
+            cairo_fill(cr);
+            cairo_move_to(cr, point->x-10.0, point->y-5.0);
+            cairo_line_to(cr, point->x+10.0, point->y-5.0);
+            slope_cairo_set_color(cr, priv->stroke_color);
+            cairo_stroke(cr);
+            break;
     }
 }
 

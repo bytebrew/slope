@@ -1,9 +1,14 @@
-SLOPE->DEVEL()
-==============
+SLOPE
+=====
 
-This branch is where the active development of slope takes place and new featureas are added
-It will be soon merged with branch master.
+Slope is a free (LGPL) C library for creating charts using the cairo 2D drawing
+library. As long as Gtk+ uses cairo to render it's widgets, embedding slope's
+charts in gtk is straitforward.
 
-![](https://github.com/elvismt/slope/blob/devel/demos/linux.png)
+Slope is in it's early stages of development, but it is already able to produce
+beautifull charts like the ones bellow. The code to draw these charts is in the
+demos directory in the source tree.
 
-![](https://github.com/elvismt/slope/blob/devel/demos/windows.png)
+![](https://github.com/elvismt/slope/blob/master/demos/minimal.png)
+
+![](https://github.com/elvismt/slope/blob/master/demos/custom.png)

@@ -19,6 +19,7 @@
  */
 
 #include <slope/legend_p.h>
+#include <slope/item_p.h>
 #include <slope/list.h>
 #include <slope/scale.h>
 #include <slope/figure.h>
@@ -105,11 +106,20 @@ static void _slope_legend_draw (slope_item_t *self, cairo_t *cr)
         item_list = slope_scale_get_item_list(curr_scale);
         SLOPE_LIST_FOREACH(item_iter, item_list) {
             slope_item_t *curr_item = SLOPE_ITEM(slope_iterator_data(item_iter));
+            slope_point_t thumb_pos;
             
-            if (slope_item_get_visible(curr_item) == SLOPE_FALSE)
+            if (slope_item_get_visible(curr_item) == SLOPE_FALSE
+                || slope_item_has_thumb(curr_item) == SLOPE_FALSE)
+            {
                 continue;
+            }
+
+            thumb_pos.x = x - 20.0;
+            thumb_pos.y = y - 0.5*priv->line_height;
+            _slope_item_draw_thumb(curr_item, &thumb_pos, cr);
 
             cairo_move_to(cr, x, y);
+            slope_cairo_set_color(cr, priv->stroke_color);
             cairo_show_text(cr, slope_item_get_name(curr_item));
             y += priv->line_height;
         }
@@ -154,8 +164,11 @@ static void _slope_legend_eval_rect (slope_item_t *self, cairo_t *cr)
         SLOPE_LIST_FOREACH(item_iter, item_list) {
             slope_item_t *curr_item = SLOPE_ITEM(slope_iterator_data(item_iter));
             
-            if (slope_item_get_visible(curr_item) == SLOPE_FALSE)
+            if (slope_item_get_visible(curr_item) == SLOPE_FALSE
+                || slope_item_has_thumb(curr_item) == SLOPE_FALSE)
+            {
                 continue;
+            }
             priv->line_count += 1;
             
             cairo_text_extents(cr, slope_item_get_name(curr_item), &txt_ext);

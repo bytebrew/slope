@@ -26,6 +26,7 @@ void slope_item_init (slope_item_t *self)
 {
     slope_item_private_t *priv = SLOPE_ITEM_GET_PRIVATE(self);
     priv->visible = SLOPE_TRUE;
+    priv->has_thumb = SLOPE_TRUE;
     priv->scale = NULL;
     priv->name = NULL;
 }
@@ -57,9 +58,23 @@ slope_bool_t slope_item_get_visible (const slope_item_t *self)
 }
 
 
+slope_bool_t slope_item_has_thumb (const slope_item_t *self)
+{
+    if (self == NULL)
+        return SLOPE_FALSE;
+    return SLOPE_ITEM_GET_PRIVATE(self)->has_thumb;
+}
+
+
 void _slope_item_draw (slope_item_t *self, cairo_t *cr)
 {
     SLOPE_ITEM_GET_CLASS(self)->draw(self, cr);
+}
+
+
+void _slope_item_draw_thumb (slope_item_t *self, const slope_point_t *point, cairo_t *cr)
+{
+    SLOPE_ITEM_GET_CLASS(self)->draw_thumb(self, point, cr);
 }
 
 
