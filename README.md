@@ -1,13 +1,13 @@
 SLOPE
 =====
 
-Slope is a free (LGPL) C library for creating charts using the cairo 2D drawing
-library. As long as Gtk+ uses cairo to render it's widgets, embedding slope's
+Slope is a free (LGPL) **C** library for creating charts using the cairo 2D drawing
+library. As long as **Gtk+** uses cairo to render it's widgets, embedding slope's
 charts in gtk is straitforward.
 
 Slope's only depdendency is cairo and you can export charts to any of cairo's
-backends. There is an alternative build option that compiles a Gtk widget to
-help you show slope's charts in your Gtk app. This build of course makes slope
+backends. There is an alternative build option that compiles a Gtk+ widget to
+help you show slope's charts in your Gtk+ app. This build of course makes slope
 gtk dependent. The cairo only build will always be present.
 
 Slope is in it's early stages of development, but it is already able to produce
@@ -20,3 +20,5 @@ demos directory in the source tree.
 
 Contributions to slope are wellcome. Propose yours by issuing a pull request or
 to email alvismtt@gmail.com.
+
+If you prefer C++ and Qt use Kdv: https://github.com/elvismt/Kdv.
