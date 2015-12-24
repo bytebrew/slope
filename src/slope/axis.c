@@ -20,6 +20,7 @@
 
 #include <slope/axis_p.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 
 static const double dashes[2] = { 4.0, 4.0 };
@@ -514,6 +515,13 @@ slope_axis_element_t slope_axis_get_elements(const slope_item_t *self)
 void slope_axis_set_elements(slope_item_t *self, int elements)
 {
     SLOPE_AXIS_GET_PRIVATE(self)->elements = (slope_axis_element_t) elements;
+}
+
+
+void slope_axis_set_colors (slope_item_t *self, slope_color_t stroke_color, slope_color_t extra_color)
+{
+    slope_axis_private_t *priv = SLOPE_AXIS_GET_PRIVATE(self);
+    priv->color = stroke_color;
 }
 
 /* slope/axis.c */

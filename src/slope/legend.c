@@ -214,4 +214,12 @@ void slope_legend_set_position (slope_item_t *self, double x, double y)
     priv->y = y;
 }
 
+
+void slope_legend_set_colors (slope_item_t *self, slope_color_t stroke_color, slope_color_t fill_color)
+{
+    slope_legend_private_t *priv = SLOPE_LEGEND_GET_PRIVATE(self);
+    priv->stroke_color = stroke_color;
+    priv->fill_color = fill_color;
+}
+
 /* slope/legend.c */

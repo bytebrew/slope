@@ -125,4 +125,11 @@ void _slope_scale_set_figure (slope_scale_t *self, slope_figure_t *figure)
     SLOPE_SCALE_GET_PRIVATE(self)->figure = figure;
 }
 
+
+void slope_scale_set_color_scheme (slope_scale_t *self, slope_color_t background,
+                                   slope_color_t foreground, slope_color_t extra_color)
+{
+    SLOPE_SCALE_GET_CLASS(self)->set_color_scheme(self, background, foreground, extra_color);
+}
+
 /* slope/scale.c */

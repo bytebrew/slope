@@ -34,9 +34,11 @@
 /* named color values */
 #define SLOPE_BLACK       0x000000FF
 #define SLOPE_WHITE       0xFFFFFFFF
-#define SLOPE_GRAY        0x888888FF
+#define SLOPE_GRAY        0x808080FF
 #define SLOPE_LIGHTGRAY   0x66666666
 #define SLOPE_DARKGRAY    0xAAAAAAFF
+#define SLOPE_SLATEGRAY   0x778899FF
+#define SLOPE_MAROON      0x800000FF
 #define SLOPE_RED         0xFF0000FF
 #define SLOPE_GREEN       0x00FF00FF
 #define SLOPE_BLUE        0x0000FFFF

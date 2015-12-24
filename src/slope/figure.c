@@ -26,7 +26,8 @@
 #include <string.h>
 
 
-static void _slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, cairo_t *cr);
+static void _slope_figure_draw (slope_figure_t*, const slope_rect_t*, cairo_t*);
+static void _slope_figure_set_color_scheme (slope_figure_t*, slope_color_t, slope_color_t, slope_color_t);
 
 
 static slope_figure_class_t* _slope_figure_get_class ()
@@ -38,9 +39,9 @@ static slope_figure_class_t* _slope_figure_get_class ()
         figure_class.init = slope_figure_init;
         figure_class.finalize = slope_figure_finalize;
         figure_class.draw = _slope_figure_draw;
+        figure_class.set_color_scheme = _slope_figure_set_color_scheme;
         first_call = SLOPE_FALSE;
     }
-    
     return &figure_class;
 }
 
@@ -229,6 +230,28 @@ slope_scale_t* slope_figure_get_reference_scale (const slope_figure_t *self)
 slope_item_t* slope_figure_get_legend (const slope_figure_t *self)
 {
     return SLOPE_FIGURE_GET_PRIVATE(self)->legend;
+}
+
+
+void slope_figure_set_color_scheme (slope_figure_t *self, slope_color_t background,
+                                    slope_color_t foreground, slope_color_t extra_color)
+{
+    SLOPE_FIGURE_GET_CLASS(self)->set_color_scheme(self, background, foreground, extra_color);
+}
+
+
+static void _slope_figure_set_color_scheme (slope_figure_t *self, slope_color_t background,
+                                            slope_color_t foreground, slope_color_t extra_color)
+{
+    slope_figure_private_t *priv = SLOPE_FIGURE_GET_PRIVATE(self);
+    slope_iterator_t *iter;
+
+    priv->back_color = background;
+    priv->name_color = foreground;
+    slope_legend_set_colors(priv->legend, foreground, background);
+    SLOPE_LIST_FOREACH (iter, priv->scale_list)
+        slope_scale_set_color_scheme (SLOPE_SCALE(slope_iterator_data(iter)),
+            background, foreground, extra_color);
 }
 
 /* slope/figure.c */

@@ -70,9 +70,10 @@ void slope_axis_init (slope_item_t *self);
 void slope_axis_finalize (slope_item_t *self);
 
 slope_sampler_t* slope_axis_get_sampler (const slope_item_t *self);
-slope_axis_position_t slope_axis_get_position(const slope_item_t *self);
-slope_axis_element_t slope_axis_get_elements(const slope_item_t *self);
-void slope_axis_set_elements(slope_item_t *self, int elements);
+slope_axis_position_t slope_axis_get_position (const slope_item_t *self);
+slope_axis_element_t slope_axis_get_elements (const slope_item_t *self);
+void slope_axis_set_elements (slope_item_t *self, int elements);
+void slope_axis_set_colors (slope_item_t *self, slope_color_t stroke_color, slope_color_t extra_color);
 
 SLOPE_END_DECLS
 

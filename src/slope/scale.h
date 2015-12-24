@@ -39,6 +39,7 @@ struct _slope_scale_class {
    void (*get_figure_rect) (const slope_scale_t*, slope_rect_t*);
    void (*update) (slope_scale_t*);
    void (*update_for_item) (slope_scale_t*, slope_item_t*);
+   void (*set_color_scheme) (slope_scale_t*, slope_color_t, slope_color_t, slope_color_t);
 };
 
 
@@ -60,6 +61,8 @@ void slope_scale_get_data_rect (const slope_scale_t *self, slope_rect_t *rect);
 void slope_scale_get_figure_rect (const slope_scale_t *self, slope_rect_t *rect);
 void slope_scale_update (slope_scale_t *self);
 void slope_scale_update_for_item (slope_scale_t *self, slope_item_t *item);
+void slope_scale_set_color_scheme (slope_scale_t *self, slope_color_t background,
+                                   slope_color_t foreground, slope_color_t extra_color);
 
 SLOPE_END_DECLS
 

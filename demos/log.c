@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
     /* get figure from widget and set it's scale and title */
     slope_figure_set_name(figure, "Some logarithm functions");
     slope_figure_add_scale(figure, scale);
+    slope_figure_set_color_scheme(figure, SLOPE_BLACK, SLOPE_WHITE, SLOPE_WHITE);
     /* put legend bellow the curves */
     legend = slope_figure_get_legend(figure);
     slope_legend_set_position_policy(legend, SLOPE_LEGEND_BOTTOMRIGHT);
