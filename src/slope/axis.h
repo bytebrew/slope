@@ -45,26 +45,26 @@ struct _slope_axis {
 
 typedef enum _slope_axis_position
 {
-    SLOPE_AXIS_BOTTOM = 0x000001,
-    SLOPE_AXIS_TOP    = 0x000002,
-    SLOPE_AXIS_LEFT   = 0x000004,
-    SLOPE_AXIS_RIGHT  = 0x000008
+    SLOPE_AXIS_BOTTOM = 0x00000001,
+    SLOPE_AXIS_TOP    = 0x00000002,
+    SLOPE_AXIS_LEFT   = 0x00000004,
+    SLOPE_AXIS_RIGHT  = 0x00000008
 }
 slope_axis_position_t;
 
 
 typedef enum _slope_axis_element
 {
-    SLOPE_AXIS_LINE   = 0x000001,
-    SLOPE_AXIS_TICKS  = 0x000002,
-    SLOPE_AXIS_GRID   = 0x000004,
-    SLOPE_AXIS_TITLE  = 0x000008,
-    SLOPE_AXIS_ALL    = 0xFFFFFF
+    SLOPE_AXIS_LINE   = 0x00000001,
+    SLOPE_AXIS_TICKS  = 0x00000002,
+    SLOPE_AXIS_GRID   = 0x00000004,
+    SLOPE_AXIS_TITLE  = 0x00000008,
+    SLOPE_AXIS_ALL    = 0xFFFFFFFF
 }
 slope_axis_element_t;
 
 
-slope_item_t* slope_axis_new (slope_scale_t *linear_scale, slope_axis_position_t pos);
+slope_item_t* slope_axis_new (slope_scale_t *linear_scale, const char *name, slope_axis_position_t pos);
 
 void slope_axis_init (slope_item_t *self);
 void slope_axis_finalize (slope_item_t *self);

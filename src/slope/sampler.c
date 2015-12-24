@@ -111,9 +111,9 @@ void slope_sampler_auto_sample_decimal (slope_sampler_t *self, double min, doubl
     pow_diff = round(log10(v_diff));
     samp_spac = pow(10.0, pow_diff-1.0);
    
-    while ((v_diff/samp_spac) > (hint+3.0))
+    if ((v_diff/samp_spac) > (hint+5.0))
        samp_spac *= 5.0;
-    while ((v_diff/samp_spac) < (hint-3.0))
+    if ((v_diff/samp_spac) < (hint-5.0))
        samp_spac /= 5.0;
    
     if (min < 0.0) {

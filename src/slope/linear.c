@@ -64,14 +64,14 @@ slope_scale_t* slope_linear_new (const char *name)
     SLOPE_SCALE_GET_CLASS(self)->init(SLOPE_SCALE(self));
 
     /* add axis */
-    axis = slope_axis_new(SLOPE_SCALE(self), SLOPE_AXIS_BOTTOM);
+    axis = slope_axis_new(SLOPE_SCALE(self), "X", SLOPE_AXIS_BOTTOM);
     slope_list_append(priv->axis_list, axis);
-    axis = slope_axis_new(SLOPE_SCALE(self), SLOPE_AXIS_TOP);
+    axis = slope_axis_new(SLOPE_SCALE(self), "X", SLOPE_AXIS_TOP);
     slope_axis_set_elements(axis, SLOPE_AXIS_LINE);
     slope_list_append(priv->axis_list, axis);
-    axis = slope_axis_new(SLOPE_SCALE(self), SLOPE_AXIS_LEFT);
+    axis = slope_axis_new(SLOPE_SCALE(self), "Y", SLOPE_AXIS_LEFT);
     slope_list_append(priv->axis_list, axis);
-    axis = slope_axis_new(SLOPE_SCALE(self), SLOPE_AXIS_RIGHT);
+    axis = slope_axis_new(SLOPE_SCALE(self), "Y", SLOPE_AXIS_RIGHT);
     slope_axis_set_elements(axis, SLOPE_AXIS_LINE);
     slope_list_append(priv->axis_list, axis);
 
@@ -87,8 +87,8 @@ void slope_linear_init (slope_scale_t *self)
     slope_scale_init(self);
 
     priv->axis_list = slope_list_new();
-    priv->x_low_bound = 60.0; priv->x_up_bound = 25.0;
-    priv->y_low_bound = 25.0; priv->y_up_bound = 25.0;
+    priv->x_low_bound = 80.0; priv->x_up_bound = 20.0;
+    priv->y_low_bound = 30.0; priv->y_up_bound = 45.0;
 }
 
 
@@ -326,6 +326,33 @@ void slope_linear_set_show_grid (slope_scale_t *self, slope_bool_t show)
     axis = slope_linear_get_axis (self, SLOPE_AXIS_RIGHT);
     elements = slope_axis_get_elements(axis) & ~SLOPE_AXIS_GRID;
     slope_axis_set_elements(axis, elements);
+}
+
+
+void slope_linear_set_x_boundaries(slope_scale_t *self, double low_bound, double up_bound)
+{
+    slope_linear_private_t *priv = SLOPE_LINEAR_GET_PRIVATE(self);
+    priv->x_low_bound = low_bound;
+    priv->x_up_bound = up_bound;
+}
+
+
+void slope_linear_set_y_boundaries(slope_scale_t *self, double low_bound, double up_bound)
+{
+    slope_linear_private_t *priv = SLOPE_LINEAR_GET_PRIVATE(self);
+    priv->y_low_bound = low_bound;
+    priv->y_up_bound = up_bound;
+}
+
+
+void slope_linear_set_axis_labels (slope_scale_t *self,
+                                   const char *bottom_label, const char *left_label,
+                                   const char *top_label, const char *right_label)
+{
+    slope_item_set_name (SLOPE_ITEM (slope_linear_get_axis (self, SLOPE_AXIS_BOTTOM)), bottom_label);
+    slope_item_set_name (SLOPE_ITEM (slope_linear_get_axis (self, SLOPE_AXIS_LEFT)),   left_label);
+    slope_item_set_name (SLOPE_ITEM (slope_linear_get_axis (self, SLOPE_AXIS_TOP)),    top_label);
+    slope_item_set_name (SLOPE_ITEM (slope_linear_get_axis (self, SLOPE_AXIS_RIGHT)),  right_label);
 }
 
 /* slope/linear.c */

@@ -22,7 +22,7 @@
 #include <stdlib.h>
 
 
-static const double dashes[2] = { 4.0, 3.0 };
+static const double dashes[2] = { 4.0, 4.0 };
 
 
 static void _slope_axis_get_data_rect (const slope_item_t *self, slope_rect_t *rect);
@@ -52,7 +52,7 @@ static slope_item_class_t* _slope_axis_get_class()
 }
 
 
-slope_item_t* slope_axis_new (slope_scale_t *linear_scale, slope_axis_position_t pos)
+slope_item_t* slope_axis_new (slope_scale_t *linear_scale, const char *name, slope_axis_position_t pos)
 {
     slope_axis_t *self = SLOPE_ALLOC(slope_axis_t);
     slope_axis_private_t *priv = SLOPE_ALLOC(slope_axis_private_t);
@@ -68,6 +68,7 @@ slope_item_t* slope_axis_new (slope_scale_t *linear_scale, slope_axis_position_t
     item_priv->scale = linear_scale;
     priv->elements = SLOPE_AXIS_ALL;
     priv->elements &= ~SLOPE_AXIS_GRID;
+    slope_item_set_name(SLOPE_ITEM(self), name);
 
     return SLOPE_ITEM(self);
 }
@@ -239,6 +240,13 @@ static void _slope_axis_draw_bottom (slope_item_t *self, cairo_t *cr)
             }
         }
     }
+    if (priv->elements & SLOPE_AXIS_TITLE) {
+        cairo_text_extents(cr, item_priv->name, &txt_ext);
+        x = fig_rect.x + (fig_rect.width - txt_ext.width)/2.0;
+        y += 4.0*txt_hei;
+        cairo_move_to(cr, x, y);
+        cairo_show_text(cr, item_priv->name);
+    }
 }
 
 
@@ -307,6 +315,13 @@ static void _slope_axis_draw_top (slope_item_t *self, cairo_t *cr)
             }
         }
     }
+    if (priv->elements & SLOPE_AXIS_TITLE) {
+        cairo_text_extents(cr, item_priv->name, &txt_ext);
+        x = fig_rect.x + (fig_rect.width - txt_ext.width)/2.0;
+        y -= 3.0*txt_hei;
+        cairo_move_to(cr, x, y);
+        cairo_show_text(cr, item_priv->name);
+    }
 }
 
 
@@ -320,10 +335,12 @@ static void _slope_axis_draw_left (slope_item_t *self, cairo_t *cr)
     slope_rect_t fig_rect;
     slope_rect_t dat_rect;
     double x, y, txt_hei;
+    double txt_max_width;
 
     /* work around crazy text heights when using unicode */
     cairo_text_extents(cr, "dummy", &txt_ext);
     txt_hei = txt_ext.height * 0.66;
+    txt_max_width = 0.0;
 
     slope_scale_get_figure_rect(item_priv->scale, &fig_rect);
     slope_scale_get_data_rect(item_priv->scale, &dat_rect);
@@ -374,6 +391,7 @@ static void _slope_axis_draw_left (slope_item_t *self, cairo_t *cr)
                 cairo_stroke(cr);
 
                 cairo_text_extents(cr, sample->label, &txt_ext);
+                if (txt_ext.width > txt_max_width) txt_max_width = txt_ext.width;
                 cairo_move_to(cr, x-txt_ext.width-txt_hei, y+txt_hei/2.0);
                 cairo_show_text(cr, sample->label);
             }
@@ -383,6 +401,16 @@ static void _slope_axis_draw_left (slope_item_t *self, cairo_t *cr)
                 cairo_stroke(cr);
             }
         }
+    }
+    if (priv->elements & SLOPE_AXIS_TITLE) {
+        cairo_save(cr);
+        cairo_rotate(cr, -1.5707963267948967);
+        cairo_text_extents(cr, item_priv->name, &txt_ext);
+        x = - fig_rect.y - (fig_rect.height + txt_ext.width)/2.0;
+        y = fig_rect.x - txt_max_width - 2.0*txt_hei - 4.0;
+        cairo_move_to(cr, x, y);
+        cairo_show_text(cr, item_priv->name);
+        cairo_restore(cr);
     }
 }
 
@@ -397,10 +425,12 @@ static void _slope_axis_draw_right (slope_item_t *self, cairo_t *cr)
     slope_rect_t fig_rect;
     slope_rect_t dat_rect;
     double x, y, txt_hei;
+    double txt_max_width;
 
     /* work around crazy text heights when using unicode */
     cairo_text_extents(cr, "dummy", &txt_ext);
     txt_hei = txt_ext.height * 0.66;
+    txt_max_width = 0.0;
 
     slope_scale_get_figure_rect(item_priv->scale, &fig_rect);
     slope_scale_get_data_rect(item_priv->scale, &dat_rect);
@@ -440,6 +470,7 @@ static void _slope_axis_draw_right (slope_item_t *self, cairo_t *cr)
                 cairo_stroke(cr);
 
                 cairo_text_extents(cr, sample->label, &txt_ext);
+                if (txt_ext.width > txt_max_width) txt_max_width = txt_ext.width;
                 cairo_move_to(cr, x+txt_hei, y+txt_hei/2.0);
                 cairo_show_text(cr, sample->label);
             }
@@ -449,6 +480,16 @@ static void _slope_axis_draw_right (slope_item_t *self, cairo_t *cr)
                 cairo_stroke(cr);
             }
         }
+    }
+    if (priv->elements & SLOPE_AXIS_TITLE) {
+        cairo_save(cr);
+        cairo_rotate(cr, -1.5707963267948967);
+        cairo_text_extents(cr, item_priv->name, &txt_ext);
+        x = - fig_rect.y - (fig_rect.height + txt_ext.width)/2.0;
+        y = fig_rect.x + fig_rect.width + txt_max_width + 3.0*txt_hei + 4.0;
+        cairo_move_to(cr, x, y);
+        cairo_show_text(cr, item_priv->name);
+        cairo_restore(cr);
     }
 }
 

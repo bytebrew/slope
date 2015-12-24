@@ -31,10 +31,14 @@ int main(int argc, char *argv[])
 
     /* create series (plot) representation and place it in a scale */
     log1_series = slope_series_new_for_data(x, y1, NPTS, "log(x)", SLOPE_BLACK, SLOPE_RED, SLOPE_SERIES_CIRCLES);
-    log2_series = slope_series_new_for_data(x, y2, NPTS, "log(2x)", SLOPE_BLACK, SLOPE_INDIGO, SLOPE_SERIES_CIRCLES);
+    log2_series = slope_series_new_for_data(x, y2, NPTS, "log(2x)", SLOPE_BLACK, SLOPE_YELLOW, SLOPE_SERIES_CIRCLES);
     log3_series = slope_series_new_for_data(x, y3, NPTS, "log(3x)", SLOPE_BLACK, SLOPE_BLUE, SLOPE_SERIES_CIRCLES);
 
+    /* create a linear (cartesian) scale and set it's axis labels */
     scale = slope_linear_new("linear scale");
+    slope_linear_set_axis_labels(scale, "X", "Log(NX)", "","");
+    
+    /* add the plots to the scale */
     slope_scale_add_item(scale, log1_series);
     slope_scale_add_item(scale, log2_series);
     slope_scale_add_item(scale, log3_series);
@@ -45,7 +49,7 @@ int main(int argc, char *argv[])
     slope = slope_widget_new();
     figure = slope_widget_get_figure(slope);
     /* get figure from widget and set it's scale and title */
-    slope_figure_set_name(figure, "Y = Log(NX)");
+    slope_figure_set_name(figure, "Some logarithm functions");
     slope_figure_add_scale(figure, scale);
     /* put legend bellow the curves */
     legend = slope_figure_get_legend(figure);

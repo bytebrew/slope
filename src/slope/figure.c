@@ -158,7 +158,7 @@ static void _slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, 
     /* draw figure title */
     if (priv->show_title) {
         cairo_text_extents(cr, priv->name, &txt_ext);
-        cairo_move_to(cr, rect->x + (rect->width-txt_ext.width)/2.0, txt_ext.height+2.0);
+        cairo_move_to(cr, rect->x + (rect->width-txt_ext.width)/2.0, txt_ext.height+4.0);
         slope_cairo_set_color(cr, priv->name_color);
         cairo_show_text(cr, priv->name);
     }

@@ -50,6 +50,10 @@ void slope_linear_finalize (slope_scale_t *self);
 
 slope_item_t* slope_linear_get_axis (slope_scale_t *self, slope_axis_position_t pos);
 void slope_linear_set_show_grid (slope_scale_t *self, slope_bool_t show);
+void slope_linear_set_x_boundaries (slope_scale_t *self, double low_bound, double up_bound);
+void slope_linear_set_y_boundaries (slope_scale_t *self, double low_bound, double up_bound);
+void slope_linear_set_axis_labels (slope_scale_t *self, const char *bottom_label, const char *left_label,
+                                   const char *top_label, const char *right_label);
 
 SLOPE_END_DECLS
 

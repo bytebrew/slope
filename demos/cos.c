@@ -37,7 +37,10 @@ int main(int argc, char *argv[])
 
     /* create series (plot) representation and place it in a scale */
     cos_series = slope_series_new_for_data(x, y, NPTS, "cos(x)", SLOPE_BLUE, SLOPE_ORANGE, SLOPE_SERIES_AREAUNDER);
+    
+    /* create a linear (cartesian) scale and set it's axis labels */
     scale = slope_linear_new("linear scale");
+    slope_linear_set_axis_labels(scale, "X (RADIANS)", "Cos(X)", "","");
     slope_linear_set_show_grid(scale, SLOPE_TRUE);
     slope_scale_add_item(scale, cos_series);
 
@@ -51,7 +54,7 @@ int main(int argc, char *argv[])
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     slope = slope_widget_new();
     figure = slope_widget_get_figure(slope);
-    slope_figure_set_name(figure, "Y = Cos(X)");
+    slope_figure_set_name(figure, "Area under a cossine curve");
     slope_figure_add_scale(figure, scale);
 
     gtk_container_add(GTK_CONTAINER(window), slope);
