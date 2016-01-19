@@ -19,6 +19,7 @@
  */
 
 #include <slope/axis_p.h>
+#include <slope/scale.h>
 #include <stdlib.h>
 #include <stdio.h>
 

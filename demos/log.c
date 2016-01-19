@@ -30,9 +30,12 @@ int main(int argc, char *argv[])
     }
 
     /* create series (plot) representation and place it in a scale */
-    log1_series = slope_series_new_for_data(x, y1, NPTS, "log(x)", SLOPE_BLACK, SLOPE_RED, SLOPE_SERIES_CIRCLES);
-    log2_series = slope_series_new_for_data(x, y2, NPTS, "log(2x)", SLOPE_BLACK, SLOPE_YELLOW, SLOPE_SERIES_CIRCLES);
-    log3_series = slope_series_new_for_data(x, y3, NPTS, "log(3x)", SLOPE_BLACK, SLOPE_BLUE, SLOPE_SERIES_CIRCLES);
+    log1_series = slope_series_new_for_data(x, y1, NPTS, "log(x)",
+                     SLOPE_BLACK, SLOPE_RED, SLOPE_SERIES_CIRCLES);
+    log2_series = slope_series_new_for_data(x, y2, NPTS, "log(2x)",
+                     SLOPE_BLACK, SLOPE_YELLOW, SLOPE_SERIES_CIRCLES);
+    log3_series = slope_series_new_for_data(x, y3, NPTS, "log(3x)",
+                     SLOPE_BLACK, SLOPE_BLUE, SLOPE_SERIES_CIRCLES);
 
     /* create a linear (cartesian) scale and set it's axis labels */
     scale = slope_linear_new("linear scale");
@@ -71,3 +74,4 @@ int main(int argc, char *argv[])
     slope_item_destroy(log3_series);
     return 0;
 }
+
