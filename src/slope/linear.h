@@ -49,6 +49,7 @@ void slope_linear_init (slope_scale_t *self);
 void slope_linear_finalize (slope_scale_t *self);
 
 slope_item_t* slope_linear_get_axis (slope_scale_t *self, slope_axis_position_t pos);
+slope_list_t* slope_linear_get_axis_list (slope_scale_t *self);
 void slope_linear_set_show_grid (slope_scale_t *self, slope_bool_t show);
 void slope_linear_set_x_boundaries (slope_scale_t *self, double low_bound, double up_bound);
 void slope_linear_set_y_boundaries (slope_scale_t *self, double low_bound, double up_bound);

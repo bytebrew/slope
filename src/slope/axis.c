@@ -65,11 +65,7 @@ slope_item_t* slope_axis_new (slope_scale_t *linear_scale, const char *name, slo
     SLOPE_ITEM_GET_CLASS(self)->init(SLOPE_ITEM(self));
     
     priv->pos = pos;
-    priv->color = SLOPE_BLACK;
-    priv->grid_color = SLOPE_LIGHTGRAY;
     item_priv->scale = linear_scale;
-    priv->elements = SLOPE_AXIS_ALL;
-    priv->elements &= ~SLOPE_AXIS_GRID;
     slope_item_set_name(SLOPE_ITEM(self), name);
 
     return SLOPE_ITEM(self);
@@ -82,6 +78,11 @@ void slope_axis_init (slope_item_t *self)
     slope_item_init(self);
 
     priv->sampler = slope_sampler_new();
+    priv->color = SLOPE_BLACK;
+    priv->grid_color = SLOPE_LIGHTGRAY;
+    priv->elements = SLOPE_AXIS_ALL;
+    priv->elements &= ~SLOPE_AXIS_GRID;
+    priv->line_width = 1;
 }
 
 
@@ -94,6 +95,12 @@ void slope_axis_finalize (slope_item_t *self)
 }
 
 
+void slope_axis_set_line_width (slope_item_t *self, double width) 
+{
+   SLOPE_AXIS_GET_PRIVATE(self)->line_width = width;
+}
+
+
 static void _slope_axis_draw (slope_item_t *self, cairo_t *cr)
 {
     slope_axis_private_t *priv = SLOPE_AXIS_GET_PRIVATE(self);
@@ -101,6 +108,7 @@ static void _slope_axis_draw (slope_item_t *self, cairo_t *cr)
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
     cairo_set_line_width(cr, 1.0);
     slope_cairo_set_color(cr, priv->color);
+    cairo_set_line_width(cr, priv->line_width);
 
     switch (priv->pos) {
         case SLOPE_AXIS_BOTTOM:

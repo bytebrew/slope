@@ -39,6 +39,7 @@ struct _slope_axis_private {
    slope_axis_position_t pos;
    slope_axis_element_t elements;
    slope_sampler_t *sampler;
+   double line_width;
 };
 
 SLOPE_END_DECLS

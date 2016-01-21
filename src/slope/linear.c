@@ -148,6 +148,12 @@ static void _slope_linear_draw (slope_scale_t *self,
 }
 
 
+slope_list_t* slope_linear_get_axis_list (slope_scale_t *self)
+{
+   return SLOPE_LINEAR_GET_PRIVATE(self)->axis_list;
+}
+
+
 static void _slope_linear_map (slope_scale_t *self, slope_point_t *figure_point,
                                const slope_point_t *data_point)
 {
@@ -254,6 +260,8 @@ static void _slope_linear_update_for_item (slope_scale_t *self, slope_item_t *it
     double xmin, xmax;
     double ymin, ymax;
     double bound;
+    slope_bool_t incr_left=SLOPE_FALSE, incr_right=SLOPE_FALSE;
+    slope_bool_t incr_top=SLOPE_FALSE, incr_bottom=SLOPE_FALSE;
     
     if (!slope_list_contains(scale_priv->item_list, item))
         return;
@@ -270,25 +278,40 @@ static void _slope_linear_update_for_item (slope_scale_t *self, slope_item_t *it
         priv->dat_x_max = xmax;
         priv->dat_y_min = ymin;
         priv->dat_y_max = ymax;
+
+        incr_left = SLOPE_TRUE;
+        incr_right = SLOPE_TRUE;
+        incr_bottom = SLOPE_TRUE;
+        incr_top = SLOPE_TRUE;
     }
     else {
-        if (xmin < priv->dat_x_min) priv->dat_x_min = xmin;
-        if (xmax > priv->dat_x_max) priv->dat_x_max = xmax;
-        if (ymin < priv->dat_y_min) priv->dat_y_min = ymin;
-        if (ymax > priv->dat_y_max) priv->dat_y_max = ymax;
+        if (xmin < priv->dat_x_min) { priv->dat_x_min = xmin; incr_left = SLOPE_TRUE; }
+        if (xmax > priv->dat_x_max) { priv->dat_x_max = xmax; incr_right = SLOPE_TRUE; }
+        if (ymin < priv->dat_y_min) { priv->dat_y_min = ymin; incr_bottom = SLOPE_TRUE; }
+        if (ymax > priv->dat_y_max) { priv->dat_y_max = ymax; incr_top = SLOPE_TRUE; }
     }
-    
+
     priv->dat_width = priv->dat_x_max - priv->dat_x_min;
-    bound = priv->dat_width / 40.0;
-    priv->dat_x_min -= bound;
-    priv->dat_x_max += bound;
-    priv->dat_width += 2.0*bound;
-    
+    bound = priv->dat_width / 30.0;
+    if (incr_left == SLOPE_TRUE) {
+       priv->dat_x_min -= bound;
+       priv->dat_width += bound;
+    }
+    if (incr_right == SLOPE_TRUE) {
+       priv->dat_x_max += bound;
+       priv->dat_width += bound;
+    }
+
     priv->dat_height = priv->dat_y_max - priv->dat_y_min;
-    bound = priv->dat_height / 40.0;
-    priv->dat_y_min -= bound;
-    priv->dat_y_max += bound;
-    priv->dat_height += 2.0*bound;
+    bound = priv->dat_height / 30.0;
+    if (incr_bottom == SLOPE_TRUE) {
+       priv->dat_y_min -= bound;
+       priv->dat_height += bound;
+    }
+    if (incr_top == SLOPE_TRUE) {
+       priv->dat_y_max += bound;
+       priv->dat_height += bound;
+    }
 }
 
 
@@ -309,7 +332,7 @@ slope_item_t* slope_linear_get_axis (slope_scale_t *self, slope_axis_position_t 
 void slope_linear_set_show_grid (slope_scale_t *self, slope_bool_t show)
 {
     slope_item_t *axis;
-    int elements = show;
+    int elements;
     
     axis = slope_linear_get_axis (self, SLOPE_AXIS_BOTTOM);
     elements = show ? slope_axis_get_elements(axis) | SLOPE_AXIS_GRID :
