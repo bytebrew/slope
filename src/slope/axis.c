@@ -229,6 +229,7 @@ static void _slope_axis_draw_bottom (slope_item_t *self, cairo_t *cr)
                 cairo_move_to(cr, x, y);
                 cairo_line_to(cr, x, y-fig_rect.height);
                 cairo_set_dash(cr, dashes, 2, 0.0);
+                cairo_set_line_width(cr, 1.0);
                 slope_cairo_set_color(cr, priv->grid_color);
                 cairo_stroke(cr);
                 cairo_restore(cr);
@@ -390,6 +391,7 @@ static void _slope_axis_draw_left (slope_item_t *self, cairo_t *cr)
                 cairo_move_to(cr, x, y);
                 cairo_line_to(cr, x+fig_rect.width, y);
                 slope_cairo_set_color(cr, priv->grid_color);
+                cairo_set_line_width(cr, 1.0);
                 cairo_set_dash(cr, dashes, 2, 0.0);
                 cairo_stroke(cr);
                 cairo_restore(cr);

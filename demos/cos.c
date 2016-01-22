@@ -23,7 +23,6 @@ int main(int argc, char *argv[])
 
     slope_figure_t *figure;
     slope_scale_t *scale;
-    slope_iterator_t *iter;
     slope_item_t *cos_series;
     slope_item_t *axis;
     slope_sampler_t *sampler;
@@ -45,12 +44,10 @@ int main(int argc, char *argv[])
     slope_linear_set_show_grid(scale, SLOPE_TRUE);
     slope_scale_add_item(scale, cos_series);
 
-    /* set axis custom sample ticks and axis thickness */
+    /* set axis custom sample ticks */
     axis = slope_linear_get_axis(scale, SLOPE_AXIS_BOTTOM);
     sampler = slope_axis_get_sampler(axis);
     slope_sampler_set_samples(sampler, x_samples, 5);
-    SLOPE_LIST_FOREACH (iter, slope_linear_get_axis_list(scale))
-       slope_axis_set_line_width((slope_item_t*) slope_iterator_data(iter), 2.0);
 
     /* set up window */
     gtk_init (&argc, &argv);
