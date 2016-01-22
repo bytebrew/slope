@@ -78,8 +78,10 @@ void slope_axis_init (slope_item_t *self)
     slope_item_init(self);
 
     priv->sampler = slope_sampler_new();
-    priv->color = SLOPE_BLACK;
-    priv->grid_color = SLOPE_LIGHTGRAY;
+    priv->pen.color = SLOPE_BLACK;
+    priv->pen.line_width = 1.0;
+    priv->grid_pen.color = SLOPE_LIGHTGRAY;
+    priv->grid_pen.line_width = 1.0;
     priv->elements = SLOPE_AXIS_ALL;
     priv->elements &= ~SLOPE_AXIS_GRID;
     priv->line_width = 1;
@@ -95,19 +97,13 @@ void slope_axis_finalize (slope_item_t *self)
 }
 
 
-void slope_axis_set_line_width (slope_item_t *self, double width) 
-{
-   SLOPE_AXIS_GET_PRIVATE(self)->line_width = width;
-}
-
-
 static void _slope_axis_draw (slope_item_t *self, cairo_t *cr)
 {
     slope_axis_private_t *priv = SLOPE_AXIS_GET_PRIVATE(self);
 
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
     cairo_set_line_width(cr, 1.0);
-    slope_cairo_set_color(cr, priv->color);
+    slope_cairo_set_pen(cr, &priv->pen);
     cairo_set_line_width(cr, priv->line_width);
 
     switch (priv->pos) {
@@ -230,7 +226,7 @@ static void _slope_axis_draw_bottom (slope_item_t *self, cairo_t *cr)
                 cairo_line_to(cr, x, y-fig_rect.height);
                 cairo_set_dash(cr, dashes, 2, 0.0);
                 cairo_set_line_width(cr, 1.0);
-                slope_cairo_set_color(cr, priv->grid_color);
+                slope_cairo_set_pen(cr, &priv->grid_pen);
                 cairo_stroke(cr);
                 cairo_restore(cr);
             }
@@ -390,7 +386,7 @@ static void _slope_axis_draw_left (slope_item_t *self, cairo_t *cr)
                 cairo_save(cr);
                 cairo_move_to(cr, x, y);
                 cairo_line_to(cr, x+fig_rect.width, y);
-                slope_cairo_set_color(cr, priv->grid_color);
+                slope_cairo_set_pen(cr, &priv->grid_pen);
                 cairo_set_line_width(cr, 1.0);
                 cairo_set_dash(cr, dashes, 2, 0.0);
                 cairo_stroke(cr);
@@ -529,10 +525,16 @@ void slope_axis_set_elements(slope_item_t *self, int elements)
 }
 
 
-void slope_axis_set_colors (slope_item_t *self, slope_color_t stroke_color, slope_color_t extra_color)
+void slope_axis_set_pen (slope_item_t *self, const slope_pen_t *pen)
 {
-    slope_axis_private_t *priv = SLOPE_AXIS_GET_PRIVATE(self);
-    priv->color = stroke_color;
+   SLOPE_AXIS_GET_PRIVATE(self)->pen.color = pen->color;
+   SLOPE_AXIS_GET_PRIVATE(self)->pen.line_width = pen->line_width;
+}
+
+void slope_axis_set_grid_pen (slope_item_t *self, const slope_pen_t *pen)
+{
+   SLOPE_AXIS_GET_PRIVATE(self)->grid_pen.color = pen->color;
+   SLOPE_AXIS_GET_PRIVATE(self)->grid_pen.line_width = pen->line_width;
 }
 
 /* slope/axis.c */

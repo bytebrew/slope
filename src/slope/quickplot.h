@@ -18,30 +18,24 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_AXIS_P__
-#define __SLOPE_AXIS_P__
+#ifndef __SLOPE_QUICKPLOT__
+#define __SLOPE_QUICKPLOT__
 
+#include <slope/figure.h>
+#include <slope/linear.h>
 #include <slope/axis.h>
-#include <slope/item_p.h>
+#include <slope/legend.h>
+#include <slope/series.h>
 
-#define SLOPE_AXIS_PRIVATE(instance) ((slope_axis_private_t*) (instance))
-#define SLOPE_AXIS_GET_PRIVATE(instance) SLOPE_AXIS_PRIVATE(SLOPE_ITEM_GET_PRIVATE(instance))
+/* TODO */
 
 SLOPE_BEGIN_DECLS
 
-typedef struct _slope_axis_private slope_axis_private_t;
+typedef struct _slope_quickplot slope_quickplot_t;
 
-struct _slope_axis_private {
-   slope_item_private_t parent;
-
-   slope_pen_t pen;
-   slope_pen_t grid_pen;
-   slope_axis_position_t pos;
-   slope_axis_element_t elements;
-   slope_sampler_t *sampler;
-   double line_width;
-};
+slope_quickplot_t* slope_quickplot_new();
+void slope_quickplot_destroy(slope_quickplot_t *self);
 
 SLOPE_END_DECLS
 
-#endif /*__SLOPE_AXIS_P__*/
+#endif /*__SLOPE_QUICKPLOT__*/

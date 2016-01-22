@@ -38,8 +38,8 @@ struct _slope_legend_private {
    slope_rect_t rect;
    double line_height;
    int line_count;
+   slope_pen_t pen;
    slope_color_t fill_color;
-   slope_color_t stroke_color;
    
    double x;
    double y;

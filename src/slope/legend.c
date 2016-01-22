@@ -70,8 +70,9 @@ void slope_legend_init (slope_item_t *self)
     slope_item_init(self);
     
     priv->position_policy = SLOPE_LEGEND_TOPRIGHT;
+    priv->pen.color = SLOPE_BLACK;
+    priv->pen.line_width = 1.0;
     priv->fill_color = SLOPE_WHITE;
-    priv->stroke_color = SLOPE_BLACK;
     priv->x = -1.0;
     priv->y = -1.0;
 }
@@ -80,6 +81,19 @@ void slope_legend_init (slope_item_t *self)
 void slope_legend_finalize (slope_item_t *self)
 {
     slope_item_finalize(self);
+}
+
+
+void slope_legend_set_pen (slope_item_t *self, const slope_pen_t *pen)
+{
+   SLOPE_LEGEND_GET_PRIVATE(self)->pen.color = pen->color;
+   SLOPE_LEGEND_GET_PRIVATE(self)->pen.line_width = pen->line_width;
+}
+
+
+void slope_legend_set_background (slope_item_t *self, slope_color_t color)
+{
+   SLOPE_LEGEND_GET_PRIVATE(self)->fill_color = color;
 }
 
 
@@ -98,7 +112,7 @@ static void _slope_legend_draw (slope_item_t *self, cairo_t *cr)
     slope_cairo_rect(cr, &priv->rect);
     slope_cairo_set_color(cr, priv->fill_color);
     cairo_fill_preserve(cr);
-    slope_cairo_set_color(cr, priv->stroke_color);
+    slope_cairo_set_pen(cr, &priv->pen);
     cairo_stroke(cr);
     
     y = priv->rect.y + priv->line_height;
@@ -122,7 +136,7 @@ static void _slope_legend_draw (slope_item_t *self, cairo_t *cr)
             _slope_item_draw_thumb(curr_item, &thumb_pos, cr);
 
             cairo_move_to(cr, x, y);
-            slope_cairo_set_color(cr, priv->stroke_color);
+            slope_cairo_set_pen(cr, &priv->pen);
             cairo_show_text(cr, slope_item_get_name(curr_item));
             y += priv->line_height;
         }
@@ -218,7 +232,7 @@ void slope_legend_set_position (slope_item_t *self, double x, double y)
 void slope_legend_set_colors (slope_item_t *self, slope_color_t stroke_color, slope_color_t fill_color)
 {
     slope_legend_private_t *priv = SLOPE_LEGEND_GET_PRIVATE(self);
-    priv->stroke_color = stroke_color;
+    priv->pen.color = stroke_color;
     priv->fill_color = fill_color;
 }
 

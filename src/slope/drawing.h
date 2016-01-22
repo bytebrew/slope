@@ -62,6 +62,8 @@
 
 SLOPE_BEGIN_DECLS
 
+typedef unsigned int slope_color_t;
+
 typedef struct slope_point {
    double x;
    double y;
@@ -74,8 +76,11 @@ typedef struct slope_rect {
    double height;
 } slope_rect_t;
 
-
-typedef unsigned int slope_color_t;
+typedef struct slope_pen {
+   slope_color_t color;
+   double line_width;
+}
+slope_pen_t;
 
 
 void slope_rect_set (slope_rect_t *self, double x, double y, double width, double height);
@@ -84,6 +89,7 @@ void slope_cairo_rect (cairo_t *cr, const slope_rect_t *rect);
 void slope_cairo_line (cairo_t *cr, const slope_point_t *p1, const slope_point_t *p2);
 void slope_cairo_circle (cairo_t *cr, const slope_point_t *center, double radius);
 void slope_cairo_set_color (cairo_t *cr, const slope_color_t color);
+void slope_cairo_set_pen (cairo_t *cr, const slope_pen_t *pen);
 
 SLOPE_END_DECLS
 

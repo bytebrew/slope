@@ -73,4 +73,11 @@ void slope_cairo_set_color (cairo_t *cr, const slope_color_t color)
     );
 }
 
+
+void slope_cairo_set_pen (cairo_t *cr, const slope_pen_t *pen)
+{
+   cairo_set_line_width(cr, pen->line_width);
+   slope_cairo_set_color(cr, pen->color);
+}
+
 /* slope/drawing.h */
