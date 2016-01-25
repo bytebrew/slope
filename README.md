@@ -20,7 +20,7 @@ demos directory in the source tree.
 
 ![](https://github.com/elvismt/slope/blob/master/demos/cos_demo.png)
 
-* A quick plot of a data series
+* A quick plot of a data series in a Windows(R) build (MinGW)
 
 ![](https://github.com/elvismt/slope/blob/master/demos/scatter_demo.png)
 

@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
     slope_figure_t *figure;
     slope_scale_t *scale;
     slope_item_t *series;
-    slope_pen_t pen;
 
     double x[NPTS], y[NPTS];
     int k;
@@ -32,9 +31,6 @@ int main(int argc, char *argv[])
     /* create a linear (cartesian) scale and set it's axis labels */
     scale = slope_linear_new("linear scale");
     slope_linear_set_axis_labels(scale, "X", "Crazy Data", "","");
-    pen.color = SLOPE_BLACK;
-    pen.line_width = 2.0;
-    slope_linear_set_axis_pen(scale, &pen);
 
     /* add the plots to the scale */
     slope_scale_add_item(scale, series);
