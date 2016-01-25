@@ -397,4 +397,15 @@ void _slope_linear_set_color_scheme (slope_scale_t *self, slope_color_t backgrou
     }
 }
 
+
+void slope_linear_set_axis_pen (slope_scale_t *self, const slope_pen_t *pen)
+{
+    slope_linear_private_t *priv = SLOPE_LINEAR_GET_PRIVATE(self);
+    slope_iterator_t *iter;
+    
+    SLOPE_LIST_FOREACH (iter, priv->axis_list) {
+      slope_axis_set_pen(SLOPE_ITEM(slope_iterator_data(iter)), pen);
+    }
+}
+
 /* slope/linear.c */

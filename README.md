@@ -20,9 +20,9 @@ demos directory in the source tree.
 
 ![](https://github.com/elvismt/slope/blob/master/demos/cos_demo.png)
 
-* A quick plot of multiple series
+* A quick plot of a data series
 
-![](https://github.com/elvismt/slope/blob/master/demos/log_demo.png)
+![](https://github.com/elvismt/slope/blob/master/demos/scatter_demo.png)
 
 Contributions to slope are wellcome. Propose yours by issuing a pull request or
 email me at elvismtt@gmail.com.
