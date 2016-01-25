@@ -102,9 +102,7 @@ static void _slope_axis_draw (slope_item_t *self, cairo_t *cr)
     slope_axis_private_t *priv = SLOPE_AXIS_GET_PRIVATE(self);
 
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
-    cairo_set_line_width(cr, 1.0);
     slope_cairo_set_pen(cr, &priv->pen);
-    cairo_set_line_width(cr, priv->line_width);
 
     switch (priv->pos) {
         case SLOPE_AXIS_BOTTOM:
