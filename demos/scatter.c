@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-#define NPTS 1000
+#define NPTS 5000
 
 
 int main(int argc, char *argv[])

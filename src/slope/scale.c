@@ -57,7 +57,7 @@ void slope_scale_add_item (slope_scale_t *self, slope_item_t *item)
     slope_scale_private_t *priv = SLOPE_SCALE_GET_PRIVATE(self);
     slope_list_append(priv->item_list, item);
     _slope_item_set_scale(item, self);
-    slope_scale_update_for_item(self, item);
+    slope_scale_update(self);
 }
 
 
