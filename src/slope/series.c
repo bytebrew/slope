@@ -396,4 +396,10 @@ void slope_series_set_style (slope_item_t *self, int style)
     priv->style = (slope_series_style_t) style;
 }
 
+
+void slope_series_set_radius (slope_item_t *self, double radius)
+{
+	SLOPE_SERIES_GET_PRIVATE(self)->symbol_radius = radius;
+}
+
 /* slope/series.c */

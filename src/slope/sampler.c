@@ -112,9 +112,13 @@ void slope_sampler_auto_sample_decimal (slope_sampler_t *self, double min, doubl
     samp_spac = pow(10.0, pow_diff-1.0);
    
     if ((v_diff/samp_spac) > (hint+5.0))
-       samp_spac *= 5.0;
+       samp_spac *= 2.0;
     if ((v_diff/samp_spac) < (hint-5.0))
-       samp_spac /= 5.0;
+       samp_spac /= 2.0;
+    if ((v_diff/samp_spac) > (hint+5.0))
+       samp_spac *= 2.0;
+    if ((v_diff/samp_spac) < (hint-5.0))
+       samp_spac /= 2.0;
    
     if (min < 0.0) {
         first_tick = -floor(fabs(min)/samp_spac) * samp_spac;

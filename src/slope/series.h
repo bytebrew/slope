@@ -68,6 +68,8 @@ void slope_series_set_data (slope_item_t *self,
 
 void slope_series_set_style (slope_item_t *self, int style);
 
+void slope_series_set_radius (slope_item_t *self, double radius);
+
 SLOPE_END_DECLS
 
 #endif /*__SLOPE_SERIES__*/
