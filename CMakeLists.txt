@@ -12,6 +12,8 @@ else()
     PKG_CHECK_MODULES(DEP "cairo")
 endif()
 
+set(CMAKE_CC_FLAGS "${CMAKE_CC_FLAGS} -g}")
+
 include_directories(
     "${DEP_INCLUDE_DIRS}"
     "${CMAKE_SOURCE_DIR}/src"

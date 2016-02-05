@@ -16,7 +16,8 @@ int main(int argc, char *argv[])
     slope_scale_t *scale;
     slope_item_t *series;
 
-    double x[NPTS], y[NPTS];
+    double *x = malloc(NPTS*sizeof(double));
+    double *y = malloc(NPTS*sizeof(double));
     int k;
 
     for (k=0; k<NPTS; k++) {
@@ -55,6 +56,8 @@ int main(int argc, char *argv[])
     gtk_main();
 
     /* clean up */
+    free(x);
+    free(y);
     slope_scale_destroy(scale);
     slope_item_destroy(series);
     return 0;
