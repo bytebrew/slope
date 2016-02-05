@@ -2,6 +2,7 @@ project(slope C)
 cmake_minimum_required(VERSION 2.8)
 
 set(SLOPE_USE_GTK "TRUE")
+set(SLOPE_BUILD_GSL_DEMOS "TRUE")
 
 find_package(PkgConfig REQUIRED)
 if(SLOPE_USE_GTK MATCHES "TRUE")

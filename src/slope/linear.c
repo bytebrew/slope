@@ -239,13 +239,13 @@ static void _slope_linear_update (slope_scale_t *self)
     }
 
     priv->dat_width = priv->dat_x_max - priv->dat_x_min;
-    bound = priv->dat_width / 40.0;
+    bound = priv->dat_width / 20.0;
     priv->dat_x_min -= bound;
     priv->dat_x_max += bound;
     priv->dat_width += 2.0*bound;
     
     priv->dat_height = priv->dat_y_max - priv->dat_y_min;
-    bound = priv->dat_height / 40.0;
+    bound = priv->dat_height / 20.0;
     priv->dat_y_min -= bound;
     priv->dat_y_max += bound;
     priv->dat_height += 2.0*bound;

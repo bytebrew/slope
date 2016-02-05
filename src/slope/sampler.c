@@ -136,7 +136,7 @@ void slope_sampler_auto_sample_decimal (slope_sampler_t *self, double min, doubl
        if (is_major) {
             /* sometimes 0.0 is displayed -0.0, thats weird */
             if (coord == -0.0) coord = 0.0;
-            sprintf(buf, "%2.2f", coord);
+            sprintf(buf, "%2.1f", coord);
             slope_sampler_add_sample(self, coord, buf, SLOPE_TRUE);
        }
        else {

@@ -24,6 +24,10 @@ demos directory in the source tree.
 
 ![](https://github.com/elvismt/slope/blob/master/demos/cos_demo.png)
 
+* A slope figure showing the result of a linear regression made with gsl
+
+![](https://github.com/elvismt/slope/blob/master/demos/regression_demo.png)
+
 * A quick plot of a data series in a Windows(R) build (MinGW)
 
 ![](https://github.com/elvismt/slope/blob/master/demos/scatter_demo.png)
