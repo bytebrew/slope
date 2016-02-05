@@ -5,8 +5,8 @@ Slope is a free (LGPL) **C** library for creating charts using the cairo 2D draw
 library. As long as **Gtk+** uses cairo to render it's widgets, embedding slope's
 charts in gtk is straitforward.
 
-Our goal is producing beautiful, publication quality, and fas charts from numerical
-data in a nice object-roiented fashion. We are in part inspired by Python's matplotlib,
+Our goal is producing beautiful, publication quality, and fast charts from numerical
+data in a nice object-oriented fashion. We are in part inspired by Python's matplotlib,
 but commited with the raw speed of C programs. We beleave Slope together with the
 GNU Scientific Library (GSL) is the best replacement for the set (NumPy, SciPy, matplotlib)
 in C's world.
