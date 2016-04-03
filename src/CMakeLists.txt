@@ -17,6 +17,7 @@ if(SLOPE_USE_GTK MATCHES "TRUE")
     set(slope_HDRS
         ${slope_HDRS}
         slope/widget.h
+        slope/chart.h
     )
 endif()
 
@@ -37,6 +38,7 @@ if(SLOPE_USE_GTK MATCHES "TRUE")
     set(slope_SRCS
         ${slope_SRCS}
         slope/widget.c
+        slope/chart.c
     )
 endif()
 

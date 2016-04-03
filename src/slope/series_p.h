@@ -34,7 +34,7 @@ typedef struct _slope_series_private slope_series_private_t;
 struct _slope_series_private {
    slope_item_private_t parent;
 
-   slope_series_style_t style;
+   slope_series_symbol_t symbol;
    slope_color_t stroke_color;
    slope_color_t fill_color;
    double line_width;

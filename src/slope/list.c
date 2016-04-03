@@ -166,4 +166,39 @@ void slope_list_clear (slope_list_t *self)
    self->size = 0;
 }
 
+
+void slope_list_remove (slope_list_t *self, void *data)
+{
+    slope_iterator_t *iter;
+    slope_iterator_t *next;
+
+    if (!self || !data)
+        return;
+    iter = self->first;
+
+    while (iter != NULL) {
+        next = iter->next;
+
+        if (iter->data == data) {
+            if (iter == self->first) {
+                self->first = next;
+                if (self->first)
+                    self->first->prev = NULL;
+            }
+            else if (iter == self->last) {
+                self->last = iter->prev;
+                if (self->last)
+                    self->last->next = NULL;
+            }
+            else {
+                iter->prev->next = next;
+                next->prev = iter->prev;
+            }
+            SLOPE_FREE(iter);
+            self->size -= 1;
+        }
+        iter = next;
+    }
+}
+
 /* slope/list.c */

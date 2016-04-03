@@ -48,25 +48,25 @@ typedef enum _slope_series_style
     SLOPE_SERIES_CIRCLES,
     SLOPE_SERIES_AREAUNDER
 }
-slope_series_style_t;
+slope_series_symbol_t;
 
 
-slope_item_t* slope_series_new (const char *name);
+slope_item_t* slope_series_new_empty (const char *name);
 
-slope_item_t* slope_series_new_for_data (const double *vx, const double *vy,
-                                         int size, const char *name,
-                                         slope_color_t stroke_color, slope_color_t fill_color,
-                                         slope_series_style_t style);
+slope_item_t* slope_series_new (const double *vx, const double *vy,
+                                int size, const char *name, const char *style);
+
+void slope_series_set_style (slope_item_t *self, const char *style);
 
 void slope_series_init (slope_item_t *self);
 
 void slope_series_finalize (slope_item_t *self);
 
 void slope_series_set_data (slope_item_t *self,
-                            const double *vx, const double *vy, int size,
-                            slope_color_t stroke_color, slope_color_t fill_color);
+                            const double *vx, const double *vy,
+                            int size, const char *style);
 
-void slope_series_set_style (slope_item_t *self, int style);
+void slope_series_set_symbol (slope_item_t *self, int symbol);
 
 void slope_series_set_radius (slope_item_t *self, double radius);
 

@@ -45,6 +45,7 @@ void* slope_iterator_data (slope_iterator_t *self);
 void slope_iterator_next (slope_iterator_t **self);
 void slope_iterator_previous (slope_iterator_t **self);
 void slope_list_clear (slope_list_t *self);
+void slope_list_remove (slope_list_t *self, void *data);
 
 SLOPE_END_DECLS
 

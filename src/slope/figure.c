@@ -66,7 +66,7 @@ void slope_figure_init (slope_figure_t *self)
     priv->scale_list = slope_list_new();
     priv->legend = slope_legend_new(self);
     priv->show_title = SLOPE_TRUE;
-    priv->back_color = SLOPE_WHITE;
+    priv->back_color = SLOPE_LIGHTGRAY;
     priv->name_color = SLOPE_BLACK;
     priv->name = NULL;
 }

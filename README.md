@@ -20,17 +20,17 @@ Slope is in it's early stages of development, but it is already able to produce
 beautifull charts like the ones bellow. The code to draw these charts is in the
 demos directory in the source tree.
 
-* An "area under" plot with custom x axis labels
+* A quick plot of a data series of 2D points
+
+![](https://github.com/elvismt/slope/blob/master/demos/scatter_demo.png)
+
+* An "area under" plot
 
 ![](https://github.com/elvismt/slope/blob/master/demos/cos_demo.png)
 
 * A slope figure showing the result of a linear regression made with gsl
 
 ![](https://github.com/elvismt/slope/blob/master/demos/regression_demo.png)
-
-* A quick plot of a data series in a Windows(R) build (MinGW)
-
-![](https://github.com/elvismt/slope/blob/master/demos/scatter_demo.png)
 
 Contributions to slope are wellcome. Propose yours by issuing a pull request or
 email me at elvismtt@gmail.com.

@@ -18,7 +18,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_LINAR__
+#ifndef __SLOPE_LINEAR__
 #define __SLOPE_LINEAR__
 
 #include <slope/scale.h>
@@ -55,6 +55,7 @@ void slope_linear_set_x_boundaries (slope_scale_t *self, double low_bound, doubl
 void slope_linear_set_y_boundaries (slope_scale_t *self, double low_bound, double up_bound);
 void slope_linear_set_axis_labels (slope_scale_t *self, const char *bottom_label, const char *left_label,
                                    const char *top_label, const char *right_label);
+void slope_linear_set_back_color(slope_scale_t *self, slope_color_t color);
 void slope_linear_set_axis_pen (slope_scale_t *self, const slope_pen_t *pen);
 
 SLOPE_END_DECLS

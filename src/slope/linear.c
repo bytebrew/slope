@@ -88,6 +88,7 @@ void slope_linear_init (slope_scale_t *self)
 
     slope_scale_init(self);
 
+    priv->back_color = SLOPE_WHITE;
     priv->axis_list = slope_list_new();
     priv->x_low_bound = 80.0; priv->x_up_bound = 20.0;
     priv->y_low_bound = 30.0; priv->y_up_bound = 45.0;
@@ -128,6 +129,8 @@ static void _slope_linear_draw (slope_scale_t *self,
 
     cairo_rectangle(cr, priv->fig_x_min, priv->fig_y_min,
                     priv->fig_width, priv->fig_height);
+    slope_cairo_set_color(cr, priv->back_color);
+    cairo_fill_preserve(cr);
     cairo_clip(cr);
     
     SLOPE_LIST_FOREACH (iter, scale_priv->item_list) {
@@ -406,6 +409,13 @@ void slope_linear_set_axis_pen (slope_scale_t *self, const slope_pen_t *pen)
     SLOPE_LIST_FOREACH (iter, priv->axis_list) {
       slope_axis_set_pen(SLOPE_ITEM(slope_iterator_data(iter)), pen);
     }
+}
+
+
+void slope_linear_set_back_color(slope_scale_t *self, slope_color_t color)
+{
+    if (!self) return;
+    SLOPE_LINEAR_GET_PRIVATE(self)->back_color = color;
 }
 
 /* slope/linear.c */

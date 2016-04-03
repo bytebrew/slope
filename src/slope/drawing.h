@@ -79,8 +79,7 @@ typedef struct slope_rect {
 typedef struct slope_pen {
    slope_color_t color;
    double line_width;
-}
-slope_pen_t;
+} slope_pen_t;
 
 
 void slope_rect_set (slope_rect_t *self, double x, double y, double width, double height);

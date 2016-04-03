@@ -51,25 +51,23 @@ static slope_item_class_t* _slope_series_get_class()
 }
 
 
-slope_item_t* slope_series_new (const char *name)
+slope_item_t* slope_series_new_empty (const char *name)
 {
     slope_series_t *self = SLOPE_ALLOC(slope_series_t);
     slope_series_private_t *priv = SLOPE_ALLOC(slope_series_private_t);
-    
+
     SLOPE_ITEM(self)->_private = SLOPE_ITEM_PRIVATE(priv);
     SLOPE_ITEM(self)->_class = _slope_series_get_class();
     SLOPE_ITEM_GET_CLASS(self)->init(SLOPE_ITEM(self));
-    
+
     slope_item_set_name(SLOPE_ITEM(self), name);
-    
+
     return SLOPE_ITEM(self);
 }
 
 
-slope_item_t* slope_series_new_for_data (const double *vx, const double *vy,
-                                         int size, const char *name,
-                                         slope_color_t stroke_color, slope_color_t fill_color,
-                                         slope_series_style_t style)
+slope_item_t* slope_series_new (const double *vx, const double *vy,
+                                int size, const char *name, const char *style)
 {
     slope_series_t *self = SLOPE_ALLOC(slope_series_t);
     slope_series_private_t *priv = SLOPE_ALLOC(slope_series_private_t);
@@ -79,22 +77,67 @@ slope_item_t* slope_series_new_for_data (const double *vx, const double *vy,
     SLOPE_ITEM_GET_CLASS(self)->init(SLOPE_ITEM(self));
 
     slope_item_set_name(SLOPE_ITEM(self), name);
-    slope_series_set_data(SLOPE_ITEM(self), vx, vy, size, stroke_color, fill_color);
-    slope_series_set_style(SLOPE_ITEM(self), style);
-
-    switch (style) {
-        case SLOPE_SERIES_LINE:
-            priv->line_width = 2.0;
-            break;
-        case SLOPE_SERIES_CIRCLES:
-            priv->line_width = 1.0;
-            break;
-        case SLOPE_SERIES_AREAUNDER:
-            priv->line_width = 2.0;
-            break;
-    }
+    slope_series_set_data(SLOPE_ITEM(self), vx, vy, size, style);
 
     return SLOPE_ITEM(self);
+}
+
+
+void slope_series_set_style (slope_item_t *self, const char *style)
+{
+    slope_series_t *series;
+    slope_series_private_t *priv;
+    slope_color_t stroke = SLOPE_BLUE;
+    slope_color_t fill = SLOPE_GREEN;
+    slope_series_symbol_t symbol = SLOPE_SERIES_LINE;
+    double width = 1.0;
+    int idx = 0;
+
+    if (!self) return;
+
+    series = SLOPE_SERIES(self);
+    priv = SLOPE_SERIES_GET_PRIVATE(self);
+
+    /* parse color */
+    if (style != NULL && style[idx] != '\0') {
+        switch (style[idx]) {
+            case 'r': { stroke=SLOPE_RED; fill=SLOPE_RED; } break;
+            case 'g': { stroke=SLOPE_GREEN; fill=SLOPE_GREEN; } break;
+            case 'b': { stroke=SLOPE_BLUE; fill=SLOPE_BLUE; } break;
+            case 'k': { stroke=SLOPE_BLACK; fill=SLOPE_BLACK; } break;
+        }
+        idx += 1;
+    }
+
+    /* parse symbol */
+    if (style != NULL && style[idx] != '\0') {
+        switch (style[idx]) {
+            case 'o': { symbol=SLOPE_SERIES_CIRCLES; } break;
+            case '-': { symbol=SLOPE_SERIES_LINE; } break;
+            case 'a': { symbol=SLOPE_SERIES_AREAUNDER; } break;
+        }
+        idx += 1;
+    }
+
+    /* parse fill color */
+    if (style != NULL && style[idx] != '\0') {
+        switch (style[idx]) {
+            case 'r': { fill=SLOPE_RED; } break;
+            case 'g': { fill=SLOPE_GREEN; } break;
+            case 'b': { fill=SLOPE_BLUE; } break;
+            case 'k': { fill=SLOPE_BLACK; } break;
+        }
+        idx += 1;
+    }
+
+    if (symbol == SLOPE_SERIES_LINE ||
+        symbol == SLOPE_SERIES_AREAUNDER)
+            width = 2.0;
+
+    priv->stroke_color = stroke;
+    priv->fill_color = fill;
+    priv->symbol = symbol;
+    priv->line_width = width;
 }
 
 
@@ -103,7 +146,7 @@ void slope_series_init (slope_item_t *self)
     slope_series_private_t *priv = SLOPE_SERIES_GET_PRIVATE(self);
     slope_item_init(self); 
     
-    priv->style = SLOPE_SERIES_LINE;
+    priv->symbol = SLOPE_SERIES_LINE;
     priv->xmin = 0.0;
     priv->xmax = 1.0;
     priv->ymin = 0.0;
@@ -121,17 +164,16 @@ void slope_series_finalize (slope_item_t *self)
 
 
 void slope_series_set_data (slope_item_t *self,
-                            const double *vx, const double *vy, int size,
-                            slope_color_t stroke_color, slope_color_t fill_color)
+                            const double *vx, const double *vy,
+                            int size, const char *style)
 {
     slope_series_private_t *priv = SLOPE_SERIES_GET_PRIVATE(self);
     
     priv->vx = vx;
     priv->vy = vy;
     priv->size = size;
-    priv->stroke_color = stroke_color;
-    priv->fill_color = fill_color;
     _slope_series_check_ranges(SLOPE_SERIES(self));
+    slope_series_set_style(SLOPE_ITEM(self), style);
 }
 
 
@@ -142,7 +184,7 @@ static void _slope_series_draw (slope_item_t *self, cairo_t *cr)
     if (priv->size == 0)
         return;
 
-    switch (priv->style) {
+    switch (priv->symbol) {
         case SLOPE_SERIES_LINE:
             _slope_series_draw_line(self, cr);
             break;
@@ -157,11 +199,12 @@ static void _slope_series_draw (slope_item_t *self, cairo_t *cr)
 
 
 static void _slope_series_draw_thumb (slope_item_t *self,
-                                      const slope_point_t *point, cairo_t *cr)
+                                      const slope_point_t *point,
+                                      cairo_t *cr)
 {
     slope_series_private_t *priv = SLOPE_SERIES_GET_PRIVATE(self);
 
-    switch (priv->style) {
+    switch (priv->symbol) {
         case SLOPE_SERIES_LINE:
             cairo_move_to(cr, point->x-10.0, point->y);
             cairo_line_to(cr, point->x+10.0, point->y);
@@ -390,10 +433,10 @@ static void _slope_series_check_ranges (slope_series_t *self)
 }
 
 
-void slope_series_set_style (slope_item_t *self, int style)
+void slope_series_set_symbol (slope_item_t *self, int symbol)
 {
     slope_series_private_t *priv = SLOPE_SERIES_GET_PRIVATE(self);
-    priv->style = (slope_series_style_t) style;
+    priv->symbol = (slope_series_symbol_t) symbol;
 }
 
 

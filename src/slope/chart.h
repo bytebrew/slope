@@ -18,24 +18,28 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_QUICKPLOT__
-#define __SLOPE_QUICKPLOT__
+#ifndef __SLOPE_CHART__
+#define __SLOPE_CHART__
 
+#include <slope/widget.h>
 #include <slope/figure.h>
 #include <slope/linear.h>
 #include <slope/axis.h>
 #include <slope/legend.h>
 #include <slope/series.h>
 
-/* TODO */
-
 SLOPE_BEGIN_DECLS
 
-typedef struct _slope_quickplot slope_quickplot_t;
+typedef struct _slope_chart slope_chart_t;
 
-slope_quickplot_t* slope_quickplot_new();
-void slope_quickplot_destroy(slope_quickplot_t *self);
+
+slope_chart_t* slope_chart_new (const char *title);
+
+void slope_chart_plot (slope_chart_t *chart, const double *vx, const double *vy,
+                       int size, const char *name, const char *style);
+
+void slope_chart_show (slope_chart_t *chart);
 
 SLOPE_END_DECLS
 
-#endif /*__SLOPE_QUICKPLOT__*/
+#endif /*__SLOPE_CHART__*/

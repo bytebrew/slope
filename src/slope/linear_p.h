@@ -35,6 +35,7 @@ struct _slope_linear_private {
    slope_scale_private_t parent;
 
    slope_list_t *axis_list;
+   slope_color_t back_color;
 
    double x_low_bound, x_up_bound;
    double y_low_bound, y_up_bound;
