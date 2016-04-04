@@ -56,9 +56,6 @@ slope_chart_t* slope_chart_new (const char *title)
     gtk_window_set_default_size(GTK_WINDOW(window), 600, 500);
     gtk_widget_set_size_request(window, 300, 250);
 
-    if (!window_list)
-        window_list = slope_list_new();
-    slope_list_append(window_list, window);
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(on_close), NULL);
 
     chart->window = window;
@@ -84,6 +81,9 @@ void slope_chart_plot (slope_chart_t *chart, const double *vx, const double *vy,
 void slope_chart_show (slope_chart_t *chart)
 {
     if (!chart) return;
+    if (!window_list)
+        window_list = slope_list_new();
+    slope_list_append(window_list, chart->window);
     gtk_widget_show_all(chart->window);
 }
 
