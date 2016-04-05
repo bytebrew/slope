@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
    }
 
    /* create series (plot representation) for data */
-   slope_chart_plot (chart, x, y, NPTS, "Experiment data", "ro");
+   slope_chart_plot (chart, x, y, NPTS, "Experiment data", "bog");
    
    /* execute linear regression with gsl */
    gsl_fit_linear(x, 1, y, 1, NPTS, &a, &b, &cov_00, &cov_01, &cov_11, &chisqr);

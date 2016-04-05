@@ -88,6 +88,13 @@ void slope_chart_show (slope_chart_t *chart)
 }
 
 
+void slope_chart_destroy (slope_chart_t *chart)
+{
+    if (!chart) return;
+    /* TODO */
+}
+
+
 static on_close (GtkWidget *widget, gpointer data)
 {
     slope_list_remove(window_list, widget);

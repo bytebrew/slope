@@ -40,6 +40,8 @@ void slope_chart_plot (slope_chart_t *chart, const double *vx, const double *vy,
 
 void slope_chart_show (slope_chart_t *chart);
 
+void slope_chart_destroy (slope_chart_t *chart);
+
 SLOPE_END_DECLS
 
 #endif /*__SLOPE_CHART__*/
