@@ -1,3 +1,6 @@
+/* This example shws how to use custom axis tick labels
+   in this case the multiples of pi */
+
 #include <math.h>
 #include <gtk/gtk.h>
 #include <slope/chart.h>
@@ -36,20 +39,13 @@ int main(int argc, char *argv[])
     /* create series (plot) representation and place it in a scale */
     slope_chart_plot (chart, x, y, NPTS, "cos(x)", "bag");
 
-    /* create a linear (cartesian) scale and set it's axis labels 
-    scale = slope_linear_new("linear scale");
-    slope_linear_set_axis_labels(scale, "X (RADIANS)", "Cos(X)", "","");
-    slope_linear_set_show_grid(scale, SLOPE_TRUE);
-    slope_scale_add_item(scale, cos_series);
-    */
-
-    /* set axis custom sample ticks
-    axis = slope_linear_get_axis(scale, SLOPE_AXIS_BOTTOM);
+    /* set the bottom axis sample labels as unicode symbols */
+    axis = slope_chart_get_axis(chart, SLOPE_AXIS_BOTTOM);
     sampler = slope_axis_get_sampler(axis);
     slope_sampler_set_samples(sampler, x_samples, 5);
-    */
 
     slope_chart_show(chart);
     gtk_main();
     return 0;
 }
+

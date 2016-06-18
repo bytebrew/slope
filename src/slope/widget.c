@@ -25,27 +25,38 @@
     SLOPE_WIDGET_TYPE, SlopeWidgetPrivate))
 
 
-/**
- */
-static gboolean
-_slope_widget_draw_callback (GtkWidget *widget, cairo_t *cr, gpointer *data);
+static gboolean _slope_widget_draw_callback (GtkWidget *widget, cairo_t *cr, gpointer *data);
+static gboolean _slope_widget_mouse_press_callback (GtkWidget *widget, GdkEvent *event, gpointer *data);
+static gboolean _slope_widget_mouse_move_callback (GtkWidget *widget, GdkEvent *event, gpointer *data);
+static gboolean _slope_widget_mouse_release_callback (GtkWidget *widget, GdkEvent *event, gpointer *data);
 
 
-/**
- */
-typedef struct _SlopeWidgetPrivate SlopeWidgetPrivate;
-
-
-/**
- */
-struct _SlopeWidgetPrivate
+typedef struct
+_SlopeWidgetPrivate
 {
     slope_figure_t *figure;
     slope_bool_t own_figure;
-};
+    slope_point_t mouse_p1;
+    slope_point_t mouse_p2;
+}
+SlopeWidgetPrivate;
 
 
 G_DEFINE_TYPE(SlopeWidget, slope_widget, GTK_TYPE_DRAWING_AREA);
+
+
+static void
+slope_widget_finalize (GObject *gobject)
+{
+    SlopeWidgetPrivate *m = SLOPE_WIDGET_GET_PRIVATE(gobject);
+    GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(gobject));
+
+    if (m->figure && m->own_figure) {
+        slope_figure_destroy(m->figure);
+    }
+
+    G_OBJECT_CLASS(parent_class)->finalize(gobject);
+}
 
 
 static void
@@ -53,6 +64,8 @@ slope_widget_class_init (SlopeWidgetClass *klass)
 {
     GtkWidgetClass *widget_klass = GTK_WIDGET_CLASS (klass);
     GObjectClass *object_klass = G_OBJECT_CLASS(klass);
+
+    object_klass->finalize = slope_widget_finalize;
     
     g_type_class_add_private(klass, sizeof(SlopeWidgetPrivate));
 }
@@ -72,6 +85,8 @@ slope_widget_init (SlopeWidget *widget)
     
     g_signal_connect(G_OBJECT(gtk_widget), "draw",
                      G_CALLBACK(_slope_widget_draw_callback), NULL);
+    g_signal_connect(G_OBJECT(gtk_widget), "button-press-event",
+                     G_CALLBACK(_slope_widget_mouse_press_callback), NULL);
 }
 
 
@@ -120,6 +135,30 @@ _slope_widget_draw_callback (GtkWidget *widget, cairo_t *cr, gpointer *data)
     slope_rect_set(&rect, 0.0, 0.0, allocation.width, allocation.height);
 
     slope_figure_draw(priv->figure, &rect, cr);
+    return TRUE;
+}
+
+
+static gboolean
+_slope_widget_mouse_press_callback (GtkWidget *widget, GdkEvent *event, gpointer *data)
+{
+
+    return TRUE;
+}
+
+
+static gboolean
+_slope_widget_mouse_move_callback (GtkWidget *widget, GdkEvent *event, gpointer *data)
+{
+
+    return TRUE;
+}
+
+
+static gboolean
+_slope_widget_mouse_release_callback (GtkWidget *widget, GdkEvent *event, gpointer *data)
+{
+
     return TRUE;
 }
 

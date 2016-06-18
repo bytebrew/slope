@@ -140,7 +140,7 @@ static void _slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, 
     cairo_select_font_face(cr, "sans",
                            CAIRO_FONT_SLANT_NORMAL,
                            CAIRO_FONT_WEIGHT_NORMAL);
-    cairo_set_font_size(cr, 12);
+    cairo_set_font_size(cr, 11);
     #endif
     
     /* draw data contents */

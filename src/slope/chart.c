@@ -102,4 +102,20 @@ static on_close (GtkWidget *widget, gpointer data)
         gtk_main_quit();
 }
 
+
+slope_figure_t* slope_chart_get_figure (slope_chart_t *self)
+{
+    if (self)
+        return self->figure;
+    return NULL;
+}
+
+
+slope_item_t* slope_chart_get_axis (slope_chart_t *self, slope_axis_position_t pos)
+{
+    if (self)
+        return slope_linear_get_axis(self->scale, pos);
+    return NULL;
+}
+
 /* slope/chart.c */

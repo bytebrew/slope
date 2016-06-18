@@ -35,12 +35,16 @@ typedef struct _slope_chart slope_chart_t;
 
 slope_chart_t* slope_chart_new (const char *title);
 
-void slope_chart_plot (slope_chart_t *chart, const double *vx, const double *vy,
+void slope_chart_plot (slope_chart_t *self, const double *vx, const double *vy,
                        int size, const char *name, const char *style);
 
-void slope_chart_show (slope_chart_t *chart);
+void slope_chart_show (slope_chart_t *self);
 
-void slope_chart_destroy (slope_chart_t *chart);
+void slope_chart_destroy (slope_chart_t *self);
+
+slope_figure_t* slope_chart_get_figure (slope_chart_t *self);
+
+slope_item_t* slope_chart_get_axis (slope_chart_t *self, slope_axis_position_t pos);
 
 SLOPE_END_DECLS
 

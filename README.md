@@ -24,13 +24,10 @@ demos directory in the source tree.
 
 ![](https://github.com/elvismt/slope/blob/master/demos/scatter_demo.png)
 
-* An "area under" plot
+* An "area under" plot with custom axis labels
 
 ![](https://github.com/elvismt/slope/blob/master/demos/cos_demo.png)
 
-* A slope figure showing the result of a linear regression made with gsl
-
-![](https://github.com/elvismt/slope/blob/master/demos/regression_demo.png)
-
+Mouse interactions like zooming are in the roadmap and will soon be added.
 Contributions to slope are wellcome. Propose yours by issuing a pull request or
 email me at elvismtt@gmail.com.

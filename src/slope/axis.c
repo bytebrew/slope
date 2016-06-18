@@ -54,7 +54,9 @@ static slope_item_class_t* _slope_axis_get_class()
 }
 
 
-slope_item_t* slope_axis_new (slope_scale_t *linear_scale, const char *name, slope_axis_position_t pos)
+slope_item_t*
+slope_axis_new (slope_scale_t *linear_scale, const char *name,
+                slope_axis_position_t pos)
 {
     slope_axis_t *self = SLOPE_ALLOC(slope_axis_t);
     slope_axis_private_t *priv = SLOPE_ALLOC(slope_axis_private_t);

@@ -2,7 +2,7 @@ project(slope C)
 cmake_minimum_required(VERSION 2.8)
 
 set(SLOPE_USE_GTK "TRUE")
-set(SLOPE_BUILD_GSL_DEMOS "TRUE")
+set(SLOPE_BUILD_DEBUG "TRUE")
 
 find_package(PkgConfig REQUIRED)
 if(SLOPE_USE_GTK MATCHES "TRUE")
@@ -13,7 +13,9 @@ else()
     PKG_CHECK_MODULES(DEP "cairo")
 endif()
 
-set(CMAKE_CC_FLAGS "${CMAKE_CC_FLAGS} -g}")
+if(SLOPE_BUILD_DEBUG MATCHES "TRUE")
+    set(CMAKE_CC_FLAGS "${CMAKE_CC_FLAGS} -g}")
+endif()
 
 include_directories(
     "${DEP_INCLUDE_DIRS}"

@@ -48,7 +48,10 @@ struct _SlopeWidgetClass
     GtkDrawingAreaClass parent;
     
     /* padding for future expansion */
-    gpointer padding;
+    gpointer padding1;
+    gpointer padding2;
+    gpointer padding3;
+    gpointer padding4;
 };
 
 GType slope_widget_get_type(void) G_GNUC_CONST;

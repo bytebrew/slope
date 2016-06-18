@@ -152,8 +152,8 @@ void slope_series_init (slope_item_t *self)
     priv->ymin = 0.0;
     priv->ymax = 1.0;
     priv->size = 0;
-    priv->line_width = 2.0;
-    priv->symbol_radius = 3.0;
+    priv->line_width = 1.5;
+    priv->symbol_radius = 2.5;
 }
 
 
