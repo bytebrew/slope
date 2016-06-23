@@ -62,6 +62,7 @@ void slope_legend_set_position_policy (slope_item_t *self, slope_legend_position
 void slope_legend_set_position (slope_item_t *self, double x, double y);
 void slope_legend_set_pen (slope_item_t *self, const slope_pen_t *pen);
 void slope_legend_set_background (slope_item_t *self, slope_color_t color);
+void slope_legend_set_colors (slope_item_t *self, slope_color_t stroke_color, slope_color_t fill_color);
 
 SLOPE_END_DECLS
 

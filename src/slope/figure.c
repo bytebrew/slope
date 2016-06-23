@@ -22,6 +22,7 @@
 #include <slope/scale_p.h>
 #include <slope/item_p.h>
 #include <slope/scale.h>
+#include <slope/legend.h>
 #include <stdlib.h>
 #include <string.h>
 

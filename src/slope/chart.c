@@ -32,7 +32,7 @@ struct _slope_chart {
 
 
 static slope_list_t *window_list = NULL;
-static on_close (GtkWidget *widget, gpointer data);
+static gboolean on_close (GtkWidget *widget, gpointer data);
 
 
 slope_chart_t* slope_chart_new (const char *title)
@@ -95,7 +95,7 @@ void slope_chart_destroy (slope_chart_t *chart)
 }
 
 
-static on_close (GtkWidget *widget, gpointer data)
+static gboolean on_close (GtkWidget *widget, gpointer data)
 {
     slope_list_remove(window_list, widget);
     if (slope_list_size(window_list) == 0)
