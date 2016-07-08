@@ -35,7 +35,6 @@ struct _slope_figure_class {
     void (*init) (slope_figure_t*);
     void (*finalize) (slope_figure_t*);
     void (*draw) (slope_figure_t*, const slope_rect_t*, cairo_t*);
-    void (*set_color_scheme) (slope_figure_t*, slope_color_t, slope_color_t, slope_color_t);
 };
 
 
@@ -46,20 +45,30 @@ struct _slope_figure {
 
 
 slope_figure_t* slope_figure_new (const char *name);
+
 void slope_figure_destroy (slope_figure_t *self);
+
 void slope_figure_init (slope_figure_t *self);
+
 slope_list_t* slope_figure_get_scale_list (const slope_figure_t *self);
+
 slope_scale_t* slope_figure_get_reference_scale (const slope_figure_t *self);
+
 void slope_figure_finalize (slope_figure_t *self);
+
 slope_item_t* slope_figure_get_legend (const slope_figure_t *self);
+
 void slope_figure_set_name (slope_figure_t *self, const char *name);
+
 const char* slope_figure_get_name (const slope_figure_t *self);
+
 void slope_figure_get_rect (const slope_figure_t *self, slope_rect_t *rect);
+
 void slope_figure_add_scale (slope_figure_t *self, slope_scale_t *scale);
+
 void slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, cairo_t *cr);
+
 void slope_figure_write_to_png (slope_figure_t *self, const char *filename, int width, int height);
-void slope_figure_set_color_scheme (slope_figure_t *self, slope_color_t background,
-                                    slope_color_t foreground, slope_color_t extra_color);
 
 SLOPE_END_DECLS
 

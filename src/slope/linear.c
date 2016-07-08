@@ -30,7 +30,6 @@ static void _slope_linear_get_data_rect (const slope_scale_t *self, slope_rect_t
 static void _slope_linear_get_figure_rect (const slope_scale_t *self, slope_rect_t *rect);
 static void _slope_linear_update (slope_scale_t *self);
 static void _slope_linear_update_for_item (slope_scale_t *self, slope_item_t *item);
-static void _slope_linear_set_color_scheme (slope_scale_t*, slope_color_t, slope_color_t, slope_color_t);
 
 
 static slope_scale_class_t* _slope_linear_get_class ()
@@ -47,7 +46,6 @@ static slope_scale_class_t* _slope_linear_get_class ()
         scale_class.get_figure_rect = _slope_linear_get_figure_rect;
         scale_class.update = _slope_linear_update;
         scale_class.update_for_item = _slope_linear_update_for_item;
-        scale_class.set_color_scheme = _slope_linear_set_color_scheme;
         first_call = SLOPE_FALSE;
     }
 
@@ -381,23 +379,6 @@ void slope_linear_set_axis_labels (slope_scale_t *self,
     slope_item_set_name (slope_linear_get_axis (self, SLOPE_AXIS_LEFT),   left_label);
     slope_item_set_name (slope_linear_get_axis (self, SLOPE_AXIS_TOP),    top_label);
     slope_item_set_name (slope_linear_get_axis (self, SLOPE_AXIS_RIGHT),  right_label);
-}
-
-
-void _slope_linear_set_color_scheme (slope_scale_t *self, slope_color_t background,
-                                     slope_color_t foreground, slope_color_t extra_color)
-{
-    slope_linear_private_t *priv = SLOPE_LINEAR_GET_PRIVATE(self);
-    slope_iterator_t *iter;
-    
-    SLOPE_LIST_FOREACH (iter, priv->axis_list) {
-       slope_item_t *axis = SLOPE_ITEM(slope_iterator_data(iter));
-       slope_pen_t pen;
-       pen.color = foreground;
-       pen.line_width = 1.0;
-       slope_axis_set_pen(axis, &pen);
-       slope_axis_set_grid_pen(axis, &pen);
-    }
 }
 
 

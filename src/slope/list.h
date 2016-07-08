@@ -34,17 +34,29 @@ typedef struct _slope_list slope_list_t;
 typedef struct _slope_iterator slope_iterator_t;
 
 slope_list_t* slope_list_new ();
+
 void slope_list_destroy (slope_list_t *self);
+
 void slope_list_append (slope_list_t *self, void *data);
+
 void slope_list_prepend (slope_list_t *self, void *data);
+
 slope_iterator_t* slope_list_first (slope_list_t *self);
+
 slope_iterator_t* slope_list_last (slope_list_t *self);
+
 int slope_list_size (const slope_list_t *self);
+
 slope_bool_t slope_list_contains (const slope_list_t *self, void *element);
+
 void* slope_iterator_data (slope_iterator_t *self);
+
 void slope_iterator_next (slope_iterator_t **self);
+
 void slope_iterator_previous (slope_iterator_t **self);
+
 void slope_list_clear (slope_list_t *self);
+
 void slope_list_remove (slope_list_t *self, void *data);
 
 SLOPE_END_DECLS

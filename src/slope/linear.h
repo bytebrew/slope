@@ -25,20 +25,28 @@
 #include <slope/axis.h>
 
 #define SLOPE_LINEAR(instance) ((slope_linear_t*) (instance))
+
 #define SLOPE_LINEAR_CLASS(instance) ((slope_linear_class_t*) (instance))
+
 #define SLOPE_LINEAR_GET_CLASS(instance) SLOPE_LINEAR_CLASS(SLOPE_SCALE_GET_CLASS(instance))
+
 
 SLOPE_BEGIN_DECLS
 
+
 typedef struct _slope_linear slope_linear_t;
+
 typedef struct _slope_linear_class slope_linear_class_t;
 
-struct _slope_linear_class {
+
+struct _slope_linear_class
+{
    slope_scale_class_t parent;
 };
 
 
-struct _slope_linear {
+struct _slope_linear
+{
    slope_scale_t parent;
 };
 
@@ -46,16 +54,24 @@ struct _slope_linear {
 slope_scale_t* slope_linear_new (const char *name);
 
 void slope_linear_init (slope_scale_t *self);
+
 void slope_linear_finalize (slope_scale_t *self);
 
 slope_item_t* slope_linear_get_axis (slope_scale_t *self, slope_axis_position_t pos);
+
 slope_list_t* slope_linear_get_axis_list (slope_scale_t *self);
+
 void slope_linear_set_show_grid (slope_scale_t *self, slope_bool_t show);
+
 void slope_linear_set_x_boundaries (slope_scale_t *self, double low_bound, double up_bound);
+
 void slope_linear_set_y_boundaries (slope_scale_t *self, double low_bound, double up_bound);
+
 void slope_linear_set_axis_labels (slope_scale_t *self, const char *bottom_label, const char *left_label,
                                    const char *top_label, const char *right_label);
+
 void slope_linear_set_back_color(slope_scale_t *self, slope_color_t color);
+
 void slope_linear_set_axis_pen (slope_scale_t *self, const slope_pen_t *pen);
 
 SLOPE_END_DECLS

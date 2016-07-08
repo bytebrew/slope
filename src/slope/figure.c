@@ -28,10 +28,10 @@
 
 
 static void _slope_figure_draw (slope_figure_t*, const slope_rect_t*, cairo_t*);
-static void _slope_figure_set_color_scheme (slope_figure_t*, slope_color_t, slope_color_t, slope_color_t);
 
 
-static slope_figure_class_t* _slope_figure_get_class ()
+static slope_figure_class_t*
+_slope_figure_get_class ()
 {
     static slope_figure_class_t figure_class;
     static slope_bool_t first_call = SLOPE_TRUE;
@@ -40,14 +40,14 @@ static slope_figure_class_t* _slope_figure_get_class ()
         figure_class.init = slope_figure_init;
         figure_class.finalize = slope_figure_finalize;
         figure_class.draw = _slope_figure_draw;
-        figure_class.set_color_scheme = _slope_figure_set_color_scheme;
         first_call = SLOPE_FALSE;
     }
     return &figure_class;
 }
 
 
-slope_figure_t* slope_figure_new (const char *name)
+slope_figure_t*
+slope_figure_new (const char *name)
 {
     slope_figure_t *self = SLOPE_ALLOC(slope_figure_t);
     
@@ -59,7 +59,8 @@ slope_figure_t* slope_figure_new (const char *name)
 }
 
 
-void slope_figure_init (slope_figure_t *self)
+void
+slope_figure_init (slope_figure_t *self)
 {
     slope_figure_private_t *priv = SLOPE_ALLOC(slope_figure_private_t);
     
@@ -73,7 +74,8 @@ void slope_figure_init (slope_figure_t *self)
 }
 
 
-void slope_figure_destroy (slope_figure_t *self)
+void
+slope_figure_destroy (slope_figure_t *self)
 {
     if (self == NULL)
         return;
@@ -82,7 +84,8 @@ void slope_figure_destroy (slope_figure_t *self)
 }
 
 
-void slope_figure_finalize (slope_figure_t *self)
+void
+slope_figure_finalize (slope_figure_t *self)
 {
     slope_figure_private_t *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     if (priv == NULL)
@@ -95,7 +98,8 @@ void slope_figure_finalize (slope_figure_t *self)
 }
 
 
-void slope_figure_add_scale (slope_figure_t *self, slope_scale_t *scale)
+void
+slope_figure_add_scale (slope_figure_t *self, slope_scale_t *scale)
 {
     slope_figure_private_t *priv = SLOPE_FIGURE_GET_PRIVATE(self);
 
@@ -111,13 +115,15 @@ void slope_figure_add_scale (slope_figure_t *self, slope_scale_t *scale)
 }
 
 
-void slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, cairo_t *cr)
+void
+slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, cairo_t *cr)
 {
     SLOPE_FIGURE_GET_CLASS(self)->draw(self, rect, cr);
 }
 
 
-static void _slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, cairo_t *cr)
+static void
+_slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, cairo_t *cr)
 {
     slope_figure_private_t *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     slope_iterator_t *scale_iter;
@@ -168,9 +174,10 @@ static void _slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, 
 }
 
 
-void slope_figure_write_to_png (slope_figure_t *self,
-                                const char *filename,
-                                int width, int height)
+void
+slope_figure_write_to_png (slope_figure_t *self,
+                           const char *filename,
+                           int width, int height)
 {
     cairo_surface_t *image =
         cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
@@ -185,7 +192,8 @@ void slope_figure_write_to_png (slope_figure_t *self,
 }
 
 
-void slope_figure_set_name (slope_figure_t *self, const char *name)
+void
+slope_figure_set_name (slope_figure_t *self, const char *name)
 {
     slope_figure_private_t *priv;
 
@@ -199,7 +207,8 @@ void slope_figure_set_name (slope_figure_t *self, const char *name)
 }
 
 
-slope_list_t* slope_figure_get_scale_list (const slope_figure_t *self)
+slope_list_t*
+slope_figure_get_scale_list (const slope_figure_t *self)
 {
     if (self == NULL)
         return NULL;
@@ -207,7 +216,8 @@ slope_list_t* slope_figure_get_scale_list (const slope_figure_t *self)
 }
 
 
-const char* slope_figure_get_name (const slope_figure_t *self)
+const char*
+slope_figure_get_name (const slope_figure_t *self)
 {
     if (self == NULL)
         return NULL;
@@ -215,14 +225,16 @@ const char* slope_figure_get_name (const slope_figure_t *self)
 }
 
 
-void slope_figure_get_rect (const slope_figure_t *self, slope_rect_t *rect)
+void
+slope_figure_get_rect (const slope_figure_t *self, slope_rect_t *rect)
 {
     slope_figure_private_t *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     slope_rect_copy(rect, &priv->rect);
 }
 
 
-slope_scale_t* slope_figure_get_reference_scale (const slope_figure_t *self)
+slope_scale_t*
+slope_figure_get_reference_scale (const slope_figure_t *self)
 {
     return SLOPE_FIGURE_GET_PRIVATE(self)->ref_scale;
 }
@@ -231,28 +243,6 @@ slope_scale_t* slope_figure_get_reference_scale (const slope_figure_t *self)
 slope_item_t* slope_figure_get_legend (const slope_figure_t *self)
 {
     return SLOPE_FIGURE_GET_PRIVATE(self)->legend;
-}
-
-
-void slope_figure_set_color_scheme (slope_figure_t *self, slope_color_t background,
-                                    slope_color_t foreground, slope_color_t extra_color)
-{
-    SLOPE_FIGURE_GET_CLASS(self)->set_color_scheme(self, background, foreground, extra_color);
-}
-
-
-static void _slope_figure_set_color_scheme (slope_figure_t *self, slope_color_t background,
-                                            slope_color_t foreground, slope_color_t extra_color)
-{
-    slope_figure_private_t *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-    slope_iterator_t *iter;
-
-    priv->back_color = background;
-    priv->name_color = foreground;
-    slope_legend_set_colors(priv->legend, foreground, background);
-    SLOPE_LIST_FOREACH (iter, priv->scale_list)
-        slope_scale_set_color_scheme (SLOPE_SCALE(slope_iterator_data(iter)),
-            background, foreground, extra_color);
 }
 
 /* slope/figure.c */
