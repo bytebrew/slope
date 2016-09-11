@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Elvis Teixeira
+ * Copyright (C) 2016  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,231 +18,30 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/figure_p.h>
-#include <slope/scale_p.h>
-#include <slope/item_p.h>
-#include <slope/scale.h>
-#include <slope/legend.h>
-#include <stdlib.h>
-#include <string.h>
+#include <slope/figure.h>
 
-
-static void _slope_figure_draw (slope_figure_t*, const slope_rect_t*, cairo_t*);
-
-
-static slope_figure_class_t*
-_slope_figure_get_class ()
+typedef struct
+_SlopeFigurePrivate
 {
-    static slope_figure_class_t figure_class;
-    static slope_bool_t first_call = SLOPE_TRUE;
-    
-    if (first_call) {
-        figure_class.init = slope_figure_init;
-        figure_class.finalize = slope_figure_finalize;
-        figure_class.draw = _slope_figure_draw;
-        first_call = SLOPE_FALSE;
-    }
-    return &figure_class;
+    GList *items;
+    SlopeColor background_color;
 }
+SlopeFigurePrivate;
 
-
-slope_figure_t*
-slope_figure_new (const char *name)
-{
-    slope_figure_t *self = SLOPE_ALLOC(slope_figure_t);
-    
-    self->_class = _slope_figure_get_class();
-    SLOPE_FIGURE_GET_CLASS(self)->init(self);
-    
-    slope_figure_set_name(self, name);
-    return self;
-}
-
-
-void
-slope_figure_init (slope_figure_t *self)
-{
-    slope_figure_private_t *priv = SLOPE_ALLOC(slope_figure_private_t);
-    
-    self->_private = priv;
-    priv->scale_list = slope_list_new();
-    priv->legend = slope_legend_new(self);
-    priv->show_title = SLOPE_TRUE;
-    priv->back_color = SLOPE_LIGHTGRAY;
-    priv->name_color = SLOPE_BLACK;
-    priv->name = NULL;
-}
-
-
-void
-slope_figure_destroy (slope_figure_t *self)
-{
-    if (self == NULL)
-        return;
-    SLOPE_FIGURE_GET_CLASS(self)->finalize(self);
-    SLOPE_FREE(self);
-}
-
-
-void
-slope_figure_finalize (slope_figure_t *self)
-{
-    slope_figure_private_t *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-    if (priv == NULL)
-        return;
-    slope_list_destroy(priv->scale_list);
-    slope_item_destroy(priv->legend);
-    if (priv->name)
-        SLOPE_FREE(priv->name);
-    SLOPE_FREE(priv);
-}
-
-
-void
-slope_figure_add_scale (slope_figure_t *self, slope_scale_t *scale)
-{
-    slope_figure_private_t *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-
-    if (scale == NULL)
-        return;
-    if (slope_list_size(priv->scale_list) == 0) {
-        priv->ref_scale = scale;
-        _slope_item_set_scale(priv->legend, scale);
-    }
-
-    slope_list_append(priv->scale_list, scale);
-    _slope_scale_set_figure(scale, self);
-}
-
-
-void
-slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, cairo_t *cr)
-{
-    SLOPE_FIGURE_GET_CLASS(self)->draw(self, rect, cr);
-}
-
+G_DEFINE_TYPE_WITH_PRIVATE (SlopeFigure, slope_figure, G_TYPE_OBJECT)
 
 static void
-_slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, cairo_t *cr)
+slope_figure_class_init (SlopeFigureClass *klass)
 {
-    slope_figure_private_t *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-    slope_iterator_t *scale_iter;
-    cairo_text_extents_t txt_ext;
-    
-    /* clip to avoid drawing outside target rect */
-    slope_rect_copy(&priv->rect, rect);
-    cairo_save(cr);
-    cairo_new_path(cr);
-    slope_cairo_rect(cr, rect);
-    slope_cairo_set_color(cr, priv->back_color);
-    cairo_fill(cr);
-
-    /* set default font */
-    #if defined(_WIN32) || defined(__MINGW32__)
-    cairo_select_font_face(cr, "Times New Roman",
-                           CAIRO_FONT_SLANT_NORMAL,
-                           CAIRO_FONT_WEIGHT_NORMAL);
-    cairo_set_font_size(cr, 14);
-    #else
-    cairo_select_font_face(cr, "sans",
-                           CAIRO_FONT_SLANT_NORMAL,
-                           CAIRO_FONT_WEIGHT_NORMAL);
-    cairo_set_font_size(cr, 11);
-    #endif
-    
-    /* draw data contents */
-    SLOPE_LIST_FOREACH (scale_iter, priv->scale_list) {
-        slope_scale_t *scale = SLOPE_SCALE(slope_iterator_data(scale_iter));
-        if (slope_scale_get_visible(scale)) {
-            _slope_scale_draw(scale, rect, cr);
-        }
-    }
-    /* draw legend */
-    if (slope_item_get_visible(priv->legend)
-        && priv->ref_scale != NULL)
-    {
-        _slope_item_draw(priv->legend, cr);
-    }
-    /* draw figure title */
-    if (priv->show_title) {
-        cairo_text_extents(cr, priv->name, &txt_ext);
-        cairo_move_to(cr, rect->x + (rect->width-txt_ext.width)/2.0, txt_ext.height+4.0);
-        slope_cairo_set_color(cr, priv->name_color);
-        cairo_show_text(cr, priv->name);
-    }
-    cairo_restore(cr);
 }
 
-
-void
-slope_figure_write_to_png (slope_figure_t *self,
-                           const char *filename,
-                           int width, int height)
+static void
+slope_figure_init (SlopeFigure *self)
 {
-    cairo_surface_t *image =
-        cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                width, height);
-    cairo_t *cr = cairo_create(image);
-    slope_rect_t rect;
-    slope_rect_set(&rect, 0.0, 0.0, (double) width, (double) height);
-    slope_figure_draw(self, &rect, cr);
-    cairo_surface_write_to_png(image, filename);
-    cairo_surface_destroy(image);
-    cairo_destroy(cr);
-}
+  SlopeFigurePrivate *priv = slope_figure_get_instance_private(self);
 
-
-void
-slope_figure_set_name (slope_figure_t *self, const char *name)
-{
-    slope_figure_private_t *priv;
-
-    if (self == NULL)
-        return;
-
-    priv = SLOPE_FIGURE_GET_PRIVATE(self);
-    if (priv->name != NULL)
-        SLOPE_FREE(priv->name);
-    priv->name = strdup(name);
-}
-
-
-slope_list_t*
-slope_figure_get_scale_list (const slope_figure_t *self)
-{
-    if (self == NULL)
-        return NULL;
-    return SLOPE_FIGURE_GET_PRIVATE(self)->scale_list;
-}
-
-
-const char*
-slope_figure_get_name (const slope_figure_t *self)
-{
-    if (self == NULL)
-        return NULL;
-    return SLOPE_FIGURE_GET_PRIVATE(self)->name;
-}
-
-
-void
-slope_figure_get_rect (const slope_figure_t *self, slope_rect_t *rect)
-{
-    slope_figure_private_t *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-    slope_rect_copy(rect, &priv->rect);
-}
-
-
-slope_scale_t*
-slope_figure_get_reference_scale (const slope_figure_t *self)
-{
-    return SLOPE_FIGURE_GET_PRIVATE(self)->ref_scale;
-}
-
-
-slope_item_t* slope_figure_get_legend (const slope_figure_t *self)
-{
-    return SLOPE_FIGURE_GET_PRIVATE(self)->legend;
+  /* initialize all public and private members to reasonable default values.
+   * They are all automatically initialized to 0 to begin with. */
 }
 
 /* slope/figure.c */

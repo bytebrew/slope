@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Elvis Teixeira
+ * Copyright (C) 2016  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,58 +18,32 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_FIGURE__
-#define __SLOPE_FIGURE__
+#ifndef SLOPE_FIGURE_H
+#define SLOPE_FIGURE_H
 
+#include <glib-object.h>
 #include <slope/drawing.h>
-#include <slope/list.h>
-#include <slope/legend.h>
-
-#define SLOPE_FIGURE(instance) ((slope_figure_t*) (instance))
-#define SLOPE_FIGURE_CLASS(instance) ((slope_figure_class_t*) (instance))
-#define SLOPE_FIGURE_GET_CLASS(instance) SLOPE_FIGURE_CLASS(SLOPE_FIGURE(instance)->_class)
 
 SLOPE_BEGIN_DECLS
 
-struct _slope_figure_class {
-    void (*init) (slope_figure_t*);
-    void (*finalize) (slope_figure_t*);
-    void (*draw) (slope_figure_t*, const slope_rect_t*, cairo_t*);
+#define SLOPE_TYPE_FIGURE slope_figure_get_type()
+G_DECLARE_DERIVABLE_TYPE (SlopeFigure, slope_figure, SLOPE, FIGURE, GObject)
+
+struct _SlopeFigureClass
+{
+  GObjectClass parent_class;
+
+  void (*draw) (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
+  void (*add_item) (SlopeFigure *self, SlopeItem *item);
+
+  /* Padding to allow adding up to 8 new virtual functions
+     without breaking ABI. */
+  gpointer padding[8];
 };
 
 
-struct _slope_figure {
-   struct _slope_figure_class *_class;
-   void *_private;
-};
-
-
-slope_figure_t* slope_figure_new (const char *name);
-
-void slope_figure_destroy (slope_figure_t *self);
-
-void slope_figure_init (slope_figure_t *self);
-
-slope_list_t* slope_figure_get_scale_list (const slope_figure_t *self);
-
-slope_scale_t* slope_figure_get_reference_scale (const slope_figure_t *self);
-
-void slope_figure_finalize (slope_figure_t *self);
-
-slope_item_t* slope_figure_get_legend (const slope_figure_t *self);
-
-void slope_figure_set_name (slope_figure_t *self, const char *name);
-
-const char* slope_figure_get_name (const slope_figure_t *self);
-
-void slope_figure_get_rect (const slope_figure_t *self, slope_rect_t *rect);
-
-void slope_figure_add_scale (slope_figure_t *self, slope_scale_t *scale);
-
-void slope_figure_draw (slope_figure_t *self, const slope_rect_t *rect, cairo_t *cr);
-
-void slope_figure_write_to_png (slope_figure_t *self, const char *filename, int width, int height);
+SlopeFigure* slope_figure_new (void);
 
 SLOPE_END_DECLS
 
-#endif /*__SLOPE_FIGURE__*/
+#endif /* SLOPE_FIGURE_H */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Elvis Teixeira
+ * Copyright (C) 2016  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -20,64 +20,40 @@
 
 #include <slope/drawing.h>
 
-void slope_rect_set (slope_rect_t *self, double x, double y, double width, double height)
+void slope_cairo_set_color (cairo_t *cr, SlopeColor color)
 {
-    self->x = x;
-    self->y = y;
-    self->width = width;
-    self->height = height;
+    cairo_set_source_rgba(cr,
+        SLOPE_GET_REDF(color),
+        SLOPE_GET_GREENF(color),
+        SLOPE_GET_BLUEF(color),
+        SLOPE_GET_ALPHAF(color));
 }
 
 
-void slope_rect_copy (slope_rect_t *dest, const slope_rect_t *source)
-{
-    dest->x = source->x;
-    dest->y = source->y;
-    dest->width = source->width;
-    dest->height = source->height;
-}
-
-
-void slope_cairo_rect (cairo_t *cr, const slope_rect_t *rect)
-{
-    cairo_rectangle(cr, rect->x, rect->y, rect->width, rect->height);
-}
-
-
-void slope_cairo_line (cairo_t *cr, const slope_point_t *p1, const slope_point_t *p2)
+void slope_cairo_line (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2)
 {
     cairo_move_to(cr, p1->x, p1->y);
     cairo_line_to(cr, p2->x, p2->y);
 }
 
 
-void slope_cairo_circle (cairo_t *cr, const slope_point_t *center, double radius)
+void slope_cairo_rect (cairo_t *cr, const SlopeRect *r)
+{
+    cairo_rectangle(cr, r->x, r->y, r->width, r->height);
+}
+
+
+void slope_cairo_text (cairo_t *cr, double x, double y, const char *utf8)
+{
+    cairo_move_to(cr, x, y);
+    cairo_show_text(cr, utf8);
+}
+
+
+void slope_cairo_circle (cairo_t *cr, const SlopePoint *center, double radius)
 {
     cairo_move_to(cr, center->x + radius, center->y);
-    cairo_arc(cr, center->x, center->y, radius, 0.0, 6.283185307179587);
+    cairo_arc(cr, center->x, center->y, radius, 0.0, 6.28318530717959);
 }
 
-
-void slope_cairo_set_color (cairo_t *cr, const slope_color_t color)
-{
-    int a = SLOPE_COLOR_GET_ALPHA(color);
-    int b = SLOPE_COLOR_GET_BLUE(color);
-    int g = SLOPE_COLOR_GET_GREEN(color);
-    int r = SLOPE_COLOR_GET_RED(color);
-    
-    cairo_set_source_rgba(cr,
-        ((double) r) / 255.0,
-        ((double) g) / 255.0,
-        ((double) b) / 255.0,
-        ((double) a) / 255.0
-    );
-}
-
-
-void slope_cairo_set_pen (cairo_t *cr, const slope_pen_t *pen)
-{
-   cairo_set_line_width(cr, pen->line_width);
-   slope_cairo_set_color(cr, pen->color);
-}
-
-/* slope/drawing.h */
+/* slope/drawing.c */

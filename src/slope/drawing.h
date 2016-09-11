@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Elvis Teixeira
+ * Copyright (C) 2016  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,78 +18,62 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SLOPE_DRAWING__
-#define __SLOPE_DRAWING__
+#ifndef SLOPE_DRAWING_H
+#define SLOPE_DRAWING_H
 
 #include <slope/global.h>
 #include <cairo/cairo.h>
 
-/* shortcut for creating a color from bgba values */
-#define SLOPE_RGBA(r,g,b,a) \
-    ((slope_color_t) (((r)&0xff)<<24 \
-                   | ((g)&0xff)<<16 \
-                   | ((b)&0xff)<<8 \
-                   | (a)))
-
-/* named color values */
-#define SLOPE_BLACK       0x000000FF
-#define SLOPE_WHITE       0xFFFFFFFF
-#define SLOPE_GRAY        0x808080FF
-#define SLOPE_LIGHTGRAY   0x66666666
-#define SLOPE_DARKGRAY    0xAAAAAAFF
-#define SLOPE_SLATEGRAY   0x778899FF
-#define SLOPE_MAROON      0x800000FF
-#define SLOPE_RED         0xFF0000FF
-#define SLOPE_GREEN       0x00FF00FF
-#define SLOPE_BLUE        0x0000FFFF
-#define SLOPE_YELLOW      0xFFFF00FF
-#define SLOPE_MAGENTA     0xFF00FFFF
-#define SLOPE_CYAN        0x00FFFFFF
-#define SLOPE_AZURE       0xF0FFFFFF
-#define SLOPE_VIOLET      0xEE82FFFF
-#define SLOPE_ORANGE      0xFF8C00FF
-#define SLOPE_INDIGO      0x4B0082FF
-#define SLOPE_COLOR_NULL  0x00000000
-
-/* get rgb components from color */
-#define SLOPE_COLOR_GET_RED(color)    (((color) >> 24) & 0xff)
-#define SLOPE_COLOR_GET_GREEN(color)  (((color) >> 16) & 0xff)
-#define SLOPE_COLOR_GET_BLUE(color)   (((color) >> 8) & 0xff)
-#define SLOPE_COLOR_GET_ALPHA(color)  ((color) & 0xff)
-
-/* a null color name, totally transparent */
-#define SLOPE_COLOR_IS_NULL(color) ((color) == SLOPE_COLOR_NULL)
-
 SLOPE_BEGIN_DECLS
 
-typedef unsigned int slope_color_t;
+typedef int  SlopeColor;
+#define SLOPE_NULL_COLOR     0x00000000
+#define SLOPE_BLACK          0x000000FF
+#define SLOPE_WHITE          0xFFFFFFFF
+#define SLOPE_RED            0xFF0000FF
+#define SLOPE_GREEN          0x00FF00FF
+#define SLOPE_BLUE           0x0000FFFF
 
-typedef struct slope_point {
-   double x;
-   double y;
-} slope_point_t;
-
-typedef struct slope_rect {
-   double x;
-   double y;
-   double width;
-   double height;
-} slope_rect_t;
-
-typedef struct slope_pen {
-   slope_color_t color;
-   double line_width;
-} slope_pen_t;
+#define SLOPE_GET_RED(color)       (((color)>>24)&0xFF)
+#define SLOPE_GET_GREEN(color)     (((color)>>16)&0xFF)
+#define SLOPE_GET_BLUE(color)      (((color)>>8)&0xFF)
+#define SLOPE_GET_ALPHA(color)     ((color)&0xFF)
+#define SLOPE_GET_REDF(color)      (((double)SLOPE_GET_RED(color))/255.0)
+#define SLOPE_GET_GREENF(color)    (((double)SLOPE_GET_GREEN(color))/255.0)
+#define SLOPE_GET_BLUEF(color)     (((double)SLOPE_GET_BLUE(color))/255.0)
+#define SLOPE_GET_ALPHAF(color)    (((double)SLOPE_GET_ALPHA(color))/255.0)
+#define SLOPE_COLOR_IS_NULL(color) (SLOPE_GET_ALPHA(color) == 0)
 
 
-void slope_rect_set (slope_rect_t *self, double x, double y, double width, double height);
-void slope_rect_copy (slope_rect_t *dest, const slope_rect_t *source);
-void slope_cairo_rect (cairo_t *cr, const slope_rect_t *rect);
-void slope_cairo_line (cairo_t *cr, const slope_point_t *p1, const slope_point_t *p2);
-void slope_cairo_circle (cairo_t *cr, const slope_point_t *center, double radius);
-void slope_cairo_set_color (cairo_t *cr, const slope_color_t color);
-void slope_cairo_set_pen (cairo_t *cr, const slope_pen_t *pen);
+typedef struct
+_SlopePoint
+{
+    double x;
+    double y;
+}
+SlopePoint;
+
+typedef struct
+_SlopeRect
+{
+    double x;
+    double y;
+    double width;
+    double height;
+}
+SlopeRect;
+
+
+void slope_cairo_set_color (cairo_t *cr, SlopeColor color);
+
+void slope_cairo_line (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2);
+
+void slope_cairo_rect (cairo_t *cr, const SlopeRect *r);
+
+void slope_cairo_text (cairo_t *cr, double x, double y, const char *utf8);
+
+void slope_cairo_circle (cairo_t *cr, const SlopePoint *center, double radius);
 
 SLOPE_END_DECLS
 
-#endif /*__SLOPE_DRAWING__*/
+#endif /* SLOPE_DRAWING_H */
