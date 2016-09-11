@@ -29,7 +29,8 @@
 # define SLOPE_END_DECLS /* nothing */
 #endif
 
-typedef struct _SlopeFigure   SlopeFigure;
+typedef struct _SlopeScene    SlopeScene;
 typedef struct _SlopeItem     SlopeItem;
+typedef struct _SlopeView     SlopeView;
 
 #endif /* SLOPE_GLOBAL_H */

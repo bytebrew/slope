@@ -18,32 +18,14 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_FIGURE_H
-#define SLOPE_FIGURE_H
+#ifndef SLOPE_SLOPE_H
+#define SLOPE_SLOPE_H
 
-#include <glib-object.h>
-#include <slope/drawing.h>
+/* this header is a shortcut to include the
+ * basic and most often used slope headers
+ * all at once */
 
-SLOPE_BEGIN_DECLS
+#include <slope/scene.h>
+#include <slope/view.h>
 
-#define SLOPE_TYPE_FIGURE slope_figure_get_type()
-G_DECLARE_DERIVABLE_TYPE (SlopeFigure, slope_figure, SLOPE, FIGURE, GObject)
-
-struct _SlopeFigureClass
-{
-  GObjectClass parent_class;
-
-  void (*draw) (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
-  void (*add_item) (SlopeFigure *self, SlopeItem *item);
-
-  /* Padding to allow adding up to 8 new virtual functions
-     without breaking ABI. */
-  gpointer padding[8];
-};
-
-
-SlopeFigure* slope_figure_new (void);
-
-SLOPE_END_DECLS
-
-#endif /* SLOPE_FIGURE_H */
+#endif /* SLOPE_SLOPE_H */

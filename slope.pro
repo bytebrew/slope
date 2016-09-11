@@ -10,9 +10,12 @@ PKGCONFIG = gtk+-3.0
 HEADERS += \
     src/slope/drawing.h \
     src/slope/global.h \
-    src/slope/figure.h
+    src/slope/scene.h \
+    src/slope/slope.h \
+    src/slope/view.h
 
 SOURCES += \
+    test.c \
     src/slope/drawing.c \
-    src/slope/figure.c
-
+    src/slope/scene.c \
+    src/slope/view.c

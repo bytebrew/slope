@@ -22,12 +22,13 @@
 #define SLOPE_DRAWING_H
 
 #include <slope/global.h>
+#include <glib-object.h>
 #include <cairo/cairo.h>
 
 SLOPE_BEGIN_DECLS
 
-typedef int  SlopeColor;
-#define SLOPE_NULL_COLOR     0x00000000
+typedef guint32              SlopeColor;
+#define SLOPE_COLOR_NULL     0x00000000
 #define SLOPE_BLACK          0x000000FF
 #define SLOPE_WHITE          0xFFFFFFFF
 #define SLOPE_RED            0xFF0000FF
