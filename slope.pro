@@ -12,12 +12,12 @@ HEADERS += \
     src/slope/global.h \
     src/slope/slope.h \
     src/slope/view.h \
-    src/slope/figure_p.h \
-    src/slope/figure.h \
-    src/slope/mouse.h
+    src/slope/mouse.h \
+    src/slope/scene.h \
+    src/slope/scene_p.h
 
 SOURCES += \
     test.c \
     src/slope/drawing.c \
     src/slope/view.c \
-    src/slope/figure.c
+    src/slope/scene.c

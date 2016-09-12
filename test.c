@@ -25,21 +25,21 @@ int main(int argc, char *argv[])
 {
     GtkWidget *window;
     GtkWidget *view;
-    SlopeFigure *figure;
+    SlopeScene *scene;
 
     gtk_init(&argc, &argv);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     view = slope_view_new();
-    figure = slope_figure_new();
+    scene = slope_scene_new();
 
     gtk_container_add(GTK_CONTAINER(window), view);
-    slope_view_set_figure(SLOPE_VIEW(view), figure, TRUE);
+    slope_view_set_scene(SLOPE_VIEW(view), scene, TRUE);
     gtk_window_set_default_size(GTK_WINDOW(window), 500, 450);
 
     g_signal_connect(G_OBJECT(window), "destroy",
                      G_CALLBACK(gtk_main_quit), NULL);
 
-    slope_figure_write_to_png(figure, "figure.png", 600, 450);
+    slope_view_write_to_png(SLOPE_VIEW(view), "scene.png", 500, 450);
     gtk_widget_show_all(window);
     gtk_main();
     return 0;

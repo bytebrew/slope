@@ -19,13 +19,13 @@
  */
 
 #include <slope/view.h>
-#include <slope/figure_p.h>
+#include <slope/scene_p.h>
 
 
 typedef struct
 _SlopeViewPrivate
 {
-    SlopeFigure *figure;
+    SlopeScene *scene;
     gboolean ownmem;
 }
 SlopeViewPrivate;
@@ -44,7 +44,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 static void slope_view_class_init (SlopeViewClass *klass);
 static void slope_view_init (SlopeView *self);
 static void _view_finalize (GObject *self);
-static void _view_set_figure (SlopeView *self, SlopeFigure *figure, gboolean ownmem);
+static void _view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem);
 static gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data);
 static gboolean _view_on_button_press (GtkWidget *self, GdkEvent *event, gpointer data);
 
@@ -57,7 +57,7 @@ slope_view_class_init (SlopeViewClass *klass)
 
     object_klass->finalize = _view_finalize;
 
-    klass->set_figure = _view_set_figure;
+    klass->set_scene = _view_set_scene;
 }
 
 
@@ -67,7 +67,7 @@ slope_view_init (SlopeView *self)
     GtkWidget *gtk_widget = GTK_WIDGET(self);
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
 
-    priv->figure = NULL;
+    priv->scene = NULL;
     priv->ownmem = FALSE;
 
     gtk_widget_set_size_request(gtk_widget, 250, 250);
@@ -90,8 +90,8 @@ void _view_finalize (GObject *self)
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
     GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
 
-    if (priv->figure != NULL && priv->ownmem == TRUE) {
-        g_object_unref(priv->figure);
+    if (priv->scene != NULL && priv->ownmem == TRUE) {
+        g_object_unref(priv->scene);
     }
 
     G_OBJECT_CLASS(parent_class)->finalize(self);
@@ -106,39 +106,49 @@ GtkWidget* slope_view_new ()
 }
 
 
-GtkWidget* slope_view_new_with_figure (SlopeFigure *figure, gboolean ownmem)
+GtkWidget* slope_view_new_with_scene (SlopeScene *scene, gboolean ownmem)
 {
     GtkWidget *self = GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
 
-    slope_view_set_figure(SLOPE_VIEW(self), figure, ownmem);
+    slope_view_set_scene(SLOPE_VIEW(self), scene, ownmem);
 
     return self;
 }
 
 
 static
-void _view_set_figure (SlopeView *self, SlopeFigure *figure, gboolean ownmem)
+void _view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
 
-    priv->figure = figure;
+    priv->scene = scene;
     priv->ownmem = ownmem;
-    _figure_set_view(figure, self);
+    _scene_set_view(scene, self);
 }
 
 
-void slope_view_set_figure (SlopeView *self, SlopeFigure *figure, gboolean ownmem)
+void slope_view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem)
 {
-    SLOPE_VIEW_GET_CLASS(self)->set_figure(self, figure, ownmem);
+    SLOPE_VIEW_GET_CLASS(self)->set_scene(self, scene, ownmem);
 }
 
 
-SlopeFigure* slope_view_get_figure (SlopeFigure *self)
+SlopeScene* slope_view_get_scene (SlopeScene *self)
 {
     if (self != NULL) {
-        return SLOPE_VIEW_GET_PRIVATE(self)->figure;
+        return SLOPE_VIEW_GET_PRIVATE(self)->scene;
     }
     return NULL;
+}
+
+
+void slope_view_write_to_png (SlopeView *self, const char *filename, int width, int height)
+{
+    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
+
+    if (priv->scene != NULL) {
+        slope_scene_write_to_png(priv->scene, filename, width, height);
+    }
 }
 
 
@@ -150,7 +160,7 @@ gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data)
     SlopeRect rect;
     SLOPE_UNUSED(data)
 
-    if (priv->figure == NULL) {
+    if (priv->scene == NULL) {
         return TRUE;
     }
 
@@ -160,7 +170,7 @@ gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data)
     rect.width = allocation.width;
     rect.height = allocation.height;
 
-    slope_figure_draw(priv->figure, &rect, cr);
+    slope_scene_draw(priv->scene, &rect, cr);
     return TRUE;
 }
 
@@ -172,16 +182,16 @@ gboolean _view_on_button_press (GtkWidget *self, GdkEvent *event, gpointer data)
     SlopeMouseEvent mouse_event;
     SLOPE_UNUSED(data);
 
-    /* send event notification down to the figure's items */
-    if (priv->figure != NULL) {
+    /* send event notification down to the scene's items */
+    if (priv->scene != NULL) {
         mouse_event.x = event->button.x;
         mouse_event.y = event->button.y;
         if (event->button.button == 1) {
             mouse_event.type = SLOPE_MOUSE_LEFT_CLICK;
-            _figure_mouse_event(priv->figure, &mouse_event);
+            _scene_mouse_event(priv->scene, &mouse_event);
         } else if (event->button.button == 3) {
             mouse_event.type = SLOPE_MOUSE_RIGHT_CLICK;
-            _figure_mouse_event(priv->figure, &mouse_event);
+            _scene_mouse_event(priv->scene, &mouse_event);
         }
     }
 
