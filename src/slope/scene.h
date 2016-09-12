@@ -58,7 +58,7 @@ _SlopeSceneClass
 SlopeSceneClass;
 
 
-GType slope_scene_get_type(void) G_GNUC_CONST;
+GType slope_scene_get_type (void) G_GNUC_CONST;
 
 SlopeScene* slope_scene_new (void);
 

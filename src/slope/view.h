@@ -57,7 +57,7 @@ _SlopeViewClass
 SlopeViewClass;
 
 
-GType slope_view_get_type(void) G_GNUC_CONST;
+GType slope_view_get_type (void) G_GNUC_CONST;
 
 GtkWidget* slope_view_new (void);
 
