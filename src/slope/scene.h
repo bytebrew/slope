@@ -37,9 +37,9 @@ struct _SlopeScene
 {
   GObject parent;
 
-  /* Padding to allow adding up to 8 members
+  /* Padding to allow adding up to 4 members
      without breaking ABI. */
-  gpointer padding[8];
+  gpointer padding[4];
 };
 
 typedef struct
@@ -50,9 +50,9 @@ _SlopeSceneClass
   void (*draw) (SlopeScene *self, const SlopeRect *rect, cairo_t *cr);
   void (*add_item) (SlopeScene *self, SlopeItem *item);
 
-  /* Padding to allow adding up to 8 members
+  /* Padding to allow adding up to 4 members
      without breaking ABI. */
-  gpointer padding[8];
+  gpointer padding[4];
 }
 SlopeSceneClass;
 
@@ -72,6 +72,8 @@ void slope_scene_set_background_color (SlopeScene *self, SlopeColor color);
 void slope_scene_draw (SlopeScene *self, const SlopeRect *rect, cairo_t *cr);
 
 void slope_scene_write_to_png (SlopeScene *self, const char *filename, int width, int height);
+
+SlopeView* slope_scene_get_view (SlopeScene *self);
 
 SLOPE_END_DECLS
 

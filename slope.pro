@@ -12,7 +12,8 @@ HEADERS += \
     src/slope/global.h \
     src/slope/scene.h \
     src/slope/slope.h \
-    src/slope/view.h
+    src/slope/view.h \
+    src/slope/scene_p.h
 
 SOURCES += \
     test.c \

@@ -18,21 +18,11 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_GLOBAL_H
-#define SLOPE_GLOBAL_H
+#ifndef SLOPE_SCENE_P_H
+#define SLOPE_SCENE_P_H
 
-#ifdef __cplusplus
-# define SLOPE_BEGIN_DECLS extern "C" {
-# define SLOPE_END_DECLS } /* extern "C" */
-#else
-# define SLOPE_BEGIN_DECLS /* nothing */
-# define SLOPE_END_DECLS /* nothing */
-#endif
+#include <slope/scene.h>
 
-typedef struct _SlopeScene    SlopeScene;
-typedef struct _SlopeItem     SlopeItem;
-typedef struct _SlopeView     SlopeView;
+void _scene_set_view (SlopeScene *self, SlopeView *view);
 
-#define SLOPE_UNUSED(var) (void) var;
-
-#endif /* SLOPE_GLOBAL_H */
+#endif /* SLOPE_SCENE_P_H */

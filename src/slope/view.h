@@ -37,9 +37,9 @@ struct _SlopeView
 {
   GtkDrawingArea parent;
 
-  /* Padding to allow adding up to 8 members
+  /* Padding to allow adding up to 4 members
      without breaking ABI. */
-  gpointer padding[8];
+  gpointer padding[4];
 };
 
 
@@ -48,11 +48,11 @@ _SlopeViewClass
 {
   GtkDrawingAreaClass parent_class;
 
-  void (*set_scene) (SlopeView *self, SlopeScene *scene);
+  void (*set_scene) (SlopeView *self, SlopeScene *scene, gboolean ownmem);
 
-  /* Padding to allow adding up to 8 members
+  /* Padding to allow adding up to 4 members
      without breaking ABI. */
-  gpointer padding[8];
+  gpointer padding[4];
 }
 SlopeViewClass;
 
@@ -61,9 +61,9 @@ GType slope_view_get_type(void) G_GNUC_CONST;
 
 GtkWidget* slope_view_new (void);
 
-GtkWidget* slope_view_new_with_scene (SlopeScene *scene);
+GtkWidget* slope_view_new_with_scene (SlopeScene *scene, gboolean ownmem);
 
-void slope_view_set_scene (SlopeView *self, SlopeScene *scene);
+void slope_view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem);
 
 SlopeScene* slope_view_get_scene (SlopeScene *self);
 

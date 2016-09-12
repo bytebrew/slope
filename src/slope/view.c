@@ -19,12 +19,14 @@
  */
 
 #include <slope/view.h>
+#include <slope/scene_p.h>
 
 
 typedef struct
 _SlopeViewPrivate
 {
     SlopeScene *scene;
+    gboolean ownmem;
 }
 SlopeViewPrivate;
 
@@ -42,7 +44,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 static void slope_view_class_init (SlopeViewClass *klass);
 static void slope_view_init (SlopeView *self);
 static void _view_finalize (GObject *self);
-static void _view_set_scene (SlopeView *self, SlopeScene *scene);
+static void _view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem);
 static gboolean _view_draw (GtkWidget *self, cairo_t *cr, gpointer data);
 
 
@@ -86,35 +88,37 @@ GtkWidget* slope_view_new ()
 }
 
 
-GtkWidget* slope_view_new_with_scene (SlopeScene *scene)
+GtkWidget* slope_view_new_with_scene (SlopeScene *scene, gboolean ownmem)
 {
     GtkWidget *self = GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
 
-    slope_view_set_scene(self, scene);
+    slope_view_set_scene(SLOPE_VIEW(self), scene, ownmem);
 
     return self;
 }
 
 
 static
-void _view_set_scene (SlopeView *self, SlopeScene *scene)
+void _view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
 
     priv->scene = scene;
+    priv->ownmem = ownmem;
+    _scene_set_view(scene, self);
 }
 
 
-void slope_view_set_scene (SlopeView *self, SlopeScene *scene)
+void slope_view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem)
 {
-    SLOPE_VIEW_GET_CLASS(self)->set_scene(self, scene);
+    SLOPE_VIEW_GET_CLASS(self)->set_scene(self, scene, ownmem);
 }
 
 
 SlopeScene* slope_view_get_scene (SlopeScene *self)
 {
     if (self != NULL) {
-        SLOPE_VIEW_GET_PRIVATE(self)->scene;
+        return SLOPE_VIEW_GET_PRIVATE(self)->scene;
     }
     return NULL;
 }
@@ -126,6 +130,7 @@ gboolean _view_draw (GtkWidget *self, cairo_t *cr, gpointer data)
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
     GtkAllocation allocation;
     SlopeRect rect;
+    SLOPE_UNUSED(data)
 
     if (priv->scene == NULL) {
         return TRUE;

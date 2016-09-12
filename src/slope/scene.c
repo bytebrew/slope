@@ -18,12 +18,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/scene.h>
+#include <slope/scene_p.h>
 
 
 typedef struct
 _SlopeScenePrivate
 {
+    SlopeView *view;
     GList *item_list;
     SlopeColor background_color;
 }
@@ -170,6 +171,21 @@ static
 void _clear_item_list (gpointer data)
 {
     /* TODO */
+}
+
+
+void _scene_set_view (SlopeScene *self, SlopeView *view)
+{
+    SLOPE_SCENE_GET_PRIVATE(self)->view = view;
+}
+
+
+SlopeView* slope_scene_get_view (SlopeScene *self)
+{
+    if (self != NULL) {
+        return SLOPE_SCENE_GET_PRIVATE(self)->view;
+    }
+    return NULL;
 }
 
 
