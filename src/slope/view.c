@@ -133,6 +133,12 @@ void slope_view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem)
 }
 
 
+void slope_view_redraw (SlopeView *self)
+{
+    gtk_widget_queue_draw(GTK_WIDGET(self));
+}
+
+
 SlopeScene* slope_view_get_scene (SlopeScene *self)
 {
     if (self != NULL) {

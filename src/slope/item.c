@@ -19,14 +19,18 @@
  */
 
 #include <slope/item_p.h>
+#include <slope/scene.h>
+#include <slope/view.h>
 
 typedef struct
 _SlopeItemPrivate
 {
     SlopeScene *scene;
+    SlopeView *view;
     SlopeItem *parent;
     GList *child_list;
     gboolean owned;
+    SlopeColor color;
 }
 SlopeItemPrivate;
 
@@ -68,6 +72,8 @@ slope_item_init (SlopeItem *self)
     priv->parent = NULL;
     priv->child_list = NULL;
     priv->owned = FALSE;
+
+    priv->color = SLOPE_BLUE;
 }
 
 
@@ -115,13 +121,25 @@ void _item_get_scene_rect (SlopeItem *self, SlopeRect *rect)
 
 void _item_mouse_event (SlopeItem *self, const SlopeMouseEvent *event)
 {
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
 
+    if (event->type == SLOPE_MOUSE_LEFT_CLICK) {
+        priv->color = SLOPE_RED;
+    } else if (event->type == SLOPE_MOUSE_RIGHT_CLICK) {
+        priv->color = SLOPE_BLUE;
+    }
+
+    if (priv->view != NULL) {
+        slope_view_redraw(priv->view);
+    }
 }
 
 
 void _item_set_scene (SlopeItem *self, SlopeScene *scene)
 {
-
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+    priv->scene = scene;
+    priv->view = slope_scene_get_view(priv->scene);
 }
 
 
@@ -134,7 +152,8 @@ void _item_set_managed (SlopeItem *self, gboolean owned)
 
 void _item_draw_rect (SlopeItem *self, cairo_t *cr)
 {
-    slope_cairo_set_color(cr, SLOPE_RED);
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+    slope_cairo_set_color(cr, priv->color);
     cairo_rectangle(cr, 20, 20, 50, 50);
     cairo_fill(cr);
 }

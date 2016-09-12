@@ -166,7 +166,7 @@ void _scene_draw (SlopeScene *self, const SlopeRect *rect, cairo_t *cr)
     /* draw items */
     iter = priv->item_list;
     while (iter != NULL) {
-        _item_draw_impl(iter->data, cr);
+        _item_draw_impl(SLOPE_ITEM(iter->data), cr);
         iter = iter->next;
     }
 
@@ -184,7 +184,16 @@ void _clear_item_list (gpointer data)
 
 void _scene_set_view (SlopeScene *self, SlopeView *view)
 {
-    SLOPE_SCENE_GET_PRIVATE(self)->view = view;
+    SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
+    GList *iter;
+
+    priv->view = view;
+
+    iter = priv->item_list;
+    while (iter != NULL) {
+        _item_set_scene(SLOPE_ITEM(iter->data), self);
+        iter = iter->next;
+    }
 }
 
 
@@ -199,7 +208,15 @@ SlopeView* slope_scene_get_view (SlopeScene *self)
 
 void _scene_mouse_event (SlopeScene *self, const SlopeMouseEvent *event)
 {
-    /* TODO */
+    SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
+    GList *iter;
+
+    /* TODO: check if event is inside items rect */
+    iter = priv->item_list;
+    while (iter != NULL) {
+        _item_mouse_event(SLOPE_ITEM(iter->data), event);
+        iter = iter->next;
+    }
 }
 
 

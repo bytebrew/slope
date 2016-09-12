@@ -65,6 +65,8 @@ GtkWidget* slope_view_new_with_scene (SlopeScene *scene, gboolean ownmem);
 
 void slope_view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem);
 
+void slope_view_redraw (SlopeView *self);
+
 SlopeScene* slope_view_get_scene (SlopeScene *self);
 
 void slope_view_write_to_png (SlopeView *self, const char *filename, int width, int height);
