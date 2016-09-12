@@ -67,6 +67,7 @@ slope_view_init (SlopeView *self)
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
 
     priv->scene = NULL;
+    priv->ownmem = FALSE;
 
     gtk_widget_set_size_request(gtk_widget, 250, 250);
     g_signal_connect(G_OBJECT(self), "draw", G_CALLBACK(_view_draw), NULL);
@@ -76,7 +77,14 @@ slope_view_init (SlopeView *self)
 static
 void _view_finalize (GObject *self)
 {
-    /* TODO */
+    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
+    GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
+
+    if (priv->scene != NULL && priv->ownmem == TRUE) {
+        g_object_unref(priv->scene);
+    }
+
+    G_OBJECT_CLASS(parent_class)->finalize(self);
 }
 
 

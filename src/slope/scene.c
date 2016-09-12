@@ -76,8 +76,7 @@ static
 void _scene_finalize (GObject *self)
 {
     SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
-    GObjectClass *parent_class = g_type_class_peek_parent(
-                G_OBJECT_GET_CLASS(self));
+    GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
 
     if (priv->item_list != NULL) {
         g_list_free_full(priv->item_list, _clear_item_list);

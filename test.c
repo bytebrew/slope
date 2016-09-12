@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
 
     gtk_container_add(GTK_CONTAINER(window), view);
     slope_view_set_scene(SLOPE_VIEW(view), scene, TRUE);
+    gtk_window_set_default_size(GTK_WINDOW(window), 500, 450);
 
     g_signal_connect(G_OBJECT(window), "destroy",
                      G_CALLBACK(gtk_main_quit), NULL);
