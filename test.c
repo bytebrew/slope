@@ -26,18 +26,28 @@ int main(int argc, char *argv[])
     GtkWidget *window;
     GtkWidget *view;
     SlopeScene *scene;
-    SlopeItem *item;
+    SlopeItem *rect1, *rect2;
 
     gtk_init(&argc, &argv);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     view = slope_view_new();
     scene = slope_scene_new();
-    item = slope_item_new();
 
     gtk_container_add(GTK_CONTAINER(window), view);
-    slope_scene_add_item(SLOPE_SCENE(scene), item, TRUE);
     slope_view_set_scene(SLOPE_VIEW(view), scene, TRUE);
     gtk_window_set_default_size(GTK_WINDOW(window), 500, 450);
+
+    rect1 = slope_item_new_rect(30, 30, 200, 200);
+    rect2 = slope_item_new_rect(50, 50, 100, 100);
+
+    slope_item_add_subitem(rect1, rect2, TRUE);
+    slope_scene_add_item(SLOPE_SCENE(scene), rect1, TRUE);
+
+    rect1 = slope_item_new_rect(230, 230, 200, 200);
+    rect2 = slope_item_new_rect(250, 250, 100, 100);
+
+    slope_item_add_subitem(rect1, rect2, TRUE);
+    slope_scene_add_item(SLOPE_SCENE(scene), rect1, TRUE);
 
     g_signal_connect(G_OBJECT(window), "destroy",
                      G_CALLBACK(gtk_main_quit), NULL);

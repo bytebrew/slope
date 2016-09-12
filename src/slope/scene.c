@@ -178,7 +178,11 @@ void _scene_draw (SlopeScene *self, const SlopeRect *rect, cairo_t *cr)
 static
 void _clear_item_list (gpointer data)
 {
-    /* TODO */
+    SlopeItem *item = SLOPE_ITEM(data);
+
+    if (_item_get_is_managed(item) == TRUE) {
+        g_object_unref(G_OBJECT(item));
+    }
 }
 
 
@@ -214,7 +218,15 @@ void _scene_mouse_event (SlopeScene *self, const SlopeMouseEvent *event)
     /* TODO: check if event is inside items rect */
     iter = priv->item_list;
     while (iter != NULL) {
-        _item_mouse_event(SLOPE_ITEM(iter->data), event);
+        SlopeRect item_rect;
+
+        /* if the event happend over some item, let it handle the event */
+        slope_item_get_scene_rect(SLOPE_ITEM(iter->data), &item_rect);
+        if (slope_rect_contains(&item_rect, event->x, event->y)) {
+            if (_item_mouse_event_impl(SLOPE_ITEM(iter->data), event) == TRUE) {
+                break;
+            }
+        }
         iter = iter->next;
     }
 }

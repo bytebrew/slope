@@ -41,12 +41,12 @@ G_DEFINE_TYPE_WITH_PRIVATE(
     GTK_TYPE_DRAWING_AREA)
 
 
-static void slope_view_class_init (SlopeViewClass *klass);
-static void slope_view_init (SlopeView *self);
 static void _view_finalize (GObject *self);
 static void _view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem);
 static gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data);
-static gboolean _view_on_button_press (GtkWidget *self, GdkEvent *event, gpointer data);
+static gboolean _view_on_mouse_press (GtkWidget *self, GdkEvent *event, gpointer data);
+static gboolean _view_on_mouse_move (GtkWidget *self, GdkEvent *event, gpointer data);
+static gboolean _view_on_mouse_release (GtkWidget *self, GdkEvent *event, gpointer data);
 
 
 
@@ -80,7 +80,11 @@ slope_view_init (SlopeView *self)
     g_signal_connect(G_OBJECT(self), "draw",
                      G_CALLBACK(_view_on_draw), NULL);
     g_signal_connect(G_OBJECT(self), "button-press-event",
-                     G_CALLBACK(_view_on_button_press), NULL);
+                     G_CALLBACK(_view_on_mouse_press), NULL);
+    g_signal_connect(G_OBJECT(self), "motion-notify-event",
+                     G_CALLBACK(_view_on_mouse_move), NULL);
+    g_signal_connect(G_OBJECT(self), "button-release-event",
+                     G_CALLBACK(_view_on_mouse_release), NULL);
 }
 
 
@@ -182,7 +186,7 @@ gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data)
 
 
 static
-gboolean _view_on_button_press (GtkWidget *self, GdkEvent *event, gpointer data)
+gboolean _view_on_mouse_press (GtkWidget *self, GdkEvent *event, gpointer data)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
     SlopeMouseEvent mouse_event;
@@ -197,6 +201,49 @@ gboolean _view_on_button_press (GtkWidget *self, GdkEvent *event, gpointer data)
             _scene_mouse_event(priv->scene, &mouse_event);
         } else if (event->button.button == 3) {
             mouse_event.type = SLOPE_MOUSE_RIGHT_CLICK;
+            _scene_mouse_event(priv->scene, &mouse_event);
+        }
+    }
+
+    return TRUE;
+}
+
+
+static
+gboolean _view_on_mouse_move (GtkWidget *self, GdkEvent *event, gpointer data)
+{
+    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
+    SlopeMouseEvent mouse_event;
+    SLOPE_UNUSED(data);
+
+    /* send event notification down to the scene's items */
+    if (priv->scene != NULL) {
+        mouse_event.type = SLOPE_MOUSE_HOVER;
+        mouse_event.x = event->button.x;
+        mouse_event.y = event->button.y;
+        _scene_mouse_event(priv->scene, &mouse_event);
+    }
+
+    return TRUE;
+}
+
+
+static
+gboolean _view_on_mouse_release (GtkWidget *self, GdkEvent *event, gpointer data)
+{
+    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
+    SlopeMouseEvent mouse_event;
+    SLOPE_UNUSED(data);
+
+    /* send event notification down to the scene's items */
+    if (priv->scene != NULL) {
+        mouse_event.x = event->button.x;
+        mouse_event.y = event->button.y;
+        if (event->button.button == 1) {
+            mouse_event.type = SLOPE_MOUSE_LEFT_RELEASE;
+            _scene_mouse_event(priv->scene, &mouse_event);
+        } else if (event->button.button == 3) {
+            mouse_event.type = SLOPE_MOUSE_RIGHT_RELEASE;
             _scene_mouse_event(priv->scene, &mouse_event);
         }
     }

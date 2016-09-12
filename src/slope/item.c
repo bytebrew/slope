@@ -30,7 +30,9 @@ _SlopeItemPrivate
     SlopeItem *parent;
     GList *child_list;
     gboolean owned;
+
     SlopeColor color;
+    SlopeRect rect;
 }
 SlopeItemPrivate;
 
@@ -45,7 +47,12 @@ G_DEFINE_TYPE_WITH_PRIVATE(
     G_TYPE_OBJECT)
 
 
+static gboolean _item_mouse_event_color (SlopeItem *self, const SlopeMouseEvent *event);
+static void _item_add_subitem (SlopeItem *self, SlopeItem *subitem, gboolean ownmem);
+static void _item_set_parent (SlopeItem *self, SlopeItem *parent);
+static void _item_get_scene_rect (SlopeItem *self, SlopeRect *rect);
 static void _item_finalize (GObject *self);
+static void _item_draw_rect (SlopeItem *self, cairo_t *cr);
 
 
 
@@ -58,7 +65,7 @@ slope_item_class_init (SlopeItemClass *klass)
 
     klass->add_subitem = _item_add_subitem;
     klass->draw = _item_draw_rect;
-    klass->mouse_event = _item_mouse_event;
+    klass->mouse_event = _item_mouse_event_color;
     klass->get_scene_rect = _item_get_scene_rect;
 }
 
@@ -74,13 +81,30 @@ slope_item_init (SlopeItem *self)
     priv->owned = FALSE;
 
     priv->color = SLOPE_BLUE;
+    priv->rect.x = 10;
+    priv->rect.y = 10;
+    priv->rect.width = 60;
+    priv->rect.height = 60;
 }
 
 
 static
 void _item_finalize (GObject *self)
 {
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+    GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
+    GList *iter;
 
+    /* destroy the managed children */
+    iter = priv->child_list;
+    while (iter != NULL) {
+        if (_item_get_is_managed(SLOPE_ITEM(iter->data)) == TRUE) {
+            g_object_unref(G_OBJECT(iter->data));
+        }
+        iter = iter->next;
+    }
+
+    G_OBJECT_CLASS(parent_class)->finalize(self);
 }
 
 
@@ -92,6 +116,21 @@ SlopeItem* slope_item_new (void)
 }
 
 
+SlopeItem* slope_item_new_rect (double x, double y, double width, double height)
+{
+    SlopeItem* self = SLOPE_ITEM(g_object_new(SLOPE_ITEM_TYPE, NULL));
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+
+    priv->rect.x = x;
+    priv->rect.y = y;
+    priv->rect.width = width;
+    priv->rect.height = height;
+
+    return self;
+}
+
+
+static
 void _item_add_subitem (SlopeItem *self, SlopeItem *subitem, gboolean ownmem)
 {
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
@@ -101,11 +140,25 @@ void _item_add_subitem (SlopeItem *self, SlopeItem *subitem, gboolean ownmem)
     }
 
     _item_set_parent(subitem, self);
+    _item_set_scene(subitem, priv->scene);
     _item_set_managed(subitem, ownmem);
     priv->child_list = g_list_append(priv->child_list, subitem);
 }
 
 
+void slope_item_add_subitem (SlopeItem *self, SlopeItem *subitem, gboolean ownmem)
+{
+    SLOPE_ITEM_GET_CLASS(self)->add_subitem(self, subitem, ownmem);
+}
+
+
+gboolean _item_get_is_managed (SlopeItem *self)
+{
+    return SLOPE_ITEM_GET_PRIVATE(self)->owned;
+}
+
+
+static
 void _item_set_parent (SlopeItem *self, SlopeItem *parent)
 {
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
@@ -113,13 +166,22 @@ void _item_set_parent (SlopeItem *self, SlopeItem *parent)
 }
 
 
+static
 void _item_get_scene_rect (SlopeItem *self, SlopeRect *rect)
 {
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
 
+    if (rect != NULL) {
+        rect->x = priv->rect.x;
+        rect->y = priv->rect.y;
+        rect->width = priv->rect.width;
+        rect->height = priv->rect.height;
+    }
 }
 
 
-void _item_mouse_event (SlopeItem *self, const SlopeMouseEvent *event)
+static
+gboolean _item_mouse_event_color (SlopeItem *self, const SlopeMouseEvent *event)
 {
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
 
@@ -127,19 +189,68 @@ void _item_mouse_event (SlopeItem *self, const SlopeMouseEvent *event)
         priv->color = SLOPE_RED;
     } else if (event->type == SLOPE_MOUSE_RIGHT_CLICK) {
         priv->color = SLOPE_BLUE;
+    } else if (event->type == SLOPE_MOUSE_HOVER) {
+        priv->color = g_random_int();
     }
 
     if (priv->view != NULL) {
         slope_view_redraw(priv->view);
     }
+
+    return TRUE;
+}
+
+
+gboolean _item_mouse_event_impl (SlopeItem *self, const SlopeMouseEvent *event)
+{
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+    GList *iter;
+    gboolean caught;
+
+    caught = FALSE;
+    iter = priv->child_list;
+    while (iter != NULL) {
+        SlopeRect child_rect;
+
+        /* if the event happens over any child, ask if it is responsible
+         * for handling this event */
+        slope_item_get_scene_rect(SLOPE_ITEM(iter->data), &child_rect);
+        if (slope_rect_contains(&child_rect, event->x, event->y)) {
+            if (_item_mouse_event_impl(SLOPE_ITEM(iter->data), event) == TRUE) {
+                caught = TRUE;
+            }
+        }
+        iter = iter->next;
+    }
+
+    /* only handle the event if no child has caught it */
+    if (caught == FALSE) {
+        return SLOPE_ITEM_GET_CLASS(self)->mouse_event(self, event);
+    }
+
+    return caught;
+}
+
+
+void slope_item_get_scene_rect (SlopeItem *self, SlopeRect *rect)
+{
+    SLOPE_ITEM_GET_CLASS(self)->get_scene_rect(self, rect);
 }
 
 
 void _item_set_scene (SlopeItem *self, SlopeScene *scene)
 {
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+    GList *iter;
+
     priv->scene = scene;
     priv->view = slope_scene_get_view(priv->scene);
+
+    iter = priv->child_list;
+    while (iter != NULL) {
+        _item_set_scene(SLOPE_ITEM(iter->data), scene);
+        iter = iter->next;
+    }
 }
 
 
@@ -150,11 +261,12 @@ void _item_set_managed (SlopeItem *self, gboolean owned)
 }
 
 
+static
 void _item_draw_rect (SlopeItem *self, cairo_t *cr)
 {
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
     slope_cairo_set_color(cr, priv->color);
-    cairo_rectangle(cr, 20, 20, 50, 50);
+    slope_cairo_rect(cr, &priv->rect);
     cairo_fill(cr);
 }
 
@@ -164,6 +276,8 @@ void _item_draw_impl (SlopeItem *self, cairo_t *cr)
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
     GList *iter;
 
+    /* first draw this item (it's in the back) and then
+     * draw it's children (in front) */
     SLOPE_ITEM_GET_CLASS(self)->draw(self, cr);
     iter = priv->child_list;
     while (iter != NULL) {

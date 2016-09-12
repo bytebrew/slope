@@ -23,19 +23,13 @@
 
 #include <slope/item.h>
 
-void _item_add_subitem (SlopeItem *self, SlopeItem *subitem, gboolean ownmem);
-
-void _item_get_scene_rect (SlopeItem *self, SlopeRect *rect);
-
-void _item_mouse_event (SlopeItem *self, const SlopeMouseEvent *event);
+gboolean _item_mouse_event_impl (SlopeItem *self, const SlopeMouseEvent *event);
 
 void _item_set_scene (SlopeItem *self, SlopeScene *scene);
 
-void _item_set_parent (SlopeItem *self, SlopeItem *parent);
-
 void _item_set_managed (SlopeItem *self, gboolean owned);
 
-void _item_draw_rect (SlopeItem *self, cairo_t *cr);
+gboolean _item_get_is_managed (SlopeItem *self);
 
 void _item_draw_impl (SlopeItem *self, cairo_t *cr);
 

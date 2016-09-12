@@ -20,6 +20,15 @@
 
 #include <slope/drawing.h>
 
+
+int slope_rect_contains (const SlopeRect *rect, double x, double y)
+{
+    if (x < rect->x || (rect->x + rect->width) <= x) return 0;
+    if (y <= rect->y || (rect->y + rect->height) < y) return 0;
+    return 1;
+}
+
+
 void slope_cairo_set_color (cairo_t *cr, SlopeColor color)
 {
     cairo_set_source_rgba(cr,

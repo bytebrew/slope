@@ -52,7 +52,7 @@ _SlopeItemClass
   void (*draw) (SlopeItem *self, cairo_t *cr);
   void (*add_subitem) (SlopeItem *self, SlopeItem *subitem, gboolean ownmem);
   void (*get_scene_rect) (SlopeItem *self, SlopeRect *rect);
-  void (*mouse_event) (SlopeItem *self, const SlopeMouseEvent *event);
+  gboolean (*mouse_event) (SlopeItem *self, const SlopeMouseEvent *event);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
@@ -64,6 +64,8 @@ SlopeItemClass;
 GType slope_item_get_type (void) G_GNUC_CONST;
 
 SlopeItem* slope_item_new (void);
+
+SlopeItem* slope_item_new_rect (double x, double y, double width, double height);
 
 GList slope_item_get_subitem_list (SlopeItem *self);
 
