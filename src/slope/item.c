@@ -61,7 +61,7 @@ slope_item_class_init (SlopeItemClass *klass)
 {
     GObjectClass *object_klass = G_OBJECT_CLASS(klass);
 
-    object_klass->finalize = _item_finalize;
+    object_klass->dispose = _item_finalize;
 
     klass->add_subitem = _item_add_subitem;
     klass->draw = _item_draw_rect;
@@ -83,8 +83,8 @@ slope_item_init (SlopeItem *self)
     priv->color = SLOPE_BLUE;
     priv->rect.x = 10;
     priv->rect.y = 10;
-    priv->rect.width = 60;
-    priv->rect.height = 60;
+    priv->rect.width = 100;
+    priv->rect.height = 100;
 }
 
 
@@ -103,6 +103,7 @@ void _item_finalize (GObject *self)
         }
         iter = iter->next;
     }
+    priv->child_list = NULL;
 
     G_OBJECT_CLASS(parent_class)->finalize(self);
 }
@@ -274,7 +275,15 @@ void _item_draw_rect (SlopeItem *self, cairo_t *cr)
 void _item_draw_impl (SlopeItem *self, cairo_t *cr)
 {
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+    SlopeRect rect;
     GList *iter;
+
+    /* only allow subitems inside this item's rect */
+    cairo_save(cr);
+    cairo_new_path(cr);
+    slope_item_get_scene_rect(self, &rect);
+    slope_cairo_rect(cr, &rect);
+    cairo_clip(cr);
 
     /* first draw this item (it's in the back) and then
      * draw it's children (in front) */
@@ -284,6 +293,8 @@ void _item_draw_impl (SlopeItem *self, cairo_t *cr)
         _item_draw_impl(iter->data, cr);
         iter = iter->next;
     }
+
+    cairo_restore(cr);
 }
 
 /* slope/item.c */

@@ -96,6 +96,7 @@ void _view_finalize (GObject *self)
 
     if (priv->scene != NULL && priv->ownmem == TRUE) {
         g_object_unref(priv->scene);
+        priv->scene = NULL;
     }
 
     G_OBJECT_CLASS(parent_class)->finalize(self);

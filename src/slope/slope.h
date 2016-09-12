@@ -28,5 +28,6 @@
 #include <slope/scene.h>
 #include <slope/item.h>
 #include <slope/view.h>
+#include <slope/scale.h>
 
 #endif /* SLOPE_SLOPE_H */

@@ -68,7 +68,7 @@ slope_scene_init (SlopeScene *self)
 
     priv->view = NULL;
     priv->item_list = NULL;
-    priv->background_color = SLOPE_WHITE;
+    priv->background_color = SLOPE_BLACK;
 }
 
 
@@ -81,6 +81,7 @@ void _scene_finalize (GObject *self)
     if (priv->item_list != NULL) {
         g_list_free_full(priv->item_list, _clear_item_list);
     }
+    priv->item_list = NULL;
 
     G_OBJECT_CLASS(parent_class)->finalize(self);
 }

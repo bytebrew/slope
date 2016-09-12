@@ -68,6 +68,8 @@ SlopeRect;
 
 int slope_rect_contains (const SlopeRect *rect, double x, double y);
 
+void slope_rect_translate (SlopeRect *rect, double dx, double dy);
+
 void slope_cairo_set_color (cairo_t *cr, SlopeColor color);
 
 void slope_cairo_line (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2);

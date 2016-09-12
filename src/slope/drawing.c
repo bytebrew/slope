@@ -29,6 +29,13 @@ int slope_rect_contains (const SlopeRect *rect, double x, double y)
 }
 
 
+void slope_rect_translate (SlopeRect *rect, double dx, double dy)
+{
+    rect->x += dx;
+    rect->y += dy;
+}
+
+
 void slope_cairo_set_color (cairo_t *cr, SlopeColor color)
 {
     cairo_set_source_rgba(cr,

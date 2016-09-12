@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     GtkWidget *window;
     GtkWidget *view;
     SlopeScene *scene;
-    SlopeItem *rect1, *rect2;
+    SlopeScale *scale;
 
     gtk_init(&argc, &argv);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -37,17 +37,8 @@ int main(int argc, char *argv[])
     slope_view_set_scene(SLOPE_VIEW(view), scene, TRUE);
     gtk_window_set_default_size(GTK_WINDOW(window), 500, 450);
 
-    rect1 = slope_item_new_rect(30, 30, 200, 200);
-    rect2 = slope_item_new_rect(50, 50, 100, 100);
-
-    slope_item_add_subitem(rect1, rect2, TRUE);
-    slope_scene_add_item(SLOPE_SCENE(scene), rect1, TRUE);
-
-    rect1 = slope_item_new_rect(230, 230, 200, 200);
-    rect2 = slope_item_new_rect(250, 250, 100, 100);
-
-    slope_item_add_subitem(rect1, rect2, TRUE);
-    slope_scene_add_item(SLOPE_SCENE(scene), rect1, TRUE);
+    scale = slope_scale_new();
+    slope_scene_add_item(SLOPE_SCENE(scene), SLOPE_ITEM(scale), TRUE);
 
     g_signal_connect(G_OBJECT(window), "destroy",
                      G_CALLBACK(gtk_main_quit), NULL);
