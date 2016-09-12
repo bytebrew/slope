@@ -18,15 +18,25 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_SLOPE_H
-#define SLOPE_SLOPE_H
+#ifndef SLOPE_ITEM_P_H
+#define SLOPE_ITEM_P_H
 
-/* this header is a shortcut to include the
- * basic and most often used slope headers
- * all at once */
-
-#include <slope/scene.h>
 #include <slope/item.h>
-#include <slope/view.h>
 
-#endif /* SLOPE_SLOPE_H */
+void _item_add_subitem (SlopeItem *self, SlopeItem *subitem, gboolean ownmem);
+
+void _item_get_scene_rect (SlopeItem *self, SlopeRect *rect);
+
+void _item_mouse_event (SlopeItem *self, const SlopeMouseEvent *event);
+
+void _item_set_scene (SlopeItem *self, SlopeScene *scene);
+
+void _item_set_parent (SlopeItem *self, SlopeItem *parent);
+
+void _item_set_managed (SlopeItem *self, gboolean owned);
+
+void _item_draw_rect (SlopeItem *self, cairo_t *cr);
+
+void _item_draw_impl (SlopeItem *self, cairo_t *cr);
+
+#endif /* SLOPE_ITEM_P_H */

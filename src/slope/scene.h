@@ -49,7 +49,7 @@ _SlopeSceneClass
   GObjectClass parent_class;
 
   void (*draw) (SlopeScene *self, const SlopeRect *rect, cairo_t *cr);
-  void (*add_item) (SlopeScene *self, SlopeItem *item);
+  void (*add_item) (SlopeScene *self, SlopeItem *item, gboolean ownmem);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
@@ -64,7 +64,7 @@ SlopeScene* slope_scene_new (void);
 
 GList* slope_scene_get_item_list (SlopeScene *self);
 
-void slope_scene_add_item (SlopeScene *self, SlopeItem *item);
+void slope_scene_add_item (SlopeScene *self, SlopeItem *item, gboolean ownmem);
 
 SlopeColor slope_scene_get_background_color (SlopeScene *self);
 

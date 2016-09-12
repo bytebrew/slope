@@ -19,6 +19,7 @@
  */
 
 #include <slope/scene_p.h>
+#include <slope/item_p.h>
 
 
 typedef struct
@@ -41,11 +42,9 @@ G_DEFINE_TYPE_WITH_PRIVATE(
     G_TYPE_OBJECT)
 
 
-static void _scene_add_item (SlopeScene *self, SlopeItem *item);
+static void _scene_add_item (SlopeScene *self, SlopeItem *item, gboolean ownmem);
 static void _scene_draw (SlopeScene *self, const SlopeRect *rect, cairo_t *cr);
 static void _clear_item_list (gpointer data);
-static void slope_scene_class_init (SlopeSceneClass *klass);
-static void slope_scene_init (SlopeScene *self);
 static void _scene_finalize (GObject *self);
 
 
@@ -104,9 +103,9 @@ GList* slope_scene_get_item_list (SlopeScene *self)
 }
 
 
-void slope_scene_add_item (SlopeScene *self, SlopeItem *item)
+void slope_scene_add_item (SlopeScene *self, SlopeItem *item, gboolean ownmem)
 {
-    SLOPE_SCENE_GET_CLASS(self)->add_item(self, item);
+    SLOPE_SCENE_GET_CLASS(self)->add_item(self, item, ownmem);
 }
 
 
@@ -132,12 +131,16 @@ void slope_scene_draw (SlopeScene *self, const SlopeRect *rect, cairo_t *cr)
 
 
 static
-void _scene_add_item (SlopeScene *self, SlopeItem *item)
+void _scene_add_item (SlopeScene *self, SlopeItem *item, gboolean ownmem)
 {
     SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
 
-    g_return_if_fail(item != NULL);
+    if (item == NULL) {
+        return;
+    }
 
+    _item_set_managed(item, ownmem);
+    _item_set_scene(item, self);
     priv->item_list = g_list_append(priv->item_list, item);
 }
 
@@ -146,6 +149,7 @@ static
 void _scene_draw (SlopeScene *self, const SlopeRect *rect, cairo_t *cr)
 {
     SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
+    GList *iter;
 
     /* save cr's state and clip tho the scene's rectangle,
        fill the background if required */
@@ -159,8 +163,12 @@ void _scene_draw (SlopeScene *self, const SlopeRect *rect, cairo_t *cr)
     cairo_clip(cr);
 
 
-    /* TODO */
-
+    /* draw items */
+    iter = priv->item_list;
+    while (iter != NULL) {
+        _item_draw_impl(iter->data, cr);
+        iter = iter->next;
+    }
 
     /* give back cr in the same state as we received it */
     cairo_restore(cr);

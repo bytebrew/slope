@@ -63,6 +63,8 @@ SlopeItemClass;
 
 GType slope_item_get_type (void) G_GNUC_CONST;
 
+SlopeItem* slope_item_new (void);
+
 GList slope_item_get_subitem_list (SlopeItem *self);
 
 void slope_item_add_subitem (SlopeItem *self, SlopeItem *subitem, gboolean ownmem);

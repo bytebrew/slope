@@ -18,21 +18,24 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <slope/slope.h>
+
 
 int main(int argc, char *argv[])
 {
     GtkWidget *window;
     GtkWidget *view;
     SlopeScene *scene;
+    SlopeItem *item;
 
     gtk_init(&argc, &argv);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     view = slope_view_new();
     scene = slope_scene_new();
+    item = slope_item_new();
 
     gtk_container_add(GTK_CONTAINER(window), view);
+    slope_scene_add_item(SLOPE_SCENE(scene), item, TRUE);
     slope_view_set_scene(SLOPE_VIEW(view), scene, TRUE);
     gtk_window_set_default_size(GTK_WINDOW(window), 500, 450);
 

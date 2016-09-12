@@ -15,7 +15,8 @@ HEADERS += \
     src/slope/mouse.h \
     src/slope/scene.h \
     src/slope/scene_p.h \
-    src/slope/item.h
+    src/slope/item.h \
+    src/slope/item_p.h
 
 SOURCES += \
     test.c \
