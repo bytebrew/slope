@@ -18,29 +18,28 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef SLOPE_MOUSE_H
+#define SLOPE_MOUSE_H
 
-#include <slope/slope.h>
+#include <slope/global.h>
 
-int main(int argc, char *argv[])
+SLOPE_BEGIN_DECLS
+
+#define SLOPE_MOUSE_LEFT_CLICK      0x00000001
+#define SLOPE_MOUSE_RIGHT_CLICK     0x00000002
+#define SLOPE_MOUSE_HOVER           0x00000003
+
+
+typedef struct
+_SlopeMouseEvent
 {
-    GtkWidget *window;
-    GtkWidget *view;
-    SlopeFigure *figure;
-
-    gtk_init(&argc, &argv);
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    view = slope_view_new();
-    figure = slope_figure_new();
-
-    gtk_container_add(GTK_CONTAINER(window), view);
-    slope_view_set_figure(SLOPE_VIEW(view), figure, TRUE);
-    gtk_window_set_default_size(GTK_WINDOW(window), 500, 450);
-
-    g_signal_connect(G_OBJECT(window), "destroy",
-                     G_CALLBACK(gtk_main_quit), NULL);
-
-    slope_figure_write_to_png(figure, "figure.png", 600, 450);
-    gtk_widget_show_all(window);
-    gtk_main();
-    return 0;
+    double x;
+    double y;
+    unsigned int type;
 }
+SlopeMouseEvent;
+
+
+SLOPE_END_DECLS
+
+#endif /* SLOPE_MOUSE_H */

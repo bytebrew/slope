@@ -22,7 +22,7 @@
 #define SLOPE_VIEW_H
 
 #include <gtk/gtk.h>
-#include <slope/scene.h>
+#include <slope/figure.h>
 
 #define SLOPE_VIEW_TYPE              (slope_view_get_type())
 #define SLOPE_VIEW(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_VIEW_TYPE, SlopeView))
@@ -48,7 +48,7 @@ _SlopeViewClass
 {
   GtkDrawingAreaClass parent_class;
 
-  void (*set_scene) (SlopeView *self, SlopeScene *scene, gboolean ownmem);
+  void (*set_figure) (SlopeView *self, SlopeFigure *figure, gboolean ownmem);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
@@ -61,11 +61,11 @@ GType slope_view_get_type(void) G_GNUC_CONST;
 
 GtkWidget* slope_view_new (void);
 
-GtkWidget* slope_view_new_with_scene (SlopeScene *scene, gboolean ownmem);
+GtkWidget* slope_view_new_with_figure (SlopeFigure *figure, gboolean ownmem);
 
-void slope_view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem);
+void slope_view_set_figure (SlopeView *self, SlopeFigure *figure, gboolean ownmem);
 
-SlopeScene* slope_view_get_scene (SlopeScene *self);
+SlopeFigure* slope_view_get_figure (SlopeFigure *self);
 
 SLOPE_END_DECLS
 

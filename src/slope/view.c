@@ -19,13 +19,13 @@
  */
 
 #include <slope/view.h>
-#include <slope/scene_p.h>
+#include <slope/figure_p.h>
 
 
 typedef struct
 _SlopeViewPrivate
 {
-    SlopeScene *scene;
+    SlopeFigure *figure;
     gboolean ownmem;
 }
 SlopeViewPrivate;
@@ -44,8 +44,9 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 static void slope_view_class_init (SlopeViewClass *klass);
 static void slope_view_init (SlopeView *self);
 static void _view_finalize (GObject *self);
-static void _view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem);
-static gboolean _view_draw (GtkWidget *self, cairo_t *cr, gpointer data);
+static void _view_set_figure (SlopeView *self, SlopeFigure *figure, gboolean ownmem);
+static gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data);
+static gboolean _view_on_button_press (GtkWidget *self, GdkEvent *event, gpointer data);
 
 
 
@@ -56,7 +57,7 @@ slope_view_class_init (SlopeViewClass *klass)
 
     object_klass->finalize = _view_finalize;
 
-    klass->set_scene = _view_set_scene;
+    klass->set_figure = _view_set_figure;
 }
 
 
@@ -66,11 +67,20 @@ slope_view_init (SlopeView *self)
     GtkWidget *gtk_widget = GTK_WIDGET(self);
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
 
-    priv->scene = NULL;
+    priv->figure = NULL;
     priv->ownmem = FALSE;
 
     gtk_widget_set_size_request(gtk_widget, 250, 250);
-    g_signal_connect(G_OBJECT(self), "draw", G_CALLBACK(_view_draw), NULL);
+    gtk_widget_add_events(gtk_widget,
+                GDK_EXPOSURE_MASK
+                |GDK_BUTTON_MOTION_MASK
+                |GDK_BUTTON_PRESS_MASK
+                |GDK_BUTTON_RELEASE_MASK);
+
+    g_signal_connect(G_OBJECT(self), "draw",
+                     G_CALLBACK(_view_on_draw), NULL);
+    g_signal_connect(G_OBJECT(self), "button-press-event",
+                     G_CALLBACK(_view_on_button_press), NULL);
 }
 
 
@@ -80,8 +90,8 @@ void _view_finalize (GObject *self)
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
     GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
 
-    if (priv->scene != NULL && priv->ownmem == TRUE) {
-        g_object_unref(priv->scene);
+    if (priv->figure != NULL && priv->ownmem == TRUE) {
+        g_object_unref(priv->figure);
     }
 
     G_OBJECT_CLASS(parent_class)->finalize(self);
@@ -96,51 +106,51 @@ GtkWidget* slope_view_new ()
 }
 
 
-GtkWidget* slope_view_new_with_scene (SlopeScene *scene, gboolean ownmem)
+GtkWidget* slope_view_new_with_figure (SlopeFigure *figure, gboolean ownmem)
 {
     GtkWidget *self = GTK_WIDGET(g_object_new(SLOPE_VIEW_TYPE, NULL));
 
-    slope_view_set_scene(SLOPE_VIEW(self), scene, ownmem);
+    slope_view_set_figure(SLOPE_VIEW(self), figure, ownmem);
 
     return self;
 }
 
 
 static
-void _view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem)
+void _view_set_figure (SlopeView *self, SlopeFigure *figure, gboolean ownmem)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
 
-    priv->scene = scene;
+    priv->figure = figure;
     priv->ownmem = ownmem;
-    _scene_set_view(scene, self);
+    _figure_set_view(figure, self);
 }
 
 
-void slope_view_set_scene (SlopeView *self, SlopeScene *scene, gboolean ownmem)
+void slope_view_set_figure (SlopeView *self, SlopeFigure *figure, gboolean ownmem)
 {
-    SLOPE_VIEW_GET_CLASS(self)->set_scene(self, scene, ownmem);
+    SLOPE_VIEW_GET_CLASS(self)->set_figure(self, figure, ownmem);
 }
 
 
-SlopeScene* slope_view_get_scene (SlopeScene *self)
+SlopeFigure* slope_view_get_figure (SlopeFigure *self)
 {
     if (self != NULL) {
-        return SLOPE_VIEW_GET_PRIVATE(self)->scene;
+        return SLOPE_VIEW_GET_PRIVATE(self)->figure;
     }
     return NULL;
 }
 
 
 static
-gboolean _view_draw (GtkWidget *self, cairo_t *cr, gpointer data)
+gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
     GtkAllocation allocation;
     SlopeRect rect;
     SLOPE_UNUSED(data)
 
-    if (priv->scene == NULL) {
+    if (priv->figure == NULL) {
         return TRUE;
     }
 
@@ -150,7 +160,31 @@ gboolean _view_draw (GtkWidget *self, cairo_t *cr, gpointer data)
     rect.width = allocation.width;
     rect.height = allocation.height;
 
-    slope_scene_draw(priv->scene, &rect, cr);
+    slope_figure_draw(priv->figure, &rect, cr);
+    return TRUE;
+}
+
+
+static
+gboolean _view_on_button_press (GtkWidget *self, GdkEvent *event, gpointer data)
+{
+    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
+    SlopeMouseEvent mouse_event;
+    SLOPE_UNUSED(data);
+
+    /* send event notification down to the figure's items */
+    if (priv->figure != NULL) {
+        mouse_event.x = event->button.x;
+        mouse_event.y = event->button.y;
+        if (event->button.button == 1) {
+            mouse_event.type = SLOPE_MOUSE_LEFT_CLICK;
+            _figure_mouse_event(priv->figure, &mouse_event);
+        } else if (event->button.button == 3) {
+            mouse_event.type = SLOPE_MOUSE_RIGHT_CLICK;
+            _figure_mouse_event(priv->figure, &mouse_event);
+        }
+    }
+
     return TRUE;
 }
 
