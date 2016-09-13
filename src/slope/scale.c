@@ -28,6 +28,9 @@ _SlopeScalePrivate
 SlopeScalePrivate;
 
 
+#define SLOPE_SCALE_GET_CLASS(obj) \
+    (SLOPE_SCALE_CLASS(G_OBJECT_GET_CLASS(obj)))
+
 #define SLOPE_SCALE_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
      SLOPE_SCALE_TYPE, SlopeScalePrivate))

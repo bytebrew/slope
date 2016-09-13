@@ -18,53 +18,56 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/scene_p.h>
+#include <slope/figure_p.h>
 #include <slope/item_p.h>
 
 
 typedef struct
-_SlopeScenePrivate
+_SlopeFigurePrivate
 {
     SlopeView *view;
     GList *item_list;
     SlopeColor background_color;
 }
-SlopeScenePrivate;
+SlopeFigurePrivate;
 
 
-#define SLOPE_SCENE_GET_PRIVATE(obj) \
+#define SLOPE_FIGURE_GET_CLASS(obj) \
+    (SLOPE_FIGURE_CLASS(G_OBJECT_GET_CLASS(obj)))
+
+#define SLOPE_FIGURE_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
-     SLOPE_SCENE_TYPE, SlopeScenePrivate))
+     SLOPE_FIGURE_TYPE, SlopeFigurePrivate))
 
 G_DEFINE_TYPE_WITH_PRIVATE(
-    SlopeScene,
-    slope_scene,
+    SlopeFigure,
+    slope_figure,
     G_TYPE_OBJECT)
 
 
-static void _scene_add_item (SlopeScene *self, SlopeItem *item, gboolean ownmem);
-static void _scene_draw (SlopeScene *self, const SlopeRect *rect, cairo_t *cr);
+static void _figure_add_item (SlopeFigure *self, SlopeItem *item, gboolean ownmem);
+static void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
 static void _clear_item_list (gpointer data);
-static void _scene_finalize (GObject *self);
+static void _figure_finalize (GObject *self);
 
 
 
 static void
-slope_scene_class_init (SlopeSceneClass *klass)
+slope_figure_class_init (SlopeFigureClass *klass)
 {
     GObjectClass *object_klass = G_OBJECT_CLASS(klass);
 
-    object_klass->finalize = _scene_finalize;
+    object_klass->finalize = _figure_finalize;
 
-    klass->add_item = _scene_add_item;
-    klass->draw = _scene_draw;
+    klass->add_item = _figure_add_item;
+    klass->draw = _figure_draw;
 }
 
 
 static void
-slope_scene_init (SlopeScene *self)
+slope_figure_init (SlopeFigure *self)
 {
-    SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
+    SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
 
     priv->view = NULL;
     priv->item_list = NULL;
@@ -73,9 +76,9 @@ slope_scene_init (SlopeScene *self)
 
 
 static
-void _scene_finalize (GObject *self)
+void _figure_finalize (GObject *self)
 {
-    SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
+    SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
 
     if (priv->item_list != NULL) {
@@ -87,72 +90,72 @@ void _scene_finalize (GObject *self)
 }
 
 
-SlopeScene* slope_scene_new ()
+SlopeFigure* slope_figure_new ()
 {
-    SlopeScene *self = SLOPE_SCENE(g_object_new(SLOPE_SCENE_TYPE, NULL));
+    SlopeFigure *self = SLOPE_FIGURE(g_object_new(SLOPE_FIGURE_TYPE, NULL));
 
     return self;
 }
 
 
-GList* slope_scene_get_item_list (SlopeScene *self)
+GList* slope_figure_get_item_list (SlopeFigure *self)
 {
     if (self != NULL) {
-        return SLOPE_SCENE_GET_PRIVATE(self)->item_list;
+        return SLOPE_FIGURE_GET_PRIVATE(self)->item_list;
     }
     return NULL;
 }
 
 
-void slope_scene_add_item (SlopeScene *self, SlopeItem *item, gboolean ownmem)
+void slope_figure_add_item (SlopeFigure *self, SlopeItem *item, gboolean ownmem)
 {
-    SLOPE_SCENE_GET_CLASS(self)->add_item(self, item, ownmem);
+    SLOPE_FIGURE_GET_CLASS(self)->add_item(self, item, ownmem);
 }
 
 
-SlopeColor slope_scene_get_background_color (SlopeScene *self)
+SlopeColor slope_figure_get_background_color (SlopeFigure *self)
 {
     if (self != NULL) {
-        return SLOPE_SCENE_GET_PRIVATE(self)->background_color;
+        return SLOPE_FIGURE_GET_PRIVATE(self)->background_color;
     }
     return SLOPE_COLOR_NULL;
 }
 
 
-void slope_scene_set_background_color (SlopeScene *self, SlopeColor color)
+void slope_figure_set_background_color (SlopeFigure *self, SlopeColor color)
 {
-    SLOPE_SCENE_GET_PRIVATE(self)->background_color = color;
+    SLOPE_FIGURE_GET_PRIVATE(self)->background_color = color;
 }
 
 
-void slope_scene_draw (SlopeScene *self, const SlopeRect *rect, cairo_t *cr)
+void slope_figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
 {
-    SLOPE_SCENE_GET_CLASS(self)->draw(self, rect, cr);
+    SLOPE_FIGURE_GET_CLASS(self)->draw(self, rect, cr);
 }
 
 
 static
-void _scene_add_item (SlopeScene *self, SlopeItem *item, gboolean ownmem)
+void _figure_add_item (SlopeFigure *self, SlopeItem *item, gboolean ownmem)
 {
-    SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
+    SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
 
     if (item == NULL) {
         return;
     }
 
     _item_set_managed(item, ownmem);
-    _item_set_scene(item, self);
+    _item_set_figure(item, self);
     priv->item_list = g_list_append(priv->item_list, item);
 }
 
 
 static
-void _scene_draw (SlopeScene *self, const SlopeRect *rect, cairo_t *cr)
+void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
 {
-    SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
+    SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     GList *iter;
 
-    /* save cr's state and clip tho the scene's rectangle,
+    /* save cr's state and clip tho the figure's rectangle,
        fill the background if required */
     cairo_save(cr);
     cairo_new_path(cr);
@@ -187,33 +190,33 @@ void _clear_item_list (gpointer data)
 }
 
 
-void _scene_set_view (SlopeScene *self, SlopeView *view)
+void _figure_set_view (SlopeFigure *self, SlopeView *view)
 {
-    SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
+    SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     GList *iter;
 
     priv->view = view;
 
     iter = priv->item_list;
     while (iter != NULL) {
-        _item_set_scene(SLOPE_ITEM(iter->data), self);
+        _item_set_figure(SLOPE_ITEM(iter->data), self);
         iter = iter->next;
     }
 }
 
 
-SlopeView* slope_scene_get_view (SlopeScene *self)
+SlopeView* slope_figure_get_view (SlopeFigure *self)
 {
     if (self != NULL) {
-        return SLOPE_SCENE_GET_PRIVATE(self)->view;
+        return SLOPE_FIGURE_GET_PRIVATE(self)->view;
     }
     return NULL;
 }
 
 
-void _scene_mouse_event (SlopeScene *self, const SlopeMouseEvent *event)
+void _figure_mouse_event (SlopeFigure *self, const SlopeMouseEvent *event)
 {
-    SlopeScenePrivate *priv = SLOPE_SCENE_GET_PRIVATE(self);
+    SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     GList *iter;
 
     /* TODO: check if event is inside items rect */
@@ -222,7 +225,7 @@ void _scene_mouse_event (SlopeScene *self, const SlopeMouseEvent *event)
         SlopeRect item_rect;
 
         /* if the event happend over some item, let it handle the event */
-        slope_item_get_scene_rect(SLOPE_ITEM(iter->data), &item_rect);
+        slope_item_get_figure_rect(SLOPE_ITEM(iter->data), &item_rect);
         if (slope_rect_contains(&item_rect, event->x, event->y)) {
             if (_item_mouse_event_impl(SLOPE_ITEM(iter->data), event) == TRUE) {
                 break;
@@ -233,7 +236,7 @@ void _scene_mouse_event (SlopeScene *self, const SlopeMouseEvent *event)
 }
 
 
-void slope_scene_write_to_png (SlopeScene *self, const char *filename,
+void slope_figure_write_to_png (SlopeFigure *self, const char *filename,
                                int width, int height)
 {
     cairo_surface_t *image;
@@ -252,11 +255,11 @@ void slope_scene_write_to_png (SlopeScene *self, const char *filename,
     rect.width = width;
     rect.height = height;
 
-    slope_scene_draw(self, &rect, cr);
+    slope_figure_draw(self, &rect, cr);
     cairo_surface_write_to_png(image, filename);
 
     cairo_surface_destroy(image);
     cairo_destroy(cr);
 }
 
-/* slope/scene.c */
+/* slope/figure.c */

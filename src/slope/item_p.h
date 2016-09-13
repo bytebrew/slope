@@ -25,7 +25,7 @@
 
 gboolean _item_mouse_event_impl (SlopeItem *self, const SlopeMouseEvent *event);
 
-void _item_set_scene (SlopeItem *self, SlopeScene *scene);
+void _item_set_figure (SlopeItem *self, SlopeFigure *figure);
 
 void _item_set_managed (SlopeItem *self, gboolean owned);
 

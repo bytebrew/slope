@@ -18,14 +18,14 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_SCENE_P_H
-#define SLOPE_SCENE_P_H
+#ifndef SLOPE_FIGURE_P_H
+#define SLOPE_FIGURE_P_H
 
-#include <slope/scene.h>
+#include <slope/figure.h>
 #include <slope/mouse.h>
 
-void _scene_set_view (SlopeScene *self, SlopeView *view);
+void _figure_set_view (SlopeFigure *self, SlopeView *view);
 
-void _scene_mouse_event (SlopeScene *self, const SlopeMouseEvent *event);
+void _figure_mouse_event (SlopeFigure *self, const SlopeMouseEvent *event);
 
-#endif /* SLOPE_SCENE_P_H */
+#endif /* SLOPE_FIGURE_P_H */

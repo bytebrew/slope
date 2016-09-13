@@ -19,13 +19,13 @@
  */
 
 #include <slope/item_p.h>
-#include <slope/scene.h>
+#include <slope/figure.h>
 #include <slope/view.h>
 
 typedef struct
 _SlopeItemPrivate
 {
-    SlopeScene *scene;
+    SlopeFigure *figure;
     SlopeView *view;
     SlopeItem *parent;
     GList *child_list;
@@ -36,6 +36,9 @@ _SlopeItemPrivate
 }
 SlopeItemPrivate;
 
+
+#define SLOPE_ITEM_GET_CLASS(obj) \
+    (SLOPE_ITEM_CLASS(G_OBJECT_GET_CLASS(obj)))
 
 #define SLOPE_ITEM_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
@@ -50,7 +53,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 static gboolean _item_mouse_event_color (SlopeItem *self, const SlopeMouseEvent *event);
 static void _item_add_subitem (SlopeItem *self, SlopeItem *subitem, gboolean ownmem);
 static void _item_set_parent (SlopeItem *self, SlopeItem *parent);
-static void _item_get_scene_rect (SlopeItem *self, SlopeRect *rect);
+static void _item_get_figure_rect (SlopeItem *self, SlopeRect *rect);
 static void _item_finalize (GObject *self);
 static void _item_draw_rect (SlopeItem *self, cairo_t *cr);
 
@@ -66,7 +69,7 @@ slope_item_class_init (SlopeItemClass *klass)
     klass->add_subitem = _item_add_subitem;
     klass->draw = _item_draw_rect;
     klass->mouse_event = _item_mouse_event_color;
-    klass->get_scene_rect = _item_get_scene_rect;
+    klass->get_figure_rect = _item_get_figure_rect;
 }
 
 
@@ -75,7 +78,7 @@ slope_item_init (SlopeItem *self)
 {
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
 
-    priv->scene = NULL;
+    priv->figure = NULL;
     priv->parent = NULL;
     priv->child_list = NULL;
     priv->owned = FALSE;
@@ -141,7 +144,7 @@ void _item_add_subitem (SlopeItem *self, SlopeItem *subitem, gboolean ownmem)
     }
 
     _item_set_parent(subitem, self);
-    _item_set_scene(subitem, priv->scene);
+    _item_set_figure(subitem, priv->figure);
     _item_set_managed(subitem, ownmem);
     priv->child_list = g_list_append(priv->child_list, subitem);
 }
@@ -168,7 +171,7 @@ void _item_set_parent (SlopeItem *self, SlopeItem *parent)
 
 
 static
-void _item_get_scene_rect (SlopeItem *self, SlopeRect *rect)
+void _item_get_figure_rect (SlopeItem *self, SlopeRect *rect)
 {
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
 
@@ -215,7 +218,7 @@ gboolean _item_mouse_event_impl (SlopeItem *self, const SlopeMouseEvent *event)
 
         /* if the event happens over any child, ask if it is responsible
          * for handling this event */
-        slope_item_get_scene_rect(SLOPE_ITEM(iter->data), &child_rect);
+        slope_item_get_figure_rect(SLOPE_ITEM(iter->data), &child_rect);
         if (slope_rect_contains(&child_rect, event->x, event->y)) {
             if (_item_mouse_event_impl(SLOPE_ITEM(iter->data), event) == TRUE) {
                 caught = TRUE;
@@ -233,23 +236,23 @@ gboolean _item_mouse_event_impl (SlopeItem *self, const SlopeMouseEvent *event)
 }
 
 
-void slope_item_get_scene_rect (SlopeItem *self, SlopeRect *rect)
+void slope_item_get_figure_rect (SlopeItem *self, SlopeRect *rect)
 {
-    SLOPE_ITEM_GET_CLASS(self)->get_scene_rect(self, rect);
+    SLOPE_ITEM_GET_CLASS(self)->get_figure_rect(self, rect);
 }
 
 
-void _item_set_scene (SlopeItem *self, SlopeScene *scene)
+void _item_set_figure (SlopeItem *self, SlopeFigure *figure)
 {
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
     GList *iter;
 
-    priv->scene = scene;
-    priv->view = slope_scene_get_view(priv->scene);
+    priv->figure = figure;
+    priv->view = slope_figure_get_view(priv->figure);
 
     iter = priv->child_list;
     while (iter != NULL) {
-        _item_set_scene(SLOPE_ITEM(iter->data), scene);
+        _item_set_figure(SLOPE_ITEM(iter->data), figure);
         iter = iter->next;
     }
 }
@@ -281,7 +284,7 @@ void _item_draw_impl (SlopeItem *self, cairo_t *cr)
     /* only allow subitems inside this item's rect */
     cairo_save(cr);
     cairo_new_path(cr);
-    slope_item_get_scene_rect(self, &rect);
+    slope_item_get_figure_rect(self, &rect);
     slope_cairo_rect(cr, &rect);
     cairo_clip(cr);
 

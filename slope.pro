@@ -13,16 +13,16 @@ HEADERS += \
     src/slope/slope.h \
     src/slope/view.h \
     src/slope/mouse.h \
-    src/slope/scene.h \
-    src/slope/scene_p.h \
     src/slope/item.h \
     src/slope/item_p.h \
-    src/slope/scale.h
+    src/slope/scale.h \
+    src/slope/figure.h \
+    src/slope/figure_p.h
 
 SOURCES += \
     test.c \
     src/slope/drawing.c \
     src/slope/view.c \
-    src/slope/scene.c \
     src/slope/item.c \
-    src/slope/scale.c
+    src/slope/scale.c \
+    src/slope/figure.c

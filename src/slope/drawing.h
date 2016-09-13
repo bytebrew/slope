@@ -27,23 +27,29 @@
 
 SLOPE_BEGIN_DECLS
 
-typedef guint32              SlopeColor;
-#define SLOPE_COLOR_NULL     0x00000000
-#define SLOPE_BLACK          0x000000FF
-#define SLOPE_WHITE          0xFFFFFFFF
-#define SLOPE_RED            0xFF0000FF
-#define SLOPE_GREEN          0x00FF00FF
-#define SLOPE_BLUE           0x0000FFFF
 
-#define SLOPE_GET_RED(color)       (((color)>>24)&0xFF)
-#define SLOPE_GET_GREEN(color)     (((color)>>16)&0xFF)
-#define SLOPE_GET_BLUE(color)      (((color)>>8)&0xFF)
-#define SLOPE_GET_ALPHA(color)     ((color)&0xFF)
-#define SLOPE_GET_REDF(color)      (((double)SLOPE_GET_RED(color))/255.0)
-#define SLOPE_GET_GREENF(color)    (((double)SLOPE_GET_GREEN(color))/255.0)
-#define SLOPE_GET_BLUEF(color)     (((double)SLOPE_GET_BLUE(color))/255.0)
-#define SLOPE_GET_ALPHAF(color)    (((double)SLOPE_GET_ALPHA(color))/255.0)
-#define SLOPE_COLOR_IS_NULL(color) (SLOPE_GET_ALPHA(color) == 0)
+typedef guint32                         SlopeColor;
+#define SLOPE_WHITE                     0xFFFFFFFF
+#define SLOPE_RED                       0xFF0000FF
+#define SLOPE_GREEN                     0x00FF00FF
+#define SLOPE_BLUE                      0x0000FFFF
+#define SLOPE_BLACK                     0x000000FF
+#define SLOPE_COLOR_NULL                0x00000000
+#define SLOPE_GET_RED(color)            (((color)>>24)&0xFF)
+#define SLOPE_GET_GREEN(color)          (((color)>>16)&0xFF)
+#define SLOPE_GET_BLUE(color)           (((color)>>8)&0xFF)
+#define SLOPE_GET_ALPHA(color)          ((color)&0xFF)
+#define SLOPE_GET_REDF(color)           (((double)SLOPE_GET_RED(color))/255.0)
+#define SLOPE_GET_GREENF(color)         (((double)SLOPE_GET_GREEN(color))/255.0)
+#define SLOPE_GET_BLUEF(color)          (((double)SLOPE_GET_BLUE(color))/255.0)
+#define SLOPE_GET_ALPHAF(color)         (((double)SLOPE_GET_ALPHA(color))/255.0)
+#define SLOPE_SET_RED(color, red)       color = (((color) & 0x00FFFFFF) | (((red) & 0xFF) << 24))
+#define SLOPE_SET_GREEN(color, green)   color = (((color) & 0xFF00FFFF) | (((green) & 0xFF) << 16))
+#define SLOPE_SET_BLUE(color, blue)     color = (((color) & 0xFFFF00FF) | (((blue) & 0xFF) << 8))
+#define SLOPE_SET_ALPHA(color, alpha)   color = (((color) & 0xFFFFFF00) | ((alpha) & 0xFF))
+#define SLOPE_COLOR(r,g,b,a)            ((((r)&0xFF)<<24)|(((g)&0xFF)<<16)|(((b)&0xFF)<<8)|((a)&0xFF))
+#define SLOPE_COLOR_IS_NULL(color)      (SLOPE_GET_ALPHA(color) == 0)
+
 
 
 typedef struct

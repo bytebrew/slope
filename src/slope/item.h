@@ -28,7 +28,6 @@
 #define SLOPE_ITEM_TYPE              (slope_item_get_type())
 #define SLOPE_ITEM(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_ITEM_TYPE, SlopeItem))
 #define SLOPE_ITEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_ITEM_TYPE, SlopeItemClass))
-#define SLOPE_ITEM_GET_CLASS(obj)    (SLOPE_ITEM_CLASS(G_OBJECT_GET_CLASS(obj)))
 #define SLOPE_IS_ITEM(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_ITEM_TYPE))
 #define SLOPE_IS_ITEM_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_ITEM_TYPE))
 
@@ -51,7 +50,7 @@ _SlopeItemClass
 
   void (*draw) (SlopeItem *self, cairo_t *cr);
   void (*add_subitem) (SlopeItem *self, SlopeItem *subitem, gboolean ownmem);
-  void (*get_scene_rect) (SlopeItem *self, SlopeRect *rect);
+  void (*get_figure_rect) (SlopeItem *self, SlopeRect *rect);
   gboolean (*mouse_event) (SlopeItem *self, const SlopeMouseEvent *event);
 
   /* Padding to allow adding up to 4 members
@@ -77,9 +76,9 @@ void slope_item_set_is_visible (SlopeItem *self, gboolean visible);
 
 SlopeItem* slope_item_get_parent (SlopeItem *self);
 
-SlopeScene* slope_item_get_scene (SlopeItem *self);
+SlopeFigure* slope_item_get_figure (SlopeItem *self);
 
-void slope_item_get_scene_rect (SlopeItem *self, SlopeRect *rect);
+void slope_item_get_figure_rect (SlopeItem *self, SlopeRect *rect);
 
 SLOPE_END_DECLS
 

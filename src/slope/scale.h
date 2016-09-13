@@ -26,7 +26,6 @@
 #define SLOPE_SCALE_TYPE              (slope_scale_get_type())
 #define SLOPE_SCALE(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_SCALE_TYPE, SlopeScale))
 #define SLOPE_SCALE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_SCALE_TYPE, SlopeScaleClass))
-#define SLOPE_SCALE_GET_CLASS(obj)    (SLOPE_SCALE_CLASS(G_OBJECT_GET_CLASS(obj)))
 #define SLOPE_IS_SCALE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_SCALE_TYPE))
 #define SLOPE_IS_SCALE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_SCALE_TYPE))
 
