@@ -88,4 +88,22 @@ GtkWidget* slope_chart_new ()
     return self;
 }
 
+
+SlopeFigure* slope_chart_get_figure (SlopeChart *self)
+{
+    if (self != NULL) {
+        SLOPE_CHART_GET_PRIVATE(self)->figure;
+    }
+    return NULL;
+}
+
+
+GtkWidget* slope_chart_get_view (SlopeChart *self)
+{
+    if (self != NULL) {
+        SLOPE_CHART_GET_PRIVATE(self)->view;
+    }
+    return NULL;
+}
+
 /* slope/chart.c */

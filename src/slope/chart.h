@@ -60,6 +60,10 @@ GType slope_chart_get_type (void) G_GNUC_CONST;
 
 GtkWidget* slope_chart_new ();
 
+SlopeFigure* slope_chart_get_figure (SlopeChart *self);
+
+GtkWidget* slope_chart_get_view (SlopeChart *self);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_CHART_H */
