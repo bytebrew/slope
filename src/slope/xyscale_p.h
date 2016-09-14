@@ -21,6 +21,8 @@
 #ifndef SLOPE_XYSCALE_P_H
 #define SLOPE_XYSCALE_P_H
 
+#include <slope/xyscale.h>
+
 
 
 #endif /* SLOPE_XYSCALE_P_H */

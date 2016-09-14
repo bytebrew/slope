@@ -29,7 +29,7 @@
 #define SLOPE_ITEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_ITEM_TYPE, SlopeItemClass))
 #define SLOPE_IS_ITEM(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_ITEM_TYPE))
 #define SLOPE_IS_ITEM_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_ITEM_TYPE))
-
+#define SLOPE_ITEM_GET_CLASS(obj)    (SLOPE_ITEM_CLASS(G_OBJECT_GET_CLASS(obj)))
 SLOPE_BEGIN_DECLS
 
 typedef struct

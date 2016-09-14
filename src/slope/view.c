@@ -30,9 +30,6 @@ _SlopeViewPrivate
 SlopeViewPrivate;
 
 
-#define SLOPE_VIEW_GET_CLASS(obj) \
-    (SLOPE_VIEW_CLASS(G_OBJECT_GET_CLASS(obj)))
-
 #define SLOPE_VIEW_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
      SLOPE_VIEW_TYPE, SlopeViewPrivate))

@@ -29,6 +29,7 @@
 #define SLOPE_SCALE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_SCALE_TYPE, SlopeScaleClass))
 #define SLOPE_IS_SCALE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_SCALE_TYPE))
 #define SLOPE_IS_SCALE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_SCALE_TYPE))
+#define SLOPE_SCALE_GET_CLASS(obj)    (SLOPE_SCALE_CLASS(G_OBJECT_GET_CLASS(obj)))
 
 SLOPE_BEGIN_DECLS
 
@@ -76,6 +77,8 @@ void slope_scale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src
 
 void slope_scale_rescale (SlopeScale *self);
 
+GList *slope_scale_get_item_list(SlopeScale *self);
+
 void slope_scale_get_figure_rect (SlopeScale *self, SlopeRect *rect);
 
 void slope_scale_get_data_rect (SlopeScale *self, SlopeRect *rect);
@@ -84,11 +87,19 @@ SlopeFigure* slope_scale_get_figure (SlopeScale *self);
 
 gboolean slope_scale_get_is_managed (SlopeScale *self);
 
+SlopeColor slope_scale_get_background_color (SlopeScale *self);
+
+void slope_scale_set_background_color (SlopeScale *self, SlopeColor color);
+
 void slope_scale_set_is_managed (SlopeScale *self, gboolean managed);
 
 gboolean slope_scale_get_is_visible (SlopeScale *self);
 
 void slope_scale_set_is_visible (SlopeScale *self, gboolean visible);
+
+void slope_scale_get_layout_rect (SlopeScale *self, SlopeRect *rect);
+
+void slope_scale_set_layout_rect (SlopeScale *self, double x, double y, double w, double h);
 
 SLOPE_END_DECLS
 

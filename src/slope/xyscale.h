@@ -25,9 +25,10 @@
 
 #define SLOPE_XYSCALE_TYPE              (slope_xyscale_get_type())
 #define SLOPE_XYSCALE(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_XYSCALE_TYPE, SlopeXyScale))
-#define SLOPE_XYSCALE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_XYSCALE_TYPE, SlopeScaleXyClass))
+#define SLOPE_XYSCALE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_XYSCALE_TYPE, SlopeXyScaleClass))
 #define SLOPE_IS_XYSCALE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_XYSCALE_TYPE))
 #define SLOPE_IS_XYSCALE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_XYSCALE_TYPE))
+#define SLOPE_XYSCALE_GET_CLASS(obj)    (SLOPE_XYSCALE_CLASS(G_OBJECT_GET_CLASS(obj)))
 
 SLOPE_BEGIN_DECLS
 

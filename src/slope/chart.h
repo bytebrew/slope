@@ -21,13 +21,14 @@
 #ifndef SLOPE_CHART_H
 #define SLOPE_CHART_H
 
-#include <slope/slope.h>
+#include <slope/view.h>
 
 #define SLOPE_CHART_TYPE              (slope_chart_get_type())
 #define SLOPE_CHART(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_CHART_TYPE, SlopeChart))
 #define SLOPE_CHART_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_CHART_TYPE, SlopeChartClass))
 #define SLOPE_IS_CHART(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_CHART_TYPE))
 #define SLOPE_IS_CHART_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_CHART_TYPE))
+#define SLOPE_CHART_GET_CLASS(obj)    (SLOPE_CHART_CLASS(G_OBJECT_GET_CLASS(obj)))
 
 SLOPE_BEGIN_DECLS
 

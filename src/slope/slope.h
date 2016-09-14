@@ -30,4 +30,8 @@
 #include <slope/scale.h>
 #include <slope/item.h>
 
+#include <slope/xyscale.h>
+
+#include <slope/chart.h>
+
 #endif /* SLOPE_SLOPE_H */

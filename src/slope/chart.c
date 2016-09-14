@@ -30,9 +30,6 @@ _SlopeChartPrivate
 SlopeChartPrivate;
 
 
-#define SLOPE_CHART_GET_CLASS(obj) \
-    (SLOPE_CHART_CLASS(G_OBJECT_GET_CLASS(obj)))
-
 #define SLOPE_CHART_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
      SLOPE_CHART_TYPE, SlopeChartPrivate))
@@ -72,7 +69,7 @@ slope_chart_init (SlopeChart *self)
     priv->figure = slope_figure_new();
     priv->view = slope_view_new_with_figure(priv->figure);
 
-    gtk_window_set_default_size(GTK_WINDOW(self), 600, 600);
+    gtk_window_set_default_size(GTK_WINDOW(self), 560, 500);
 
     gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(priv->header), TRUE);
     gtk_window_set_titlebar(GTK_WINDOW(self), priv->header);
@@ -92,7 +89,7 @@ GtkWidget* slope_chart_new ()
 SlopeFigure* slope_chart_get_figure (SlopeChart *self)
 {
     if (self != NULL) {
-        SLOPE_CHART_GET_PRIVATE(self)->figure;
+        return SLOPE_CHART_GET_PRIVATE(self)->figure;
     }
     return NULL;
 }
@@ -101,7 +98,7 @@ SlopeFigure* slope_chart_get_figure (SlopeChart *self)
 GtkWidget* slope_chart_get_view (SlopeChart *self)
 {
     if (self != NULL) {
-        SLOPE_CHART_GET_PRIVATE(self)->view;
+        return SLOPE_CHART_GET_PRIVATE(self)->view;
     }
     return NULL;
 }

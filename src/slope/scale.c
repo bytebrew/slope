@@ -29,12 +29,12 @@ _SlopeScalePrivate
     SlopeColor background_color;
     gboolean managed;
     gboolean visible;
+
+    SlopeRect layout_rect;
 }
 SlopeScalePrivate;
 
 
-#define SLOPE_SCALE_GET_CLASS(obj) \
-    (SLOPE_SCALE_CLASS(G_OBJECT_GET_CLASS(obj)))
 
 #define SLOPE_SCALE_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
@@ -44,6 +44,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(
     SlopeScale, slope_scale, G_TYPE_OBJECT)
 
 
+static void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr);
 static void _scale_finalize (GObject *self);
 static void _scale_add_item (SlopeScale *self, SlopeItem *item);
 static void _scale_clear_item_list (gpointer data);
@@ -58,7 +59,7 @@ slope_scale_class_init (SlopeScaleClass *klass)
     object_klass->finalize = _scale_finalize;
 
     klass->add_item = _scale_add_item;
-    klass->draw = _scale_draw;
+    klass->draw = _scale_draw_impl;
 }
 
 
@@ -72,6 +73,11 @@ slope_scale_init (SlopeScale *self)
     priv->background_color = SLOPE_WHITE;
     priv->managed = TRUE;
     priv->visible = TRUE;
+
+    priv->layout_rect.x = 0.0;
+    priv->layout_rect.y = 0.0;
+    priv->layout_rect.width = 1.0;
+    priv->layout_rect.height = 1.0;
 }
 
 
@@ -105,19 +111,19 @@ void _scale_add_item (SlopeScale *self, SlopeItem *item)
 }
 
 
-void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
+void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
 {
     SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
     GList *iter;
 
-    cairo_save(cr);
-    cairo_new_path(cr);
-    slope_cairo_rect(cr, rect);
     if (!SLOPE_COLOR_IS_NULL(priv->background_color)) {
+        cairo_save(cr);
+        cairo_new_path(cr);
+        slope_cairo_rect(cr, rect);
         slope_cairo_set_color(cr, priv->background_color);
-        cairo_fill_preserve(cr);
+        cairo_fill(cr);
+        cairo_restore(cr);
     }
-    cairo_clip(cr);
 
     iter = priv->item_list;
     while (iter != NULL) {
@@ -129,8 +135,6 @@ void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
 
         iter = iter->next;
     }
-
-    cairo_restore(cr);
 }
 
 
@@ -206,6 +210,54 @@ void slope_scale_set_is_visible (SlopeScale *self, gboolean visible)
 }
 
 
+void slope_scale_get_layout_rect (SlopeScale *self, SlopeRect *rect)
+{
+    SlopeScalePrivate *priv;
+
+    if (self == NULL) {
+        return;
+    }
+
+    priv = SLOPE_SCALE_GET_PRIVATE(self);
+    rect->x = priv->layout_rect.x;
+    rect->y = priv->layout_rect.y;
+    rect->width = priv->layout_rect.width;
+    rect->height = priv->layout_rect.height;
+}
+
+
+void slope_scale_set_layout_rect (SlopeScale *self, double x, double y, double w, double h)
+{
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+
+    priv->layout_rect.x = x;
+    priv->layout_rect.y = y;
+    priv->layout_rect.width = w;
+    priv->layout_rect.height = h;
+}
+
+
+SlopeColor slope_scale_get_background_color (SlopeScale *self)
+{
+    if (self != NULL) {
+        return SLOPE_SCALE_GET_PRIVATE(self)->background_color;
+    }
+    return SLOPE_COLOR_NULL;
+}
+
+
+void slope_scale_set_background_color (SlopeScale *self, SlopeColor color)
+{
+    SLOPE_SCALE_GET_PRIVATE(self)->background_color = color;
+}
+
+
+void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
+{
+    SLOPE_SCALE_GET_CLASS(self)->draw(self, rect, cr);
+}
+
+
 void slope_scale_get_figure_rect (SlopeScale *self, SlopeRect *rect)
 {
     SLOPE_SCALE_GET_CLASS(self)->get_figure_rect(self, rect);
@@ -215,6 +267,15 @@ void slope_scale_get_figure_rect (SlopeScale *self, SlopeRect *rect)
 void slope_scale_get_data_rect (SlopeScale *self, SlopeRect *rect)
 {
     SLOPE_SCALE_GET_CLASS(self)->get_data_rect(self, rect);
+}
+
+
+GList* slope_scale_get_item_list (SlopeScale *self)
+{
+    if (self != NULL) {
+        return SLOPE_SCALE_GET_PRIVATE(self)->item_list;
+    }
+    return NULL;
 }
 
 

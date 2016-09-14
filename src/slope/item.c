@@ -33,8 +33,6 @@ _SlopeItemPrivate
 SlopeItemPrivate;
 
 
-#define SLOPE_ITEM_GET_CLASS(obj) \
-    (SLOPE_ITEM_CLASS(G_OBJECT_GET_CLASS(obj)))
 
 #define SLOPE_ITEM_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
@@ -73,7 +71,7 @@ void _item_set_scale (SlopeItem *self, SlopeScale *scale)
 {
     SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
 
-    // TODO is has children
+    /* TODO if it has children */
     priv->scale = scale;
     priv->figure = slope_scale_get_figure(scale);
 }

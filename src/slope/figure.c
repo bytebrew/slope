@@ -29,12 +29,12 @@ _SlopeFigurePrivate
     GList *scale_list;
     SlopeColor background_color;
     gboolean managed;
+
+    double layout_rows;
+    double layout_cols;
 }
 SlopeFigurePrivate;
 
-
-#define SLOPE_FIGURE_GET_CLASS(obj) \
-    (SLOPE_FIGURE_CLASS(G_OBJECT_GET_CLASS(obj)))
 
 #define SLOPE_FIGURE_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
@@ -44,6 +44,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(
     SlopeFigure, slope_figure, G_TYPE_OBJECT)
 
 
+static void _figure_update_layout (SlopeFigure *self);
 static void _figure_add_scale (SlopeFigure *self, SlopeScale *scale);
 static void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
 static void _figure_clear_scale_list (gpointer data);
@@ -70,7 +71,7 @@ slope_figure_init (SlopeFigure *self)
 
     priv->view = NULL;
     priv->scale_list = NULL;
-    priv->background_color = SLOPE_GREY0;
+    priv->background_color = SLOPE_BLACK;
     priv->managed = TRUE;
 }
 
@@ -109,6 +110,8 @@ void _figure_add_scale (SlopeFigure *self, SlopeScale *scale)
 
     priv->scale_list = g_list_append(priv->scale_list, scale);
     _scale_set_figure(scale, self);
+    slope_scale_rescale(scale);
+    _figure_update_layout(self);
 }
 
 
@@ -116,6 +119,7 @@ static
 void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
 {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
+    double layout_cell_width, layout_cell_height;
     GList *iter;
 
     /* save cr's state and clip tho the figure's rectangle,
@@ -129,13 +133,22 @@ void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
     }
     cairo_clip(cr);
 
+    layout_cell_width = rect->width / priv->layout_cols;
+    layout_cell_height = rect->height / priv->layout_rows;
     iter = priv->scale_list;
-    while (iter != NULL) {
 
+    while (iter != NULL) {
         SlopeScale *scale = SLOPE_SCALE(iter->data);
         if (slope_scale_get_is_visible(scale) == TRUE) {
+            SlopeRect scale_rect, layout;
+            slope_scale_get_layout_rect(scale, &scale_rect);
 
-            _scale_draw(scale, rect, cr);
+            layout.x = rect->x + scale_rect.x * layout_cell_width;
+            layout.y = rect->y + scale_rect.y * layout_cell_height;
+            layout.width = scale_rect.width * layout_cell_width;
+            layout.height = scale_rect.height * layout_cell_height;
+
+            _scale_draw(scale, &layout, cr);
         }
 
         iter = iter->next;
@@ -243,6 +256,33 @@ gboolean slope_figure_get_is_managed (SlopeFigure *self)
 void slope_figure_set_is_managed (SlopeFigure *self, gboolean managed)
 {
     SLOPE_FIGURE_GET_PRIVATE(self)->managed = managed;
+}
+
+
+static
+void _figure_update_layout (SlopeFigure *self)
+{
+    SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
+    GList *iter;
+
+    priv->layout_rows = 0.0;
+    priv->layout_cols = 0.0;
+
+    iter = priv->scale_list;
+    while (iter != NULL) {
+        SlopeRect scale_rect;
+        slope_scale_get_layout_rect(SLOPE_SCALE(iter->data), &scale_rect);
+
+        if (scale_rect.x + scale_rect.width > priv->layout_cols) {
+            priv->layout_cols = scale_rect.x + scale_rect.width;
+        }
+
+        if (scale_rect.y + scale_rect.height > priv->layout_rows) {
+            priv->layout_rows = scale_rect.y + scale_rect.height;
+        }
+
+        iter = iter->next;
+    }
 }
 
 
