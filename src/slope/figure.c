@@ -72,7 +72,7 @@ slope_figure_init (SlopeFigure *self)
 
     priv->view = NULL;
     priv->scale_list = NULL;
-    priv->background_color = SLOPE_BLACK;
+    priv->background_color = SLOPE_PALETURQUOISE;
     priv->managed = TRUE;
 }
 
