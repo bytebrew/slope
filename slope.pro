@@ -16,7 +16,9 @@ HEADERS += \
     src/slope/figure_p.h \
     src/slope/scale.h \
     src/slope/scale_p.h \
-    src/slope/scale_p.h
+    src/slope/scale_p.h \
+    src/slope/item.h \
+    src/slope/item_p.h
 
 
 SOURCES += \
@@ -24,4 +26,5 @@ SOURCES += \
     src/slope/drawing.c \
     src/slope/view.c \
     src/slope/figure.c \
-    src/slope/scale.c
+    src/slope/scale.c \
+    src/slope/item.c

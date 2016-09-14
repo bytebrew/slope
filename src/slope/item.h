@@ -1,0 +1,67 @@
+/*
+ * Copyright (C) 2016  Elvis Teixeira
+ *
+ * This source code is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This source code is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this program.
+ * If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef SLOPE_ITEM_H
+#define SLOPE_ITEM_H
+
+#include <slope/drawing.h>
+#include <glib-object.h>
+
+#define SLOPE_ITEM_TYPE              (slope_item_get_type())
+#define SLOPE_ITEM(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_ITEM_TYPE, SlopeItem))
+#define SLOPE_ITEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_ITEM_TYPE, SlopeItemClass))
+#define SLOPE_IS_ITEM(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_ITEM_TYPE))
+#define SLOPE_IS_ITEM_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_ITEM_TYPE))
+
+SLOPE_BEGIN_DECLS
+
+typedef struct
+_SlopeItem
+{
+  GObject parent;
+
+  /* Padding to allow adding up to 4 members
+     without breaking ABI. */
+  gpointer padding[4];
+}
+SlopeItem;
+
+
+typedef struct
+_SlopeItemClass
+{
+  GObjectClass parent_class;
+
+  void (*draw) (SlopeItem *self, cairo_t *cr);
+
+  /* Padding to allow adding up to 4 members
+     without breaking ABI. */
+  gpointer padding[4];
+}
+SlopeItemClass;
+
+
+
+GType slope_item_get_type (void) G_GNUC_CONST;
+
+
+SLOPE_END_DECLS
+
+#endif /* SLOPE_ITEM_H */
