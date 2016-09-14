@@ -54,6 +54,8 @@ _SlopeScaleClass
   void (*map) (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
   void (*unmap) (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
   void (*rescale) (SlopeScale *self);
+  void (*get_figure_rect) (SlopeScale *self, SlopeRect *rect);
+  void (*get_data_rect) (SlopeScale *self, SlopeRect *rect);
 
 
   /* Padding to allow adding up to 4 members
@@ -66,8 +68,6 @@ SlopeScaleClass;
 
 GType slope_scale_get_type (void) G_GNUC_CONST;
 
-SlopeScale* slope_scale_new (void);
-
 void slope_scale_add_item (SlopeScale *self, SlopeItem *item);
 
 void slope_scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
@@ -75,6 +75,10 @@ void slope_scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 void slope_scale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 
 void slope_scale_rescale (SlopeScale *self);
+
+void slope_scale_get_figure_rect (SlopeScale *self, SlopeRect *rect);
+
+void slope_scale_get_data_rect (SlopeScale *self, SlopeRect *rect);
 
 SlopeFigure* slope_scale_get_figure (SlopeScale *self);
 

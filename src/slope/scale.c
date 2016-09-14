@@ -46,10 +46,8 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 
 static void _scale_finalize (GObject *self);
 static void _scale_add_item (SlopeScale *self, SlopeItem *item);
-static void _scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
-static void _scale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
-static void _scale_rescale (SlopeScale *self);
 static void _scale_clear_item_list (gpointer data);
+
 
 
 static void
@@ -61,9 +59,6 @@ slope_scale_class_init (SlopeScaleClass *klass)
 
     klass->add_item = _scale_add_item;
     klass->draw = _scale_draw;
-    klass->map = _scale_map;
-    klass->unmap = _scale_unmap;
-    klass->rescale = _scale_rescale;
 }
 
 
@@ -95,14 +90,6 @@ void _scale_finalize (GObject *self)
 }
 
 
-SlopeScale* slope_scale_new (void)
-{
-    SlopeScale *self = SLOPE_SCALE(g_object_new(SLOPE_SCALE_TYPE, NULL));
-
-    return self;
-}
-
-
 static
 void _scale_add_item (SlopeScale *self, SlopeItem *item)
 {
@@ -114,34 +101,7 @@ void _scale_add_item (SlopeScale *self, SlopeItem *item)
 
     priv->item_list = g_list_append(priv->item_list, item);
     _item_set_scale(item, self);
-}
-
-
-static
-void _scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src)
-{
-    SLOPE_UNUSED(self);
-    SLOPE_UNUSED(res);
-    SLOPE_UNUSED(src);
-    // pass
-}
-
-
-static
-void _scale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src)
-{
-    SLOPE_UNUSED(self);
-    SLOPE_UNUSED(res);
-    SLOPE_UNUSED(src);
-    // pass
-}
-
-
-static
-void _scale_rescale (SlopeScale *self)
-{
-    SLOPE_UNUSED(self);
-    // pass
+    slope_scale_rescale(self);
 }
 
 
@@ -177,9 +137,24 @@ void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
 void _scale_set_figure (SlopeScale *self, SlopeFigure *figure)
 {
     SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+    GList *iter;
 
-    // TODO
+
+    if (priv->figure == figure) {
+        return;
+    }
+
     priv->figure = figure;
+
+    iter = priv->item_list;
+    while (iter != NULL) {
+        SlopeItem *item = SLOPE_ITEM(iter->data);
+
+        /* update children scale and figure infos */
+        _item_set_scale(item, self);
+
+        iter = iter->next;
+    }
 }
 
 
@@ -228,6 +203,18 @@ gboolean slope_scale_get_is_visible (SlopeScale *self)
 void slope_scale_set_is_visible (SlopeScale *self, gboolean visible)
 {
     SLOPE_SCALE_GET_PRIVATE(self)->visible = visible;
+}
+
+
+void slope_scale_get_figure_rect (SlopeScale *self, SlopeRect *rect)
+{
+    SLOPE_SCALE_GET_CLASS(self)->get_figure_rect(self, rect);
+}
+
+
+void slope_scale_get_data_rect (SlopeScale *self, SlopeRect *rect)
+{
+    SLOPE_SCALE_GET_CLASS(self)->get_data_rect(self, rect);
 }
 
 

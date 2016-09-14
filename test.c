@@ -32,13 +32,12 @@ int main(int argc, char *argv[])
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     view = slope_view_new();
     figure = slope_figure_new();
-    scale = slope_scale_new();
 
     gtk_container_add(GTK_CONTAINER(window), view);
     gtk_window_set_default_size(GTK_WINDOW(window), 500, 450);
 
     slope_view_set_figure(SLOPE_VIEW(view), figure);
-    slope_figure_add_scale(figure, scale);
+    /* slope_figure_add_scale(figure, scale); */
 
     g_signal_connect(G_OBJECT(window), "destroy",
                      G_CALLBACK(gtk_main_quit), NULL);

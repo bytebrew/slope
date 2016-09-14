@@ -47,12 +47,13 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 static void
 slope_item_class_init (SlopeItemClass *klass)
 {
-    GObjectClass *object_klass = G_OBJECT_CLASS(klass);
-
+    SLOPE_UNUSED(klass)
+    /*
+    // GObjectClass *object_klass = G_OBJECT_CLASS(klass);
     // TODO
     // object_klass->finalize = _scale_finalize;
-
-    klass->draw = _item_draw;
+    // klass->draw = _item_draw;
+    */
 }
 
 
@@ -65,12 +66,6 @@ slope_item_init (SlopeItem *self)
     priv->scale = NULL;
     priv->managed = TRUE;
     priv->visible = TRUE;
-}
-
-
-void _item_draw (SlopeItem *self, cairo_t *cr)
-{
-    // TODO
 }
 
 
@@ -115,5 +110,21 @@ void slope_item_set_is_visible (SlopeItem *self, gboolean visible)
 }
 
 
+void _item_draw (SlopeItem *self, cairo_t *cr)
+{
+    SLOPE_ITEM_GET_CLASS(self)->draw(self, cr);
+}
+
+
+void slope_item_get_figure_rect (SlopeItem *self, SlopeRect *rect)
+{
+    SLOPE_ITEM_GET_CLASS(self)->get_figure_rect(self, rect);
+}
+
+
+void slope_item_get_data_rect (SlopeItem *self, SlopeRect *rect)
+{
+    SLOPE_ITEM_GET_CLASS(self)->get_data_rect(self, rect);
+}
 
 /* slope/item.c */

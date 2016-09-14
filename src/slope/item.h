@@ -50,6 +50,8 @@ _SlopeItemClass
   GObjectClass parent_class;
 
   void (*draw) (SlopeItem *self, cairo_t *cr);
+  void (*get_figure_rect) (SlopeItem *self, SlopeRect *rect);
+  void (*get_data_rect) (SlopeItem *self, SlopeRect *rect);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
@@ -61,6 +63,9 @@ SlopeItemClass;
 
 GType slope_item_get_type (void) G_GNUC_CONST;
 
+void slope_item_get_figure_rect (SlopeItem *self, SlopeRect *rect);
+
+void slope_item_get_data_rect (SlopeItem *self, SlopeRect *rect);
 
 gboolean slope_item_get_is_managed (SlopeItem *self);
 
