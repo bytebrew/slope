@@ -41,9 +41,7 @@ SlopeItemPrivate;
      SLOPE_ITEM_TYPE, SlopeItemPrivate))
 
 G_DEFINE_TYPE_WITH_PRIVATE(
-    SlopeItem,
-    slope_item,
-    G_TYPE_OBJECT)
+    SlopeItem, slope_item, G_TYPE_OBJECT)
 
 
 static void
@@ -74,5 +72,48 @@ void _item_draw (SlopeItem *self, cairo_t *cr)
 {
     // TODO
 }
+
+
+void _item_set_scale (SlopeItem *self, SlopeScale *scale)
+{
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+
+    // TODO is has children
+    priv->scale = scale;
+    priv->figure = slope_scale_get_figure(scale);
+}
+
+
+
+gboolean slope_item_get_is_managed (SlopeItem *self)
+{
+    if (self != NULL) {
+        return SLOPE_ITEM_GET_PRIVATE(self)->managed;
+    }
+    return FALSE;
+}
+
+
+void slope_item_set_is_managed (SlopeItem *self, gboolean managed)
+{
+    SLOPE_ITEM_GET_PRIVATE(self)->managed = managed;
+}
+
+
+gboolean slope_item_get_is_visible (SlopeItem *self)
+{
+    if (self != NULL) {
+        return SLOPE_ITEM_GET_PRIVATE(self)->visible;
+    }
+    return FALSE;
+}
+
+
+void slope_item_set_is_visible (SlopeItem *self, gboolean visible)
+{
+    SLOPE_ITEM_GET_PRIVATE(self)->visible = visible;
+}
+
+
 
 /* slope/item.c */

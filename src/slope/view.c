@@ -38,9 +38,7 @@ SlopeViewPrivate;
      SLOPE_VIEW_TYPE, SlopeViewPrivate))
 
 G_DEFINE_TYPE_WITH_PRIVATE(
-    SlopeView,
-    slope_view,
-    GTK_TYPE_DRAWING_AREA)
+    SlopeView, slope_view, GTK_TYPE_DRAWING_AREA)
 
 
 static void _view_finalize (GObject *self);

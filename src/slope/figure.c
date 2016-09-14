@@ -41,14 +41,12 @@ SlopeFigurePrivate;
      SLOPE_FIGURE_TYPE, SlopeFigurePrivate))
 
 G_DEFINE_TYPE_WITH_PRIVATE(
-    SlopeFigure,
-    slope_figure,
-    G_TYPE_OBJECT)
+    SlopeFigure, slope_figure, G_TYPE_OBJECT)
 
 
 static void _figure_add_scale (SlopeFigure *self, SlopeScale *scale);
 static void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
-static void _clear_scale_list (gpointer data);
+static void _figure_clear_scale_list (gpointer data);
 static void _figure_finalize (GObject *self);
 
 
@@ -84,7 +82,7 @@ void _figure_finalize (GObject *self)
     GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
 
     if (priv->scale_list != NULL) {
-        g_list_free_full(priv->scale_list, _clear_scale_list);
+        g_list_free_full(priv->scale_list, _figure_clear_scale_list);
         priv->scale_list = NULL;
     }
 
@@ -149,7 +147,7 @@ void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
 
 
 static
-void _clear_scale_list (gpointer data)
+void _figure_clear_scale_list (gpointer data)
 {
     if (slope_scale_get_is_managed(SLOPE_SCALE(data)) == TRUE) {
         g_object_unref(G_OBJECT(data));

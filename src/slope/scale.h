@@ -76,6 +76,8 @@ void slope_scale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src
 
 void slope_scale_rescale (SlopeScale *self);
 
+SlopeFigure* slope_scale_get_figure (SlopeScale *self);
+
 gboolean slope_scale_get_is_managed (SlopeScale *self);
 
 void slope_scale_set_is_managed (SlopeScale *self, gboolean managed);

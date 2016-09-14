@@ -62,6 +62,14 @@ SlopeItemClass;
 GType slope_item_get_type (void) G_GNUC_CONST;
 
 
+gboolean slope_item_get_is_managed (SlopeItem *self);
+
+void slope_item_set_is_managed (SlopeItem *self, gboolean managed);
+
+gboolean slope_item_get_is_visible (SlopeItem *self);
+
+void slope_item_set_is_visible (SlopeItem *self, gboolean visible);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_ITEM_H */

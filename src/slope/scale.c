@@ -19,6 +19,7 @@
  */
 
 #include <slope/scale_p.h>
+#include <slope/item_p.h>
 
 typedef struct
 _SlopeScalePrivate
@@ -40,9 +41,7 @@ SlopeScalePrivate;
      SLOPE_SCALE_TYPE, SlopeScalePrivate))
 
 G_DEFINE_TYPE_WITH_PRIVATE(
-    SlopeScale,
-    slope_scale,
-    G_TYPE_OBJECT)
+    SlopeScale, slope_scale, G_TYPE_OBJECT)
 
 
 static void _scale_finalize (GObject *self);
@@ -50,6 +49,7 @@ static void _scale_add_item (SlopeScale *self, SlopeItem *item);
 static void _scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 static void _scale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 static void _scale_rescale (SlopeScale *self);
+static void _scale_clear_item_list (gpointer data);
 
 
 static void
@@ -84,8 +84,13 @@ static
 void _scale_finalize (GObject *self)
 {
     GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
 
-    /* just chain up */
+    if (priv->item_list != NULL) {
+        g_list_free_full(priv->item_list, _scale_clear_item_list);
+        priv->item_list = NULL;
+    }
+
     G_OBJECT_CLASS(parent_class)->finalize(self);
 }
 
@@ -101,34 +106,71 @@ SlopeScale* slope_scale_new (void)
 static
 void _scale_add_item (SlopeScale *self, SlopeItem *item)
 {
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
 
+    if (item == NULL) {
+        return;
+    }
+
+    priv->item_list = g_list_append(priv->item_list, item);
+    _item_set_scale(item, self);
 }
 
 
 static
 void _scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src)
 {
-
+    SLOPE_UNUSED(self);
+    SLOPE_UNUSED(res);
+    SLOPE_UNUSED(src);
+    // pass
 }
 
 
 static
 void _scale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src)
 {
-
+    SLOPE_UNUSED(self);
+    SLOPE_UNUSED(res);
+    SLOPE_UNUSED(src);
+    // pass
 }
 
 
 static
 void _scale_rescale (SlopeScale *self)
 {
-
+    SLOPE_UNUSED(self);
+    // pass
 }
 
 
 void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
 {
-    // TODO
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+    GList *iter;
+
+    cairo_save(cr);
+    cairo_new_path(cr);
+    slope_cairo_rect(cr, rect);
+    if (!SLOPE_COLOR_IS_NULL(priv->background_color)) {
+        slope_cairo_set_color(cr, priv->background_color);
+        cairo_fill_preserve(cr);
+    }
+    cairo_clip(cr);
+
+    iter = priv->item_list;
+    while (iter != NULL) {
+        SlopeItem *item = SLOPE_ITEM(iter->data);
+
+        if (slope_item_get_is_visible(item) == TRUE) {
+            _item_draw(item, cr);
+        }
+
+        iter = iter->next;
+    }
+
+    cairo_restore(cr);
 }
 
 
@@ -138,6 +180,24 @@ void _scale_set_figure (SlopeScale *self, SlopeFigure *figure)
 
     // TODO
     priv->figure = figure;
+}
+
+
+static
+void _scale_clear_item_list (gpointer data)
+{
+    if (slope_item_get_is_managed(SLOPE_ITEM(data)) == TRUE) {
+        g_object_unref(G_OBJECT(data));
+    }
+}
+
+
+SlopeFigure* slope_scale_get_figure (SlopeScale *self)
+{
+    if (self != NULL) {
+        return SLOPE_SCALE_GET_PRIVATE(self)->figure;
+    }
+    return NULL;
 }
 
 

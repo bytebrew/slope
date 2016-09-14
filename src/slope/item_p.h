@@ -25,4 +25,6 @@
 
 void _item_draw (SlopeItem *self, cairo_t *cr);
 
+void _item_set_scale (SlopeItem *self, SlopeScale *scale);
+
 #endif /* SLOPE_ITEM_P_H */
