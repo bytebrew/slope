@@ -20,7 +20,8 @@ HEADERS += \
     src/slope/item.h \
     src/slope/item_p.h \
     src/slope/xyscale.h \
-    src/slope/xyscale_p.h
+    src/slope/xyscale_p.h \
+    src/slope/chart.h
 
 
 SOURCES += \
@@ -30,4 +31,5 @@ SOURCES += \
     src/slope/figure.c \
     src/slope/scale.c \
     src/slope/item.c \
-    src/slope/xyscale.c
+    src/slope/xyscale.c \
+    src/slope/chart.c

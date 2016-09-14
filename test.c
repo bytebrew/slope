@@ -18,32 +18,23 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/slope.h>
+#include <slope/chart.h>
 
 
 int main(int argc, char *argv[])
 {
-    GtkWidget *window;
-    GtkWidget *view;
+    GtkWidget *chart;
     SlopeFigure *figure;
     SlopeScale *scale;
 
     gtk_init(&argc, &argv);
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    view = slope_view_new();
+    chart = slope_chart_new();
     figure = slope_figure_new();
 
-    gtk_container_add(GTK_CONTAINER(window), view);
-    gtk_window_set_default_size(GTK_WINDOW(window), 500, 450);
-
-    slope_view_set_figure(SLOPE_VIEW(view), figure);
-    /* slope_figure_add_scale(figure, scale); */
-
-    g_signal_connect(G_OBJECT(window), "destroy",
+    g_signal_connect(G_OBJECT(chart), "destroy",
                      G_CALLBACK(gtk_main_quit), NULL);
 
-    slope_view_write_to_png(SLOPE_VIEW(view), "figure.png", 500, 450);
-    gtk_widget_show_all(window);
+    gtk_widget_show_all(chart);
     gtk_main();
 
     return 0;

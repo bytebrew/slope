@@ -18,48 +18,48 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_XYSCALE_H
-#define SLOPE_XYSCALE_H
+#ifndef SLOPE_CHART_H
+#define SLOPE_CHART_H
 
-#include <slope/scale.h>
+#include <slope/slope.h>
 
-#define SLOPE_XYSCALE_TYPE              (slope_xyscale_get_type())
-#define SLOPE_XYSCALE(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_XYSCALE_TYPE, SlopeXyScale))
-#define SLOPE_XYSCALE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_XYSCALE_TYPE, SlopeScaleXyClass))
-#define SLOPE_IS_XYSCALE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_XYSCALE_TYPE))
-#define SLOPE_IS_XYSCALE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_XYSCALE_TYPE))
+#define SLOPE_CHART_TYPE              (slope_chart_get_type())
+#define SLOPE_CHART(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_CHART_TYPE, SlopeChart))
+#define SLOPE_CHART_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_CHART_TYPE, SlopeChartClass))
+#define SLOPE_IS_CHART(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_CHART_TYPE))
+#define SLOPE_IS_CHART_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_CHART_TYPE))
 
 SLOPE_BEGIN_DECLS
 
 typedef struct
-_SlopeXyScale
+_SlopeChart
 {
-  SlopeScale parent;
+  GtkWindow parent;
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
   gpointer padding[4];
 }
-SlopeXyScale;
+SlopeChart;
 
 
 typedef struct
-_SlopeXyScaleClass
+_SlopeChartClass
 {
-  SlopeScaleClass parent_class;
+  GtkWindowClass parent_class;
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
   gpointer padding[4];
 }
-SlopeXyScaleClass;
+SlopeChartClass;
 
 
 
-GType slope_scale_get_type (void) G_GNUC_CONST;
+GType slope_chart_get_type (void) G_GNUC_CONST;
 
-SlopeScale* slope_xyscale_new ();
+GtkWidget* slope_chart_new ();
 
 SLOPE_END_DECLS
 
-#endif /* SLOPE_XYSCALE_H */
+#endif /* SLOPE_CHART_H */
