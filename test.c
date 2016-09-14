@@ -32,13 +32,13 @@ int main(int argc, char *argv[])
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     view = slope_view_new();
     figure = slope_figure_new();
+    scale = slope_scale_new();
 
     gtk_container_add(GTK_CONTAINER(window), view);
-    slope_view_set_figure(SLOPE_VIEW(view), figure, TRUE);
     gtk_window_set_default_size(GTK_WINDOW(window), 500, 450);
 
-    scale = slope_scale_new();
-    slope_figure_add_item(SLOPE_FIGURE(figure), SLOPE_ITEM(scale), TRUE);
+    slope_view_set_figure(SLOPE_VIEW(view), figure);
+    slope_figure_add_scale(figure, scale);
 
     g_signal_connect(G_OBJECT(window), "destroy",
                      G_CALLBACK(gtk_main_quit), NULL);
@@ -46,5 +46,6 @@ int main(int argc, char *argv[])
     slope_view_write_to_png(SLOPE_VIEW(view), "figure.png", 500, 450);
     gtk_widget_show_all(window);
     gtk_main();
+
     return 0;
 }

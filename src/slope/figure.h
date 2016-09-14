@@ -48,7 +48,7 @@ _SlopeFigureClass
   GObjectClass parent_class;
 
   void (*draw) (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
-  void (*add_item) (SlopeFigure *self, SlopeItem *item, gboolean ownmem);
+  void (*add_scale) (SlopeFigure *self, SlopeScale *scale);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
@@ -61,13 +61,17 @@ GType slope_figure_get_type (void) G_GNUC_CONST;
 
 SlopeFigure* slope_figure_new (void);
 
-GList* slope_figure_get_item_list (SlopeFigure *self);
+GList* slope_figure_get_scale_list (SlopeFigure *self);
 
-void slope_figure_add_item (SlopeFigure *self, SlopeItem *item, gboolean ownmem);
+void slope_figure_add_scale (SlopeFigure *self, SlopeScale *scale);
 
 SlopeColor slope_figure_get_background_color (SlopeFigure *self);
 
 void slope_figure_set_background_color (SlopeFigure *self, SlopeColor color);
+
+gboolean slope_figure_get_is_managed (SlopeFigure *self);
+
+void slope_figure_set_is_managed (SlopeFigure *self, gboolean managed);
 
 void slope_figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
 

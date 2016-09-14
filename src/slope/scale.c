@@ -18,12 +18,16 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/scale.h>
+#include <slope/scale_p.h>
 
 typedef struct
 _SlopeScalePrivate
 {
-    int pad;
+    SlopeFigure *figure;
+    GList *item_list;
+    SlopeColor background_color;
+    gboolean managed;
+    gboolean visible;
 }
 SlopeScalePrivate;
 
@@ -38,10 +42,11 @@ SlopeScalePrivate;
 G_DEFINE_TYPE_WITH_PRIVATE(
     SlopeScale,
     slope_scale,
-    SLOPE_ITEM_TYPE)
+    G_TYPE_OBJECT)
 
 
 static void _scale_finalize (GObject *self);
+static void _scale_add_item (SlopeScale *self, SlopeItem *item);
 static void _scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 static void _scale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 static void _scale_rescale (SlopeScale *self);
@@ -54,6 +59,8 @@ slope_scale_class_init (SlopeScaleClass *klass)
 
     object_klass->finalize = _scale_finalize;
 
+    klass->add_item = _scale_add_item;
+    klass->draw = _scale_draw;
     klass->map = _scale_map;
     klass->unmap = _scale_unmap;
     klass->rescale = _scale_rescale;
@@ -63,7 +70,13 @@ slope_scale_class_init (SlopeScaleClass *klass)
 static void
 slope_scale_init (SlopeScale *self)
 {
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
 
+    priv->figure = NULL;
+    priv->item_list = NULL;
+    priv->background_color = SLOPE_WHITE;
+    priv->managed = TRUE;
+    priv->visible = TRUE;
 }
 
 
@@ -86,6 +99,13 @@ SlopeScale* slope_scale_new (void)
 
 
 static
+void _scale_add_item (SlopeScale *self, SlopeItem *item)
+{
+
+}
+
+
+static
 void _scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src)
 {
 
@@ -104,6 +124,58 @@ void _scale_rescale (SlopeScale *self)
 {
 
 }
+
+
+void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
+{
+    // TODO
+}
+
+
+void _scale_set_figure (SlopeScale *self, SlopeFigure *figure)
+{
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+
+    // TODO
+    priv->figure = figure;
+}
+
+
+gboolean slope_scale_get_is_managed (SlopeScale *self)
+{
+    if (self != NULL) {
+        return SLOPE_SCALE_GET_PRIVATE(self)->managed;
+    }
+    return FALSE;
+}
+
+
+void slope_scale_set_is_managed (SlopeScale *self, gboolean managed)
+{
+    SLOPE_SCALE_GET_PRIVATE(self)->managed = managed;
+}
+
+
+gboolean slope_scale_get_is_visible (SlopeScale *self)
+{
+    if (self != NULL) {
+        return SLOPE_SCALE_GET_PRIVATE(self)->visible;
+    }
+    return FALSE;
+}
+
+
+void slope_scale_set_is_visible (SlopeScale *self, gboolean visible)
+{
+    SLOPE_SCALE_GET_PRIVATE(self)->visible = visible;
+}
+
+
+void slope_scale_add_item (SlopeScale *self, SlopeItem *item)
+{
+    SLOPE_SCALE_GET_CLASS(self)->add_item(self, item);
+}
+
 
 void slope_scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src)
 {

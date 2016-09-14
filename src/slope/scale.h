@@ -21,7 +21,8 @@
 #ifndef SLOPE_SCALE_H
 #define SLOPE_SCALE_H
 
-#include <slope/item.h>
+#include <slope/drawing.h>
+#include <glib-object.h>
 
 #define SLOPE_SCALE_TYPE              (slope_scale_get_type())
 #define SLOPE_SCALE(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_SCALE_TYPE, SlopeScale))
@@ -34,7 +35,7 @@ SLOPE_BEGIN_DECLS
 typedef struct
 _SlopeScale
 {
-  SlopeItem parent;
+  GObject parent;
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
@@ -46,11 +47,14 @@ SlopeScale;
 typedef struct
 _SlopeScaleClass
 {
-  SlopeItemClass parent_class;
+  GObjectClass parent_class;
 
+  void (*add_item) (SlopeScale *self, SlopeItem *item);
+  void (*draw) (SlopeScale *self, const SlopeRect *rect, cairo_t *cr);
   void (*map) (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
   void (*unmap) (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
   void (*rescale) (SlopeScale *self);
+
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
@@ -64,11 +68,21 @@ GType slope_scale_get_type (void) G_GNUC_CONST;
 
 SlopeScale* slope_scale_new (void);
 
+void slope_scale_add_item (SlopeScale *self, SlopeItem *item);
+
 void slope_scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 
 void slope_scale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 
 void slope_scale_rescale (SlopeScale *self);
+
+gboolean slope_scale_get_is_managed (SlopeScale *self);
+
+void slope_scale_set_is_managed (SlopeScale *self, gboolean managed);
+
+gboolean slope_scale_get_is_visible (SlopeScale *self);
+
+void slope_scale_set_is_visible (SlopeScale *self, gboolean visible);
 
 SLOPE_END_DECLS
 

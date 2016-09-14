@@ -25,9 +25,13 @@
  * basic and most often used slope headers
  * all at once */
 
-#include <slope/figure.h>
-#include <slope/item.h>
+
 #include <slope/view.h>
+#include <slope/figure.h>
 #include <slope/scale.h>
+
+/*
+#include <slope/item.h>
+*/
 
 #endif /* SLOPE_SLOPE_H */

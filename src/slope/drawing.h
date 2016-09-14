@@ -22,8 +22,8 @@
 #define SLOPE_DRAWING_H
 
 #include <slope/global.h>
-#include <glib-object.h>
 #include <cairo/cairo.h>
+#include <glib.h>
 
 SLOPE_BEGIN_DECLS
 

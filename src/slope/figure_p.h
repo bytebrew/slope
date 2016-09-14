@@ -22,10 +22,7 @@
 #define SLOPE_FIGURE_P_H
 
 #include <slope/figure.h>
-#include <slope/mouse.h>
 
 void _figure_set_view (SlopeFigure *self, SlopeView *view);
-
-void _figure_mouse_event (SlopeFigure *self, const SlopeMouseEvent *event);
 
 #endif /* SLOPE_FIGURE_P_H */

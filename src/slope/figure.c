@@ -19,15 +19,16 @@
  */
 
 #include <slope/figure_p.h>
-#include <slope/item_p.h>
+#include <slope/scale_p.h>
 
 
 typedef struct
 _SlopeFigurePrivate
 {
     SlopeView *view;
-    GList *item_list;
+    GList *scale_list;
     SlopeColor background_color;
+    gboolean managed;
 }
 SlopeFigurePrivate;
 
@@ -45,9 +46,9 @@ G_DEFINE_TYPE_WITH_PRIVATE(
     G_TYPE_OBJECT)
 
 
-static void _figure_add_item (SlopeFigure *self, SlopeItem *item, gboolean ownmem);
+static void _figure_add_scale (SlopeFigure *self, SlopeScale *scale);
 static void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
-static void _clear_item_list (gpointer data);
+static void _clear_scale_list (gpointer data);
 static void _figure_finalize (GObject *self);
 
 
@@ -59,7 +60,7 @@ slope_figure_class_init (SlopeFigureClass *klass)
 
     object_klass->finalize = _figure_finalize;
 
-    klass->add_item = _figure_add_item;
+    klass->add_scale = _figure_add_scale;
     klass->draw = _figure_draw;
 }
 
@@ -70,8 +71,9 @@ slope_figure_init (SlopeFigure *self)
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
 
     priv->view = NULL;
-    priv->item_list = NULL;
+    priv->scale_list = NULL;
     priv->background_color = SLOPE_BLACK;
+    priv->managed = TRUE;
 }
 
 
@@ -81,10 +83,10 @@ void _figure_finalize (GObject *self)
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
 
-    if (priv->item_list != NULL) {
-        g_list_free_full(priv->item_list, _clear_item_list);
+    if (priv->scale_list != NULL) {
+        g_list_free_full(priv->scale_list, _clear_scale_list);
+        priv->scale_list = NULL;
     }
-    priv->item_list = NULL;
 
     G_OBJECT_CLASS(parent_class)->finalize(self);
 }
@@ -98,54 +100,17 @@ SlopeFigure* slope_figure_new ()
 }
 
 
-GList* slope_figure_get_item_list (SlopeFigure *self)
-{
-    if (self != NULL) {
-        return SLOPE_FIGURE_GET_PRIVATE(self)->item_list;
-    }
-    return NULL;
-}
-
-
-void slope_figure_add_item (SlopeFigure *self, SlopeItem *item, gboolean ownmem)
-{
-    SLOPE_FIGURE_GET_CLASS(self)->add_item(self, item, ownmem);
-}
-
-
-SlopeColor slope_figure_get_background_color (SlopeFigure *self)
-{
-    if (self != NULL) {
-        return SLOPE_FIGURE_GET_PRIVATE(self)->background_color;
-    }
-    return SLOPE_COLOR_NULL;
-}
-
-
-void slope_figure_set_background_color (SlopeFigure *self, SlopeColor color)
-{
-    SLOPE_FIGURE_GET_PRIVATE(self)->background_color = color;
-}
-
-
-void slope_figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
-{
-    SLOPE_FIGURE_GET_CLASS(self)->draw(self, rect, cr);
-}
-
-
 static
-void _figure_add_item (SlopeFigure *self, SlopeItem *item, gboolean ownmem)
+void _figure_add_scale (SlopeFigure *self, SlopeScale *scale)
 {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
 
-    if (item == NULL) {
+    if (scale == NULL) {
         return;
     }
 
-    _item_set_managed(item, ownmem);
-    _item_set_figure(item, self);
-    priv->item_list = g_list_append(priv->item_list, item);
+    priv->scale_list = g_list_append(priv->scale_list, scale);
+    _scale_set_figure(scale, self);
 }
 
 
@@ -166,11 +131,15 @@ void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
     }
     cairo_clip(cr);
 
-
-    /* draw items */
-    iter = priv->item_list;
+    iter = priv->scale_list;
     while (iter != NULL) {
-        _item_draw_impl(SLOPE_ITEM(iter->data), cr);
+
+        SlopeScale *scale = SLOPE_SCALE(iter->data);
+        if (slope_scale_get_is_visible(scale) == TRUE) {
+
+            _scale_draw(scale, rect, cr);
+        }
+
         iter = iter->next;
     }
 
@@ -180,12 +149,10 @@ void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
 
 
 static
-void _clear_item_list (gpointer data)
+void _clear_scale_list (gpointer data)
 {
-    SlopeItem *item = SLOPE_ITEM(data);
-
-    if (_item_get_is_managed(item) == TRUE) {
-        g_object_unref(G_OBJECT(item));
+    if (slope_scale_get_is_managed(SLOPE_SCALE(data)) == TRUE) {
+        g_object_unref(G_OBJECT(data));
     }
 }
 
@@ -197,40 +164,10 @@ void _figure_set_view (SlopeFigure *self, SlopeView *view)
 
     priv->view = view;
 
-    iter = priv->item_list;
+    iter = priv->scale_list;
     while (iter != NULL) {
-        _item_set_figure(SLOPE_ITEM(iter->data), self);
-        iter = iter->next;
-    }
-}
-
-
-SlopeView* slope_figure_get_view (SlopeFigure *self)
-{
-    if (self != NULL) {
-        return SLOPE_FIGURE_GET_PRIVATE(self)->view;
-    }
-    return NULL;
-}
-
-
-void _figure_mouse_event (SlopeFigure *self, const SlopeMouseEvent *event)
-{
-    SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-    GList *iter;
-
-    /* TODO: check if event is inside items rect */
-    iter = priv->item_list;
-    while (iter != NULL) {
-        SlopeRect item_rect;
-
-        /* if the event happend over some item, let it handle the event */
-        slope_item_get_figure_rect(SLOPE_ITEM(iter->data), &item_rect);
-        if (slope_rect_contains(&item_rect, event->x, event->y)) {
-            if (_item_mouse_event_impl(SLOPE_ITEM(iter->data), event) == TRUE) {
-                break;
-            }
-        }
+        SlopeScale *scale = SLOPE_SCALE(iter->data);
+        _scale_set_figure(scale, self);
         iter = iter->next;
     }
 }
@@ -260,6 +197,66 @@ void slope_figure_write_to_png (SlopeFigure *self, const char *filename,
 
     cairo_surface_destroy(image);
     cairo_destroy(cr);
+}
+
+
+GList* slope_figure_get_scale_list (SlopeFigure *self)
+{
+    if (self != NULL) {
+        return SLOPE_FIGURE_GET_PRIVATE(self)->scale_list;
+    }
+    return NULL;
+}
+
+
+SlopeColor slope_figure_get_background_color (SlopeFigure *self)
+{
+    if (self != NULL) {
+        return SLOPE_FIGURE_GET_PRIVATE(self)->background_color;
+    }
+    return SLOPE_COLOR_NULL;
+}
+
+
+void slope_figure_set_background_color (SlopeFigure *self, SlopeColor color)
+{
+    SLOPE_FIGURE_GET_PRIVATE(self)->background_color = color;
+}
+
+
+SlopeView* slope_figure_get_view (SlopeFigure *self)
+{
+    if (self != NULL) {
+        return SLOPE_FIGURE_GET_PRIVATE(self)->view;
+    }
+    return NULL;
+}
+
+
+gboolean slope_figure_get_is_managed (SlopeFigure *self)
+{
+    if (self != NULL) {
+        return SLOPE_FIGURE_GET_PRIVATE(self)->managed;
+    }
+    return FALSE;
+}
+
+
+void slope_figure_set_is_managed (SlopeFigure *self, gboolean managed)
+{
+    SLOPE_FIGURE_GET_PRIVATE(self)->managed = managed;
+}
+
+
+void slope_figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
+{
+    SLOPE_FIGURE_GET_CLASS(self)->draw(self, rect, cr);
+}
+
+
+void slope_figure_add_scale (SlopeFigure *self, SlopeScale *scale)
+{
+    SLOPE_FIGURE_GET_CLASS(self)->add_scale(self, scale);
 }
 
 /* slope/figure.c */

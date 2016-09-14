@@ -30,6 +30,7 @@
 #endif
 
 typedef struct _SlopeFigure   SlopeFigure;
+typedef struct _SlopeScale     SlopeScale;
 typedef struct _SlopeItem     SlopeItem;
 typedef struct _SlopeView     SlopeView;
 

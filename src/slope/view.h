@@ -47,7 +47,7 @@ _SlopeViewClass
 {
   GtkDrawingAreaClass parent_class;
 
-  void (*set_figure) (SlopeView *self, SlopeFigure *figure, gboolean ownmem);
+  void (*set_figure) (SlopeView *self, SlopeFigure *figure);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
@@ -60,9 +60,9 @@ GType slope_view_get_type (void) G_GNUC_CONST;
 
 GtkWidget* slope_view_new (void);
 
-GtkWidget* slope_view_new_with_figure (SlopeFigure *figure, gboolean ownmem);
+GtkWidget* slope_view_new_with_figure (SlopeFigure *figure);
 
-void slope_view_set_figure (SlopeView *self, SlopeFigure *figure, gboolean ownmem);
+void slope_view_set_figure (SlopeView *self, SlopeFigure *figure);
 
 void slope_view_redraw (SlopeView *self);
 
