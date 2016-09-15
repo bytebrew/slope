@@ -79,6 +79,12 @@ gboolean slope_item_get_is_visible (SlopeItem *self);
 
 void slope_item_set_is_visible (SlopeItem *self, gboolean visible);
 
+char* slope_item_get_name (SlopeItem *self);
+
+void slope_item_set_name (SlopeItem *self, const char *name);
+
+void slope_item_detach (SlopeItem *self);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_ITEM_H */

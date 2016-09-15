@@ -48,6 +48,7 @@ static void _xyseries_check_ranges (SlopeXySeries *self);
 
 static void _xyseries_draw_line (SlopeXySeries *self, cairo_t *cr);
 static void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr);
+static void _xyseries_draw_areaunder (SlopeXySeries *self, cairo_t *cr);
 
 
 #define SLOPE_XYSERIES_GET_PRIVATE(obj) \
@@ -87,7 +88,8 @@ slope_xyseries_init (SlopeXySeries *self)
 
 void _xyseries_finalize (GObject *self)
 {
-
+    /* TODO */
+    SLOPE_UNUSED(self);
 }
 
 
@@ -99,10 +101,30 @@ SlopeItem *slope_xyseries_new(void)
 }
 
 
+SlopeItem* slope_xyseries_new_filled (const char *name,
+                                      const double *x_vec,
+                                      const double *y_vec, long n_pts,
+                                      const char *style)
+{
+    SlopeItem *self = SLOPE_ITEM(g_object_new(SLOPE_XYSERIES_TYPE, NULL));
+
+    slope_item_set_name(self, name);
+    slope_xyseries_set_data(SLOPE_XYSERIES(self), x_vec, y_vec, n_pts);
+    slope_xyseries_set_style(SLOPE_XYSERIES(self), style);
+
+    return self;
+}
+
+
 void slope_xyseries_set_data (SlopeXySeries *self, const double *x_vec,
                               const double *y_vec, long n_pts)
 {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
+
+    if (x_vec == NULL || y_vec == NULL || n_pts == 0L) {
+        priv->n_pts = 0;
+        return;
+    }
 
     priv->x_vec = x_vec;
     priv->y_vec = y_vec;
@@ -117,9 +139,27 @@ void _xyseries_draw (SlopeItem *self, cairo_t *cr)
 {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
 
+    if (priv->n_pts == 0L) {
+        return;
+    }
+
     if (priv->mode == SLOPE_SERIES_LINE) {
         _xyseries_draw_line(SLOPE_XYSERIES(self), cr);
-    } else if (priv->mode == SLOPE_SERIES_CIRCLES) {
+    }
+    else if (priv->mode == SLOPE_SERIES_CIRCLES) {
+        _xyseries_draw_circles(SLOPE_XYSERIES(self), cr);
+    }
+    else if (priv->mode == (SLOPE_SERIES_LINE|SLOPE_SERIES_CIRCLES)) {
+        /* write a dedicate function to improve performance */
+        _xyseries_draw_line(SLOPE_XYSERIES(self), cr);
+        _xyseries_draw_circles(SLOPE_XYSERIES(self), cr);
+    }
+    else if (priv->mode == SLOPE_SERIES_AREAUNDER) {
+        _xyseries_draw_areaunder(SLOPE_XYSERIES(self), cr);
+    }
+    else if (priv->mode == (SLOPE_SERIES_AREAUNDER|SLOPE_SERIES_CIRCLES)) {
+        /* write a dedicate function to improve performance */
+        _xyseries_draw_areaunder(SLOPE_XYSERIES(self), cr);
         _xyseries_draw_circles(SLOPE_XYSERIES(self), cr);
     }
 }
@@ -162,12 +202,69 @@ void _xyseries_draw_line (SlopeXySeries *self, cairo_t *cr)
 
 
 static
+void _xyseries_draw_areaunder (SlopeXySeries *self, cairo_t *cr)
+{
+    SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
+    SlopeScale *scale = slope_item_get_scale(SLOPE_ITEM(self));
+    cairo_path_t *data_path;
+    SlopePoint p1, p2, p0, p;
+    double dx, dy, d2;
+    long k;
+
+    p.x = priv->x_vec[0];
+    p.y = priv->y_vec[0];
+    slope_scale_map(scale, &p1, &p);
+    cairo_new_path(cr);
+    cairo_move_to(cr, p1.x, p1.y);
+
+    /* keep track of the first point x and where the
+     * x axis (y=0) is */
+    p.y = 0.0;
+    slope_scale_map(scale, &p0, &p);
+
+    for (k=1L; k<priv->n_pts; ++k) {
+        p.x = priv->x_vec[k];
+        p.y = priv->y_vec[k];
+        slope_scale_map(scale, &p2, &p);
+
+        dx = p2.x - p1.x;
+        dy = p2.y - p1.y;
+        d2 = dx*dx + dy*dy;
+
+        if (d2 >= 9.0) {
+            cairo_line_to(cr, p2.x, p2.y);
+            p1 = p2;
+        }
+    }
+
+    data_path = cairo_copy_path(cr);
+    cairo_set_line_width(cr, priv->line_width);
+
+    /* complete the closed path to fill */
+    cairo_line_to(cr, p2.x, p0.y);
+    cairo_line_to(cr, p0.x, p0.y);
+    cairo_close_path(cr);
+
+    slope_cairo_set_color(cr, priv->fill_color);
+    cairo_fill(cr);
+
+    cairo_append_path(cr, data_path);
+    slope_cairo_set_color(cr, priv->stroke_color);
+    cairo_stroke(cr);
+
+    cairo_path_destroy(data_path);
+}
+
+
+static
 void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr)
 {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
     SlopeScale *scale = slope_item_get_scale(SLOPE_ITEM(self));
     SlopePoint dat_p, fig_p;
     long k;
+
+    cairo_set_line_width(cr, priv->line_width);
 
     for (k=0L; k<priv->n_pts; ++k) {
         fig_p.x = priv->x_vec[k];
@@ -177,20 +274,17 @@ void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr)
         slope_cairo_circle(cr, &dat_p, priv->symbol_radius);
 
         if (!SLOPE_COLOR_IS_NULL(priv->fill_color) &&
-            !SLOPE_COLOR_IS_NULL(priv->stroke_color))
-        {
+        !SLOPE_COLOR_IS_NULL(priv->stroke_color)) {
             slope_cairo_set_color(cr, priv->fill_color);
             cairo_fill_preserve(cr);
             slope_cairo_set_color(cr, priv->stroke_color);
             cairo_stroke(cr);
         }
-        else if(!SLOPE_COLOR_IS_NULL(priv->fill_color))
-        {
+        else if(!SLOPE_COLOR_IS_NULL(priv->fill_color)) {
             slope_cairo_set_color(cr, priv->fill_color);
             cairo_fill(cr);
         }
-        else if(!SLOPE_COLOR_IS_NULL(priv->stroke_color))
-        {
+        else if(!SLOPE_COLOR_IS_NULL(priv->stroke_color)) {
             slope_cairo_set_color(cr, priv->stroke_color);
             cairo_stroke(cr);
         }
@@ -201,7 +295,9 @@ void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr)
 static
 void _xyseries_get_figure_rect (SlopeItem *self, SlopeRect *rect)
 {
-    // TODO
+    /* TODO */
+    SLOPE_UNUSED(self);
+    SLOPE_UNUSED(rect);
 }
 
 
@@ -234,6 +330,83 @@ void _xyseries_check_ranges (SlopeXySeries *self)
         if (y[k] < priv->y_min) priv->y_min = y[k];
         if (y[k] > priv->y_max) priv->y_max = y[k];
     }
+}
+
+
+void
+slope_xyseries_set_style (SlopeXySeries *self, const char *style)
+{
+    SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
+    SlopeColor fill_color=SLOPE_RED, stroke_color=SLOPE_BLUE;
+    double line_width=1.32;
+    int mode=SLOPE_SERIES_LINE, k=0;
+
+    /* parse the stroke and fill colors */
+    if (style != NULL && style[k]!='\0') {
+        switch (style[k]) {
+            case '0': { stroke_color=SLOPE_COLOR_NULL; } break;
+            case 'k': { fill_color=SLOPE_BLACK; stroke_color=SLOPE_BLACK; } break;
+            case 'w': { fill_color=SLOPE_WHITE; stroke_color=SLOPE_WHITE; } break;
+            case 'r': { fill_color=SLOPE_RED; stroke_color=SLOPE_RED; } break;
+            case 'g': { fill_color=SLOPE_GREEN; stroke_color=SLOPE_GREEN; } break;
+            case 'b': { fill_color=SLOPE_BLUE; stroke_color=SLOPE_BLUE; } break;
+            case 'm': { fill_color=SLOPE_MAROON; stroke_color=SLOPE_MAROON; } break;
+            case 'l': { fill_color=SLOPE_LIGHTSKYBLUE; stroke_color=SLOPE_LIGHTSKYBLUE; } break;
+        }
+        k += 1;
+    }
+
+    /* parse the mode (symbol) */
+    if (style != NULL && style[k]!='\0') {
+        switch (style[k]) {
+            case 'o': { mode=SLOPE_SERIES_CIRCLES; } break;
+            case 'a': { mode=SLOPE_SERIES_AREAUNDER; } break;
+            case '-': {
+                mode=SLOPE_SERIES_LINE;
+                if (style[k+1]!='\0') {
+                    switch (style[k+1]) {
+                        case 'o': { mode|=SLOPE_SERIES_CIRCLES; ++k; } break;
+                        case 'a': { mode|=SLOPE_SERIES_AREAUNDER; ++k; } break;
+                    }
+                }
+                break;
+            }
+        }
+        k += 1;
+    }
+
+    /* parse an optional fill color (if you like it diferent from the stroke one */
+    if (style != NULL && style[k]!='\0') {
+        switch (style[k]) {
+            case '0': { fill_color=SLOPE_COLOR_NULL; } break;
+            case 'k': { fill_color=SLOPE_BLACK; } break;
+            case 'w': { fill_color=SLOPE_WHITE; } break;
+            case 'r': { fill_color=SLOPE_RED; } break;
+            case 'g': { fill_color=SLOPE_GREEN; } break;
+            case 'b': { fill_color=SLOPE_BLUE; } break;
+            case 'm': { fill_color=SLOPE_MAROON; } break;
+            case 'l': { fill_color=SLOPE_LIGHTSKYBLUE; } break;
+        }
+        k += 1;
+    }
+
+    if (mode != SLOPE_SERIES_LINE &&
+        mode != SLOPE_SERIES_AREAUNDER)
+    {
+        /* if we are not dealing with lines we better use
+           a 1.0 width */
+        line_width = 1.0;
+    }
+
+    if (mode & SLOPE_SERIES_AREAUNDER) {
+        /* for "area under" it is cool to add transparency */
+        SLOPE_SET_ALPHA(fill_color, 120);
+    }
+
+    priv->fill_color = fill_color;
+    priv->stroke_color = stroke_color;
+    priv->mode = mode;
+    priv->line_width = line_width;
 }
 
 /* slope/xyseries.c */

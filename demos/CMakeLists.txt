@@ -1,3 +1,3 @@
 
 add_executable(complete  complete.c)
-target_link_libraries(complete slope)
+target_link_libraries(complete slope -lm)

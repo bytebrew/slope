@@ -19,39 +19,44 @@
  */
 
 #include <slope/slope.h>
+#include <math.h>
 
 
 int main(int argc, char *argv[])
 {
     GtkWidget *chart;
     SlopeFigure *figure;
-    SlopeScale *scale1, *scale2;
-    SlopeItem *series;
-
-    double x[] = { 0, 1, 2, 3, 4, 5, 6 };
-    double y[] = { 0, 1, 2, 3, 4, 5, 6 };
+    SlopeScale *scale;
+    SlopeItem *series1, *series2;
+    double *x, *y1, *y2;
 
     gtk_init(&argc, &argv);
     chart = slope_chart_new();
 
     g_signal_connect(G_OBJECT(chart), "destroy", G_CALLBACK(gtk_main_quit), NULL);
     figure = slope_chart_get_figure(SLOPE_CHART(chart));
+    scale = slope_xyscale_new();
 
-    scale1 = slope_xyscale_new();
-    slope_scale_set_layout_rect(scale1, 0, 0, 1, 1);
-    slope_scale_set_background_color(scale1, SLOPE_LIGHTSTEELBLUE);
-    slope_scale_set_name(scale1, "Data Series 43");
-    slope_figure_add_scale(figure, scale1);
+    slope_scale_set_name(scale, "Data Series 43");
+    slope_figure_add_scale(figure, scale);
 
-    scale2 = slope_xyscale_new();
-    slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
-    slope_scale_set_background_color(scale2, SLOPE_PALETURQUOISE);
-    slope_scale_set_name(scale2, "Data Series 256");
-    slope_figure_add_scale(figure, scale2);
+    /* create some sinusoidal data points */
+    long k, n = 40;
+    x = g_malloc(n * sizeof(double));
+    y1 = g_malloc(n * sizeof(double));
+    y2 = g_malloc(n * sizeof(double));
+    double dx = 2.0 * G_PI / n;
 
-    series = slope_xyseries_new();
-    slope_xyseries_set_data(SLOPE_XYSERIES(series), x, y, 7);
-    slope_scale_add_item(scale1, series);
+    for (k=0; k<n; ++k) {
+        x[k] = k * dx;
+        y1[k] = k + 10 * sin(3.0 * x[k]);
+        y2[k] = 0.05 * k*k;
+    }
+
+    series1 = slope_xyseries_new_filled("Sinu-linear", x, y1, n, "0ag");
+    series2 = slope_xyseries_new_filled("Quadratic", x, y2, n, "kor");
+    slope_scale_add_item(scale, series1);
+    slope_scale_add_item(scale, series2);
 
     slope_figure_write_to_png(figure, "figure.png", 500, 450);
     gtk_widget_show_all(chart);

@@ -119,6 +119,7 @@ void _scale_add_item (SlopeScale *self, SlopeItem *item)
     }
 
     priv->item_list = g_list_append(priv->item_list, item);
+    slope_item_detach(item);
     _item_set_scale(item, self);
     slope_scale_rescale(self);
 }
@@ -195,45 +196,6 @@ void _scale_clear_item_list (gpointer data)
 }
 
 
-SlopeFigure* slope_scale_get_figure (SlopeScale *self)
-{
-    if (self != NULL) {
-        return SLOPE_SCALE_GET_PRIVATE(self)->figure;
-    }
-    return NULL;
-}
-
-
-gboolean slope_scale_get_is_managed (SlopeScale *self)
-{
-    if (self != NULL) {
-        return SLOPE_SCALE_GET_PRIVATE(self)->managed;
-    }
-    return FALSE;
-}
-
-
-void slope_scale_set_is_managed (SlopeScale *self, gboolean managed)
-{
-    SLOPE_SCALE_GET_PRIVATE(self)->managed = managed;
-}
-
-
-gboolean slope_scale_get_is_visible (SlopeScale *self)
-{
-    if (self != NULL) {
-        return SLOPE_SCALE_GET_PRIVATE(self)->visible;
-    }
-    return FALSE;
-}
-
-
-void slope_scale_set_is_visible (SlopeScale *self, gboolean visible)
-{
-    SLOPE_SCALE_GET_PRIVATE(self)->visible = visible;
-}
-
-
 void slope_scale_get_layout_rect (SlopeScale *self, SlopeRect *rect)
 {
     SlopeScalePrivate *priv;
@@ -250,7 +212,8 @@ void slope_scale_get_layout_rect (SlopeScale *self, SlopeRect *rect)
 }
 
 
-void slope_scale_set_layout_rect (SlopeScale *self, double x, double y, double w, double h)
+void slope_scale_set_layout_rect (SlopeScale *self, double x,
+                                  double y, double w, double h)
 {
     SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
 
@@ -261,12 +224,56 @@ void slope_scale_set_layout_rect (SlopeScale *self, double x, double y, double w
 }
 
 
+void slope_scale_set_name (SlopeScale *self, const char *name)
+{
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+
+    if (priv->name != NULL) {
+        g_free(priv->name);
+    }
+
+    if (name != NULL) {
+        priv->name = g_strdup(name);
+        priv->show_name = TRUE;
+    } else {
+        priv->name = NULL;
+    }
+}
+
+
+SlopeFigure* slope_scale_get_figure (SlopeScale *self)
+{
+    return SLOPE_SCALE_GET_PRIVATE(self)->figure;
+}
+
+
+gboolean slope_scale_get_is_managed (SlopeScale *self)
+{
+    return SLOPE_SCALE_GET_PRIVATE(self)->managed;
+}
+
+
+void slope_scale_set_is_managed (SlopeScale *self, gboolean managed)
+{
+    SLOPE_SCALE_GET_PRIVATE(self)->managed = managed;
+}
+
+
+gboolean slope_scale_get_is_visible (SlopeScale *self)
+{
+    return SLOPE_SCALE_GET_PRIVATE(self)->visible;
+}
+
+
+void slope_scale_set_is_visible (SlopeScale *self, gboolean visible)
+{
+    SLOPE_SCALE_GET_PRIVATE(self)->visible = visible;
+}
+
+
 SlopeColor slope_scale_get_background_color (SlopeScale *self)
 {
-    if (self != NULL) {
-        return SLOPE_SCALE_GET_PRIVATE(self)->background_color;
-    }
-    return SLOPE_COLOR_NULL;
+    return SLOPE_SCALE_GET_PRIVATE(self)->background_color;
 }
 
 
@@ -297,23 +304,6 @@ void slope_scale_get_data_rect (SlopeScale *self, SlopeRect *rect)
 GList* slope_scale_get_item_list (SlopeScale *self)
 {
     return SLOPE_SCALE_GET_PRIVATE(self)->item_list;
-}
-
-
-void slope_scale_set_name (SlopeScale *self, const char *name)
-{
-    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
-
-    if (priv->name != NULL) {
-        g_free(priv->name);
-    }
-
-    if (name != NULL) {
-        priv->name = g_strdup(name);
-        priv->show_name = TRUE;
-    } else {
-        priv->name = NULL;
-    }
 }
 
 

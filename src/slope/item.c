@@ -27,6 +27,7 @@ _SlopeItemPrivate
 {
     SlopeFigure *figure;
     SlopeScale *scale;
+    char *name;
     gboolean managed;
     gboolean visible;
 }
@@ -42,16 +43,17 @@ G_DEFINE_TYPE_WITH_PRIVATE(
     SlopeItem, slope_item, G_TYPE_OBJECT)
 
 
+static
+void _item_finalize (GObject *self);
+
+
+
 static void
 slope_item_class_init (SlopeItemClass *klass)
 {
-    SLOPE_UNUSED(klass)
-    /*
-    // GObjectClass *object_klass = G_OBJECT_CLASS(klass);
-    // TODO
-    // object_klass->finalize = _scale_finalize;
-    // klass->draw = _item_draw;
-    */
+    GObjectClass *object_klass = G_OBJECT_CLASS(klass);
+
+    object_klass->finalize = _item_finalize;
 }
 
 
@@ -62,8 +64,19 @@ slope_item_init (SlopeItem *self)
 
     priv->figure = NULL;
     priv->scale = NULL;
+    priv->name = NULL;
     priv->managed = TRUE;
     priv->visible = TRUE;
+}
+
+
+static
+void _item_finalize (GObject *self)
+{
+    /* SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self); */
+
+    /* release the name's memory */
+    slope_item_set_name(SLOPE_ITEM(self), NULL);
 }
 
 
@@ -134,6 +147,42 @@ SlopeFigure* slope_item_get_figure (SlopeItem *self)
 SlopeScale* slope_item_get_scale (SlopeItem *self)
 {
     return SLOPE_ITEM_GET_PRIVATE(self)->scale;
+}
+
+
+char* slope_item_get_name (SlopeItem *self)
+{
+    return SLOPE_ITEM_GET_PRIVATE(self)->name;
+}
+
+
+void slope_item_set_name (SlopeItem *self, const char *name)
+{
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+
+    if (priv->name != NULL) {
+        g_free(priv->name);
+    }
+
+    if (name != NULL) {
+        priv->name = g_strdup(name);
+    } else {
+        priv->name = NULL;
+    }
+}
+
+
+void slope_item_detach (SlopeItem *self)
+{
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+
+    if (priv->scale != NULL) {
+
+        /* TODO where scale have a remove method
+           as it to remove this */
+        priv->scale = NULL;
+        priv->figure = NULL;
+    }
 }
 
 /* slope/item.c */

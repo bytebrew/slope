@@ -35,8 +35,9 @@ SLOPE_BEGIN_DECLS
 typedef enum
 _SlopeXySeriesMode
 {
-    SLOPE_SERIES_LINE,
-    SLOPE_SERIES_CIRCLES
+    SLOPE_SERIES_LINE           = 0x00000001,
+    SLOPE_SERIES_CIRCLES        = 0x00000002,
+    SLOPE_SERIES_AREAUNDER      = 0x00000004
 }
 SlopeXySeriesMode;
 
@@ -70,8 +71,15 @@ GType slope_xyseries_get_type (void) G_GNUC_CONST;
 
 SlopeItem* slope_xyseries_new (void);
 
+SlopeItem* slope_xyseries_new_filled (const char *name,
+                                      const double *x_vec,
+                                      const double *y_vec,
+                                      long n_pts, const char *style);
+
 void slope_xyseries_set_data (SlopeXySeries *self, const double *x_vec,
                               const double *y_vec, long n_pts);
+
+void slope_xyseries_set_style (SlopeXySeries *self, const char *style);
 
 SLOPE_END_DECLS
 
