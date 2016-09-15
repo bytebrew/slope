@@ -25,7 +25,7 @@ HEADERS += \
 
 
 SOURCES += \
-    test.c \
+    demos/complete.c \
     src/slope/drawing.c \
     src/slope/view.c \
     src/slope/figure.c \
