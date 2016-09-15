@@ -175,8 +175,25 @@ void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr)
         slope_scale_map(scale, &dat_p, &fig_p);
 
         slope_cairo_circle(cr, &dat_p, priv->symbol_radius);
-        slope_cairo_set_color(cr, priv->stroke_color);
-        cairo_fill(cr);
+
+        if (!SLOPE_COLOR_IS_NULL(priv->fill_color) &&
+            !SLOPE_COLOR_IS_NULL(priv->stroke_color))
+        {
+            slope_cairo_set_color(cr, priv->fill_color);
+            cairo_fill_preserve(cr);
+            slope_cairo_set_color(cr, priv->stroke_color);
+            cairo_stroke(cr);
+        }
+        else if(!SLOPE_COLOR_IS_NULL(priv->fill_color))
+        {
+            slope_cairo_set_color(cr, priv->fill_color);
+            cairo_fill(cr);
+        }
+        else if(!SLOPE_COLOR_IS_NULL(priv->stroke_color))
+        {
+            slope_cairo_set_color(cr, priv->stroke_color);
+            cairo_stroke(cr);
+        }
     }
 }
 
