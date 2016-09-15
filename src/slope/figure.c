@@ -71,7 +71,7 @@ slope_figure_init (SlopeFigure *self)
 
     priv->view = NULL;
     priv->scale_list = NULL;
-    priv->background_color = SLOPE_BLACK;
+    priv->background_color = SLOPE_WHITE;
     priv->managed = TRUE;
 }
 
@@ -116,25 +116,32 @@ void _figure_add_scale (SlopeFigure *self, SlopeScale *scale)
 
 
 static
-void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
+void _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr)
 {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     double layout_cell_width, layout_cell_height;
+    SlopeRect rect;
     GList *iter;
 
     /* save cr's state and clip tho the figure's rectangle,
        fill the background if required */
     cairo_save(cr);
     cairo_new_path(cr);
-    slope_cairo_rect(cr, rect);
+
+    rect.x = in_rect->x + 10.0;
+    rect.y = in_rect->y + 10.0;
+    rect.width = in_rect->width - 20.0;
+    rect.height = in_rect->height - 20.0;
+    slope_cairo_round_rect(cr, &rect, 12.0);
+
     if (!SLOPE_COLOR_IS_NULL(priv->background_color)) {
         slope_cairo_set_color(cr, priv->background_color);
         cairo_fill_preserve(cr);
     }
     cairo_clip(cr);
 
-    layout_cell_width = rect->width / priv->layout_cols;
-    layout_cell_height = rect->height / priv->layout_rows;
+    layout_cell_width = rect.width / priv->layout_cols;
+    layout_cell_height = rect.height / priv->layout_rows;
     iter = priv->scale_list;
 
     while (iter != NULL) {
@@ -143,8 +150,8 @@ void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr)
             SlopeRect scale_rect, layout;
             slope_scale_get_layout_rect(scale, &scale_rect);
 
-            layout.x = rect->x + scale_rect.x * layout_cell_width;
-            layout.y = rect->y + scale_rect.y * layout_cell_height;
+            layout.x = rect.x + scale_rect.x * layout_cell_width;
+            layout.y = rect.y + scale_rect.y * layout_cell_height;
             layout.width = scale_rect.width * layout_cell_width;
             layout.height = scale_rect.height * layout_cell_height;
 

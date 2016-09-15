@@ -59,6 +59,19 @@ void slope_cairo_rect (cairo_t *cr, const SlopeRect *r)
 }
 
 
+void slope_cairo_round_rect (cairo_t *cr, const SlopeRect *rec, double radius)
+{
+    const double degrees = 0.01745329252; /* ~pi/180 */
+
+    cairo_new_sub_path (cr);
+    cairo_arc (cr, rec->x + rec->width - radius, rec->y + radius, radius, -90 * degrees, 0 * degrees);
+    cairo_arc (cr, rec->x + rec->width - radius, rec->y + rec->height - radius, radius, 0 * degrees, 90 * degrees);
+    cairo_arc (cr, rec->x + radius, rec->y + rec->height - radius, radius, 90 * degrees, 180 * degrees);
+    cairo_arc (cr, rec->x + radius, rec->y + radius, radius, 180 * degrees, 270 * degrees);
+    cairo_close_path (cr);
+}
+
+
 void slope_cairo_text (cairo_t *cr, double x, double y, const char *utf8)
 {
     cairo_move_to(cr, x, y);

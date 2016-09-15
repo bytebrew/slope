@@ -99,7 +99,9 @@ void slope_cairo_set_color (cairo_t *cr, SlopeColor color);
 
 void slope_cairo_line (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2);
 
-void slope_cairo_rect (cairo_t *cr, const SlopeRect *r);
+void slope_cairo_rect (cairo_t *cr, const SlopeRect *rec);
+
+void slope_cairo_round_rect (cairo_t *cr, const SlopeRect *rec, double rad);
 
 void slope_cairo_text (cairo_t *cr, double x, double y, const char *utf8);
 
