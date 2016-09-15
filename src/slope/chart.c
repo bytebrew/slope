@@ -72,6 +72,8 @@ slope_chart_init (SlopeChart *self)
     gtk_window_set_default_size(GTK_WINDOW(self), 560, 500);
 
     gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(priv->header), TRUE);
+    gtk_header_bar_set_title(GTK_HEADER_BAR(priv->header), "Slope");
+    gtk_header_bar_set_subtitle(GTK_HEADER_BAR(priv->header), "Gtk Chart");
     gtk_window_set_titlebar(GTK_WINDOW(self), priv->header);
 
     gtk_container_add(GTK_CONTAINER(self), priv->view);
@@ -88,19 +90,19 @@ GtkWidget* slope_chart_new ()
 
 SlopeFigure* slope_chart_get_figure (SlopeChart *self)
 {
-    if (self != NULL) {
-        return SLOPE_CHART_GET_PRIVATE(self)->figure;
-    }
-    return NULL;
+    return SLOPE_CHART_GET_PRIVATE(self)->figure;
+}
+
+
+GtkWidget* slope_chart_get_header (SlopeChart *self)
+{
+    return SLOPE_CHART_GET_PRIVATE(self)->header;
 }
 
 
 GtkWidget* slope_chart_get_view (SlopeChart *self)
 {
-    if (self != NULL) {
-        return SLOPE_CHART_GET_PRIVATE(self)->view;
-    }
-    return NULL;
+    return SLOPE_CHART_GET_PRIVATE(self)->view;
 }
 
 /* slope/chart.c */

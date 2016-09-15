@@ -63,6 +63,8 @@ GtkWidget* slope_chart_new ();
 
 SlopeFigure* slope_chart_get_figure (SlopeChart *self);
 
+GtkWidget* slope_chart_get_header (SlopeChart *self);
+
 GtkWidget* slope_chart_get_view (SlopeChart *self);
 
 SLOPE_END_DECLS
