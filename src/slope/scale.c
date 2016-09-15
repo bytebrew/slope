@@ -30,6 +30,11 @@ _SlopeScalePrivate
     gboolean managed;
     gboolean visible;
 
+    char *name;
+    gboolean show_name;
+    SlopeColor name_color;
+    double name_top_padding;
+
     SlopeRect layout_rect;
 }
 SlopeScalePrivate;
@@ -74,6 +79,11 @@ slope_scale_init (SlopeScale *self)
     priv->managed = TRUE;
     priv->visible = TRUE;
 
+    priv->name = NULL;
+    priv->show_name = FALSE;
+    priv->name_color = SLOPE_BLACK;
+    priv->name_top_padding = 0.0;
+
     priv->layout_rect.x = 0.0;
     priv->layout_rect.y = 0.0;
     priv->layout_rect.width = 1.0;
@@ -86,6 +96,9 @@ void _scale_finalize (GObject *self)
 {
     GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
     SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+
+    /* frees name safely */
+    slope_scale_set_name(SLOPE_SCALE(self), NULL);
 
     if (priv->item_list != NULL) {
         g_list_free_full(priv->item_list, _scale_clear_item_list);
@@ -134,6 +147,17 @@ void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
         }
 
         iter = iter->next;
+    }
+
+    if (priv->name != NULL && priv->show_name == TRUE) {
+        cairo_text_extents_t txt_ext;
+        cairo_text_extents(cr, priv->name, &txt_ext);
+        slope_cairo_set_color(cr, priv->name_color);
+        slope_cairo_text(cr,
+            rect->x + (rect->width - txt_ext.width)*0.5,
+            rect->y + txt_ext.height*1.64 + priv->name_top_padding,
+            priv->name);
+        cairo_stroke(cr);
     }
 }
 
@@ -272,10 +296,48 @@ void slope_scale_get_data_rect (SlopeScale *self, SlopeRect *rect)
 
 GList* slope_scale_get_item_list (SlopeScale *self)
 {
-    if (self != NULL) {
-        return SLOPE_SCALE_GET_PRIVATE(self)->item_list;
+    return SLOPE_SCALE_GET_PRIVATE(self)->item_list;
+}
+
+
+void slope_scale_set_name (SlopeScale *self, const char *name)
+{
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+
+    if (priv->name != NULL) {
+        g_free(priv->name);
     }
-    return NULL;
+
+    if (name != NULL) {
+        priv->name = g_strdup(name);
+        priv->show_name = TRUE;
+    } else {
+        priv->name = NULL;
+    }
+}
+
+
+char* slope_scale_get_name (SlopeScale *self)
+{
+    return SLOPE_SCALE_GET_PRIVATE(self)->name;
+}
+
+
+void slope_scale_set_show_name (SlopeScale *self, gboolean show)
+{
+    SLOPE_SCALE_GET_PRIVATE(self)->show_name = show;
+}
+
+
+gboolean slope_scale_get_show_name (SlopeScale *self)
+{
+    return SLOPE_SCALE_GET_PRIVATE(self)->show_name;
+}
+
+
+void slope_scale_set_name_top_padding (SlopeScale *self, double padding)
+{
+    SLOPE_SCALE_GET_PRIVATE(self)->name_top_padding = padding;
 }
 
 

@@ -87,6 +87,7 @@ slope_xyscale_init (SlopeXyScale *self)
     priv->right_margin = 20.0;
     priv->top_margin = 20.0;
     priv->bottom_margin = 20.0;
+    slope_scale_set_name_top_padding(SLOPE_SCALE(self), priv->top_margin);
 
     priv->horiz_pad = 0.03;
     priv->vertical_pad = 0.03;

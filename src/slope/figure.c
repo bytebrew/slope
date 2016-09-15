@@ -126,12 +126,17 @@ void _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr)
     /* save cr's state and clip tho the figure's rectangle,
        fill the background if required */
     cairo_save(cr);
-    cairo_new_path(cr);
+    cairo_select_font_face(cr, "Sans",
+          CAIRO_FONT_SLANT_NORMAL,
+          CAIRO_FONT_WEIGHT_NORMAL);
+    cairo_set_font_size(cr, 11);
 
     rect.x = in_rect->x + 10.0;
     rect.y = in_rect->y + 10.0;
     rect.width = in_rect->width - 20.0;
     rect.height = in_rect->height - 20.0;
+
+    cairo_new_path(cr);
     slope_cairo_round_rect(cr, &rect, 12.0);
 
     if (!SLOPE_COLOR_IS_NULL(priv->background_color)) {

@@ -101,6 +101,16 @@ void slope_scale_get_layout_rect (SlopeScale *self, SlopeRect *rect);
 
 void slope_scale_set_layout_rect (SlopeScale *self, double x, double y, double w, double h);
 
+void slope_scale_set_name (SlopeScale *self, const char *name);
+
+char* slope_scale_get_name (SlopeScale *self);
+
+void slope_scale_set_show_name (SlopeScale *self, gboolean show);
+
+void slope_scale_set_name_top_padding (SlopeScale *self, double padding);
+
+gboolean slope_scale_get_show_name (SlopeScale *self);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_SCALE_H */

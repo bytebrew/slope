@@ -40,10 +40,12 @@ int main(int argc, char *argv[])
 
     slope_scale_set_layout_rect(scale1, 0, 0, 1, 1);
     slope_scale_set_background_color(scale1, SLOPE_LIGHTSTEELBLUE);
+    slope_scale_set_name(scale1, "Data Series 43");
     slope_figure_add_scale(figure, scale1);
 
     slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
     slope_scale_set_background_color(scale2, SLOPE_PALETURQUOISE);
+    slope_scale_set_name(scale2, "Data Series 256");
     slope_figure_add_scale(figure, scale2);
 
     slope_figure_write_to_png(figure, "figure.png", 500, 450);
