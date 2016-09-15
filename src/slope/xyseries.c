@@ -34,6 +34,7 @@ _SlopeXySeriesPrivate
     SlopeColor stroke_color;
     SlopeColor fill_color;
     double line_width;
+    double symbol_radius;
     int mode;
 }
 SlopeXySeriesPrivate;
@@ -46,6 +47,7 @@ static void _xyseries_get_data_rect (SlopeItem *self, SlopeRect *rect);
 static void _xyseries_check_ranges (SlopeXySeries *self);
 
 static void _xyseries_draw_line (SlopeXySeries *self, cairo_t *cr);
+static void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr);
 
 
 #define SLOPE_XYSERIES_GET_PRIVATE(obj) \
@@ -75,10 +77,11 @@ slope_xyseries_init (SlopeXySeries *self)
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
 
     priv->n_pts = 0L;
-    priv->mode = SLOPE_SERIES_LINE;
+    priv->mode = SLOPE_SERIES_CIRCLES;
     priv->stroke_color = SLOPE_BLUE;
     priv->fill_color = SLOPE_RED;
     priv->line_width = 1.32;
+    priv->symbol_radius = 2.5;
 }
 
 
@@ -116,6 +119,8 @@ void _xyseries_draw (SlopeItem *self, cairo_t *cr)
 
     if (priv->mode == SLOPE_SERIES_LINE) {
         _xyseries_draw_line(SLOPE_XYSERIES(self), cr);
+    } else if (priv->mode == SLOPE_SERIES_CIRCLES) {
+        _xyseries_draw_circles(SLOPE_XYSERIES(self), cr);
     }
 }
 
@@ -142,7 +147,7 @@ void _xyseries_draw_line (SlopeXySeries *self, cairo_t *cr)
 
         dx = p2.x - p1.x;
         dy = p2.y - p1.y;
-        d2 = dx*dx - dy*dy;
+        d2 = dx*dx + dy*dy;
 
         if (d2 >= 9.0) {
             cairo_line_to(cr, p2.x, p2.y);
@@ -153,6 +158,26 @@ void _xyseries_draw_line (SlopeXySeries *self, cairo_t *cr)
     cairo_set_line_width(cr, priv->line_width);
     slope_cairo_set_color(cr, priv->stroke_color);
     cairo_stroke(cr);
+}
+
+
+static
+void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr)
+{
+    SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
+    SlopeScale *scale = slope_item_get_scale(SLOPE_ITEM(self));
+    SlopePoint dat_p, fig_p;
+    long k;
+
+    for (k=0L; k<priv->n_pts; ++k) {
+        fig_p.x = priv->x_vec[k];
+        fig_p.y = priv->y_vec[k];
+        slope_scale_map(scale, &dat_p, &fig_p);
+
+        slope_cairo_circle(cr, &dat_p, priv->symbol_radius);
+        slope_cairo_set_color(cr, priv->stroke_color);
+        cairo_fill(cr);
+    }
 }
 
 
