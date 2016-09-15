@@ -8,6 +8,7 @@ set(slope_HDRS
    slope/slope.h
    slope/view.h
    slope/xyscale.h
+   slope/xyseries.h
 )
 
 if(SLOPE_USE_GTK MATCHES "TRUE")
@@ -25,6 +26,7 @@ set(slope_SRCS
    slope/scale.c
    slope/view.c
    slope/xyscale.c
+   slope/xyseries.c
 )
 
 if(SLOPE_USE_GTK MATCHES "TRUE")

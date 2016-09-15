@@ -67,6 +67,10 @@ void slope_item_get_figure_rect (SlopeItem *self, SlopeRect *rect);
 
 void slope_item_get_data_rect (SlopeItem *self, SlopeRect *rect);
 
+SlopeFigure* slope_item_get_figure (SlopeItem *self);
+
+SlopeScale* slope_item_get_scale (SlopeItem *self);
+
 gboolean slope_item_get_is_managed (SlopeItem *self);
 
 void slope_item_set_is_managed (SlopeItem *self, gboolean managed);

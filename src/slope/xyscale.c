@@ -150,7 +150,7 @@ void _xyscale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src)
     res->x = priv->fig_x_min + tmp * priv->fig_width;
 
     tmp = (src->y - priv->dat_y_min) / priv->dat_height;
-    res->x = priv->fig_y_max - tmp * priv->fig_height;
+    res->y = priv->fig_y_max - tmp * priv->fig_height;
 }
 
 
@@ -164,7 +164,7 @@ void _xyscale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src)
     res->x = priv->dat_x_min + tmp * priv->dat_width;
 
     tmp = (priv->dat_y_max - src->y) / priv->fig_height;
-    res->x = priv->dat_y_min + tmp * priv->dat_height;
+    res->y = priv->dat_y_min + tmp * priv->dat_height;
 }
 
 

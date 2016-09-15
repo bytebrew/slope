@@ -26,27 +26,32 @@ int main(int argc, char *argv[])
     GtkWidget *chart;
     SlopeFigure *figure;
     SlopeScale *scale1, *scale2;
+    SlopeItem *series;
+
+    double x[] = { 0, 1, 2, 3, 4, 5, 6 };
+    double y[] = { 0, 1, 2, 3, 4, 5, 6 };
 
     gtk_init(&argc, &argv);
     chart = slope_chart_new();
 
-    scale1 = slope_xyscale_new();
-    scale2 = slope_xyscale_new();
-
-    g_signal_connect(G_OBJECT(chart), "destroy",
-                     G_CALLBACK(gtk_main_quit), NULL);
-
+    g_signal_connect(G_OBJECT(chart), "destroy", G_CALLBACK(gtk_main_quit), NULL);
     figure = slope_chart_get_figure(SLOPE_CHART(chart));
 
+    scale1 = slope_xyscale_new();
     slope_scale_set_layout_rect(scale1, 0, 0, 1, 1);
     slope_scale_set_background_color(scale1, SLOPE_LIGHTSTEELBLUE);
     slope_scale_set_name(scale1, "Data Series 43");
     slope_figure_add_scale(figure, scale1);
 
+    scale2 = slope_xyscale_new();
     slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
     slope_scale_set_background_color(scale2, SLOPE_PALETURQUOISE);
     slope_scale_set_name(scale2, "Data Series 256");
     slope_figure_add_scale(figure, scale2);
+
+    series = slope_xyseries_new();
+    slope_xyseries_set_data(SLOPE_XYSERIES(series), x, y, 7);
+    slope_scale_add_item(scale1, series);
 
     slope_figure_write_to_png(figure, "figure.png", 500, 450);
     gtk_widget_show_all(chart);

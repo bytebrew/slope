@@ -125,4 +125,15 @@ void slope_item_get_data_rect (SlopeItem *self, SlopeRect *rect)
     SLOPE_ITEM_GET_CLASS(self)->get_data_rect(self, rect);
 }
 
+
+SlopeFigure* slope_item_get_figure (SlopeItem *self)
+{
+    return SLOPE_ITEM_GET_PRIVATE(self)->figure;
+}
+
+SlopeScale* slope_item_get_scale (SlopeItem *self)
+{
+    return SLOPE_ITEM_GET_PRIVATE(self)->scale;
+}
+
 /* slope/item.c */

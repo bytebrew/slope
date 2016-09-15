@@ -31,6 +31,7 @@
 #include <slope/item.h>
 
 #include <slope/xyscale.h>
+#include <slope/xyseries.h>
 
 #include <slope/chart.h>
 
