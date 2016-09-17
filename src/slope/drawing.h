@@ -49,10 +49,11 @@ typedef guint32                         SlopeColor;
 #define SLOPE_MIDNIGHTBLUE              0x191970FF
 #define SLOPE_MAROON                    0x800000FF
 #define SLOPE_PALETURQUOISE             0xAFEEEEFF
-#define SLOPE_GREY0                     0xE0E0E0FF
-#define SLOPE_GREY1                     0xCCCCCCFF
+#define SLOPE_GREY4                     0xE0E0E0FF
+#define SLOPE_GREY3                     0xCCCCCCFF
 #define SLOPE_GREY2                     0x808080FF
-#define SLOPE_GREY3                     0x404040FF
+#define SLOPE_GREY1                     0x404040FF
+#define SLOPE_GREY0                     0x2E2E2EFF
 
 #define SLOPE_GET_RED(color)            (((color)>>24)&0xFF)
 #define SLOPE_GET_GREEN(color)          (((color)>>16)&0xFF)
@@ -68,6 +69,7 @@ typedef guint32                         SlopeColor;
 #define SLOPE_SET_ALPHA(color, alpha)   color = (((color) & 0xFFFFFF00) | ((alpha) & 0xFF))
 #define SLOPE_COLOR(r,g,b,a)            ((((r)&0xFF)<<24)|(((g)&0xFF)<<16)|(((b)&0xFF)<<8)|((a)&0xFF))
 #define SLOPE_COLOR_IS_NULL(color)      (SLOPE_GET_ALPHA(color) == 0)
+#define SLOPE_COORD_TO_PIXEL(coord)     (((int) coord) + 0.5)
 
 
 
@@ -78,6 +80,7 @@ _SlopePoint
     double y;
 }
 SlopePoint;
+
 
 typedef struct
 _SlopeRect

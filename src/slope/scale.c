@@ -106,8 +106,6 @@ void _scale_finalize (GObject *self)
         g_list_free_full(priv->item_list, _scale_clear_item_list);
         priv->item_list = NULL;
     }
-
-    G_OBJECT_CLASS(parent_class)->finalize(self);
 }
 
 

@@ -48,8 +48,8 @@ void slope_cairo_set_color (cairo_t *cr, SlopeColor color)
 
 void slope_cairo_line (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2)
 {
-    cairo_move_to(cr, p1->x, p1->y);
-    cairo_line_to(cr, p2->x, p2->y);
+    cairo_move_to(cr, SLOPE_COORD_TO_PIXEL(p1->x), SLOPE_COORD_TO_PIXEL(p1->y));
+    cairo_line_to(cr, SLOPE_COORD_TO_PIXEL(p2->x), SLOPE_COORD_TO_PIXEL(p2->y));
 }
 
 

@@ -366,7 +366,8 @@ slope_xyseries_set_style (SlopeXySeries *self, const char *style)
 
     /* parse the stroke and fill colors */
     if (style != NULL && style[k]!='\0') {
-        fill_color = stroke_color = slope_color_parse(style[k++]);
+        stroke_color = slope_color_parse(style[k++]);
+        fill_color = stroke_color;
     }
 
     /* parse the mode (symbol) */

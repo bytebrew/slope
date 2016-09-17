@@ -22,6 +22,7 @@
 #define SLOPE_XYSCALE_H
 
 #include <slope/scale.h>
+#include <slope/xyaxis.h>
 
 #define SLOPE_XYSCALE_TYPE              (slope_xyscale_get_type())
 #define SLOPE_XYSCALE(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_XYSCALE_TYPE, SlopeXyScale))

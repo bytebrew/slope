@@ -20,12 +20,16 @@
 
 #include <slope/xyscale_p.h>
 #include <slope/figure.h>
-#include <slope/item.h>
+#include <slope/item_p.h>
+
+#define MAX_AXIS 4
 
 
 typedef struct
 _SlopeXyScalePrivate
 {
+    SlopeXyAxis *axis[MAX_AXIS];
+
     double left_margin, right_margin;
     double top_margin, bottom_margin;
 
@@ -58,6 +62,7 @@ static void _xyscale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint 
 static void _xyscale_rescale (SlopeScale *self);
 static void _xyscale_get_figure_rect (SlopeScale *self, SlopeRect *rect);
 static void _xyscale_get_data_rect (SlopeScale *self, SlopeRect *rect);
+static void _xyscale_position_axis (SlopeScale *self);
 
 
 
@@ -82,6 +87,16 @@ static void
 slope_xyscale_init (SlopeXyScale *self)
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    int k;
+
+    priv->axis[0] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL);
+    priv->axis[1] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL);
+    priv->axis[2] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL);
+    priv->axis[3] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL);
+
+    for (k=0; k<MAX_AXIS; ++k) {
+        _item_set_scale(priv->axis[k], SLOPE_SCALE(self));
+    }
 
     priv->left_margin = 20.0;
     priv->right_margin = 20.0;
@@ -99,8 +114,15 @@ slope_xyscale_init (SlopeXyScale *self)
 static
 void _xyscale_finalize (GObject *self)
 {
-    SLOPE_UNUSED(self);
-    // TODO
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    int k;
+
+    if (priv->axis[0] != NULL) {
+        for (k=0; k<MAX_AXIS; ++k) {
+            g_object_unref(priv->axis[k]);
+        }
+        priv->axis[0] = NULL;
+    }
 }
 
 
@@ -116,6 +138,7 @@ static
 void _xyscale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    int k;
 
     priv->fig_x_min = rect->x + priv->left_margin;
     priv->fig_x_max = rect->x + rect->width - priv->right_margin;
@@ -137,6 +160,14 @@ void _xyscale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
                 ->draw(self, rect, cr);
 
     cairo_restore(cr);
+
+    /* draw axis */
+    _xyscale_position_axis(self);
+    for (k=0; k<MAX_AXIS; ++k) {
+        if (slope_item_get_is_visible(priv->axis[k]) == TRUE) {
+            _item_draw(priv->axis[k], cr);
+        }
+    }
 }
 
 
@@ -232,13 +263,8 @@ void _xyscale_rescale (SlopeScale *self)
 static
 void _xyscale_get_figure_rect (SlopeScale *self, SlopeRect *rect)
 {
-    SlopeXyScalePrivate *priv;
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
 
-    if (self == NULL) {
-        return;
-    }
-
-    priv = SLOPE_XYSCALE_GET_PRIVATE(self);
     rect->x = priv->fig_x_min;
     rect->y = priv->fig_y_min;
     rect->width = priv->fig_width;
@@ -249,17 +275,24 @@ void _xyscale_get_figure_rect (SlopeScale *self, SlopeRect *rect)
 static
 void _xyscale_get_data_rect (SlopeScale *self, SlopeRect *rect)
 {
-    SlopeXyScalePrivate *priv;
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
 
-    if (self == NULL) {
-        return;
-    }
-
-    priv = SLOPE_XYSCALE_GET_PRIVATE(self);
     rect->x = priv->dat_x_min;
     rect->y = priv->dat_y_min;
     rect->width = priv->dat_width;
     rect->height = priv->dat_height;
+}
+
+
+static
+void _xyscale_position_axis (SlopeScale *self)
+{
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+
+    slope_xyaxis_set_position(priv->axis[0], priv->dat_x_min, priv->dat_x_max, priv->dat_y_min);
+    slope_xyaxis_set_position(priv->axis[1], priv->dat_x_min, priv->dat_x_max, priv->dat_y_max);
+    slope_xyaxis_set_position(priv->axis[2], priv->dat_y_min, priv->dat_y_max, priv->dat_x_min);
+    slope_xyaxis_set_position(priv->axis[3], priv->dat_y_min, priv->dat_y_max, priv->dat_x_max);
 }
 
 /* slope/xyscale.c */

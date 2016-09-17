@@ -69,9 +69,9 @@ slope_view_init (SlopeView *self)
     gtk_widget_set_size_request(gtk_widget, 250, 250);
     gtk_widget_add_events(gtk_widget,
                 GDK_EXPOSURE_MASK
-                |GDK_BUTTON_MOTION_MASK
                 |GDK_BUTTON_PRESS_MASK
-                |GDK_BUTTON_RELEASE_MASK);
+                |GDK_BUTTON_RELEASE_MASK
+                |GDK_POINTER_MOTION_MASK);
 
     g_signal_connect(G_OBJECT(self), "draw",
                      G_CALLBACK(_view_on_draw), NULL);

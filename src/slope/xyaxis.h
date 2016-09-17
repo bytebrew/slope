@@ -33,12 +33,12 @@
 SLOPE_BEGIN_DECLS
 
 typedef enum
-_SlopeXyAxisMode
+_SlopeXyAxisOrientation
 {
     SLOPE_XYAXIS_VERTICAL           = 0x00000001,
     SLOPE_XYAXIS_HORIZONTAL         = 0x00000002
 }
-SlopeXyAxisMode;
+SlopeXyAxisOrientation;
 
 
 typedef struct
@@ -52,14 +52,16 @@ SlopeXyAxis;
 typedef struct
 _SlopeXyAxisClass
 {
-    SlopeItem parent_klass;
+    SlopeItemClass parent_klass;
 }
 SlopeXyAxisClass;
 
 
 GType slope_xyaxis_get_type (void) G_GNUC_CONST;
 
-SlopeXyAxis* slope_xyaxis_new (int mode);
+SlopeItem* slope_xyaxis_new (int orientation);
+
+void slope_xyaxis_set_position (SlopeXyAxis *self, double min, double max, double anchor);
 
 SLOPE_END_DECLS
 
