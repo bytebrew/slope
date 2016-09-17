@@ -150,7 +150,7 @@ void _xyseries_draw (SlopeItem *self, cairo_t *cr)
         _xyseries_draw_circles(SLOPE_XYSERIES(self), cr);
     }
     else if (priv->mode == (SLOPE_SERIES_LINE|SLOPE_SERIES_CIRCLES)) {
-        /* write a dedicate function to improve performance */
+        /* TODO: write a dedicate function to improve performance */
         _xyseries_draw_line(SLOPE_XYSERIES(self), cr);
         _xyseries_draw_circles(SLOPE_XYSERIES(self), cr);
     }
@@ -158,7 +158,7 @@ void _xyseries_draw (SlopeItem *self, cairo_t *cr)
         _xyseries_draw_areaunder(SLOPE_XYSERIES(self), cr);
     }
     else if (priv->mode == (SLOPE_SERIES_AREAUNDER|SLOPE_SERIES_CIRCLES)) {
-        /* write a dedicate function to improve performance */
+        /* TODO: write a dedicate function to improve performance */
         _xyseries_draw_areaunder(SLOPE_XYSERIES(self), cr);
         _xyseries_draw_circles(SLOPE_XYSERIES(self), cr);
     }
@@ -333,6 +333,29 @@ void _xyseries_check_ranges (SlopeXySeries *self)
 }
 
 
+int _xyseries_parse_mode (const char *c)
+{
+    int mode = 0;
+
+    switch (c[0]) {
+        case 'o': { mode=SLOPE_SERIES_CIRCLES; } break;
+        case 'a': { mode=SLOPE_SERIES_AREAUNDER; } break;
+        case '-': {
+            mode=SLOPE_SERIES_LINE;
+            if (c[1]!='\0') {
+                switch (c[1]) {
+                    case 'o': { mode|=SLOPE_SERIES_CIRCLES; } break;
+                    case 'a': { mode|=SLOPE_SERIES_AREAUNDER; } break;
+                }
+            }
+            break;
+        }
+    }
+
+    return mode;
+}
+
+
 void
 slope_xyseries_set_style (SlopeXySeries *self, const char *style)
 {
@@ -343,64 +366,41 @@ slope_xyseries_set_style (SlopeXySeries *self, const char *style)
 
     /* parse the stroke and fill colors */
     if (style != NULL && style[k]!='\0') {
-        switch (style[k]) {
-            case '0': { stroke_color=SLOPE_COLOR_NULL; } break;
-            case 'k': { fill_color=SLOPE_BLACK; stroke_color=SLOPE_BLACK; } break;
-            case 'w': { fill_color=SLOPE_WHITE; stroke_color=SLOPE_WHITE; } break;
-            case 'r': { fill_color=SLOPE_RED; stroke_color=SLOPE_RED; } break;
-            case 'g': { fill_color=SLOPE_GREEN; stroke_color=SLOPE_GREEN; } break;
-            case 'b': { fill_color=SLOPE_BLUE; stroke_color=SLOPE_BLUE; } break;
-            case 'm': { fill_color=SLOPE_MAROON; stroke_color=SLOPE_MAROON; } break;
-            case 'l': { fill_color=SLOPE_LIGHTSKYBLUE; stroke_color=SLOPE_LIGHTSKYBLUE; } break;
-        }
-        k += 1;
+        fill_color = stroke_color = slope_color_parse(style[k++]);
     }
 
     /* parse the mode (symbol) */
     if (style != NULL && style[k]!='\0') {
-        switch (style[k]) {
-            case 'o': { mode=SLOPE_SERIES_CIRCLES; } break;
-            case 'a': { mode=SLOPE_SERIES_AREAUNDER; } break;
-            case '-': {
-                mode=SLOPE_SERIES_LINE;
-                if (style[k+1]!='\0') {
-                    switch (style[k+1]) {
-                        case 'o': { mode|=SLOPE_SERIES_CIRCLES; ++k; } break;
-                        case 'a': { mode|=SLOPE_SERIES_AREAUNDER; ++k; } break;
-                    }
-                }
-                break;
-            }
-        }
-        k += 1;
+        mode = _xyseries_parse_mode(style + k++);
     }
 
-    /* parse an optional fill color (if you like it diferent from the stroke one */
+    /* parse an optional fill color (if you like it
+     * diferent from the stroke one) */
     if (style != NULL && style[k]!='\0') {
-        switch (style[k]) {
-            case '0': { fill_color=SLOPE_COLOR_NULL; } break;
-            case 'k': { fill_color=SLOPE_BLACK; } break;
-            case 'w': { fill_color=SLOPE_WHITE; } break;
-            case 'r': { fill_color=SLOPE_RED; } break;
-            case 'g': { fill_color=SLOPE_GREEN; } break;
-            case 'b': { fill_color=SLOPE_BLUE; } break;
-            case 'm': { fill_color=SLOPE_MAROON; } break;
-            case 'l': { fill_color=SLOPE_LIGHTSKYBLUE; } break;
-        }
-        k += 1;
+        fill_color = slope_color_parse(style[k++]);
     }
 
     if (mode != SLOPE_SERIES_LINE &&
-        mode != SLOPE_SERIES_AREAUNDER)
-    {
+            mode != SLOPE_SERIES_AREAUNDER) {
         /* if we are not dealing with lines we better use
            a 1.0 width */
         line_width = 1.0;
     }
 
+    if (fill_color == stroke_color) {
+        /* for performance, if the fill and stroke colors
+           are the same it is better to only fill the forms,
+           or in the case of the line, only stroke it. */
+        if (mode == SLOPE_SERIES_LINE) {
+            fill_color = SLOPE_COLOR_NULL;
+        } else {
+            stroke_color = SLOPE_COLOR_NULL;
+        }
+    }
+
     if (mode & SLOPE_SERIES_AREAUNDER) {
-        /* for "area under" it is cool to add transparency */
-        SLOPE_SET_ALPHA(fill_color, 120);
+        /* for "area under" plots it is cool to add transparency */
+        SLOPE_SET_ALPHA(fill_color, 128);
     }
 
     priv->fill_color = fill_color;

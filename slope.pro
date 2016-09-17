@@ -22,7 +22,8 @@ HEADERS += \
     src/slope/xyscale.h \
     src/slope/xyscale_p.h \
     src/slope/chart.h \
-    src/slope/xyseries.h
+    src/slope/xyseries.h \
+    src/slope/xyaxis.h
 
 
 SOURCES += \
@@ -34,4 +35,5 @@ SOURCES += \
     src/slope/item.c \
     src/slope/xyscale.c \
     src/slope/chart.c \
-    src/slope/xyseries.c
+    src/slope/xyseries.c \
+    src/slope/xyaxis.c

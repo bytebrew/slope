@@ -53,8 +53,8 @@ int main(int argc, char *argv[])
         y2[k] = 0.05 * k*k;
     }
 
-    series1 = slope_xyseries_new_filled("Sinu-linear", x, y1, n, "0ag");
-    series2 = slope_xyseries_new_filled("Quadratic", x, y2, n, "kor");
+    series1 = slope_xyseries_new_filled("Sinu-linear", x, y1, n, "ga");
+    series2 = slope_xyseries_new_filled("Quadratic", x, y2, n, "ro");
     slope_scale_add_item(scale, series1);
     slope_scale_add_item(scale, series2);
 

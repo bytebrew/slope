@@ -85,4 +85,22 @@ void slope_cairo_circle (cairo_t *cr, const SlopePoint *center, double radius)
     cairo_arc(cr, center->x, center->y, radius, 0.0, 6.28318530717959);
 }
 
+
+SlopeColor slope_color_parse (char c)
+{
+    switch (c) {
+        case '0': return SLOPE_COLOR_NULL;
+        case 'w': return SLOPE_WHITE;
+        case 'r': return SLOPE_RED;
+        case 'g': return SLOPE_GREEN;
+        case 'b': return SLOPE_BLUE;
+        case 'm': return SLOPE_MAROON;
+        case 'y': return SLOPE_YELLOW;
+        case 'l': return SLOPE_LIGHTSKYBLUE;
+        default: return SLOPE_BLACK;
+    }
+
+    return SLOPE_BLACK;
+}
+
 /* slope/drawing.c */

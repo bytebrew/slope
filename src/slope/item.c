@@ -86,17 +86,43 @@ void _item_set_scale (SlopeItem *self, SlopeScale *scale)
 
     /* TODO if it has children */
     priv->scale = scale;
-    priv->figure = slope_scale_get_figure(scale);
+    priv->figure = scale != NULL ? slope_scale_get_figure(scale) : NULL;
 }
 
+
+void slope_item_set_name (SlopeItem *self, const char *name)
+{
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+
+    if (priv->name != NULL) {
+        g_free(priv->name);
+    }
+
+    if (name != NULL) {
+        priv->name = g_strdup(name);
+    } else {
+        priv->name = NULL;
+    }
+}
+
+
+void slope_item_detach (SlopeItem *self)
+{
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+
+    if (priv->scale != NULL) {
+
+        /* TODO where scale have a remove method
+           as it to remove this */
+        priv->scale = NULL;
+        priv->figure = NULL;
+    }
+}
 
 
 gboolean slope_item_get_is_managed (SlopeItem *self)
 {
-    if (self != NULL) {
-        return SLOPE_ITEM_GET_PRIVATE(self)->managed;
-    }
-    return FALSE;
+    return SLOPE_ITEM_GET_PRIVATE(self)->managed;
 }
 
 
@@ -108,10 +134,7 @@ void slope_item_set_is_managed (SlopeItem *self, gboolean managed)
 
 gboolean slope_item_get_is_visible (SlopeItem *self)
 {
-    if (self != NULL) {
-        return SLOPE_ITEM_GET_PRIVATE(self)->visible;
-    }
-    return FALSE;
+    return SLOPE_ITEM_GET_PRIVATE(self)->visible;
 }
 
 
@@ -153,36 +176,6 @@ SlopeScale* slope_item_get_scale (SlopeItem *self)
 char* slope_item_get_name (SlopeItem *self)
 {
     return SLOPE_ITEM_GET_PRIVATE(self)->name;
-}
-
-
-void slope_item_set_name (SlopeItem *self, const char *name)
-{
-    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
-
-    if (priv->name != NULL) {
-        g_free(priv->name);
-    }
-
-    if (name != NULL) {
-        priv->name = g_strdup(name);
-    } else {
-        priv->name = NULL;
-    }
-}
-
-
-void slope_item_detach (SlopeItem *self)
-{
-    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
-
-    if (priv->scale != NULL) {
-
-        /* TODO where scale have a remove method
-           as it to remove this */
-        priv->scale = NULL;
-        priv->figure = NULL;
-    }
 }
 
 /* slope/item.c */

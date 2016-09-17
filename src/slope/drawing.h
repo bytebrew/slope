@@ -107,6 +107,8 @@ void slope_cairo_text (cairo_t *cr, double x, double y, const char *utf8);
 
 void slope_cairo_circle (cairo_t *cr, const SlopePoint *center, double radius);
 
+SlopeColor slope_color_parse (char c);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_DRAWING_H */

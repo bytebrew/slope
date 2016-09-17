@@ -53,6 +53,7 @@ static void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *
 static void _scale_finalize (GObject *self);
 static void _scale_add_item (SlopeScale *self, SlopeItem *item);
 static void _scale_clear_item_list (gpointer data);
+static void _scale_remove_item (SlopeScale *self, SlopeItem *item);
 
 
 
@@ -64,6 +65,7 @@ slope_scale_class_init (SlopeScaleClass *klass)
     object_klass->finalize = _scale_finalize;
 
     klass->add_item = _scale_add_item;
+    klass->remove_item = _scale_remove_item;
     klass->draw = _scale_draw_impl;
 }
 
@@ -122,6 +124,55 @@ void _scale_add_item (SlopeScale *self, SlopeItem *item)
     slope_item_detach(item);
     _item_set_scale(item, self);
     slope_scale_rescale(self);
+}
+
+
+SlopeItem* slope_scale_get_item_by_name (SlopeScale *self, const char *itemname)
+{
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+    GList *iter;
+
+    iter = priv->item_list;
+    while (iter != NULL) {
+        SlopeItem *curr_item = SLOPE_ITEM(iter->data);
+        const char *curr_name = slope_item_get_name(curr_item);
+
+        if (g_strcmp0 (curr_name, itemname) == 0) {
+            return curr_item;
+        }
+
+        iter = iter->next;
+    }
+
+    /* not found */
+    return NULL;
+}
+
+
+static
+void _scale_remove_item (SlopeScale *self, SlopeItem *item)
+{
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+    GList *iter;
+
+    iter = priv->item_list;
+    while (iter != NULL) {
+        SlopeItem *curr_item = SLOPE_ITEM(iter->data);
+
+        if (curr_item == item) {
+            priv->item_list = g_list_delete_link(priv->item_list, iter);
+            _item_set_scale(curr_item, NULL);
+            slope_scale_rescale(self);
+        }
+
+        iter = iter->next;
+    }
+}
+
+
+void slope_scale_remove_item_by_name (SlopeScale *self, const char *itemname)
+{
+    slope_scale_remove_item(self, slope_scale_get_item_by_name(self, itemname));
 }
 
 
@@ -298,6 +349,12 @@ void slope_scale_get_figure_rect (SlopeScale *self, SlopeRect *rect)
 void slope_scale_get_data_rect (SlopeScale *self, SlopeRect *rect)
 {
     SLOPE_SCALE_GET_CLASS(self)->get_data_rect(self, rect);
+}
+
+
+void slope_scale_remove_item (SlopeScale *self, SlopeItem *item)
+{
+    SLOPE_SCALE_GET_CLASS(self)->remove_item(self, item);
 }
 
 

@@ -32,6 +32,7 @@ _SlopeFigurePrivate
 
     double layout_rows;
     double layout_cols;
+    int frame_mode;
 }
 SlopeFigurePrivate;
 
@@ -46,6 +47,8 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 
 static void _figure_update_layout (SlopeFigure *self);
 static void _figure_add_scale (SlopeFigure *self, SlopeScale *scale);
+static void _figure_draw_frame (SlopeFigure *self, SlopeRect *rect,
+                                const SlopeRect *in_rect, cairo_t *cr);
 static void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
 static void _figure_clear_scale_list (gpointer data);
 static void _figure_finalize (GObject *self);
@@ -73,6 +76,7 @@ slope_figure_init (SlopeFigure *self)
     priv->scale_list = NULL;
     priv->background_color = SLOPE_WHITE;
     priv->managed = TRUE;
+    priv->frame_mode = SLOPE_FIGURE_ROUNDRECTANGLE;
 }
 
 
@@ -115,6 +119,25 @@ void _figure_add_scale (SlopeFigure *self, SlopeScale *scale)
 }
 
 
+static void _figure_draw_frame (SlopeFigure *self, SlopeRect *rect,
+                                const SlopeRect *in_rect, cairo_t *cr)
+{
+    SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
+
+    if (priv->frame_mode == SLOPE_FIGURE_ROUNDRECTANGLE) {
+        rect->x = in_rect->x + 10.0;
+        rect->y = in_rect->y + 10.0;
+        rect->width = in_rect->width - 20.0;
+        rect->height = in_rect->height - 20.0;
+        slope_cairo_round_rect(cr, rect, 10.0);
+    }
+    else {
+        *rect = *in_rect;
+        slope_cairo_rect(cr, rect);
+    }
+}
+
+
 static
 void _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr)
 {
@@ -131,19 +154,14 @@ void _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr)
           CAIRO_FONT_WEIGHT_NORMAL);
     cairo_set_font_size(cr, 11);
 
-    rect.x = in_rect->x + 10.0;
-    rect.y = in_rect->y + 10.0;
-    rect.width = in_rect->width - 20.0;
-    rect.height = in_rect->height - 20.0;
-
     cairo_new_path(cr);
-    slope_cairo_round_rect(cr, &rect, 12.0);
-
+    _figure_draw_frame(self, &rect, in_rect, cr);
     if (!SLOPE_COLOR_IS_NULL(priv->background_color)) {
         slope_cairo_set_color(cr, priv->background_color);
         cairo_fill_preserve(cr);
     }
     cairo_clip(cr);
+
 
     layout_cell_width = rect.width / priv->layout_cols;
     layout_cell_height = rect.height / priv->layout_rows;
@@ -223,54 +241,6 @@ void slope_figure_write_to_png (SlopeFigure *self, const char *filename,
 }
 
 
-GList* slope_figure_get_scale_list (SlopeFigure *self)
-{
-    if (self != NULL) {
-        return SLOPE_FIGURE_GET_PRIVATE(self)->scale_list;
-    }
-    return NULL;
-}
-
-
-SlopeColor slope_figure_get_background_color (SlopeFigure *self)
-{
-    if (self != NULL) {
-        return SLOPE_FIGURE_GET_PRIVATE(self)->background_color;
-    }
-    return SLOPE_COLOR_NULL;
-}
-
-
-void slope_figure_set_background_color (SlopeFigure *self, SlopeColor color)
-{
-    SLOPE_FIGURE_GET_PRIVATE(self)->background_color = color;
-}
-
-
-SlopeView* slope_figure_get_view (SlopeFigure *self)
-{
-    if (self != NULL) {
-        return SLOPE_FIGURE_GET_PRIVATE(self)->view;
-    }
-    return NULL;
-}
-
-
-gboolean slope_figure_get_is_managed (SlopeFigure *self)
-{
-    if (self != NULL) {
-        return SLOPE_FIGURE_GET_PRIVATE(self)->managed;
-    }
-    return FALSE;
-}
-
-
-void slope_figure_set_is_managed (SlopeFigure *self, gboolean managed)
-{
-    SLOPE_FIGURE_GET_PRIVATE(self)->managed = managed;
-}
-
-
 static
 void _figure_update_layout (SlopeFigure *self)
 {
@@ -295,6 +265,42 @@ void _figure_update_layout (SlopeFigure *self)
 
         iter = iter->next;
     }
+}
+
+
+GList* slope_figure_get_scale_list (SlopeFigure *self)
+{
+    return SLOPE_FIGURE_GET_PRIVATE(self)->scale_list;
+}
+
+
+SlopeColor slope_figure_get_background_color (SlopeFigure *self)
+{
+    return SLOPE_FIGURE_GET_PRIVATE(self)->background_color;
+}
+
+
+void slope_figure_set_background_color (SlopeFigure *self, SlopeColor color)
+{
+    SLOPE_FIGURE_GET_PRIVATE(self)->background_color = color;
+}
+
+
+SlopeView* slope_figure_get_view (SlopeFigure *self)
+{
+    return SLOPE_FIGURE_GET_PRIVATE(self)->view;
+}
+
+
+gboolean slope_figure_get_is_managed (SlopeFigure *self)
+{
+    return SLOPE_FIGURE_GET_PRIVATE(self)->managed;
+}
+
+
+void slope_figure_set_is_managed (SlopeFigure *self, gboolean managed)
+{
+    SLOPE_FIGURE_GET_PRIVATE(self)->managed = managed;
 }
 
 

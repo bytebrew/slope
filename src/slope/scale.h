@@ -51,6 +51,7 @@ _SlopeScaleClass
   GObjectClass parent_class;
 
   void (*add_item) (SlopeScale *self, SlopeItem *item);
+  void (*remove_item) (SlopeScale *self, SlopeItem *item);
   void (*draw) (SlopeScale *self, const SlopeRect *rect, cairo_t *cr);
   void (*map) (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
   void (*unmap) (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
@@ -71,13 +72,19 @@ GType slope_scale_get_type (void) G_GNUC_CONST;
 
 void slope_scale_add_item (SlopeScale *self, SlopeItem *item);
 
+void slope_scale_remove_item (SlopeScale *self, SlopeItem *item);
+
+void slope_scale_remove_item_by_name (SlopeScale *self, const char *itemname);
+
+GList *slope_scale_get_item_list (SlopeScale *self);
+
+SlopeItem* slope_scale_get_item_by_name (SlopeScale *self, const char *itemname);
+
 void slope_scale_map (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 
 void slope_scale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 
 void slope_scale_rescale (SlopeScale *self);
-
-GList *slope_scale_get_item_list(SlopeScale *self);
 
 void slope_scale_get_figure_rect (SlopeScale *self, SlopeRect *rect);
 

@@ -33,6 +33,15 @@
 
 SLOPE_BEGIN_DECLS
 
+typedef enum
+_SlopeFigureFrameMode
+{
+    SLOPE_FIGURE_RECTANGLE,
+    SLOPE_FIGURE_ROUNDRECTANGLE,
+}
+SlopeFigureFrameMode;
+
+
 struct _SlopeFigure
 {
   GObject parent;
