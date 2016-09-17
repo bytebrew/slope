@@ -217,14 +217,17 @@ void _figure_set_view (SlopeFigure *self, SlopeView *view)
 void slope_figure_write_to_png (SlopeFigure *self, const char *filename,
                                int width, int height)
 {
+    SlopeFigurePrivate *priv;
     cairo_surface_t *image;
     cairo_t *cr;
     SlopeRect rect;
+    int mode_back;
 
-    if (self == NULL || filename == NULL || width <= 0 || height <= 0) {
+    if (filename == NULL || width <= 0 || height <= 0) {
         return;
     }
 
+    priv = SLOPE_FIGURE_GET_PRIVATE(self);
     image = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
     cr = cairo_create(image);
 
@@ -233,8 +236,11 @@ void slope_figure_write_to_png (SlopeFigure *self, const char *filename,
     rect.width = width;
     rect.height = height;
 
+    mode_back = priv->frame_mode;
+    priv->frame_mode = SLOPE_FIGURE_RECTANGLE;
     slope_figure_draw(self, &rect, cr);
     cairo_surface_write_to_png(image, filename);
+    priv->frame_mode = mode_back;
 
     cairo_surface_destroy(image);
     cairo_destroy(cr);

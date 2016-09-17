@@ -33,6 +33,17 @@
 
 SLOPE_BEGIN_DECLS
 
+typedef enum
+_SlopeXyScaleAxis
+{
+    SLOPE_XYSCALE_AXIS_BOTTOM  = 0,
+    SLOPE_XYSCALE_AXIS_TOP     = 1,
+    SLOPE_XYSCALE_AXIS_LEFT    = 2,
+    SLOPE_XYSCALE_AXIS_RIGHT   = 3
+}
+SlopeXyScaleAxis;
+
+
 typedef struct
 _SlopeXyScale
 {
@@ -58,9 +69,11 @@ SlopeXyScaleClass;
 
 
 
-GType slope_scale_get_type (void) G_GNUC_CONST;
+GType slope_xyscale_get_type (void) G_GNUC_CONST;
 
 SlopeScale* slope_xyscale_new ();
+
+SlopeItem* slope_xyscale_get_axis (SlopeXyScale *self, int axis_id);
 
 SLOPE_END_DECLS
 

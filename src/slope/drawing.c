@@ -19,6 +19,16 @@
  */
 
 #include <slope/drawing.h>
+#include <math.h>
+
+
+#define __SIMILAR_DOUBLE(x1,x2) ((fabs((x2) - (x1)) < 1e-4) ? TRUE : FALSE)
+
+
+gboolean slope_similar (double x1, double x2)
+{
+    return __SIMILAR_DOUBLE(x1, x2);
+}
 
 
 int slope_rect_contains (const SlopeRect *rect, double x, double y)
@@ -48,8 +58,33 @@ void slope_cairo_set_color (cairo_t *cr, SlopeColor color)
 
 void slope_cairo_line (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2)
 {
-    cairo_move_to(cr, SLOPE_COORD_TO_PIXEL(p1->x), SLOPE_COORD_TO_PIXEL(p1->y));
-    cairo_line_to(cr, SLOPE_COORD_TO_PIXEL(p2->x), SLOPE_COORD_TO_PIXEL(p2->y));
+    cairo_move_to(cr, p1->x, p1->y);
+    cairo_line_to(cr, p2->x, p2->y);
+}
+
+
+void slope_cairo_line_cosmetic (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2, double width)
+{
+    double round_width = round(width);
+
+    cairo_set_line_width(cr, round_width);
+
+    if (__SIMILAR_DOUBLE(round_width, 1.0) ||
+            __SIMILAR_DOUBLE(round_width, 3.0) ||
+            __SIMILAR_DOUBLE(round_width, 5.0)) {
+        cairo_move_to(cr, SLOPE_COORD_TO_PIXEL(p1->x), SLOPE_COORD_TO_PIXEL(p1->y));
+        cairo_line_to(cr, SLOPE_COORD_TO_PIXEL(p2->x), SLOPE_COORD_TO_PIXEL(p2->y));
+    }
+    else if (__SIMILAR_DOUBLE(round_width, 2.0) ||
+             __SIMILAR_DOUBLE(round_width, 4.0) ||
+             __SIMILAR_DOUBLE(round_width, 6.0)) {
+        cairo_move_to(cr, round(p1->x), round(p1->y));
+        cairo_line_to(cr, round(p2->x), round(p2->y));
+    }
+    else {
+        cairo_move_to(cr, p1->x, p1->y);
+        cairo_line_to(cr, p2->x, p2->y);
+    }
 }
 
 

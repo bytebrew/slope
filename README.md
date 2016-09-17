@@ -16,4 +16,8 @@ backends. There is an alternative build option that compiles a Gtk+ widget to
 help you show slope's charts in your Gtk+ app. This build of course makes slope
 gtk dependent. The cairo only build will always be present.
 
-Slope is in it's early stages of development.
+Slope, in it's GObject based reincarnation in it's early stages of development.
+However it can already produce good charts like the one below. Give it a try.
+
+![](https://github.com/elvismt/slope/blob/gobject/demos/screenshot.png)
+

@@ -28,7 +28,7 @@
 typedef struct
 _SlopeXyScalePrivate
 {
-    SlopeXyAxis *axis[MAX_AXIS];
+    SlopeItem *axis[MAX_AXIS];
 
     double left_margin, right_margin;
     double top_margin, bottom_margin;
@@ -89,11 +89,13 @@ slope_xyscale_init (SlopeXyScale *self)
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
     int k;
 
-    priv->axis[0] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL);
-    priv->axis[1] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL);
-    priv->axis[2] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL);
-    priv->axis[3] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL);
+    priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL);
+    priv->axis[SLOPE_XYSCALE_AXIS_TOP] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL);
+    priv->axis[SLOPE_XYSCALE_AXIS_LEFT] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL);
+    priv->axis[SLOPE_XYSCALE_AXIS_RIGHT] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL);
 
+    slope_item_set_is_visible(priv->axis[1], FALSE);
+    slope_item_set_is_visible(priv->axis[3], FALSE);
     for (k=0; k<MAX_AXIS; ++k) {
         _item_set_scale(priv->axis[k], SLOPE_SCALE(self));
     }
@@ -289,10 +291,20 @@ void _xyscale_position_axis (SlopeScale *self)
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
 
-    slope_xyaxis_set_position(priv->axis[0], priv->dat_x_min, priv->dat_x_max, priv->dat_y_min);
-    slope_xyaxis_set_position(priv->axis[1], priv->dat_x_min, priv->dat_x_max, priv->dat_y_max);
-    slope_xyaxis_set_position(priv->axis[2], priv->dat_y_min, priv->dat_y_max, priv->dat_x_min);
-    slope_xyaxis_set_position(priv->axis[3], priv->dat_y_min, priv->dat_y_max, priv->dat_x_max);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
+            priv->dat_x_min, priv->dat_x_max, priv->dat_y_min);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_TOP]),
+            priv->dat_x_min, priv->dat_x_max, priv->dat_y_max);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_LEFT]),
+            priv->dat_y_min, priv->dat_y_max, priv->dat_x_min);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]),
+            priv->dat_y_min, priv->dat_y_max, priv->dat_x_max);
+}
+
+
+SlopeItem* slope_xyscale_get_axis (SlopeXyScale *self, int axis_id)
+{
+    return SLOPE_XYSCALE_GET_PRIVATE(self)->axis[axis_id];
 }
 
 /* slope/xyscale.c */

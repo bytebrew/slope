@@ -94,6 +94,8 @@ SlopeRect;
 
 
 
+gboolean slope_similar (double x1, double x2);
+
 int slope_rect_contains (const SlopeRect *rect, double x, double y);
 
 void slope_rect_translate (SlopeRect *rect, double dx, double dy);
@@ -101,6 +103,8 @@ void slope_rect_translate (SlopeRect *rect, double dx, double dy);
 void slope_cairo_set_color (cairo_t *cr, SlopeColor color);
 
 void slope_cairo_line (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2);
+
+void slope_cairo_line_cosmetic (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2, double width);
 
 void slope_cairo_rect (cairo_t *cr, const SlopeRect *rec);
 

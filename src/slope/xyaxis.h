@@ -22,6 +22,7 @@
 #define SLOPE_XYAXIS_H
 
 #include <slope/item.h>
+#include <slope/xyaxis-sampler.h>
 
 #define SLOPE_XYAXIS_TYPE              (slope_xyaxis_get_type())
 #define SLOPE_XYAXIS(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_XYAXIS_TYPE, SlopeXyAxis))
@@ -62,6 +63,8 @@ GType slope_xyaxis_get_type (void) G_GNUC_CONST;
 SlopeItem* slope_xyaxis_new (int orientation);
 
 void slope_xyaxis_set_position (SlopeXyAxis *self, double min, double max, double anchor);
+
+SlopeXyAxisSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self);
 
 SLOPE_END_DECLS
 
