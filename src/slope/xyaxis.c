@@ -31,9 +31,9 @@ _SlopeXyAxisPrivate
     double max;
     double anchor;
 
-    SlopeColor color;
+    SlopeColor line_color;
     SlopeColor grid_color;
-    SlopeColor selected_color;
+    SlopeColor text_color;
     double line_width;
     double grid_line_width;
 
@@ -79,12 +79,12 @@ slope_xyaxis_init (SlopeXyAxis *self)
 
     priv->orientation = SLOPE_XYAXIS_HORIZONTAL;
     priv->component = SLOPE_XYAXIS_ALL_COMPONENT;
-    priv->color = SLOPE_GREY1;
+    priv->line_color = SLOPE_GREY3;
     priv->grid_color = SLOPE_GREY3;
-    SLOPE_SET_ALPHA(priv->grid_color, 130);
-    priv->selected_color = SLOPE_BLUE;
-    priv->line_width = 1.0;
-    priv->grid_line_width = 1.0;
+    priv->text_color = SLOPE_BLACK;
+    SLOPE_SET_ALPHA(priv->grid_color, 65);
+    priv->line_width = 2.0;
+    priv->grid_line_width = 2.0;
 
     priv->sampler = slope_xyaxis_sampler_new();
 }
@@ -151,7 +151,7 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
 
     if (priv->component & SLOPE_XYAXIS_LINE) {
         cairo_new_path(cr);
-        slope_cairo_set_color(cr, priv->color);
+        slope_cairo_set_color(cr, priv->line_color);
         slope_cairo_line_cosmetic(cr, &p1, &p2, priv->line_width);
         cairo_stroke(cr);
     }
@@ -186,6 +186,7 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
             cairo_restore(cr);
         }
 
+        slope_cairo_set_color(cr, priv->line_color);
         slope_cairo_line_cosmetic(cr, &sample_p1, &sample_p2, priv->line_width);
         cairo_stroke(cr);
 
@@ -193,6 +194,7 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
                 (priv->component & SLOPE_XYAXIS_TICKS_DOWN ||
                  priv->component & SLOPE_XYAXIS_TICKS_UP)) {
             cairo_text_extents(cr, sample->label, &txt_ext);
+            slope_cairo_set_color(cr, priv->text_color);
             slope_cairo_text(cr,
                 sample_p1.x - txt_ext.width * 0.5,
                 sample_p1.y + ((priv->component & SLOPE_XYAXIS_TICKS_DOWN)
@@ -228,7 +230,7 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
 
     if (priv->component & SLOPE_XYAXIS_LINE) {
         cairo_new_path(cr);
-        slope_cairo_set_color(cr, priv->color);
+        slope_cairo_set_color(cr, priv->line_color);
         slope_cairo_line_cosmetic(cr, &p1, &p2, priv->line_width);
         cairo_stroke(cr);
     }
@@ -263,6 +265,7 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
             cairo_restore(cr);
         }
 
+        slope_cairo_set_color(cr, priv->line_color);
         slope_cairo_line_cosmetic(cr, &sample_p1, &sample_p2, priv->line_width);
         cairo_stroke(cr);
 
@@ -270,6 +273,7 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
                 (priv->component & SLOPE_XYAXIS_TICKS_DOWN ||
                  priv->component & SLOPE_XYAXIS_TICKS_UP)) {
             cairo_text_extents(cr, sample->label, &txt_ext);
+            slope_cairo_set_color(cr, priv->text_color);
             slope_cairo_text(cr,
                 sample_p1.x + ((priv->component & SLOPE_XYAXIS_TICKS_DOWN) ?
                                    - txt_ext.width - txt_height * 0.6 : + txt_height * 0.34),

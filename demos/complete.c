@@ -50,10 +50,10 @@ int main(int argc, char *argv[])
     GtkWidget *chart;
     SlopeFigure *figure;
     SlopeScale *scale1, *scale2, *scale3;
-    SlopeItem *series1, *series2, *series3;
+    SlopeItem *series11, *series12, *series2, *series3;
     SlopeItem *axis;
     SlopeXyAxisSampler *sampler;
-    double *x, *y1, *y2, *y3;
+    double *x, *y11, *y12, *y2, *y3;
 
     gtk_init(&argc, &argv);
     chart = slope_chart_new();
@@ -64,15 +64,17 @@ int main(int argc, char *argv[])
     /* create some sinusoidal data points */
     long k, n = 50;
     x = g_malloc(n * sizeof(double));
-    y1 = g_malloc(n * sizeof(double));
+    y11 = g_malloc(n * sizeof(double));
+    y12 = g_malloc(n * sizeof(double));
     y2 = g_malloc(n * sizeof(double));
     y3 = g_malloc(n * sizeof(double));
     double dx = 4.0 * G_PI / n;
 
     for (k=0; k<n; ++k) {
         x[k] = k * dx;
-        y1[k] = sin(x[k]);
-        y2[k] = 1.0 + y1[k] + 0.1 * k;
+        y11[k] = sin(x[k]);
+        y12[k] = cos(x[k]);
+        y2[k] = 1.0 + y11[k] + 0.1 * k;
         y3[k] = g_random_int();
     }
 
@@ -101,13 +103,15 @@ int main(int argc, char *argv[])
     slope_figure_add_scale(figure, scale3);
     slope_xyscale_set_visible_axis(SLOPE_XYSCALE(scale3), SLOPE_XYSCALE_NO_AXIS);
 
-    series1 = slope_xyseries_new_filled("Sine", x, y1, n, "b-");
-    slope_scale_add_item(scale1, series1);
+    series11 = slope_xyseries_new_filled("Sine", x, y11, n, "b-");
+    slope_scale_add_item(scale1, series11);
+    series12 = slope_xyseries_new_filled("cossine", x, y12, n, "ra");
+    slope_scale_add_item(scale1, series12);
 
     series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "la");
     slope_scale_add_item(scale2, series2);
 
-    series3 = slope_xyseries_new_filled("Scatter", x, y3, n, "ro");
+    series3 = slope_xyseries_new_filled("Scatter", x, y3, n, "mo");
     slope_scale_add_item(scale3, series3);
 
     slope_figure_write_to_png(figure, "figure.png", 500, 450);
@@ -115,7 +119,8 @@ int main(int argc, char *argv[])
     gtk_main();
 
     g_free(x);
-    g_free(y1);
+    g_free(y11);
+    g_free(y12);
     g_free(y2);
     g_free(y3);
 
