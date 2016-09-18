@@ -94,17 +94,17 @@ slope_xyscale_init (SlopeXyScale *self)
     priv->axis[SLOPE_XYSCALE_AXIS_LEFT] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL);
     priv->axis[SLOPE_XYSCALE_AXIS_RIGHT] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL);
 
-    slope_item_set_is_visible(priv->axis[1], FALSE);
-    slope_item_set_is_visible(priv->axis[3], FALSE);
+    slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_TOP]), SLOPE_XYAXIS_LINE);
+    slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]), SLOPE_XYAXIS_LINE);
     for (k=0; k<MAX_AXIS; ++k) {
         _item_set_scale(priv->axis[k], SLOPE_SCALE(self));
     }
 
-    priv->left_margin = 20.0;
-    priv->right_margin = 20.0;
-    priv->top_margin = 20.0;
-    priv->bottom_margin = 20.0;
-    slope_scale_set_name_top_padding(SLOPE_SCALE(self), priv->top_margin);
+    priv->left_margin = 45.0;
+    priv->right_margin = 15.0;
+    priv->top_margin = 15.0;
+    priv->bottom_margin = 30.0;
+    slope_scale_set_name_top_padding(SLOPE_SCALE(self), priv->top_margin + 3);
 
     priv->horiz_pad = 0.02;
     priv->vertical_pad = 0.03;
@@ -299,6 +299,31 @@ void _xyscale_position_axis (SlopeScale *self)
             priv->dat_y_min, priv->dat_y_max, priv->dat_x_min);
     slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]),
             priv->dat_y_min, priv->dat_y_max, priv->dat_x_max);
+}
+
+
+void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag)
+{
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+
+    if (axis_flag == SLOPE_XYSCALE_NO_AXIS) {
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM], FALSE);
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_LEFT], FALSE);
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_TOP], FALSE);
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], FALSE);
+    }
+    else if (axis_flag == SLOPE_XYSCALE_FRAME_AXIS) {
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM], TRUE);
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_LEFT], TRUE);
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_TOP], TRUE);
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], TRUE);
+    }
+    else if (axis_flag == SLOPE_XYSCALE_NO_AXIS) {
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM], FALSE);
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_LEFT], FALSE);
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_TOP], FALSE);
+        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], FALSE);
+    }
 }
 
 

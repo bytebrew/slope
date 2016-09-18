@@ -42,6 +42,19 @@ _SlopeXyAxisOrientation
 SlopeXyAxisOrientation;
 
 
+typedef enum
+_SlopeXyAxisComponent
+{
+    SLOPE_XYAXIS_LINE           = 0x00000001,
+    SLOPE_XYAXIS_TICKS_UP       = 0x00000002,
+    SLOPE_XYAXIS_TICKS_DOWN     = 0x00000004,
+    SLOPE_XYAXIS_TITLE          = 0x00000008,
+    SLOPE_XYAXIS_GRID           = 0x00000010,
+    SLOPE_XYAXIS_ALL_COMPONENT  = 0xFFFFFFFF
+}
+SlopeXyAxisComponent;
+
+
 typedef struct
 _SlopeXyAxis
 {
@@ -63,6 +76,8 @@ GType slope_xyaxis_get_type (void) G_GNUC_CONST;
 SlopeItem* slope_xyaxis_new (int orientation);
 
 void slope_xyaxis_set_position (SlopeXyAxis *self, double min, double max, double anchor);
+
+void slope_xyaxis_set_components (SlopeXyAxis *self, guint32 components);
 
 SlopeXyAxisSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self);
 

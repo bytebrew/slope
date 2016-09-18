@@ -44,6 +44,16 @@ _SlopeXyScaleAxis
 SlopeXyScaleAxis;
 
 
+typedef enum
+_SlopeXyScaleAxisFlag
+{
+    SLOPE_XYSCALE_NO_AXIS     = 0,
+    SLOPE_XYSCALE_FRAME_AXIS  = 1,
+    SLOPE_XYSCALE_ZERO_AXIS   = 2
+}
+SlopeXyScaleAxisFlag;
+
+
 typedef struct
 _SlopeXyScale
 {
@@ -74,6 +84,8 @@ GType slope_xyscale_get_type (void) G_GNUC_CONST;
 SlopeScale* slope_xyscale_new ();
 
 SlopeItem* slope_xyscale_get_axis (SlopeXyScale *self, int axis_id);
+
+void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag);
 
 SLOPE_END_DECLS
 

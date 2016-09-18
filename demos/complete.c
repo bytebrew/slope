@@ -35,6 +35,15 @@ x_samples[] = {
     { 4.0*G_PI, "4π"}
 };
 
+static SlopeXyAxisSample
+y_samples[] = {
+    { -1.0, "-1"},
+    { -0.5, "-0.5"},
+    { 0.0, "0"},
+    { 0.5, "0.5"},
+    { 1.0, "1"}
+};
+
 
 int main(int argc, char *argv[])
 {
@@ -76,19 +85,21 @@ int main(int argc, char *argv[])
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale1), SLOPE_XYSCALE_AXIS_BOTTOM);
     sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
     slope_xyaxis_sampler_set_samples(sampler, x_samples, 9);
+    axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale1), SLOPE_XYSCALE_AXIS_LEFT);
+    sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
+    slope_xyaxis_sampler_set_samples(sampler, y_samples, 5);
 
     scale2 = slope_xyscale_new();
     slope_scale_set_name(scale2, "Sine + Linear");
     slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
     slope_figure_add_scale(figure, scale2);
-    axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale2), SLOPE_XYSCALE_AXIS_BOTTOM);
-    sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
-    slope_xyaxis_sampler_set_samples(sampler, x_samples, 9);
+    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(scale2), SLOPE_XYSCALE_NO_AXIS);
 
     scale3 = slope_xyscale_new();
     slope_scale_set_name(scale3, "Random Scatter");
     slope_scale_set_layout_rect(scale3, 0, 2, 1, 1);
     slope_figure_add_scale(figure, scale3);
+    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(scale3), SLOPE_XYSCALE_NO_AXIS);
 
     series1 = slope_xyseries_new_filled("Sine", x, y1, n, "b-");
     slope_scale_add_item(scale1, series1);
@@ -106,6 +117,7 @@ int main(int argc, char *argv[])
     g_free(x);
     g_free(y1);
     g_free(y2);
+    g_free(y3);
 
     return 0;
 }

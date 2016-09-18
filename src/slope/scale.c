@@ -204,8 +204,8 @@ void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
         cairo_text_extents(cr, priv->name, &txt_ext);
         slope_cairo_set_color(cr, priv->name_color);
         slope_cairo_text(cr,
-            rect->x + (rect->width - txt_ext.width)*0.5,
-            rect->y + txt_ext.height*1.64 + priv->name_top_padding,
+            rect->x + (rect->width - txt_ext.width) * 0.5,
+            rect->y + txt_ext.height * 1.2 + priv->name_top_padding,
             priv->name);
         cairo_stroke(cr);
     }
