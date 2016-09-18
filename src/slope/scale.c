@@ -67,6 +67,7 @@ slope_scale_class_init (SlopeScaleClass *klass)
     klass->add_item = _scale_add_item;
     klass->remove_item = _scale_remove_item;
     klass->draw = _scale_draw_impl;
+    klass->mouse_event = _scale_mouse_event_impl;
 }
 
 
@@ -96,7 +97,6 @@ slope_scale_init (SlopeScale *self)
 static
 void _scale_finalize (GObject *self)
 {
-    GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
     SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
 
     /* frees name safely */
@@ -287,6 +287,46 @@ void slope_scale_set_name (SlopeScale *self, const char *name)
     } else {
         priv->name = NULL;
     }
+}
+
+
+gboolean _scale_handle_mouse_event(SlopeScale *self, SlopeViewMouseEvent *event)
+{
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+    GList *iter;
+
+    /* call virtual handle and if if signals done, don't call items handlers */
+    if (SLOPE_SCALE_GET_CLASS(self)->mouse_event(self, event) == TRUE) {
+        return TRUE;
+    }
+
+    iter = priv->item_list;
+    while (iter != NULL) {
+        SlopeItem *item = SLOPE_ITEM(iter->data);
+        SlopeRect item_rect;
+        gboolean item_answer;
+
+        slope_item_get_figure_rect(item, &item_rect);
+        if (slope_rect_contains(&item_rect, event->x, event->y) == TRUE) {
+            item_answer = _item_handle_mouse_event(item, event);
+            if (item_answer == TRUE) {
+                return TRUE;
+            }
+        }
+
+        iter = iter->next;
+    }
+
+    return FALSE;
+}
+
+
+gboolean _scale_mouse_event_impl (SlopeScale *self, SlopeViewMouseEvent *event)
+{
+    SLOPE_UNUSED(self);
+    SLOPE_UNUSED(event);
+    /* pass */
+    return FALSE;
 }
 
 

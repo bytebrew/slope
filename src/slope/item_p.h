@@ -22,9 +22,14 @@
 #define SLOPE_ITEM_P_H
 
 #include <slope/item.h>
+#include <slope/view.h>
 
 void _item_draw (SlopeItem *self, cairo_t *cr);
 
 void _item_set_scale (SlopeItem *self, SlopeScale *scale);
+
+gboolean _item_handle_mouse_event (SlopeItem *self, SlopeViewMouseEvent *event);
+
+gboolean _item_mouse_event_impl (SlopeItem *self, SlopeViewMouseEvent *event);
 
 #endif /* SLOPE_ITEM_P_H */

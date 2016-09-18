@@ -31,11 +31,11 @@ gboolean slope_similar (double x1, double x2)
 }
 
 
-int slope_rect_contains (const SlopeRect *rect, double x, double y)
+gboolean slope_rect_contains(const SlopeRect *rect, double x, double y)
 {
-    if (x < rect->x || (rect->x + rect->width) <= x) return 0;
-    if (y <= rect->y || (rect->y + rect->height) < y) return 0;
-    return 1;
+    if (x < rect->x || (rect->x + rect->width) <= x) return FALSE;
+    if (y <= rect->y || (rect->y + rect->height) < y) return FALSE;
+    return TRUE;
 }
 
 

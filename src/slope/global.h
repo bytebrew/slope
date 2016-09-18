@@ -34,6 +34,39 @@ typedef struct _SlopeScale    SlopeScale;
 typedef struct _SlopeItem     SlopeItem;
 typedef struct _SlopeView     SlopeView;
 
+
+
+typedef enum
+_SlopeItemMouseButton
+{
+    SLOPE_VIEW_LEFT_BUTTON,
+    SLOPE_VIEW_RIGHT_BUTTON,
+    SLOPE_VIEW_NO_BUTTON
+}
+SlopeItemMouseButton;
+
+
+typedef enum
+_SlopeViewMouseEventType
+{
+    SLOPE_VIEW_BUTTON_PRESS,
+    SLOPE_VIEW_MOVE,
+    SLOPE_VIEW_MOVE_PRESSED,
+    SLOPE_VIEW_BUTTON_RELEASE
+}
+SlopeViewMouseEventType;
+
+
+typedef struct
+_SlopeViewMouseEvent
+{
+    double x;
+    double y;
+    int buttom;
+    int type;
+}
+SlopeViewMouseEvent;
+
 #define SLOPE_UNUSED(var) (void) var;
 
 #endif /* SLOPE_GLOBAL_H */

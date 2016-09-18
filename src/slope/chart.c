@@ -56,6 +56,7 @@ static
 void _chart_finalize (GObject *self)
 {
     SLOPE_UNUSED(self);
+
     // TODO
 }
 

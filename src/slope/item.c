@@ -54,6 +54,8 @@ slope_item_class_init (SlopeItemClass *klass)
     GObjectClass *object_klass = G_OBJECT_CLASS(klass);
 
     object_klass->finalize = _item_finalize;
+
+    klass->mouse_event = _item_mouse_event_impl;
 }
 
 
@@ -73,8 +75,6 @@ slope_item_init (SlopeItem *self)
 static
 void _item_finalize (GObject *self)
 {
-    /* SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self); */
-
     /* release the name's memory */
     slope_item_set_name(SLOPE_ITEM(self), NULL);
 }
@@ -117,6 +117,22 @@ void slope_item_detach (SlopeItem *self)
         priv->scale = NULL;
         priv->figure = NULL;
     }
+}
+
+
+gboolean _item_handle_mouse_event (SlopeItem *self, SlopeViewMouseEvent *event)
+{
+    return SLOPE_ITEM_GET_CLASS(self)->mouse_event(self, event);
+}
+
+
+gboolean _item_mouse_event_impl (SlopeItem *self, SlopeViewMouseEvent *event)
+{
+    SLOPE_UNUSED(self);
+    SLOPE_UNUSED(event);
+    /* pass */
+
+    return FALSE;
 }
 
 

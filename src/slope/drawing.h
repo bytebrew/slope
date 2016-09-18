@@ -96,7 +96,7 @@ SlopeRect;
 
 gboolean slope_similar (double x1, double x2);
 
-int slope_rect_contains (const SlopeRect *rect, double x, double y);
+gboolean slope_rect_contains (const SlopeRect *rect, double x, double y);
 
 void slope_rect_translate (SlopeRect *rect, double dx, double dy);
 

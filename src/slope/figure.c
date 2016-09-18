@@ -84,14 +84,11 @@ static
 void _figure_finalize (GObject *self)
 {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-    GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
 
     if (priv->scale_list != NULL) {
         g_list_free_full(priv->scale_list, _figure_clear_scale_list);
         priv->scale_list = NULL;
     }
-
-    G_OBJECT_CLASS(parent_class)->finalize(self);
 }
 
 
@@ -267,6 +264,32 @@ void _figure_update_layout (SlopeFigure *self)
 
         if (scale_rect.y + scale_rect.height > priv->layout_rows) {
             priv->layout_rows = scale_rect.y + scale_rect.height;
+        }
+
+        iter = iter->next;
+    }
+}
+
+
+void _figure_handle_mouse_event (SlopeFigure *self, SlopeViewMouseEvent *event)
+{
+    SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
+    GList *iter;
+
+    /* delegate the handling of the event down to the scales and it's
+       items */
+    iter = priv->scale_list;
+    while (iter != NULL) {
+        SlopeScale *scale = SLOPE_SCALE(iter->data);
+        SlopeRect scale_rect;
+        gboolean scale_answer;
+
+        slope_scale_get_figure_rect(scale, &scale_rect);
+        if (slope_rect_contains(&scale_rect, event->x, event->y) == TRUE) {
+            scale_answer = _scale_handle_mouse_event(scale, event);
+            if (scale_answer == TRUE) {
+                return;
+            }
         }
 
         iter = iter->next;

@@ -53,6 +53,7 @@ _SlopeItemClass
   void (*draw) (SlopeItem *self, cairo_t *cr);
   void (*get_figure_rect) (SlopeItem *self, SlopeRect *rect);
   void (*get_data_rect) (SlopeItem *self, SlopeRect *rect);
+  gboolean (*mouse_event) (SlopeItem *self, SlopeViewMouseEvent *event);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */

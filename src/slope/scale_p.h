@@ -27,4 +27,8 @@ void _scale_set_figure (SlopeScale *self, SlopeFigure *figure);
 
 void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr);
 
+gboolean _scale_handle_mouse_event (SlopeScale *self, SlopeViewMouseEvent *event);
+
+gboolean _scale_mouse_event_impl (SlopeScale *self, SlopeViewMouseEvent *event);
+
 #endif /* SLOPE_SCALE_P_H */

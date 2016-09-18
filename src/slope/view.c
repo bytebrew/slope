@@ -26,6 +26,7 @@ typedef struct
 _SlopeViewPrivate
 {
     SlopeFigure *figure;
+    gboolean mouse_pressed;
 }
 SlopeViewPrivate;
 
@@ -65,6 +66,7 @@ slope_view_init (SlopeView *self)
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
 
     priv->figure = NULL;
+    priv->mouse_pressed = FALSE;
 
     gtk_widget_set_size_request(gtk_widget, 250, 250);
     gtk_widget_add_events(gtk_widget,
@@ -88,7 +90,6 @@ static
 void _view_finalize (GObject *self)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
-    GObjectClass *parent_class = g_type_class_peek_parent(G_OBJECT_GET_CLASS(self));
 
     if (priv->figure != NULL) {
         if (slope_figure_get_is_managed(priv->figure)) {
@@ -96,8 +97,6 @@ void _view_finalize (GObject *self)
         }
         priv->figure = NULL;
     }
-
-    G_OBJECT_CLASS(parent_class)->finalize(self);
 }
 
 
@@ -181,8 +180,30 @@ gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data)
 static
 gboolean _view_on_mouse_press (GtkWidget *self, GdkEvent *event, gpointer data)
 {
-    // TODO
+    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
+    SlopeViewMouseEvent item_event;
+    SLOPE_UNUSED(data);
 
+    priv->mouse_pressed = TRUE;
+    if (priv->figure == NULL) {
+        return TRUE;
+    }
+
+    if (event->button.button == 1) {
+        item_event.buttom = SLOPE_VIEW_LEFT_BUTTON;
+    }
+    else if (event->button.button == 3) {
+        item_event.buttom = SLOPE_VIEW_RIGHT_BUTTON;
+    }
+    else {
+        return TRUE;
+    }
+
+    item_event.type = SLOPE_VIEW_BUTTON_PRESS;
+    item_event.x = event->button.x;
+    item_event.y = event->button.y;
+
+    _figure_handle_mouse_event(priv->figure, &item_event);
     return TRUE;
 }
 
@@ -190,8 +211,32 @@ gboolean _view_on_mouse_press (GtkWidget *self, GdkEvent *event, gpointer data)
 static
 gboolean _view_on_mouse_move (GtkWidget *self, GdkEvent *event, gpointer data)
 {
-    // TODO
+    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
+    SlopeViewMouseEvent item_event;
+    SLOPE_UNUSED(data);
 
+    if (priv->figure == NULL) {
+        return TRUE;
+    }
+
+    if (event->button.button == 1) {
+        item_event.buttom = SLOPE_VIEW_LEFT_BUTTON;
+    }
+    else if (event->button.button == 3) {
+        item_event.buttom = SLOPE_VIEW_RIGHT_BUTTON;
+    }
+    else {
+        item_event.buttom = SLOPE_VIEW_NO_BUTTON;
+    }
+
+    item_event.type = (priv->mouse_pressed == TRUE)
+            ? SLOPE_VIEW_MOVE_PRESSED
+            : SLOPE_VIEW_MOVE;
+
+    item_event.x = event->button.x;
+    item_event.y = event->button.y;
+
+    _figure_handle_mouse_event(priv->figure, &item_event);
     return TRUE;
 }
 
@@ -199,8 +244,30 @@ gboolean _view_on_mouse_move (GtkWidget *self, GdkEvent *event, gpointer data)
 static
 gboolean _view_on_mouse_release (GtkWidget *self, GdkEvent *event, gpointer data)
 {
-    // TODO
+    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
+    SlopeViewMouseEvent item_event;
+    SLOPE_UNUSED(data);
 
+    priv->mouse_pressed = FALSE;
+    if (priv->figure == NULL) {
+        return TRUE;
+    }
+
+    if (event->button.button == 1) {
+        item_event.buttom = SLOPE_VIEW_LEFT_BUTTON;
+    }
+    else if (event->button.button == 3) {
+        item_event.buttom = SLOPE_VIEW_RIGHT_BUTTON;
+    }
+    else {
+        return TRUE;
+    }
+
+    item_event.type = SLOPE_VIEW_BUTTON_RELEASE;
+    item_event.x = event->button.x;
+    item_event.y = event->button.y;
+
+    _figure_handle_mouse_event(priv->figure, &item_event);
     return TRUE;
 }
 

@@ -295,9 +295,8 @@ void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr)
 static
 void _xyseries_get_figure_rect (SlopeItem *self, SlopeRect *rect)
 {
-    /* TODO */
-    SLOPE_UNUSED(self);
-    SLOPE_UNUSED(rect);
+    /* before we have a good "my rect procedure" use the scale's */
+    slope_scale_get_figure_rect(slope_item_get_scale(self), rect);
 }
 
 
