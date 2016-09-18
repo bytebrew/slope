@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     series1 = slope_xyseries_new_filled("Sine", x, y1, n, "b-");
     slope_scale_add_item(scale1, series1);
 
-    series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "ga");
+    series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "la");
     slope_scale_add_item(scale2, series2);
 
     series3 = slope_xyseries_new_filled("Scatter", x, y3, n, "ro");
