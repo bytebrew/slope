@@ -40,11 +40,11 @@ int main(int argc, char *argv[])
 {
     GtkWidget *chart;
     SlopeFigure *figure;
-    SlopeScale *scale1, *scale2;
-    SlopeItem *series1, *series2;
+    SlopeScale *scale1, *scale2, *scale3;
+    SlopeItem *series1, *series2, *series3;
     SlopeItem *axis;
     SlopeXyAxisSampler *sampler;
-    double *x, *y1, *y2;
+    double *x, *y1, *y2, *y3;
 
     gtk_init(&argc, &argv);
     chart = slope_chart_new();
@@ -57,18 +57,20 @@ int main(int argc, char *argv[])
     x = g_malloc(n * sizeof(double));
     y1 = g_malloc(n * sizeof(double));
     y2 = g_malloc(n * sizeof(double));
+    y3 = g_malloc(n * sizeof(double));
     double dx = 4.0 * G_PI / n;
 
     for (k=0; k<n; ++k) {
         x[k] = k * dx;
         y1[k] = sin(x[k]);
-        y2[k] = g_random_int();
+        y2[k] = 1.0 + y1[k] + 0.1 * k;
+        y3[k] = g_random_int();
     }
 
     figure = slope_chart_get_figure(SLOPE_CHART(chart));
 
     scale1 = slope_xyscale_new();
-    slope_scale_set_name(scale1, "Sine Function");
+    slope_scale_set_name(scale1, "Sinusoidal");
     slope_scale_set_layout_rect(scale1, 0, 0, 1, 1);
     slope_figure_add_scale(figure, scale1);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale1), SLOPE_XYSCALE_AXIS_BOTTOM);
@@ -76,22 +78,34 @@ int main(int argc, char *argv[])
     slope_xyaxis_sampler_set_samples(sampler, x_samples, 9);
 
     scale2 = slope_xyscale_new();
-    slope_scale_set_name(scale2, "Random Scatter");
+    slope_scale_set_name(scale2, "Sine + Linear");
     slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
     slope_figure_add_scale(figure, scale2);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale2), SLOPE_XYSCALE_AXIS_BOTTOM);
     sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
     slope_xyaxis_sampler_set_samples(sampler, x_samples, 9);
 
+    scale3 = slope_xyscale_new();
+    slope_scale_set_name(scale3, "Random Scatter");
+    slope_scale_set_layout_rect(scale3, 0, 2, 1, 1);
+    slope_figure_add_scale(figure, scale3);
+
     series1 = slope_xyseries_new_filled("Sine", x, y1, n, "b-");
     slope_scale_add_item(scale1, series1);
 
-    series2 = slope_xyseries_new_filled("Random", x, y2, n, "ro");
+    series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "ga");
     slope_scale_add_item(scale2, series2);
+
+    series3 = slope_xyseries_new_filled("Scatter", x, y3, n, "ro");
+    slope_scale_add_item(scale3, series3);
 
     slope_figure_write_to_png(figure, "figure.png", 500, 450);
     gtk_widget_show_all(chart);
     gtk_main();
+
+    g_free(x);
+    g_free(y1);
+    g_free(y2);
 
     return 0;
 }
