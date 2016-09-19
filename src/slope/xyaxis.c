@@ -79,12 +79,12 @@ slope_xyaxis_init (SlopeXyAxis *self)
 
     priv->orientation = SLOPE_XYAXIS_HORIZONTAL;
     priv->component = SLOPE_XYAXIS_ALL_COMPONENT;
-    priv->line_color = SLOPE_GREY3;
-    priv->grid_color = SLOPE_GREY3;
+    priv->line_color = SLOPE_GRAY(120);
+    priv->grid_color = SLOPE_GRAY(120);
     priv->text_color = SLOPE_BLACK;
-    SLOPE_SET_ALPHA(priv->grid_color, 65);
+    SLOPE_SET_ALPHA(priv->grid_color, 64);
     priv->line_width = 2.0;
-    priv->grid_line_width = 2.0;
+    priv->grid_line_width = 1.0;
 
     priv->sampler = slope_xyaxis_sampler_new();
 }
@@ -136,6 +136,7 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
     SlopePoint p, p1, p2;
     GList *sample_list, *iter;
     double txt_height;
+    guint32 sampler_mode;
 
     slope_scale_get_figure_rect(scale, &scale_fig_rect);
     cairo_text_extents(cr, "dummy", &txt_ext);
@@ -154,6 +155,12 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
         slope_cairo_set_color(cr, priv->line_color);
         slope_cairo_line_cosmetic(cr, &p1, &p2, priv->line_width);
         cairo_stroke(cr);
+    }
+
+    sampler_mode = slope_xyaxis_sampler_get_mode(priv->sampler);
+    if (sampler_mode == SLOPE_XYAXIS_SAMPLER_AUTO_DECIMAL) {
+        slope_xyaxis_sampler_auto_sample_decimal(priv->sampler,
+            priv->min, priv->max, (p2.x - p1.x)/80.0);
     }
 
     sample_list = slope_xyaxis_sampler_get_sample_list(priv->sampler);
@@ -185,10 +192,13 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
             cairo_stroke(cr);
             cairo_restore(cr);
         }
-
-        slope_cairo_set_color(cr, priv->line_color);
-        slope_cairo_line_cosmetic(cr, &sample_p1, &sample_p2, priv->line_width);
-        cairo_stroke(cr);
+        else if (priv->component & SLOPE_XYAXIS_TICKS_DOWN ||
+                 priv->component & SLOPE_XYAXIS_TICKS_UP)
+        {
+            slope_cairo_set_color(cr, priv->line_color);
+            slope_cairo_line_cosmetic(cr, &sample_p1, &sample_p2, priv->line_width);
+            cairo_stroke(cr);
+        }
 
         if (sample->label != NULL &&
                 (priv->component & SLOPE_XYAXIS_TICKS_DOWN ||
@@ -215,6 +225,7 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
     SlopePoint p, p1, p2;
     GList *sample_list, *iter;
     double txt_height;
+    guint32 sampler_mode;
 
     slope_scale_get_figure_rect(scale, &scale_fig_rect);
     cairo_text_extents(cr, "dummy", &txt_ext);
@@ -233,6 +244,12 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
         slope_cairo_set_color(cr, priv->line_color);
         slope_cairo_line_cosmetic(cr, &p1, &p2, priv->line_width);
         cairo_stroke(cr);
+    }
+
+    sampler_mode = slope_xyaxis_sampler_get_mode(priv->sampler);
+    if (sampler_mode == SLOPE_XYAXIS_SAMPLER_AUTO_DECIMAL) {
+        slope_xyaxis_sampler_auto_sample_decimal(priv->sampler,
+            priv->min, priv->max, (p1.y - p2.y)/80.0);
     }
 
     sample_list = slope_xyaxis_sampler_get_sample_list(priv->sampler);
@@ -264,10 +281,13 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
             cairo_stroke(cr);
             cairo_restore(cr);
         }
-
-        slope_cairo_set_color(cr, priv->line_color);
-        slope_cairo_line_cosmetic(cr, &sample_p1, &sample_p2, priv->line_width);
-        cairo_stroke(cr);
+        else if (priv->component & SLOPE_XYAXIS_TICKS_DOWN ||
+                 priv->component & SLOPE_XYAXIS_TICKS_UP)
+        {
+            slope_cairo_set_color(cr, priv->line_color);
+            slope_cairo_line_cosmetic(cr, &sample_p1, &sample_p2, priv->line_width);
+            cairo_stroke(cr);
+        }
 
         if (sample->label != NULL &&
                 (priv->component & SLOPE_XYAXIS_TICKS_DOWN ||

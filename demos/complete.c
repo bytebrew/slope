@@ -95,7 +95,6 @@ int main(int argc, char *argv[])
     slope_scale_set_name(scale2, "Sine + Linear");
     slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
     slope_figure_add_scale(figure, scale2);
-    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(scale2), SLOPE_XYSCALE_NO_AXIS);
 
     scale3 = slope_xyscale_new();
     slope_scale_set_name(scale3, "Random Scatter");

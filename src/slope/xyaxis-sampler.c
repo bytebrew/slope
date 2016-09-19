@@ -19,12 +19,18 @@
  */
 
 #include <slope/xyaxis-sampler.h>
+#include <math.h>
+#include <stdio.h>
 
 
 typedef struct
 _SlopeXyAxisSampler
 {
     GList *sample_list;
+    guint32 mode;
+    double min;
+    double max;
+    double hint;
 }
 SlopeXyAxisSampler;
 
@@ -38,6 +44,9 @@ SlopeXyAxisSampler *slope_xyaxis_sampler_new (void)
     SlopeXyAxisSampler *self = g_malloc(sizeof(SlopeXyAxisSampler));
 
     self->sample_list = NULL;
+    self->min = 0.0;
+    self->max = 0.0;
+    self->mode = SLOPE_XYAXIS_SAMPLER_AUTO_DECIMAL;
 
     return self;
 }
@@ -72,6 +81,8 @@ void slope_xyaxis_sampler_set_samples (SlopeXyAxisSampler *self,
                                        SlopeXyAxisSample *sample_array, int n_samples)
 {
     int k;
+
+    self->mode = SLOPE_XYAXIS_SAMPLER_MANUAL;
     for (k=0; k<n_samples; ++k) {
         slope_xyaxis_sampler_add_sample(self, sample_array[k].coord, sample_array[k].label);
     }
@@ -88,6 +99,73 @@ void _xyaxis_sampler_delete_sample (gpointer data)
 {
     g_free(((SlopeXyAxisSample*) data)->label);
     g_free(data);
+}
+
+
+guint32 slope_xyaxis_sampler_get_mode (SlopeXyAxisSampler *self)
+{
+    return self->mode;
+}
+
+
+void slope_xyaxis_sampler_auto_sample_decimal (SlopeXyAxisSampler *self,
+                                               double min, double max, double hint)
+{
+    double coord;
+    double first_tick;
+    double v_diff, pow_diff;
+    double samp_spac;
+    int k;
+
+    if (self->min == min && self->max == max && self->hint == hint) {
+        return;
+    }
+
+    self->min = min;
+    self->max = max;
+    self->hint = hint;
+
+    v_diff = max - min;
+    pow_diff = round(log10(v_diff));
+    samp_spac = pow(10.0, pow_diff-1.0);
+
+    if ((v_diff/samp_spac) > (hint+5.0))
+       samp_spac *= 2.0;
+    if ((v_diff/samp_spac) < (hint-5.0))
+       samp_spac /= 2.0;
+    if ((v_diff/samp_spac) > (hint+5.0))
+       samp_spac *= 2.0;
+    if ((v_diff/samp_spac) < (hint-5.0))
+       samp_spac /= 2.0;
+
+    if (min < 0.0) {
+        first_tick = -floor(fabs(min)/samp_spac) * samp_spac;
+    } else {
+        first_tick = floor(fabs(min)/samp_spac + 1.0) * samp_spac;
+    }
+
+    slope_xyaxis_sampler_clear(self);
+    coord = first_tick;
+    k = 0;
+
+    while (coord <= max) {
+        char buf[16];
+        static const char *const format[] = { "%2.1f", "%2.1e" };
+        int format_idx = 0;
+
+        /* sometimes 0.0 is displayed -0.0, or even something different
+           than zerothats weird */
+        if (coord == -0.0) coord = 0.0;
+        if ((fabs(coord) / v_diff) < 1e-4) coord = 0.0;
+        /* if numbers are too extreme use power of ten notation */
+        if (coord > 1e4 || coord < -1e4) format_idx = 1;
+
+        sprintf(buf, format[format_idx], coord);
+        slope_xyaxis_sampler_add_sample(self, coord, buf);
+
+       coord += samp_spac;
+       k += 1;
+    }
 }
 
 /* slope/xyaxis-sampler.c */

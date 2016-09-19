@@ -27,6 +27,15 @@
 
 SLOPE_BEGIN_DECLS
 
+typedef enum
+_SlopeXyAxisSampleMode
+{
+    SLOPE_XYAXIS_SAMPLER_MANUAL,
+    SLOPE_XYAXIS_SAMPLER_AUTO_DECIMAL
+}
+SlopeXyAxisSampleMode;
+
+
 typedef struct
 _SlopeXyAxisSample
 {
@@ -51,6 +60,11 @@ void slope_xyaxis_sampler_set_samples (SlopeXyAxisSampler *self,
                                        SlopeXyAxisSample *sample_array, int n_samples);
 
 GList* slope_xyaxis_sampler_get_sample_list (SlopeXyAxisSampler *self);
+
+guint32 slope_xyaxis_sampler_get_mode (SlopeXyAxisSampler *self);
+
+void slope_xyaxis_sampler_auto_sample_decimal (SlopeXyAxisSampler *self,
+                                               double min, double max, double hint);
 
 SLOPE_END_DECLS
 
