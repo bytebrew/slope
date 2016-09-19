@@ -360,7 +360,7 @@ slope_xyseries_set_style (SlopeXySeries *self, const char *style)
 {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
     SlopeColor fill_color=SLOPE_RED, stroke_color=SLOPE_BLUE;
-    double line_width=1.2;
+    double line_width=1.0;
     int mode=SLOPE_SERIES_LINE, k=0;
 
     /* parse the stroke and fill colors */
@@ -380,13 +380,6 @@ slope_xyseries_set_style (SlopeXySeries *self, const char *style)
         fill_color = slope_color_parse(style[k++]);
     }
 
-    if (mode != SLOPE_SERIES_LINE &&
-            mode != SLOPE_SERIES_AREAUNDER) {
-        /* if we are not dealing with lines we better use
-           a 1.0 width */
-        line_width = 1.0;
-    }
-
     if (fill_color == stroke_color) {
         /* for performance, if the fill and stroke colors
            are the same it is better to only fill the forms,
@@ -399,8 +392,10 @@ slope_xyseries_set_style (SlopeXySeries *self, const char *style)
     }
 
     if (mode & SLOPE_SERIES_AREAUNDER) {
-        /* for "area under" plots it is cool to add transparency */
+        /* for "area under" plots it is cool to add transparency
+           and a thicker line */
         SLOPE_SET_ALPHA(fill_color, 128);
+        line_width = 1.5;
     }
 
     priv->fill_color = fill_color;
