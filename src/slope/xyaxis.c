@@ -155,6 +155,10 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
         slope_cairo_set_color(cr, priv->line_color);
         slope_cairo_line_cosmetic(cr, &p1, &p2, priv->line_width);
         cairo_stroke(cr);
+
+        if (priv->component == SLOPE_XYAXIS_LINE) {
+            return;
+        }
     }
 
     sampler_mode = slope_xyaxis_sampler_get_mode(priv->sampler);
@@ -244,6 +248,10 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
         slope_cairo_set_color(cr, priv->line_color);
         slope_cairo_line_cosmetic(cr, &p1, &p2, priv->line_width);
         cairo_stroke(cr);
+
+        if (priv->component == SLOPE_XYAXIS_LINE) {
+            return;
+        }
     }
 
     sampler_mode = slope_xyaxis_sampler_get_mode(priv->sampler);

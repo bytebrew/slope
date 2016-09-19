@@ -94,17 +94,26 @@ slope_xyscale_init (SlopeXyScale *self)
     priv->axis[SLOPE_XYSCALE_AXIS_LEFT] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL);
     priv->axis[SLOPE_XYSCALE_AXIS_RIGHT] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL);
 
-    slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_TOP]), SLOPE_XYAXIS_LINE);
-    slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]), SLOPE_XYAXIS_LINE);
-    for (k=0; k<MAX_AXIS; ++k) {
-        _item_set_scale(priv->axis[k], SLOPE_SCALE(self));
-    }
+    slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
+                                SLOPE_XYAXIS_LINE
+                                |SLOPE_XYAXIS_TICKS_DOWN
+                                |SLOPE_XYAXIS_TITLE);
+    slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_LEFT]),
+                                SLOPE_XYAXIS_LINE
+                                |SLOPE_XYAXIS_TICKS_DOWN
+                                |SLOPE_XYAXIS_TITLE);
+    slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_TOP]),
+                                SLOPE_XYAXIS_LINE);
+    slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]),
+                                SLOPE_XYAXIS_LINE);
 
-    priv->left_margin = 45.0;
+    for (k=0; k<MAX_AXIS; ++k) _item_set_scale(priv->axis[k], SLOPE_SCALE(self));
+
+    priv->left_margin = 60.0;
     priv->right_margin = 15.0;
     priv->top_margin = 15.0;
     priv->bottom_margin = 30.0;
-    slope_scale_set_name_top_padding(SLOPE_SCALE(self), priv->top_margin + 3);
+    slope_scale_set_name_top_padding(SLOPE_SCALE(self), priv->top_margin + 2);
 
     priv->horiz_pad = 0.02;
     priv->vertical_pad = 0.03;
