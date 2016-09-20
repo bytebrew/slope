@@ -83,7 +83,7 @@ slope_xyaxis_init (SlopeXyAxis *self)
     priv->grid_color = SLOPE_GRAY(120);
     priv->text_color = SLOPE_BLACK;
     SLOPE_SET_ALPHA(priv->grid_color, 64);
-    priv->line_width = 1.0;
+    priv->line_width = 2.0;
     priv->grid_line_width = 1.0;
 
     priv->sampler = slope_xyaxis_sampler_new();
