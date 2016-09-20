@@ -25,7 +25,6 @@
 int main(int argc, char *argv[])
 {
     GtkWidget *chart;
-    SlopeFigure *figure;
     SlopeScale *scale1, *scale2;
     SlopeItem *series11, *series12, *series2;
     SlopeItem *axis;
@@ -53,31 +52,29 @@ int main(int argc, char *argv[])
         y2[k] = 1.0 + y11[k] + 0.1 * k;
     }
 
-    figure = slope_chart_get_figure(SLOPE_CHART(chart));
-
     scale1 = slope_xyscale_new_axis ("Sinusoidal functions (Phase)", "Amplitude");
     slope_scale_set_layout_rect(scale1, 0, 0, 1, 1);
-    slope_figure_add_scale(figure, scale1);
+    slope_chart_add_scale(SLOPE_CHART(chart), scale1);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale1), SLOPE_XYSCALE_AXIS_BOTTOM);
     sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
     slope_xyaxis_sampler_set_samples(sampler, slope_xyaxis_sampler_pi_samples, 9);
 
     scale2 = slope_xyscale_new_axis ("Projected profit", "Value");
     slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
-    slope_figure_add_scale(figure, scale2);
+    slope_chart_add_scale(SLOPE_CHART(chart), scale2);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale2), SLOPE_XYSCALE_AXIS_BOTTOM);
     sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
     slope_xyaxis_sampler_set_samples(sampler, slope_xyaxis_sampler_month_samples, 12);
 
     series11 = slope_xyseries_new_filled("Sine", x, y11, n, "b-");
     slope_scale_add_item(scale1, series11);
-    series12 = slope_xyseries_new_filled("cossine", x, y12, n, "ra");
+    series12 = slope_xyseries_new_filled("Cossine", x, y12, n, "ra");
     slope_scale_add_item(scale1, series12);
 
     series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "la");
     slope_scale_add_item(scale2, series2);
 
-    slope_figure_write_to_png(figure, "figure.png", 500, 450);
+    slope_chart_write_to_png(SLOPE_CHART(chart), "chart.png", 500, 450);
     gtk_widget_show_all(chart);
     gtk_main();
 

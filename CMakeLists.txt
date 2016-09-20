@@ -6,7 +6,7 @@ set(SLOPE_MINOR_VERSION 1)
 set(SLOPE_PATCH_VERSION 2)
 
 set(SLOPE_USE_GTK "TRUE")
-set(SLOPE_ENABLE_DEBUG "TRUE")
+#set(SLOPE_ENABLE_DEBUG "TRUE")
 
 find_package(PkgConfig REQUIRED)
 if(SLOPE_USE_GTK MATCHES "TRUE")
@@ -20,6 +20,8 @@ endif()
 if(SLOPE_ENABLE_DEBUG MATCHES "TRUE")
    set(CMAKE_CC_FLAGS "${CMAKE_CC_FLAGS} -Wall -g}")
    set(SLOPE_BUILD_DEBUG 1)
+else()
+   set(CMAKE_CC_FLAGS "${CMAKE_CC_FLAGS} -O2}")
 endif()
    
 include_directories(

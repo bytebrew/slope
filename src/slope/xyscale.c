@@ -96,7 +96,7 @@ slope_xyscale_init (SlopeXyScale *self)
     int k;
 
     priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM] = slope_xyaxis_new(
-                SLOPE_XYAXIS_HORIZONTAL, "Bottom Axis");
+                SLOPE_XYAXIS_HORIZONTAL, NULL);
     slope_xyaxis_set_components(
                 SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
                                 SLOPE_XYAXIS_LINE
@@ -105,7 +105,7 @@ slope_xyscale_init (SlopeXyScale *self)
                                 |SLOPE_XYAXIS_GRID);
 
     priv->axis[SLOPE_XYSCALE_AXIS_LEFT] = slope_xyaxis_new(
-                SLOPE_XYAXIS_VERTICAL, "Left Axis");
+                SLOPE_XYAXIS_VERTICAL, NULL);
     slope_xyaxis_set_components(
                 SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_LEFT]),
                                 SLOPE_XYAXIS_LINE
@@ -114,13 +114,13 @@ slope_xyscale_init (SlopeXyScale *self)
                                 |SLOPE_XYAXIS_GRID);
 
     priv->axis[SLOPE_XYSCALE_AXIS_TOP] = slope_xyaxis_new(
-                SLOPE_XYAXIS_HORIZONTAL, "Top Axis");
+                SLOPE_XYAXIS_HORIZONTAL, NULL);
     slope_xyaxis_set_components(
                 SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_TOP]),
                                 SLOPE_XYAXIS_LINE);
 
     priv->axis[SLOPE_XYSCALE_AXIS_RIGHT] = slope_xyaxis_new(
-                SLOPE_XYAXIS_VERTICAL, "Right Axis");
+                SLOPE_XYAXIS_VERTICAL, NULL);
     slope_xyaxis_set_components(
                 SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]),
                                 SLOPE_XYAXIS_LINE);
@@ -133,8 +133,8 @@ slope_xyscale_init (SlopeXyScale *self)
     priv->bottom_margin = 43.0;
     slope_scale_set_name_top_padding(SLOPE_SCALE(self), priv->top_margin + 2);
 
-    priv->horiz_pad = 0.02;
-    priv->vertical_pad = 0.03;
+    priv->horiz_pad = 0.0;
+    priv->vertical_pad = 0.0;
     priv->on_drag = FALSE;
 
     priv->mouse_rect_color = SLOPE_GRAY(80);

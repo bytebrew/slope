@@ -70,7 +70,7 @@ slope_chart_init (SlopeChart *self)
     priv->figure = slope_figure_new();
     priv->view = slope_view_new_with_figure(priv->figure);
 
-    gtk_window_set_default_size(GTK_WINDOW(self), 560, 500);
+    gtk_window_set_default_size(GTK_WINDOW(self), 530, 500);
 
     gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(priv->header), TRUE);
     gtk_header_bar_set_title(GTK_HEADER_BAR(priv->header), "Slope");
@@ -86,6 +86,23 @@ GtkWidget* slope_chart_new ()
     GtkWidget *self = GTK_WIDGET(g_object_new(SLOPE_CHART_TYPE, NULL));
 
     return self;
+}
+
+
+void slope_chart_add_scale (SlopeChart *self, SlopeScale *scale)
+{
+    SlopeChartPrivate *priv = SLOPE_CHART_GET_PRIVATE(self);
+
+    slope_figure_add_scale(priv->figure, scale);
+}
+
+
+void slope_chart_write_to_png (SlopeChart *self, const char *filename,
+                               int width, int height)
+{
+    SlopeChartPrivate *priv = SLOPE_CHART_GET_PRIVATE(self);
+
+    slope_figure_write_to_png(priv->figure, filename, width, height);
 }
 
 
