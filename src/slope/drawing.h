@@ -68,6 +68,9 @@ typedef guint32                         SlopeColor;
 #define SLOPE_GRAY(value)               SLOPE_COLOR(value,value,value,0xFF)
 
 
+#define SLOPE_ABS(a)	   (((a) < 0) ? -(a) : (a))
+
+
 typedef struct
 _SlopePoint
 {

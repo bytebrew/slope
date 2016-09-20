@@ -191,11 +191,11 @@ void _xyscale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
 
     if (priv->on_drag == TRUE) {
         static const double dashes[2] = { 4.0, 4.0 };
+        cairo_save(cr);
+        cairo_new_path(cr);
         cairo_rectangle(cr, priv->mouse_p1.x, priv->mouse_p1.y,
                         priv->mouse_p2.x - priv->mouse_p1.x,
                         priv->mouse_p2.y - priv->mouse_p1.y);
-
-        cairo_save(cr);
         cairo_set_dash(cr, dashes, 2, 0.0);
         cairo_set_line_width(cr, 1.0);
         slope_cairo_set_antialias(cr, FALSE);
@@ -229,7 +229,7 @@ void _xyscale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src)
     tmp = (src->x - priv->fig_x_min) / priv->fig_width;
     res->x = priv->dat_x_min + tmp * priv->dat_width;
 
-    tmp = (priv->dat_y_max - src->y) / priv->fig_height;
+    tmp = (priv->fig_y_max - src->y) / priv->fig_height;
     res->y = priv->dat_y_min + tmp * priv->dat_height;
 }
 
@@ -423,14 +423,15 @@ gboolean _xyscale_mouse_event (SlopeScale *self,
                 priv->mouse_p2.y = tmp;
             }
 
-            slope_scale_unmap(self, &data_p1, &priv->mouse_p1);
-            slope_scale_unmap(self, &data_p2, &priv->mouse_p2);
+            if (SLOPE_ABS(priv->mouse_p1.x - priv->mouse_p2.x) > 3 &&
+                    SLOPE_ABS(priv->mouse_p1.y - priv->mouse_p2.y) > 3) {
 
-            g_print("X: %lf , %lf\n", data_p2.x, data_p1.x);
-            g_print("Y: %lf , %lf\n", data_p2.y, data_p1.y);
+                slope_scale_unmap(self, &data_p1, &priv->mouse_p1);
+                slope_scale_unmap(self, &data_p2, &priv->mouse_p2);
 
-            slope_xyscale_set_x_range(SLOPE_XYSCALE(self), data_p1.x, data_p2.x);
-            slope_xyscale_set_y_range(SLOPE_XYSCALE(self), data_p2.y, data_p1.y);
+                slope_xyscale_set_x_range(SLOPE_XYSCALE(self), data_p1.x, data_p2.x);
+                slope_xyscale_set_y_range(SLOPE_XYSCALE(self), data_p2.y, data_p1.y);
+            }
 
             slope_view_redraw(view);
         }

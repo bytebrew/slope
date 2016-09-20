@@ -149,7 +149,7 @@ void _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr)
     cairo_select_font_face(cr, "Sans",
           CAIRO_FONT_SLANT_NORMAL,
           CAIRO_FONT_WEIGHT_NORMAL);
-    cairo_set_font_size(cr, 11);
+    cairo_set_font_size(cr, 13);
 
     cairo_new_path(cr);
     _figure_draw_frame(self, &rect, in_rect, cr);
