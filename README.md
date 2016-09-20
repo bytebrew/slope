@@ -1,7 +1,7 @@
 SLOPE
 =====
 
-![](https://github.com/elvismt/slope/blob/gobject/demos/screenshot.png)
+![](https://github.com/elvismt/slope/blob/master/demos/screenshot.png)
 
 Slope is a free (LGPL) **C** library for data visualization. It integrates with **Gtk+**
 and all the drawing is made with **cairo**, so it doesn't depend on nothing outside Gtk.
