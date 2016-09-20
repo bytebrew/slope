@@ -55,16 +55,14 @@ int main(int argc, char *argv[])
 
     figure = slope_chart_get_figure(SLOPE_CHART(chart));
 
-    scale1 = slope_xyscale_new();
-    slope_scale_set_name(scale1, "Sinusoidal");
+    scale1 = slope_xyscale_new_axis ("Sinusoidal functions (Phase)", "Amplitude");
     slope_scale_set_layout_rect(scale1, 0, 0, 1, 1);
     slope_figure_add_scale(figure, scale1);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale1), SLOPE_XYSCALE_AXIS_BOTTOM);
     sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
     slope_xyaxis_sampler_set_samples(sampler, slope_xyaxis_sampler_pi_samples, 9);
 
-    scale2 = slope_xyscale_new();
-    slope_scale_set_name(scale2, "Sine + Linear");
+    scale2 = slope_xyscale_new_axis ("Projected profit", "Value");
     slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
     slope_figure_add_scale(figure, scale2);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale2), SLOPE_XYSCALE_AXIS_BOTTOM);
