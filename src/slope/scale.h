@@ -93,6 +93,8 @@ void slope_scale_get_data_rect (SlopeScale *self, SlopeRect *rect);
 
 SlopeFigure* slope_scale_get_figure (SlopeScale *self);
 
+SlopeView* slope_scale_get_view (SlopeScale *self);
+
 gboolean slope_scale_get_is_managed (SlopeScale *self);
 
 SlopeColor slope_scale_get_background_color (SlopeScale *self);

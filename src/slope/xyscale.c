@@ -42,6 +42,11 @@ _SlopeXyScalePrivate
     double dat_x_min, dat_x_max;
     double dat_y_min, dat_y_max;
     double dat_width, dat_height;
+
+    SlopePoint mouse_p1;
+    SlopePoint mouse_p2;
+    SlopeColor mouse_rect_color;
+    gboolean on_drag;
 }
 SlopeXyScalePrivate;
 
@@ -63,7 +68,7 @@ static void _xyscale_rescale (SlopeScale *self);
 static void _xyscale_get_figure_rect (SlopeScale *self, SlopeRect *rect);
 static void _xyscale_get_data_rect (SlopeScale *self, SlopeRect *rect);
 static void _xyscale_position_axis (SlopeScale *self);
-
+static gboolean _xyscale_mouse_event (SlopeScale *self, SlopeViewMouseEvent *event);
 
 
 static void
@@ -80,6 +85,7 @@ slope_xyscale_class_init (SlopeXyScaleClass *klass)
     scale_klass->rescale = _xyscale_rescale;
     scale_klass->get_data_rect = _xyscale_get_data_rect;
     scale_klass->get_figure_rect = _xyscale_get_figure_rect;
+    scale_klass->mouse_event = _xyscale_mouse_event;
 }
 
 
@@ -117,6 +123,9 @@ slope_xyscale_init (SlopeXyScale *self)
 
     priv->horiz_pad = 0.02;
     priv->vertical_pad = 0.03;
+    priv->on_drag = FALSE;
+
+    priv->mouse_rect_color = SLOPE_GRAY(80);
 
     slope_scale_rescale(SLOPE_SCALE(self));
 }
@@ -179,6 +188,21 @@ void _xyscale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
             _item_draw(priv->axis[k], cr);
         }
     }
+
+    if (priv->on_drag == TRUE) {
+        static const double dashes[2] = { 4.0, 4.0 };
+        cairo_rectangle(cr, priv->mouse_p1.x, priv->mouse_p1.y,
+                        priv->mouse_p2.x - priv->mouse_p1.x,
+                        priv->mouse_p2.y - priv->mouse_p1.y);
+
+        cairo_save(cr);
+        cairo_set_dash(cr, dashes, 2, 0.0);
+        cairo_set_line_width(cr, 1.0);
+        slope_cairo_set_antialias(cr, FALSE);
+        slope_cairo_set_color(cr, priv->mouse_rect_color);
+        cairo_stroke(cr);
+        cairo_restore(cr);
+    }
 }
 
 
@@ -223,10 +247,8 @@ void _xyscale_rescale (SlopeScale *self)
     list = slope_scale_get_item_list(self);
 
     if (list == NULL) {
-        priv->dat_x_min = 0.0;
-        priv->dat_x_max = 1.0;
-        priv->dat_y_min = 0.0;
-        priv->dat_y_max = 1.0;
+        slope_xyscale_set_x_range(SLOPE_XYSCALE(self), 0.0, 1.0);
+        slope_xyscale_set_y_range(SLOPE_XYSCALE(self), 0.0, 1.0);
         return;
     }
 
@@ -327,18 +349,94 @@ void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag)
         slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_TOP], TRUE);
         slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], TRUE);
     }
-    else if (axis_flag == SLOPE_XYSCALE_NO_AXIS) {
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM], FALSE);
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_LEFT], FALSE);
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_TOP], FALSE);
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], FALSE);
-    }
 }
 
 
 SlopeItem* slope_xyscale_get_axis (SlopeXyScale *self, int axis_id)
 {
     return SLOPE_XYSCALE_GET_PRIVATE(self)->axis[axis_id];
+}
+
+
+void slope_xyscale_set_x_range (SlopeXyScale *self, double min, double max)
+{
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+
+    priv->dat_x_min = min;
+    priv->dat_x_max = max;
+    priv->dat_width = max - min;
+}
+
+
+void slope_xyscale_set_y_range (SlopeXyScale *self, double min, double max)
+{
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+
+    priv->dat_y_min = min;
+    priv->dat_y_max = max;
+    priv->dat_height = max - min;
+}
+
+
+static
+gboolean _xyscale_mouse_event (SlopeScale *self,
+                               SlopeViewMouseEvent *event)
+{
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    SlopeView *view = slope_scale_get_view(self);
+
+    if (event->type == SLOPE_VIEW_BUTTON_PRESS) {
+        if (event->buttom == SLOPE_VIEW_LEFT_BUTTON) {
+            priv->mouse_p1.x = event->x;
+            priv->mouse_p1.y = event->y;
+            priv->mouse_p2 = priv->mouse_p1;
+            priv->on_drag = TRUE;
+        }
+        else if (event->buttom == SLOPE_VIEW_RIGHT_BUTTON) {
+            slope_scale_rescale(self);
+            slope_view_redraw(view);
+        }
+    }
+
+    if (event->type == SLOPE_VIEW_MOVE_PRESSED &&
+            priv->on_drag == TRUE) {
+
+        priv->mouse_p2.x = event->x;
+        priv->mouse_p2.y = event->y;
+        slope_view_redraw(view);
+    }
+
+    if (event->type == SLOPE_VIEW_BUTTON_RELEASE) {
+        priv->on_drag = FALSE;
+        if (event->buttom == SLOPE_VIEW_LEFT_BUTTON) {
+            SlopePoint data_p1, data_p2;
+
+            if (priv->mouse_p2.x < priv->mouse_p1.x) {
+                double tmp = priv->mouse_p1.x;
+                priv->mouse_p1.x = priv->mouse_p2.x;
+                priv->mouse_p2.x = tmp;
+            }
+
+            if (priv->mouse_p2.y < priv->mouse_p1.y) {
+                double tmp = priv->mouse_p1.y;
+                priv->mouse_p1.y = priv->mouse_p2.y;
+                priv->mouse_p2.y = tmp;
+            }
+
+            slope_scale_unmap(self, &data_p1, &priv->mouse_p1);
+            slope_scale_unmap(self, &data_p2, &priv->mouse_p2);
+
+            g_print("X: %lf , %lf\n", data_p2.x, data_p1.x);
+            g_print("Y: %lf , %lf\n", data_p2.y, data_p1.y);
+
+            slope_xyscale_set_x_range(SLOPE_XYSCALE(self), data_p1.x, data_p2.x);
+            slope_xyscale_set_y_range(SLOPE_XYSCALE(self), data_p2.y, data_p1.y);
+
+            slope_view_redraw(view);
+        }
+    }
+
+    return FALSE;
 }
 
 /* slope/xyscale.c */

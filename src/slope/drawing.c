@@ -56,6 +56,14 @@ void slope_cairo_set_color (cairo_t *cr, SlopeColor color)
 }
 
 
+void slope_cairo_set_antialias (cairo_t *cr, gboolean antialias)
+{
+    cairo_set_antialias(cr,
+        antialias == TRUE ? CAIRO_ANTIALIAS_SUBPIXEL
+                          : CAIRO_ANTIALIAS_NONE);
+}
+
+
 void slope_cairo_line (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2)
 {
     cairo_move_to(cr, p1->x, p1->y);

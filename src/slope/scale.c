@@ -336,6 +336,12 @@ SlopeFigure* slope_scale_get_figure (SlopeScale *self)
 }
 
 
+SlopeView* slope_scale_get_view (SlopeScale *self)
+{
+    return slope_figure_get_view(SLOPE_SCALE_GET_PRIVATE(self)->figure);
+}
+
+
 gboolean slope_scale_get_is_managed (SlopeScale *self)
 {
     return SLOPE_SCALE_GET_PRIVATE(self)->managed;

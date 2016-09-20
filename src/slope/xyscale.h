@@ -87,6 +87,10 @@ SlopeItem* slope_xyscale_get_axis (SlopeXyScale *self, int axis_id);
 
 void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag);
 
+void slope_xyscale_set_x_range (SlopeXyScale *self, double min, double max);
+
+void slope_xyscale_set_y_range (SlopeXyScale *self, double min, double max);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_XYSCALE_H */
