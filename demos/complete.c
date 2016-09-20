@@ -22,38 +22,15 @@
 #include <math.h>
 
 
-static SlopeXyAxisSample
-x_samples[] = {
-    { 0.0*G_PI, "0"},
-    { 0.5*G_PI, "π/2"},
-    { 1.0*G_PI, "π"},
-    { 1.5*G_PI, "3π/2"},
-    { 2.0*G_PI, "2π"},
-    { 2.5*G_PI, "5π/2"},
-    { 3.0*G_PI, "3π"},
-    { 3.5*G_PI, "7π/2"},
-    { 4.0*G_PI, "4π"}
-};
-
-static SlopeXyAxisSample
-y_samples[] = {
-    { -1.0, "-1"},
-    { -0.5, "-0.5"},
-    { 0.0, "0"},
-    { 0.5, "0.5"},
-    { 1.0, "1"}
-};
-
-
 int main(int argc, char *argv[])
 {
     GtkWidget *chart;
     SlopeFigure *figure;
-    SlopeScale *scale1, *scale2, *scale3;
-    SlopeItem *series11, *series12, *series2, *series3;
+    SlopeScale *scale1, *scale2;
+    SlopeItem *series11, *series12, *series2;
     SlopeItem *axis;
     SlopeXyAxisSampler *sampler;
-    double *x, *y11, *y12, *y2, *y3;
+    double *x, *y11, *y12, *y2;
 
     gtk_init(&argc, &argv);
     chart = slope_chart_new();
@@ -67,7 +44,6 @@ int main(int argc, char *argv[])
     y11 = g_malloc(n * sizeof(double));
     y12 = g_malloc(n * sizeof(double));
     y2 = g_malloc(n * sizeof(double));
-    y3 = g_malloc(n * sizeof(double));
     double dx = 4.0 * G_PI / n;
 
     for (k=0; k<n; ++k) {
@@ -75,7 +51,6 @@ int main(int argc, char *argv[])
         y11[k] = sin(x[k]);
         y12[k] = cos(x[k]);
         y2[k] = 1.0 + y11[k] + 0.1 * k;
-        y3[k] = g_random_int();
     }
 
     figure = slope_chart_get_figure(SLOPE_CHART(chart));
@@ -86,21 +61,15 @@ int main(int argc, char *argv[])
     slope_figure_add_scale(figure, scale1);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale1), SLOPE_XYSCALE_AXIS_BOTTOM);
     sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
-    slope_xyaxis_sampler_set_samples(sampler, x_samples, 9);
-    axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale1), SLOPE_XYSCALE_AXIS_LEFT);
-    sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
-    slope_xyaxis_sampler_set_samples(sampler, y_samples, 5);
+    slope_xyaxis_sampler_set_samples(sampler, slope_xyaxis_sampler_pi_samples, 9);
 
     scale2 = slope_xyscale_new();
     slope_scale_set_name(scale2, "Sine + Linear");
     slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
     slope_figure_add_scale(figure, scale2);
-
-    scale3 = slope_xyscale_new();
-    slope_scale_set_name(scale3, "Random Scatter");
-    slope_scale_set_layout_rect(scale3, 0, 2, 1, 1);
-    slope_figure_add_scale(figure, scale3);
-    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(scale3), SLOPE_XYSCALE_NO_AXIS);
+    axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale2), SLOPE_XYSCALE_AXIS_BOTTOM);
+    sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
+    slope_xyaxis_sampler_set_samples(sampler, slope_xyaxis_sampler_month_samples, 12);
 
     series11 = slope_xyseries_new_filled("Sine", x, y11, n, "b-");
     slope_scale_add_item(scale1, series11);
@@ -110,9 +79,6 @@ int main(int argc, char *argv[])
     series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "la");
     slope_scale_add_item(scale2, series2);
 
-    series3 = slope_xyseries_new_filled("Scatter", x, y3, n, "mo");
-    slope_scale_add_item(scale3, series3);
-
     slope_figure_write_to_png(figure, "figure.png", 500, 450);
     gtk_widget_show_all(chart);
     gtk_main();
@@ -121,7 +87,6 @@ int main(int argc, char *argv[])
     g_free(y11);
     g_free(y12);
     g_free(y2);
-    g_free(y3);
 
     return 0;
 }

@@ -73,11 +73,15 @@ SlopeXyAxisClass;
 
 GType slope_xyaxis_get_type (void) G_GNUC_CONST;
 
-SlopeItem* slope_xyaxis_new (int orientation);
+SlopeItem* slope_xyaxis_new (int orientation, const char *title);
 
 void slope_xyaxis_set_position (SlopeXyAxis *self, double min, double max, double anchor);
 
 void slope_xyaxis_set_components (SlopeXyAxis *self, guint32 components);
+
+void slope_xyaxis_set_title (SlopeXyAxis *self, const char *title);
+
+const char* slope_xyaxis_get_title (SlopeXyAxis *self);
 
 SlopeXyAxisSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self);
 

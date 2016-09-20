@@ -36,6 +36,7 @@ _SlopeXyAxisPrivate
     SlopeColor text_color;
     double line_width;
     double grid_line_width;
+    char *title;
 
     SlopeXyAxisSampler *sampler;
 }
@@ -78,13 +79,17 @@ slope_xyaxis_init (SlopeXyAxis *self)
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
 
     priv->orientation = SLOPE_XYAXIS_HORIZONTAL;
-    priv->component = SLOPE_XYAXIS_ALL_COMPONENT;
     priv->line_color = SLOPE_GRAY(120);
     priv->grid_color = SLOPE_GRAY(120);
     priv->text_color = SLOPE_BLACK;
     SLOPE_SET_ALPHA(priv->grid_color, 64);
     priv->line_width = 2.0;
     priv->grid_line_width = 1.0;
+    priv->title = NULL;
+
+    priv->component = SLOPE_XYAXIS_LINE
+                      |SLOPE_XYAXIS_TICKS_DOWN
+                      |SLOPE_XYAXIS_TITLE;
 
     priv->sampler = slope_xyaxis_sampler_new();
 }
@@ -99,12 +104,14 @@ void _xyaxis_finalize (GObject *self)
 }
 
 
-SlopeItem* slope_xyaxis_new (int orientation)
+SlopeItem* slope_xyaxis_new (int orientation, const char *title)
 {
     SlopeXyAxis *self = SLOPE_XYAXIS(g_object_new(SLOPE_XYAXIS_TYPE, NULL));
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
 
     priv->orientation = orientation;
+    slope_xyaxis_set_title(self, title);
+
     return SLOPE_ITEM(self);
 }
 
@@ -133,7 +140,7 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
     SlopeScale *scale = slope_item_get_scale(SLOPE_ITEM(self));
     cairo_text_extents_t txt_ext;
     SlopeRect scale_fig_rect;
-    SlopePoint p, p1, p2;
+    SlopePoint p, p1, p2, pt1, pt2;
     GList *sample_list, *iter;
     double txt_height;
     guint32 sampler_mode;
@@ -168,8 +175,8 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
     }
 
     sample_list = slope_xyaxis_sampler_get_sample_list(priv->sampler);
-    p1.y = scale_fig_rect.y;
-    p2.y = scale_fig_rect.y + scale_fig_rect.height;
+    pt1.y = scale_fig_rect.y;
+    pt2.y = scale_fig_rect.y + scale_fig_rect.height;
     iter = sample_list;
 
     while (iter != NULL) {
@@ -191,8 +198,8 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
         if (priv->component & SLOPE_XYAXIS_GRID) {
             cairo_save(cr);
             slope_cairo_set_color(cr, priv->grid_color);
-            p1.x = p2.x = sample_p1.x;
-            slope_cairo_line_cosmetic(cr, &p1, &p2, priv->grid_line_width);
+            pt1.x = pt2.x = sample_p1.x;
+            slope_cairo_line_cosmetic(cr, &pt1, &pt2, priv->grid_line_width);
             cairo_stroke(cr);
             cairo_restore(cr);
         }
@@ -214,6 +221,16 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
                 sample_p1.y + ((priv->component & SLOPE_XYAXIS_TICKS_DOWN)
                              ? txt_height * 1.25 : - txt_height * 0.4),
                 sample->label);
+        }
+    }
+
+    if (priv->title != NULL && (priv->component & SLOPE_XYAXIS_TITLE)) {
+        if (priv->component & SLOPE_XYAXIS_TICKS_DOWN) {
+            cairo_text_extents(cr, priv->title, &txt_ext);
+            slope_cairo_text(cr,
+                (p1.x + p2.x - txt_ext.width)/2.0,
+                p1.y + txt_height * 2.5,
+                priv->title);
         }
     }
 }
@@ -344,6 +361,28 @@ static void _xyaxis_get_data_rect (SlopeItem *self, SlopeRect *rect)
 SlopeXyAxisSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self)
 {
     return SLOPE_XYAXIS_GET_PRIVATE(self)->sampler;
+}
+
+
+void slope_xyaxis_set_title (SlopeXyAxis *self, const char *title)
+{
+    SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
+
+    if (priv->title != NULL) {
+        g_free(priv->title);
+    }
+
+    if (title != NULL) {
+        priv->title = g_strdup(title);
+    } else {
+        priv->title = NULL;
+    }
+}
+
+
+const char* slope_xyaxis_get_title (SlopeXyAxis *self)
+{
+    return SLOPE_XYAXIS_GET_PRIVATE(self)->title;
 }
 
 /* slope/xyaxis.c */

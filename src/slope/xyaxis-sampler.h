@@ -57,7 +57,8 @@ void slope_xyaxis_sampler_clear (SlopeXyAxisSampler *self);
 void slope_xyaxis_sampler_add_sample (SlopeXyAxisSampler *self, double coord, char *label);
 
 void slope_xyaxis_sampler_set_samples (SlopeXyAxisSampler *self,
-                                       SlopeXyAxisSample *sample_array, int n_samples);
+                                       const SlopeXyAxisSample *sample_array,
+                                       int n_samples);
 
 GList* slope_xyaxis_sampler_get_sample_list (SlopeXyAxisSampler *self);
 
@@ -65,6 +66,15 @@ guint32 slope_xyaxis_sampler_get_mode (SlopeXyAxisSampler *self);
 
 void slope_xyaxis_sampler_auto_sample_decimal (SlopeXyAxisSampler *self,
                                                double min, double max, double hint);
+
+
+extern
+const SlopeXyAxisSample *const
+slope_xyaxis_sampler_pi_samples;
+
+extern
+const SlopeXyAxisSample *const
+slope_xyaxis_sampler_month_samples;
 
 SLOPE_END_DECLS
 

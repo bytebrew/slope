@@ -78,7 +78,8 @@ void slope_xyaxis_sampler_add_sample (SlopeXyAxisSampler *self, double coord, ch
 
 
 void slope_xyaxis_sampler_set_samples (SlopeXyAxisSampler *self,
-                                       SlopeXyAxisSample *sample_array, int n_samples)
+                                       const SlopeXyAxisSample *sample_array,
+                                       int n_samples)
 {
     int k;
 
@@ -167,5 +168,57 @@ void slope_xyaxis_sampler_auto_sample_decimal (SlopeXyAxisSampler *self,
        k += 1;
     }
 }
+
+
+const SlopeXyAxisSample
+slope_xyaxis_sampler_pi_samples_array[] = {
+    { 0.0*G_PI, "0"},
+    { 0.5*G_PI, "π/2"},
+    { 1.0*G_PI, "π"},
+    { 1.5*G_PI, "3π/2"},
+    { 2.0*G_PI, "2π"},
+    { 2.5*G_PI, "5π/2"},
+    { 3.0*G_PI, "3π"},
+    { 3.5*G_PI, "7π/2"},
+    { 4.0*G_PI, "4π"},
+    { 4.5*G_PI, "9π/2"},
+    { 5.0*G_PI, "5π"},
+    { 5.5*G_PI, "11π/2"},
+    { 6.0*G_PI, "6π"},
+    { 6.5*G_PI, "13π/2"},
+    { 7.0*G_PI, "7π"},
+    { 7.5*G_PI, "15π/2"},
+    { 8.0*G_PI, "8π"},
+    { 8.5*G_PI, "17π/2"},
+    { 9.0*G_PI, "9π"},
+    { 9.5*G_PI, "19π/2"},
+    { 10.0*G_PI, "20π"}
+};
+
+const SlopeXyAxisSample *const
+slope_xyaxis_sampler_pi_samples =
+        slope_xyaxis_sampler_pi_samples_array;
+
+
+const SlopeXyAxisSample
+slope_xyaxis_sampler_month_samples_array[] = {
+    {1.0, "Jan"},
+    {2.0, "Feb"},
+    {3.0, "Mar"},
+    {4.0, "Apr"},
+    {5.0, "May"},
+    {6.0, "Jun"},
+    {7.0, "Jul"},
+    {8.0, "Aug"},
+    {9.0, "Sep"},
+    {10.0, "Oct"},
+    {11.0, "Nov"},
+    {12.0, "Dez"}
+};
+
+
+const SlopeXyAxisSample *const
+slope_xyaxis_sampler_month_samples =
+        slope_xyaxis_sampler_month_samples_array;
 
 /* slope/xyaxis-sampler.c */
