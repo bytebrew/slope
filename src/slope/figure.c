@@ -89,6 +89,8 @@ void _figure_finalize (GObject *self)
         g_list_free_full(priv->scale_list, _figure_clear_scale_list);
         priv->scale_list = NULL;
     }
+
+    G_OBJECT_CLASS(slope_figure_parent_class)->finalize(self);
 }
 
 

@@ -155,6 +155,8 @@ void _xyscale_finalize (GObject *self)
         }
         priv->axis[0] = NULL;
     }
+
+    G_OBJECT_CLASS(slope_xyscale_parent_class)->finalize(self);
 }
 
 
@@ -198,10 +200,7 @@ void _xyscale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr)
                     priv->fig_width, priv->fig_height);
     cairo_clip(cr);
 
-    SLOPE_SCALE_CLASS(
-        g_type_class_peek_parent(
-            SLOPE_XYSCALE_GET_CLASS(self)))
-                ->draw(self, rect, cr);
+    SLOPE_SCALE_CLASS(slope_xyscale_parent_class)->draw(self, rect, cr);
 
     cairo_restore(cr);
 

@@ -57,7 +57,7 @@ void _chart_finalize (GObject *self)
 {
     SLOPE_UNUSED(self);
 
-    // TODO
+    G_OBJECT_CLASS(slope_chart_parent_class)->finalize(self);
 }
 
 

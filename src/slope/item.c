@@ -77,6 +77,8 @@ void _item_finalize (GObject *self)
 {
     /* release the name's memory */
     slope_item_set_name(SLOPE_ITEM(self), NULL);
+
+    G_OBJECT_CLASS(slope_item_parent_class)->finalize(self);
 }
 
 

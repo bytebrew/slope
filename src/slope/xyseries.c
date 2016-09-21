@@ -89,7 +89,9 @@ slope_xyseries_init (SlopeXySeries *self)
 void _xyseries_finalize (GObject *self)
 {
     /* TODO */
-    SLOPE_UNUSED(self);
+
+
+    G_OBJECT_CLASS(slope_xyseries_parent_class)->finalize(self);
 }
 
 

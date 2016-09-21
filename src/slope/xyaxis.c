@@ -101,6 +101,8 @@ void _xyaxis_finalize (GObject *self)
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
 
     slope_xyaxis_sampler_destroy(priv->sampler);
+
+    G_OBJECT_CLASS(slope_xyaxis_parent_class)->finalize(self);
 }
 
 

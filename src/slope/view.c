@@ -97,6 +97,8 @@ void _view_finalize (GObject *self)
         }
         priv->figure = NULL;
     }
+
+    G_OBJECT_CLASS(slope_view_parent_class)->finalize(self);
 }
 
 
