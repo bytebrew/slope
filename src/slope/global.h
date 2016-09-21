@@ -50,6 +50,7 @@ typedef enum
 _SlopeViewMouseEventType
 {
     SLOPE_VIEW_BUTTON_PRESS,
+    SLOPE_VIEW_BUTTON_DOUBLE_PRESS,
     SLOPE_VIEW_MOVE,
     SLOPE_VIEW_MOVE_PRESSED,
     SLOPE_VIEW_BUTTON_RELEASE
@@ -63,7 +64,7 @@ _SlopeViewMouseEvent
     double x;
     double y;
     int buttom;
-    int type;
+    unsigned int type;
 }
 SlopeViewMouseEvent;
 

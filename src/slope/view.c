@@ -198,9 +198,12 @@ gboolean _view_save_png_dialog (GtkWidget *self, gpointer data)
           GTK_RESPONSE_ACCEPT,
           NULL);
 
+    gtk_file_chooser_set_do_overwrite_confirmation(
+        GTK_FILE_CHOOSER(save_dialog), TRUE);
+
     res = gtk_dialog_run (GTK_DIALOG (save_dialog));
-    if (res == GTK_RESPONSE_ACCEPT)
-    {
+
+    if (res == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (save_dialog);
         char *filename;
         GtkAllocation alloc;
@@ -253,17 +256,20 @@ gboolean _view_on_mouse_press (GtkWidget *self, GdkEvent *event, gpointer data)
     else if (event->button.button == 3) {
         item_event.buttom = SLOPE_VIEW_RIGHT_BUTTON;
 
-        /* TODO
-        if (_view_show_context_menu(self, event) == TRUE) {
-            return TRUE;
+        if (event->type != GDK_2BUTTON_PRESS) {
+            if (_view_show_context_menu(self, event) == TRUE) {
+                return TRUE;
+            }
         }
-        */
     }
     else {
         return TRUE;
     }
 
-    item_event.type = SLOPE_VIEW_BUTTON_PRESS;
+    item_event.type = event->type == GDK_2BUTTON_PRESS
+               ? SLOPE_VIEW_BUTTON_DOUBLE_PRESS
+               : SLOPE_VIEW_BUTTON_PRESS;
+
     item_event.x = event->button.x;
     item_event.y = event->button.y;
 

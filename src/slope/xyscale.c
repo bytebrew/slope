@@ -416,21 +416,23 @@ gboolean _xyscale_mouse_event (SlopeScale *self,
             priv->mouse_p2 = priv->mouse_p1;
             priv->on_drag = TRUE;
         }
-        else if (event->buttom == SLOPE_VIEW_RIGHT_BUTTON) {
+    }
+
+    else if (event->type == SLOPE_VIEW_BUTTON_DOUBLE_PRESS) {
+        if (event->buttom == SLOPE_VIEW_LEFT_BUTTON) {
             slope_scale_rescale(self);
             slope_view_redraw(view);
         }
     }
 
-    if (event->type == SLOPE_VIEW_MOVE_PRESSED &&
-            priv->on_drag == TRUE) {
-
+    else if (event->type == SLOPE_VIEW_MOVE_PRESSED &&
+             priv->on_drag == TRUE) {
         priv->mouse_p2.x = event->x;
         priv->mouse_p2.y = event->y;
         slope_view_redraw(view);
     }
 
-    if (event->type == SLOPE_VIEW_BUTTON_RELEASE) {
+    else if (event->type == SLOPE_VIEW_BUTTON_RELEASE) {
         priv->on_drag = FALSE;
         if (event->buttom == SLOPE_VIEW_LEFT_BUTTON) {
             SlopePoint data_p1, data_p2;
