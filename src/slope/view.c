@@ -178,6 +178,64 @@ gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data)
 
 
 static
+gboolean _view_save_png_dialog (GtkWidget *self, gpointer data)
+{
+    SlopeView *view = SLOPE_VIEW(data);
+    GtkWidget *parent_window = gtk_widget_get_toplevel(GTK_WIDGET(view));
+    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(data);
+    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
+    GtkWidget *save_dialog;
+    gint res;
+    SLOPE_UNUSED(self)
+
+    save_dialog = gtk_file_chooser_dialog_new (
+          "Save PNG",
+          GTK_WINDOW(parent_window),
+          action,
+          "_Cancel",
+          GTK_RESPONSE_CANCEL,
+          "_Open",
+          GTK_RESPONSE_ACCEPT,
+          NULL);
+
+    res = gtk_dialog_run (GTK_DIALOG (save_dialog));
+    if (res == GTK_RESPONSE_ACCEPT)
+    {
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER (save_dialog);
+        char *filename;
+        GtkAllocation alloc;
+
+        gtk_widget_get_allocation(GTK_WIDGET(view), &alloc);
+
+        filename = gtk_file_chooser_get_filename (chooser);
+        slope_figure_write_to_png(priv->figure, filename, alloc.width, alloc.height);
+        g_free(filename);
+    }
+
+    gtk_widget_destroy(save_dialog);
+    return TRUE;
+}
+
+
+static
+gboolean _view_show_context_menu (GtkWidget *self, GdkEvent *event)
+{
+    GtkWidget *menu = gtk_menu_new();
+    GtkWidget *save_option = gtk_menu_item_new_with_label("Save PNG");
+
+    g_signal_connect(G_OBJECT(save_option), "activate",
+                     G_CALLBACK(_view_save_png_dialog), self);
+
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), save_option);
+    gtk_widget_show_all(menu);
+    gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
+                   event->button.button, event->button.time);
+
+    return FALSE;
+}
+
+
+static
 gboolean _view_on_mouse_press (GtkWidget *self, GdkEvent *event, gpointer data)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
@@ -194,6 +252,12 @@ gboolean _view_on_mouse_press (GtkWidget *self, GdkEvent *event, gpointer data)
     }
     else if (event->button.button == 3) {
         item_event.buttom = SLOPE_VIEW_RIGHT_BUTTON;
+
+        /* TODO
+        if (_view_show_context_menu(self, event) == TRUE) {
+            return TRUE;
+        }
+        */
     }
     else {
         return TRUE;
