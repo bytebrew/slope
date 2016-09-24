@@ -283,15 +283,9 @@ void _figure_handle_mouse_event (SlopeFigure *self, SlopeViewMouseEvent *event)
     iter = priv->scale_list;
     while (iter != NULL) {
         SlopeScale *scale = SLOPE_SCALE(iter->data);
-        SlopeRect scale_rect;
-        gboolean scale_answer;
 
-        slope_scale_get_figure_rect(scale, &scale_rect);
-        if (slope_rect_contains(&scale_rect, event->x, event->y) == TRUE) {
-            scale_answer = _scale_handle_mouse_event(scale, event);
-            if (scale_answer == TRUE) {
-                return;
-            }
+        if (_scale_handle_mouse_event(scale, event) == TRUE) {
+            return;
         }
 
         iter = iter->next;

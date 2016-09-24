@@ -39,7 +39,9 @@ _SlopeXyScaleAxis
     SLOPE_XYSCALE_AXIS_BOTTOM  = 0,
     SLOPE_XYSCALE_AXIS_TOP     = 1,
     SLOPE_XYSCALE_AXIS_LEFT    = 2,
-    SLOPE_XYSCALE_AXIS_RIGHT   = 3
+    SLOPE_XYSCALE_AXIS_RIGHT   = 3,
+    SLOPE_XYSCALE_AXIS_X       = 4,
+    SLOPE_XYSCALE_AXIS_Y       = 5
 }
 SlopeXyScaleAxis;
 

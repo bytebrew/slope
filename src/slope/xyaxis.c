@@ -227,11 +227,21 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
     }
 
     if (priv->title != NULL && (priv->component & SLOPE_XYAXIS_TITLE)) {
+        cairo_text_extents(cr, priv->title, &txt_ext);
         if (priv->component & SLOPE_XYAXIS_TICKS_DOWN) {
-            cairo_text_extents(cr, priv->title, &txt_ext);
             slope_cairo_text(cr,
                 (p1.x + p2.x - txt_ext.width)/2.0,
                 p1.y + txt_height * 2.5,
+                priv->title);
+        } else if (priv->component & SLOPE_XYAXIS_TICKS_UP) {
+            slope_cairo_text(cr,
+                (p1.x + p2.x - txt_ext.width)/2.0,
+                p1.y - txt_height * 1.8,
+                priv->title);
+        } else {
+            slope_cairo_text(cr,
+                (p1.x + p2.x - txt_ext.width)/2.0,
+                p1.y - txt_height * 0.4,
                 priv->title);
         }
     }
@@ -327,6 +337,10 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
                 sample_p1.y + txt_height * 0.34,
                 sample->label);
         }
+    }
+
+    if (priv->title != NULL && (priv->component & SLOPE_XYAXIS_TITLE)) {
+        /* TODO */
     }
 }
 

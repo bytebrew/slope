@@ -22,7 +22,7 @@
 #include <slope/figure.h>
 #include <slope/item_p.h>
 
-#define MAX_AXIS 4
+#define MAX_AXIS 6
 
 
 typedef struct
@@ -125,13 +125,35 @@ slope_xyscale_init (SlopeXyScale *self)
                 SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]),
                                 SLOPE_XYAXIS_LINE);
 
-    for (k=0; k<MAX_AXIS; ++k) _item_set_scale(priv->axis[k], SLOPE_SCALE(self));
+    priv->axis[SLOPE_XYSCALE_AXIS_X] = slope_xyaxis_new(
+                SLOPE_XYAXIS_HORIZONTAL, NULL);
+    slope_xyaxis_set_components(
+                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_X]),
+                                SLOPE_XYAXIS_LINE
+                                |SLOPE_XYAXIS_TICKS_DOWN
+                                |SLOPE_XYAXIS_TITLE
+                                |SLOPE_XYAXIS_GRID);
+
+    priv->axis[SLOPE_XYSCALE_AXIS_Y] = slope_xyaxis_new(
+                SLOPE_XYAXIS_VERTICAL, NULL);
+    slope_xyaxis_set_components(
+                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_Y]),
+                                SLOPE_XYAXIS_LINE
+                                |SLOPE_XYAXIS_TICKS_DOWN
+                                |SLOPE_XYAXIS_TITLE
+                                |SLOPE_XYAXIS_GRID);
+
+    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(self), SLOPE_XYSCALE_FRAME_AXIS);
+    for (k=0; k<MAX_AXIS; ++k) {
+        _item_set_scale(priv->axis[k], SLOPE_SCALE(self));
+    }
 
     priv->left_margin = 52.0;
     priv->right_margin = 15.0;
     priv->top_margin = 15.0;
     priv->bottom_margin = 43.0;
-    slope_scale_set_name_top_padding(SLOPE_SCALE(self), priv->top_margin + 2);
+    slope_scale_set_name_top_padding(
+        SLOPE_SCALE(self), priv->top_margin + 2);
 
     priv->horiz_pad = 0.0;
     priv->vertical_pad = 0.0;
@@ -353,6 +375,10 @@ void _xyscale_position_axis (SlopeScale *self)
             priv->dat_y_min, priv->dat_y_max, priv->dat_x_min);
     slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]),
             priv->dat_y_min, priv->dat_y_max, priv->dat_x_max);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_X]),
+            priv->dat_x_min, priv->dat_x_max, 0.0);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_Y]),
+            priv->dat_y_min, priv->dat_y_max, 0.0);
 }
 
 
@@ -360,17 +386,31 @@ void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag)
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
 
-    if (axis_flag == SLOPE_XYSCALE_NO_AXIS) {
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM], FALSE);
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_LEFT], FALSE);
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_TOP], FALSE);
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], FALSE);
-    }
-    else if (axis_flag == SLOPE_XYSCALE_FRAME_AXIS) {
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM], TRUE);
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_LEFT], TRUE);
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_TOP], TRUE);
-        slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], TRUE);
+    switch (axis_flag) {
+        case SLOPE_XYSCALE_NO_AXIS:
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM], FALSE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_LEFT], FALSE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_TOP], FALSE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], FALSE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_X], FALSE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_Y], FALSE);
+            break;
+        case SLOPE_XYSCALE_FRAME_AXIS:
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM], TRUE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_LEFT], TRUE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_TOP], TRUE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], TRUE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_X], FALSE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_Y], FALSE);
+            break;
+        case SLOPE_XYSCALE_ZERO_AXIS:
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM], FALSE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_LEFT], FALSE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_TOP], FALSE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], FALSE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_X], TRUE);
+            slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_Y], TRUE);
+            break;
     }
 }
 
@@ -407,6 +447,20 @@ gboolean _xyscale_mouse_event (SlopeScale *self,
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
     SlopeView *view = slope_scale_get_view(self);
+    SlopeRect myrect;
+
+    /* If the mouse event is outside this scale,we have nothing to do
+       with it. It on_drag is true, disable it to ensure the zoom rectangle
+       does not remain visible */
+    slope_scale_get_figure_rect(self, &myrect);
+    if (slope_rect_contains(&myrect, event->x, event->y) == FALSE) {
+        if (priv->on_drag == TRUE) {
+            priv->on_drag = FALSE;
+            slope_view_redraw(view);
+        }
+        return FALSE;
+    }
+
 
     if (event->type == SLOPE_VIEW_BUTTON_PRESS) {
         if (event->buttom == SLOPE_VIEW_LEFT_BUTTON) {
@@ -433,6 +487,7 @@ gboolean _xyscale_mouse_event (SlopeScale *self,
 
     else if (event->type == SLOPE_VIEW_BUTTON_RELEASE) {
         priv->on_drag = FALSE;
+
         if (event->buttom == SLOPE_VIEW_LEFT_BUTTON) {
             SlopePoint data_p1, data_p2;
 

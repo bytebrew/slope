@@ -305,15 +305,9 @@ gboolean _scale_handle_mouse_event(SlopeScale *self, SlopeViewMouseEvent *event)
     iter = priv->item_list;
     while (iter != NULL) {
         SlopeItem *item = SLOPE_ITEM(iter->data);
-        SlopeRect item_rect;
-        gboolean item_answer;
 
-        slope_item_get_figure_rect(item, &item_rect);
-        if (slope_rect_contains(&item_rect, event->x, event->y) == TRUE) {
-            item_answer = _item_handle_mouse_event(item, event);
-            if (item_answer == TRUE) {
-                return TRUE;
-            }
+        if (_item_handle_mouse_event(item, event) == TRUE) {
+            return TRUE;
         }
 
         iter = iter->next;

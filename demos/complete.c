@@ -74,7 +74,6 @@ int main(int argc, char *argv[])
     series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "la");
     slope_scale_add_item(scale2, series2);
 
-    slope_chart_write_to_png(SLOPE_CHART(chart), "chart.png", 500, 450);
     gtk_widget_show_all(chart);
     gtk_main();
 

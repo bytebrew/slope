@@ -187,10 +187,14 @@ gboolean _view_save_png_dialog (GtkWidget *self, gpointer data)
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(data);
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
     GtkWidget *save_dialog;
+    GtkFileFilter *filter;
     gint res;
     SLOPE_UNUSED(self)
 
-    save_dialog = gtk_file_chooser_dialog_new (
+    filter = gtk_file_filter_new();
+    gtk_file_filter_add_pattern(filter, "*.png");
+
+    save_dialog = gtk_file_chooser_dialog_new(
           "Save PNG",
           GTK_WINDOW(parent_window),
           action,
@@ -200,19 +204,21 @@ gboolean _view_save_png_dialog (GtkWidget *self, gpointer data)
           GTK_RESPONSE_ACCEPT,
           NULL);
 
+    gtk_file_chooser_set_filter(
+        GTK_FILE_CHOOSER(save_dialog), filter);
     gtk_file_chooser_set_do_overwrite_confirmation(
         GTK_FILE_CHOOSER(save_dialog), TRUE);
 
-    res = gtk_dialog_run (GTK_DIALOG (save_dialog));
+    res = gtk_dialog_run(GTK_DIALOG(save_dialog));
 
     if (res == GTK_RESPONSE_ACCEPT) {
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER (save_dialog);
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER(save_dialog);
         char *filename;
         GtkAllocation alloc;
 
         gtk_widget_get_allocation(GTK_WIDGET(view), &alloc);
 
-        filename = gtk_file_chooser_get_filename (chooser);
+        filename = gtk_file_chooser_get_filename(chooser);
         slope_figure_write_to_png(priv->figure, filename, alloc.width, alloc.height);
         g_free(filename);
     }
@@ -236,7 +242,7 @@ gboolean _view_show_context_menu (GtkWidget *self, GdkEvent *event)
     gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
                    event->button.button, event->button.time);
 
-    return FALSE;
+    return TRUE;
 }
 
 
