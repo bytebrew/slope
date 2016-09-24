@@ -385,6 +385,7 @@ void _xyscale_position_axis (SlopeScale *self)
 void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag)
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    int k;
 
     switch (axis_flag) {
         case SLOPE_XYSCALE_NO_AXIS:
@@ -410,6 +411,12 @@ void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag)
             slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT], FALSE);
             slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_X], TRUE);
             slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_Y], TRUE);
+            break;
+        case SLOPE_XYSCALE_FRAME_LINE:
+            slope_xyscale_set_visible_axis (self, SLOPE_XYSCALE_FRAME_AXIS);
+            for (k=0; k<MAX_AXIS; ++k) {
+                slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[k]), SLOPE_XYAXIS_LINE);
+            }
             break;
     }
 }

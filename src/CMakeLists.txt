@@ -26,7 +26,6 @@ set(slope_SRCS
    slope/figure.c
    slope/item.c
    slope/scale.c
-   slope/view.c
    slope/xyscale.c
    slope/xyseries.c
    slope/xyaxis.c

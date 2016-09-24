@@ -51,7 +51,8 @@ _SlopeXyScaleAxisFlag
 {
     SLOPE_XYSCALE_NO_AXIS     = 0,
     SLOPE_XYSCALE_FRAME_AXIS  = 1,
-    SLOPE_XYSCALE_ZERO_AXIS   = 2
+    SLOPE_XYSCALE_ZERO_AXIS   = 2,
+    SLOPE_XYSCALE_FRAME_LINE  = 4
 }
 SlopeXyScaleAxisFlag;
 
