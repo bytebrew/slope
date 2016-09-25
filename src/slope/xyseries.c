@@ -44,7 +44,6 @@ static void _xyseries_draw (SlopeItem *self, cairo_t *cr);
 static void _xyseries_finalize (GObject *self);
 static void _xyseries_get_figure_rect (SlopeItem *self, SlopeRect *rect);
 static void _xyseries_get_data_rect (SlopeItem *self, SlopeRect *rect);
-static void _xyseries_check_ranges (SlopeXySeries *self);
 
 static void _xyseries_draw_line (SlopeXySeries *self, cairo_t *cr);
 static void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr);
@@ -132,7 +131,7 @@ void slope_xyseries_set_data (SlopeXySeries *self, const double *x_vec,
     priv->y_vec = y_vec;
     priv->n_pts = n_pts;
 
-    _xyseries_check_ranges(self);
+    slope_xyseries_update(self);
 }
 
 
@@ -314,10 +313,11 @@ void _xyseries_get_data_rect (SlopeItem *self, SlopeRect *rect)
 }
 
 
-static
-void _xyseries_check_ranges (SlopeXySeries *self)
+void slope_xyseries_update (SlopeXySeries *self)
 {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
+    SlopeScale *scale = slope_item_get_scale(SLOPE_ITEM(self));
+
     const double *x = priv->x_vec;
     const double *y = priv->y_vec;
     long k;
@@ -330,6 +330,10 @@ void _xyseries_check_ranges (SlopeXySeries *self)
         if (x[k] > priv->x_max) priv->x_max = x[k];
         if (y[k] < priv->y_min) priv->y_min = y[k];
         if (y[k] > priv->y_max) priv->y_max = y[k];
+    }
+
+    if (scale != NULL) {
+        slope_scale_rescale(scale);
     }
 }
 

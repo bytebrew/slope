@@ -61,13 +61,21 @@ GType slope_chart_get_type (void) G_GNUC_CONST;
 
 GtkWidget* slope_chart_new ();
 
+GtkWidget* slope_chart_new_detailed (const gchar *title, int width, int height);
+
 SlopeFigure* slope_chart_get_figure (SlopeChart *self);
 
 GtkWidget* slope_chart_get_header (SlopeChart *self);
 
 GtkWidget* slope_chart_get_view (SlopeChart *self);
 
+GtkWidget* slope_chart_get_animation_button (SlopeChart *self);
+
 void slope_chart_add_scale (SlopeChart *self, SlopeScale *scale);
+
+void slope_chart_set_show_animation_button (SlopeChart *self, gboolean showbutton);
+
+gboolean slope_chart_get_show_animation_button (SlopeChart *self);
 
 void slope_chart_write_to_png (SlopeChart *self, const char *filename,
                                int width, int height);

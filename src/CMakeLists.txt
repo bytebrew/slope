@@ -46,7 +46,7 @@ configure_file(
 )
 
 add_library(slope SHARED ${slope_SRCS})
-target_link_libraries(slope ${DEP_LIBRARIES})
+target_link_libraries(slope ${DEPENCENCY_LIBRARIES})
 
 install(TARGETS slope DESTINATION /usr/lib)
 install(FILES ${slope_HDRS} DESTINATION /usr/include/slope)

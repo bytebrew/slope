@@ -68,6 +68,7 @@ static void _xyscale_rescale (SlopeScale *self);
 static void _xyscale_get_figure_rect (SlopeScale *self, SlopeRect *rect);
 static void _xyscale_get_data_rect (SlopeScale *self, SlopeRect *rect);
 static void _xyscale_position_axis (SlopeScale *self);
+static void _xyscale_apply_padding(SlopeXyScale *self);
 static gboolean _xyscale_mouse_event (SlopeScale *self, SlopeViewMouseEvent *event);
 
 
@@ -286,7 +287,6 @@ void _xyscale_rescale (SlopeScale *self)
     GList *iter, *list;
     SlopeItem *item;
     SlopeRect item_rect;
-    double padding;
 
     priv = SLOPE_XYSCALE_GET_PRIVATE(self);
     list = slope_scale_get_item_list(self);
@@ -322,16 +322,44 @@ void _xyscale_rescale (SlopeScale *self)
             priv->dat_y_max = (item_rect.y+item_rect.height);
     }
 
+    _xyscale_apply_padding(SLOPE_XYSCALE(self));
+}
+
+
+static
+void _xyscale_apply_padding(SlopeXyScale *self)
+{
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    double padding;
+
     /* evaluate width and height of the data space taking
      * int account the padding */
     priv->dat_width = priv->dat_x_max - priv->dat_x_min;
     padding = priv->dat_width * priv->horiz_pad;
+    if (priv->dat_width == 0.0 && padding == 0.0) {
+        padding = 0.1 * (priv->dat_x_max > 0.0 ?
+                             priv->dat_x_max :
+                             -priv->dat_x_max);
+        if (padding == 0.0) {
+            padding = 0.1;
+        }
+    }
+
+    priv->dat_height = priv->dat_y_max - priv->dat_y_min;
+    padding = priv->dat_height * priv->vertical_pad;
+    if (priv->dat_height == 0.0 && padding == 0.0) {
+        padding = 0.1 * (priv->dat_y_max > 0.0 ?
+                             priv->dat_y_max :
+                             -priv->dat_y_max);
+        if (padding == 0.0) {
+            padding = 0.1;
+        }
+    }
+
     priv->dat_x_min -= padding;
     priv->dat_x_max += padding;
     priv->dat_width += 2.0*padding;
 
-    priv->dat_height = priv->dat_y_max - priv->dat_y_min;
-    padding = priv->dat_height * priv->vertical_pad;
     priv->dat_y_min -= padding;
     priv->dat_y_max += padding;
     priv->dat_height += 2.0*padding;
@@ -413,9 +441,26 @@ void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag)
             slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_Y], TRUE);
             break;
         case SLOPE_XYSCALE_FRAME_LINE:
-            slope_xyscale_set_visible_axis (self, SLOPE_XYSCALE_FRAME_AXIS);
+            slope_xyscale_set_visible_axis(self, SLOPE_XYSCALE_FRAME_AXIS);
             for (k=0; k<MAX_AXIS; ++k) {
                 slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[k]), SLOPE_XYAXIS_LINE);
+            }
+            break;
+        case SLOPE_XYSCALE_FRAME_X_TICKS:
+            slope_xyscale_set_visible_axis(self, SLOPE_XYSCALE_FRAME_LINE);
+            slope_xyaxis_set_components(
+                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
+                        SLOPE_XYAXIS_LINE
+                        |SLOPE_XYAXIS_TICKS_DOWN
+                        |SLOPE_XYAXIS_TITLE);
+            break;
+        case SLOPE_XYSCALE_FRAME_LINE_TITLE:
+            slope_xyscale_set_visible_axis(self, SLOPE_XYSCALE_FRAME_AXIS);
+            for (k=0; k<MAX_AXIS; ++k) {
+                slope_xyaxis_set_components(
+                    SLOPE_XYAXIS(priv->axis[k]),
+                        SLOPE_XYAXIS_LINE
+                        |SLOPE_XYAXIS_TITLE);
             }
             break;
     }

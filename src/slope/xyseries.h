@@ -81,6 +81,8 @@ void slope_xyseries_set_data (SlopeXySeries *self, const double *x_vec,
 
 void slope_xyseries_set_style (SlopeXySeries *self, const char *style);
 
+void slope_xyseries_update (SlopeXySeries *self);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_XYSERIES_H */
