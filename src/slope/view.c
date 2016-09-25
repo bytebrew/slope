@@ -162,7 +162,7 @@ gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data)
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
     GtkAllocation allocation;
     SlopeRect rect;
-    SLOPE_UNUSED(data)
+    SLOPE_UNUSED(data);
 
     if (priv->figure == NULL) {
         return TRUE;
@@ -189,7 +189,7 @@ gboolean _view_save_png_dialog (GtkWidget *self, gpointer data)
     GtkWidget *save_dialog;
     GtkFileFilter *filter;
     gint res;
-    SLOPE_UNUSED(self)
+    SLOPE_UNUSED(self);
 
     filter = gtk_file_filter_new();
     gtk_file_filter_add_pattern(filter, "*.png");

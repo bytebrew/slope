@@ -68,6 +68,6 @@ _SlopeViewMouseEvent
 }
 SlopeViewMouseEvent;
 
-#define SLOPE_UNUSED(var) (void) var;
+#define SLOPE_UNUSED(var) (void) var
 
 #endif /* SLOPE_GLOBAL_H */

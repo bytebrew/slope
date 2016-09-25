@@ -1,12 +1,32 @@
+/*
+ * Copyright (C) 2016  Elvis Teixeira
+ *
+ * This source code is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This source code is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this program.
+ * If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <slope/slope.h>
 #include <math.h>
 
 
-#define NMOL_SQRT    30
+#define NMOL_SQRT    40
 #define BOX_EDGE    10.0
 #define MAX_INITIAL_SPEED   10.0
 #define TIME_STEP    1.0e-3
+#define TIMEOUT   340
 #define STEPS_PER_TIMEOUT   10
 #define G_MAX_SAMPLES    60
 
@@ -189,7 +209,7 @@ void euler_integration_step ()
 gboolean animation_timeout (gpointer data)
 {
     int k;
-    SLOPE_UNUSED(data)
+    SLOPE_UNUSED(data);
 
     for (k=0; k<STEPS_PER_TIMEOUT; ++k) {
         euler_integration_step();
@@ -205,7 +225,7 @@ gboolean animation_timeout (gpointer data)
 
 void simulation_entry_point ()
 {
-    g_timeout_add(100, animation_timeout, NULL);
+    g_timeout_add(TIMEOUT, animation_timeout, NULL);
 }
 
 
