@@ -34,9 +34,13 @@ _SlopeXyAxisPrivate
     SlopeColor line_color;
     SlopeColor grid_color;
     SlopeColor text_color;
+    SlopeColor title_color;
+    SlopeColor select_rect_color;
     double line_width;
     double grid_line_width;
     char *title;
+
+    gboolean selected;
 
     SlopeXyAxisSampler *sampler;
 }
@@ -79,13 +83,19 @@ slope_xyaxis_init (SlopeXyAxis *self)
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
 
     priv->orientation = SLOPE_XYAXIS_HORIZONTAL;
+
     priv->line_color = SLOPE_GRAY(120);
     priv->grid_color = SLOPE_GRAY(120);
-    priv->text_color = SLOPE_BLACK;
     SLOPE_SET_ALPHA(priv->grid_color, 64);
+    priv->text_color = SLOPE_BLACK;
+    priv->select_rect_color = SLOPE_BLUE;
+    SLOPE_SET_ALPHA(priv->select_rect_color, 100);
+    priv->title_color = SLOPE_BLACK;
+
     priv->line_width = 2.0;
     priv->grid_line_width = 1.0;
     priv->title = NULL;
+    priv->selected = FALSE;
 
     priv->component = SLOPE_XYAXIS_LINE
                       |SLOPE_XYAXIS_TICKS_DOWN
@@ -131,6 +141,14 @@ void _xyaxis_draw (SlopeItem *self, cairo_t *cr)
     }
     else if (priv->orientation == SLOPE_XYAXIS_VERTICAL) {
         _xyaxis_draw_vertical(SLOPE_XYAXIS(self), cr);
+    }
+
+    if (priv->selected == TRUE) {
+        SlopeRect rect;
+        slope_item_get_figure_rect(self, &rect);
+        slope_cairo_set_color(cr, priv->select_rect_color);
+        slope_cairo_rect(cr, &rect);
+        cairo_fill(cr);
     }
 }
 
@@ -228,6 +246,7 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
 
     if (priv->title != NULL && (priv->component & SLOPE_XYAXIS_TITLE)) {
         cairo_text_extents(cr, priv->title, &txt_ext);
+        slope_cairo_set_color(cr, priv->title_color);
         if (priv->component & SLOPE_XYAXIS_TICKS_DOWN) {
             slope_cairo_text(cr,
                 (p1.x + p2.x - txt_ext.width)/2.0,
@@ -241,7 +260,7 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
         } else {
             slope_cairo_text(cr,
                 (p1.x + p2.x - txt_ext.width)/2.0,
-                p1.y - txt_height * 0.4,
+                p1.y + txt_height * 1.3,
                 priv->title);
         }
     }
@@ -362,21 +381,61 @@ void slope_xyaxis_set_components (SlopeXyAxis *self, guint32 components)
 }
 
 
-static void _xyaxis_get_figure_rect (SlopeItem *self, SlopeRect *rect)
+static
+void _xyaxis_get_figure_rect (SlopeItem *self, SlopeRect *rect)
 {
+    SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
+    SlopeScale *scale = slope_item_get_scale(self);
+    SlopePoint p1, p2, p;
 
+    if (priv->orientation == SLOPE_XYAXIS_HORIZONTAL) {
+        p.x = priv->min;
+        p.y = priv->anchor;
+        slope_scale_map(scale, &p1, &p);
+
+        p.x = priv->max;
+        p.y = priv->anchor;
+        slope_scale_map(scale, &p2, &p);
+
+        rect->x = p1.x;
+        rect->y = p1.y - 4.0;
+        rect->width = p2.x - p1.x;
+        rect->height = 8.0;
+    }
+    else {
+        p.x = priv->anchor;
+        p.y = priv->min;
+        slope_scale_map(scale, &p1, &p);
+
+        p.x = priv->anchor;
+        p.y = priv->max;
+        slope_scale_map(scale, &p2, &p);
+
+        rect->x = p1.x - 4.0;
+        rect->y = p1.y;
+        rect->width = 8.0;
+        rect->height = p2.y - p1.y;
+    }
 }
 
 
-static void _xyaxis_get_data_rect (SlopeItem *self, SlopeRect *rect)
+static
+void _xyaxis_get_data_rect (SlopeItem *self, SlopeRect *rect)
 {
+    SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
 
-}
-
-
-SlopeXyAxisSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self)
-{
-    return SLOPE_XYAXIS_GET_PRIVATE(self)->sampler;
+    if (priv->orientation == SLOPE_XYAXIS_HORIZONTAL) {
+        rect->x = priv->min;
+        rect->y = priv->anchor;
+        rect->width = priv->max - priv->min;
+        rect->height = 0.0;
+    }
+    else {
+        rect->x = priv->anchor;
+        rect->y = priv->min;
+        rect->width = 0.0;
+        rect->height = priv->max - priv->min;
+    }
 }
 
 
@@ -396,9 +455,27 @@ void slope_xyaxis_set_title (SlopeXyAxis *self, const char *title)
 }
 
 
+SlopeXyAxisSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self)
+{
+    return SLOPE_XYAXIS_GET_PRIVATE(self)->sampler;
+}
+
+
 const char* slope_xyaxis_get_title (SlopeXyAxis *self)
 {
     return SLOPE_XYAXIS_GET_PRIVATE(self)->title;
+}
+
+
+gboolean slope_xyaxis_get_selected (SlopeXyAxis *self)
+{
+    return SLOPE_XYAXIS_GET_PRIVATE(self)->selected;
+}
+
+
+void slope_xyaxis_set_selected (SlopeXyAxis *self, gboolean selected)
+{
+    SLOPE_XYAXIS_GET_PRIVATE(self)->selected = selected;
 }
 
 /* slope/xyaxis.c */

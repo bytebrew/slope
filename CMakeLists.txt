@@ -11,10 +11,10 @@ set(SLOPE_ENABLE_DEBUG "TRUE")
 find_package(PkgConfig REQUIRED)
 if(SLOPE_USE_GTK MATCHES "TRUE")
    set(SLOPE_HAVE_GTK 1)
-   PKG_CHECK_MODULES(DEPENCENCY "gtk+-3.0")
+   PKG_CHECK_MODULES(DEPENDENCY "gtk+-3.0")
 else()
    set(SLOPE_HAVE_GTK 0)
-   PKG_CHECK_MODULES(DEPENCENCY "cairo")
+   PKG_CHECK_MODULES(DEPENDENCY "cairo")
 endif()
 
 if(SLOPE_ENABLE_DEBUG MATCHES "TRUE")
@@ -25,7 +25,7 @@ else()
 endif()
    
 include_directories(
-   "${DEP_INCLUDE_DIRS}"
+   "${DEPENDENCY_INCLUDE_DIRS}"
    "${CMAKE_SOURCE_DIR}/src"
 )
 

@@ -3,7 +3,7 @@
 #include <math.h>
 
 
-#define NMOL_SQRT    20
+#define NMOL_SQRT    30
 #define BOX_EDGE    10.0
 #define MAX_INITIAL_SPEED   10.0
 #define TIME_STEP    1.0e-3
@@ -31,6 +31,43 @@ double *ax, *ay;
 double *m;
 double system_time;
 double *g_x, *g_y;
+
+
+
+void incr_g_bin (double d)
+{
+    unsigned long int k;
+
+    k = (d / BOX_DIAGONAL) * G_MAX_SAMPLES;
+
+    g_y[k] += 1.0;
+}
+
+
+
+void calc_forces_runge_kutta ()
+{
+    unsigned long int i, j;
+    double dx, dy, d, d2;
+
+    for (i=0UL; i<G_MAX_SAMPLES; ++i) {
+        g_y[i] = 0.0;
+    }
+
+    for (i=0UL; i<NMOL; ++i) {
+        for (j=i+1UL; j<NMOL; ++j)
+        {
+            dx = x[j] - x[i];
+            dy = y[j] - y[i];
+
+            d2 = dx*dx + dy*dy;
+            d = sqrt(d2);
+
+            incr_g_bin(d);
+        }
+    }
+}
+
 
 
 void create_initial_conditions ()
@@ -64,7 +101,7 @@ void create_initial_conditions ()
         }
     }
 
-    calc_forces();
+    calc_forces_runge_kutta();
 }
 
 
@@ -121,48 +158,12 @@ void closed_boundary_condition (unsigned long int k)
 
 
 
-void incr_g_bin (double d)
-{
-    unsigned long int k;
-
-    k = (d / BOX_DIAGONAL) * G_MAX_SAMPLES;
-
-    g_y[k] += 1.0;
-}
-
-
-
-void calc_forces ()
-{
-    unsigned long int i, j, k;
-    double dx, dy, d, d2;
-
-    for (i=0UL; i<G_MAX_SAMPLES; ++i) {
-        g_y[i] = 0.0;
-    }
-
-    k=0UL;
-    for (i=0UL; i<NMOL; ++i) {
-        for (j=i+1UL; j<NMOL; ++j)
-        {
-            dx = x[j] - x[i];
-            dy = y[j] - y[i];
-
-            d2 = dx*dx + dy*dy;
-            d = sqrt(d2);
-
-            incr_g_bin(d);
-        }
-    }
-}
-
-
-
 void euler_integration_step ()
 {
     unsigned long int k;
+    /* GTimer *timer = g_timer_new (); */
 
-    calc_forces();
+    calc_forces_runge_kutta();
 
     for (k=0UL; k<NMOL; ++k)
     {
@@ -176,6 +177,11 @@ void euler_integration_step ()
     }
 
     system_time += TIME_STEP;
+
+    /* gulong microsecs;
+    double secs = g_timer_elapsed(timer, &microsecs);
+    g_print("time of a step: %lf\n", secs);
+    g_timer_destroy(timer); */
 }
 
 
@@ -216,8 +222,8 @@ void create_window ()
         slope_chart_get_animation_button(SLOPE_CHART(chart))),
                      "clicked", G_CALLBACK(simulation_entry_point), NULL);
 
-    mol_scale = slope_xyscale_new();
-    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(mol_scale), SLOPE_XYSCALE_FRAME_LINE);
+    mol_scale = slope_xyscale_new_axis("Molecules", NULL);
+    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(mol_scale), SLOPE_XYSCALE_FRAME_LINE_TITLE);
     slope_scale_set_layout_rect(mol_scale, 0, 0, 1, 3);
     slope_chart_add_scale(SLOPE_CHART(chart), mol_scale);
 
@@ -226,8 +232,8 @@ void create_window ()
     slope_xyscale_set_x_range(SLOPE_XYSCALE(mol_scale), 0.0, MAX_BOX_COORD);
     slope_xyscale_set_y_range(SLOPE_XYSCALE(mol_scale), 0.0, MAX_BOX_COORD);
 
-    g_scale = slope_xyscale_new_axis("G Function X", "G Function Y");
-    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(g_scale), SLOPE_XYSCALE_FRAME_X_TICKS);
+    g_scale = slope_xyscale_new_axis("G(r)", NULL);
+    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(g_scale), SLOPE_XYSCALE_FRAME_LINE_TITLE);
     slope_scale_set_layout_rect(g_scale, 0, 3, 1, 1);
     slope_chart_add_scale(SLOPE_CHART(chart), g_scale);
 

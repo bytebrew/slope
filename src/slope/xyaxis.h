@@ -85,6 +85,10 @@ const char* slope_xyaxis_get_title (SlopeXyAxis *self);
 
 SlopeXyAxisSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self);
 
+gboolean slope_xyaxis_get_selected (SlopeXyAxis *self);
+
+void slope_xyaxis_set_selected (SlopeXyAxis *self, gboolean selected);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_XYAXIS_H */
