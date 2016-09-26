@@ -239,7 +239,7 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
             slope_cairo_text(cr,
                 sample_p1.x - txt_ext.width * 0.5,
                 sample_p1.y + ((priv->component & SLOPE_XYAXIS_TICKS_DOWN)
-                             ? txt_height * 1.25 : - txt_height * 0.4),
+                             ? txt_height * 1.0 : - txt_height * 0.3),
                 sample->label);
         }
     }
@@ -274,9 +274,9 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
     SlopeScale *scale = slope_item_get_scale(SLOPE_ITEM(self));
     cairo_text_extents_t txt_ext;
     SlopeRect scale_fig_rect;
-    SlopePoint p, p1, p2;
+    SlopePoint p, p1, p2, pt1, pt2;
     GList *sample_list, *iter;
-    double txt_height;
+    double txt_height, max_txt_width=0.0;
     guint32 sampler_mode;
 
     slope_scale_get_figure_rect(scale, &scale_fig_rect);
@@ -310,8 +310,8 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
 
     sample_list = slope_xyaxis_sampler_get_sample_list(priv->sampler);
     iter = sample_list;
-    p1.x = scale_fig_rect.x;
-    p2.x = scale_fig_rect.x + scale_fig_rect.width;
+    pt1.x = scale_fig_rect.x;
+    pt2.x = scale_fig_rect.x + scale_fig_rect.width;
 
     while (iter != NULL) {
         SlopeXyAxisSample *sample;
@@ -332,8 +332,8 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
         if (priv->component & SLOPE_XYAXIS_GRID) {
             cairo_save(cr);
             slope_cairo_set_color(cr, priv->grid_color);
-            p1.y = p2.y = sample_p1.y;
-            slope_cairo_line_cosmetic(cr, &p1, &p2, priv->grid_line_width);
+            pt1.y = pt2.y = sample_p1.y;
+            slope_cairo_line_cosmetic(cr, &pt1, &pt2, priv->grid_line_width);
             cairo_stroke(cr);
             cairo_restore(cr);
         }
@@ -349,17 +349,39 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
                 (priv->component & SLOPE_XYAXIS_TICKS_DOWN ||
                  priv->component & SLOPE_XYAXIS_TICKS_UP)) {
             cairo_text_extents(cr, sample->label, &txt_ext);
+            if (txt_ext.width > max_txt_width) max_txt_width = txt_ext.width;
             slope_cairo_set_color(cr, priv->text_color);
             slope_cairo_text(cr,
                 sample_p1.x + ((priv->component & SLOPE_XYAXIS_TICKS_DOWN) ?
-                                   - txt_ext.width - txt_height * 0.6 : + txt_height * 0.34),
+                                   - txt_ext.width - txt_height * 0.3 :
+                                   + txt_height * 0.3),
                 sample_p1.y + txt_height * 0.34,
                 sample->label);
         }
     }
 
     if (priv->title != NULL && (priv->component & SLOPE_XYAXIS_TITLE)) {
-        /* TODO */
+        cairo_save(cr);
+        cairo_rotate(cr, -1.5707963267949);
+        cairo_text_extents(cr, priv->title, &txt_ext);
+        slope_cairo_set_color(cr, priv->title_color);
+        if (priv->component & SLOPE_XYAXIS_TICKS_DOWN) {
+            slope_cairo_text(cr,
+                - ((p1.y + p2.y) + txt_ext.width)/2.0,
+                p1.x - max_txt_width - 1.0*txt_height,
+                priv->title);
+        } else if (priv->component & SLOPE_XYAXIS_TICKS_UP) {
+            slope_cairo_text(cr,
+                - ((p1.y + p2.y) + txt_ext.width)/2.0,
+                p1.x + max_txt_width + 1.6*txt_height,
+                priv->title);
+        } else {
+            slope_cairo_text(cr,
+                - ((p1.y + p2.y) + txt_ext.width)/2.0,
+                p1.x + 0.3*txt_height,
+                priv->title);
+        }
+        cairo_restore(cr);
     }
 }
 

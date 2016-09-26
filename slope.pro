@@ -28,7 +28,7 @@ HEADERS += \
 
 
 SOURCES += \
-    demos/molecules.c \
+    demos/plot_stack.c \
     src/slope/drawing.c \
     src/slope/view.c \
     src/slope/figure.c \

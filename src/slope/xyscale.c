@@ -102,8 +102,7 @@ slope_xyscale_init (SlopeXyScale *self)
                 SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
                                 SLOPE_XYAXIS_LINE
                                 |SLOPE_XYAXIS_TICKS_DOWN
-                                |SLOPE_XYAXIS_TITLE
-                                |SLOPE_XYAXIS_GRID);
+                                |SLOPE_XYAXIS_TITLE);
 
     priv->axis[SLOPE_XYSCALE_AXIS_LEFT] = slope_xyaxis_new(
                 SLOPE_XYAXIS_VERTICAL, NULL);
@@ -111,8 +110,7 @@ slope_xyscale_init (SlopeXyScale *self)
                 SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_LEFT]),
                                 SLOPE_XYAXIS_LINE
                                 |SLOPE_XYAXIS_TICKS_DOWN
-                                |SLOPE_XYAXIS_TITLE
-                                |SLOPE_XYAXIS_GRID);
+                                |SLOPE_XYAXIS_TITLE);
 
     priv->axis[SLOPE_XYSCALE_AXIS_TOP] = slope_xyaxis_new(
                 SLOPE_XYAXIS_HORIZONTAL, NULL);
@@ -132,8 +130,7 @@ slope_xyscale_init (SlopeXyScale *self)
                 SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_X]),
                                 SLOPE_XYAXIS_LINE
                                 |SLOPE_XYAXIS_TICKS_DOWN
-                                |SLOPE_XYAXIS_TITLE
-                                |SLOPE_XYAXIS_GRID);
+                                |SLOPE_XYAXIS_TITLE);
 
     priv->axis[SLOPE_XYSCALE_AXIS_Y] = slope_xyaxis_new(
                 SLOPE_XYAXIS_VERTICAL, NULL);
@@ -141,8 +138,7 @@ slope_xyscale_init (SlopeXyScale *self)
                 SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_Y]),
                                 SLOPE_XYAXIS_LINE
                                 |SLOPE_XYAXIS_TICKS_DOWN
-                                |SLOPE_XYAXIS_TITLE
-                                |SLOPE_XYAXIS_GRID);
+                                |SLOPE_XYAXIS_TITLE);
 
     slope_xyscale_set_visible_axis(SLOPE_XYSCALE(self), SLOPE_XYSCALE_FRAME_AXIS);
     for (k=0; k<MAX_AXIS; ++k) {
@@ -156,8 +152,8 @@ slope_xyscale_init (SlopeXyScale *self)
     slope_scale_set_name_top_padding(
         SLOPE_SCALE(self), priv->top_margin + 2);
 
-    priv->horiz_pad = 0.0;
-    priv->vertical_pad = 0.0;
+    priv->horiz_pad = 0.02;
+    priv->vertical_pad = 0.03;
     priv->on_drag = FALSE;
 
     priv->mouse_rect_color = SLOPE_GRAY(80);
@@ -345,6 +341,10 @@ void _xyscale_apply_padding(SlopeXyScale *self)
         }
     }
 
+    priv->dat_x_min -= padding;
+    priv->dat_x_max += padding;
+    priv->dat_width += 2.0*padding;
+
     priv->dat_height = priv->dat_y_max - priv->dat_y_min;
     padding = priv->dat_height * priv->vertical_pad;
     if (priv->dat_height == 0.0 && padding == 0.0) {
@@ -355,10 +355,6 @@ void _xyscale_apply_padding(SlopeXyScale *self)
             padding = 0.1;
         }
     }
-
-    priv->dat_x_min -= padding;
-    priv->dat_x_max += padding;
-    priv->dat_width += 2.0*padding;
 
     priv->dat_y_min -= padding;
     priv->dat_y_max += padding;
