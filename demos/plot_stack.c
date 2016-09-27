@@ -52,14 +52,14 @@ int main(int argc, char *argv[])
         y2[k] = 1.0 + y11[k] + 0.1 * k;
     }
 
-    scale1 = slope_xyscale_new_axis ("Sinusoidal functions (Phase)", "Amplitude");
+    scale1 = slope_xyscale_new_axis("Phase", "Amplitude", "Sinusoidal functions");
     slope_scale_set_layout_rect(scale1, 0, 0, 1, 1);
     slope_chart_add_scale(SLOPE_CHART(chart), scale1);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale1), SLOPE_XYSCALE_AXIS_BOTTOM);
     sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
     slope_xyaxis_sampler_set_samples(sampler, slope_xyaxis_sampler_pi_samples, 9);
 
-    scale2 = slope_xyscale_new_axis ("Projected profit", "Value");
+    scale2 = slope_xyscale_new_axis("Month", "Value", "Projected profit");
     slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
     slope_chart_add_scale(SLOPE_CHART(chart), scale2);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale2), SLOPE_XYSCALE_AXIS_BOTTOM);

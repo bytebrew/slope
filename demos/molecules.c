@@ -242,8 +242,8 @@ void create_window ()
         slope_chart_get_animation_button(SLOPE_CHART(chart))),
                      "clicked", G_CALLBACK(simulation_entry_point), NULL);
 
-    mol_scale = slope_xyscale_new_axis("Molecules", NULL);
-    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(mol_scale), SLOPE_XYSCALE_FRAME_LINE_TITLE);
+    mol_scale = slope_xyscale_new_axis(NULL, NULL, "Molecules");
+    slope_xyscale_set_axis(SLOPE_XYSCALE(mol_scale), SLOPE_XYSCALE_FRAME_LINE);
     slope_scale_set_layout_rect(mol_scale, 0, 0, 1, 3);
     slope_chart_add_scale(SLOPE_CHART(chart), mol_scale);
 
@@ -252,8 +252,8 @@ void create_window ()
     slope_xyscale_set_x_range(SLOPE_XYSCALE(mol_scale), 0.0, MAX_BOX_COORD);
     slope_xyscale_set_y_range(SLOPE_XYSCALE(mol_scale), 0.0, MAX_BOX_COORD);
 
-    g_scale = slope_xyscale_new_axis("G(r)", NULL);
-    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(g_scale), SLOPE_XYSCALE_FRAME_LINE_TITLE);
+    g_scale = slope_xyscale_new_axis(NULL, NULL, "G(r)");
+    slope_xyscale_set_axis(SLOPE_XYSCALE(g_scale), SLOPE_XYSCALE_FRAME_LINE);
     slope_scale_set_layout_rect(g_scale, 0, 3, 1, 1);
     slope_chart_add_scale(SLOPE_CHART(chart), g_scale);
 

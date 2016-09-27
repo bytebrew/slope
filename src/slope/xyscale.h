@@ -87,7 +87,8 @@ GType slope_xyscale_get_type (void) G_GNUC_CONST;
 
 SlopeScale* slope_xyscale_new (void);
 
-SlopeScale* slope_xyscale_new_axis (const char *x_title, const char *y_title);
+SlopeScale* slope_xyscale_new_axis (const char *x_title, const char *y_title,
+                                    const char *top_title);
 
 SlopeItem* slope_xyscale_get_axis (SlopeXyScale *self, int axis_id);
 
