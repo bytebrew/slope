@@ -51,10 +51,9 @@ _SlopeXyScaleAxisFlag
 {
     SLOPE_XYSCALE_NO_AXIS,
     SLOPE_XYSCALE_FRAME_AXIS,
+    SLOPE_XYSCALE_FRAME_AXIS_GRID,
     SLOPE_XYSCALE_ZERO_AXIS,
-    SLOPE_XYSCALE_FRAME_LINE,
-    SLOPE_XYSCALE_FRAME_LINE_TITLE,
-    SLOPE_XYSCALE_FRAME_X_TICKS,
+    SLOPE_XYSCALE_FRAME_LINE
 }
 SlopeXyScaleAxisFlag;
 
@@ -92,7 +91,7 @@ SlopeScale* slope_xyscale_new_axis (const char *x_title, const char *y_title);
 
 SlopeItem* slope_xyscale_get_axis (SlopeXyScale *self, int axis_id);
 
-void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag);
+void slope_xyscale_set_axis (SlopeXyScale *self, int axis_flag);
 
 void slope_xyscale_set_x_range (SlopeXyScale *self, double min, double max);
 

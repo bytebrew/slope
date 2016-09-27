@@ -90,57 +90,20 @@ slope_xyscale_class_init (SlopeXyScaleClass *klass)
 }
 
 
-static void
-slope_xyscale_init (SlopeXyScale *self)
+static
+void slope_xyscale_init (SlopeXyScale *self)
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
     int k;
 
-    priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM] = slope_xyaxis_new(
-                SLOPE_XYAXIS_HORIZONTAL, NULL);
-    slope_xyaxis_set_components(
-                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
-                                SLOPE_XYAXIS_LINE
-                                |SLOPE_XYAXIS_TICKS_DOWN
-                                |SLOPE_XYAXIS_TITLE);
+    priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL, NULL);
+    priv->axis[SLOPE_XYSCALE_AXIS_LEFT] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL, NULL);
+    priv->axis[SLOPE_XYSCALE_AXIS_TOP] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL, NULL);
+    priv->axis[SLOPE_XYSCALE_AXIS_RIGHT] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL, NULL);
+    priv->axis[SLOPE_XYSCALE_AXIS_X] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL, NULL);
+    priv->axis[SLOPE_XYSCALE_AXIS_Y] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL, NULL);
 
-    priv->axis[SLOPE_XYSCALE_AXIS_LEFT] = slope_xyaxis_new(
-                SLOPE_XYAXIS_VERTICAL, NULL);
-    slope_xyaxis_set_components(
-                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_LEFT]),
-                                SLOPE_XYAXIS_LINE
-                                |SLOPE_XYAXIS_TICKS_DOWN
-                                |SLOPE_XYAXIS_TITLE);
-
-    priv->axis[SLOPE_XYSCALE_AXIS_TOP] = slope_xyaxis_new(
-                SLOPE_XYAXIS_HORIZONTAL, NULL);
-    slope_xyaxis_set_components(
-                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_TOP]),
-                                SLOPE_XYAXIS_LINE);
-
-    priv->axis[SLOPE_XYSCALE_AXIS_RIGHT] = slope_xyaxis_new(
-                SLOPE_XYAXIS_VERTICAL, NULL);
-    slope_xyaxis_set_components(
-                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]),
-                                SLOPE_XYAXIS_LINE);
-
-    priv->axis[SLOPE_XYSCALE_AXIS_X] = slope_xyaxis_new(
-                SLOPE_XYAXIS_HORIZONTAL, NULL);
-    slope_xyaxis_set_components(
-                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_X]),
-                                SLOPE_XYAXIS_LINE
-                                |SLOPE_XYAXIS_TICKS_DOWN
-                                |SLOPE_XYAXIS_TITLE);
-
-    priv->axis[SLOPE_XYSCALE_AXIS_Y] = slope_xyaxis_new(
-                SLOPE_XYAXIS_VERTICAL, NULL);
-    slope_xyaxis_set_components(
-                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_Y]),
-                                SLOPE_XYAXIS_LINE
-                                |SLOPE_XYAXIS_TICKS_DOWN
-                                |SLOPE_XYAXIS_TITLE);
-
-    slope_xyscale_set_visible_axis(SLOPE_XYSCALE(self), SLOPE_XYSCALE_FRAME_AXIS);
+    slope_xyscale_set_axis(SLOPE_XYSCALE(self), SLOPE_XYSCALE_FRAME_AXIS_GRID);
     for (k=0; k<MAX_AXIS; ++k) {
         _item_set_scale(priv->axis[k], SLOPE_SCALE(self));
     }
@@ -152,10 +115,9 @@ slope_xyscale_init (SlopeXyScale *self)
     slope_scale_set_name_top_padding(
         SLOPE_SCALE(self), priv->top_margin + 2);
 
-    priv->horiz_pad = 0.02;
-    priv->vertical_pad = 0.03;
+    priv->horiz_pad = 0.0;
+    priv->vertical_pad = 0.0;
     priv->on_drag = FALSE;
-
     priv->mouse_rect_color = SLOPE_GRAY(80);
 
     slope_scale_rescale(SLOPE_SCALE(self));
@@ -391,25 +353,30 @@ void _xyscale_position_axis (SlopeScale *self)
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
 
-    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
-            priv->dat_x_min, priv->dat_x_max, priv->dat_y_min);
-    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_TOP]),
-            priv->dat_x_min, priv->dat_x_max, priv->dat_y_max);
-    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_LEFT]),
-            priv->dat_y_min, priv->dat_y_max, priv->dat_x_min);
-    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]),
-            priv->dat_y_min, priv->dat_y_max, priv->dat_x_max);
-    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_X]),
-            priv->dat_x_min, priv->dat_x_max, 0.0);
-    slope_xyaxis_set_position(SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_Y]),
-            priv->dat_y_min, priv->dat_y_max, 0.0);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(
+        priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
+        priv->dat_x_min, priv->dat_x_max, priv->dat_y_min);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(
+        priv->axis[SLOPE_XYSCALE_AXIS_TOP]),
+        priv->dat_x_min, priv->dat_x_max, priv->dat_y_max);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(
+        priv->axis[SLOPE_XYSCALE_AXIS_LEFT]),
+        priv->dat_y_min, priv->dat_y_max, priv->dat_x_min);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(
+        priv->axis[SLOPE_XYSCALE_AXIS_RIGHT]),
+        priv->dat_y_min, priv->dat_y_max, priv->dat_x_max);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(
+        priv->axis[SLOPE_XYSCALE_AXIS_X]),
+        priv->dat_x_min, priv->dat_x_max, 0.0);
+    slope_xyaxis_set_position(SLOPE_XYAXIS(
+        priv->axis[SLOPE_XYSCALE_AXIS_Y]),
+        priv->dat_y_min, priv->dat_y_max, 0.0);
 }
 
-
-void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag)
+static
+void _xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag)
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
-    int k;
 
     switch (axis_flag) {
         case SLOPE_XYSCALE_NO_AXIS:
@@ -436,28 +403,68 @@ void slope_xyscale_set_visible_axis (SlopeXyScale *self, int axis_flag)
             slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_X], TRUE);
             slope_item_set_is_visible(priv->axis[SLOPE_XYSCALE_AXIS_Y], TRUE);
             break;
-        case SLOPE_XYSCALE_FRAME_LINE:
-            slope_xyscale_set_visible_axis(self, SLOPE_XYSCALE_FRAME_AXIS);
-            for (k=0; k<MAX_AXIS; ++k) {
-                slope_xyaxis_set_components(SLOPE_XYAXIS(priv->axis[k]), SLOPE_XYAXIS_LINE);
-            }
+    }
+}
+
+
+void slope_xyscale_set_axis (SlopeXyScale *self, int axis_flag)
+{
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    int k;
+
+    switch (axis_flag) {
+        case SLOPE_XYSCALE_NO_AXIS:
+            _xyscale_set_visible_axis(self, SLOPE_XYSCALE_NO_AXIS);
             break;
-        case SLOPE_XYSCALE_FRAME_X_TICKS:
-            slope_xyscale_set_visible_axis(self, SLOPE_XYSCALE_FRAME_LINE);
-            slope_xyaxis_set_components(
-                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
-                        SLOPE_XYAXIS_LINE
-                        |SLOPE_XYAXIS_TICKS_DOWN
-                        |SLOPE_XYAXIS_TITLE);
-            break;
-        case SLOPE_XYSCALE_FRAME_LINE_TITLE:
-            slope_xyscale_set_visible_axis(self, SLOPE_XYSCALE_FRAME_AXIS);
+
+        case SLOPE_XYSCALE_FRAME_AXIS:
+            _xyscale_set_visible_axis(self, SLOPE_XYSCALE_FRAME_AXIS);
             for (k=0; k<MAX_AXIS; ++k) {
                 slope_xyaxis_set_components(
-                    SLOPE_XYAXIS(priv->axis[k]),
-                        SLOPE_XYAXIS_LINE
-                        |SLOPE_XYAXIS_TITLE);
+                    SLOPE_XYAXIS(priv->axis[k]), SLOPE_XYAXIS_LINE);
             }
+            slope_xyaxis_set_components(
+                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
+                SLOPE_XYAXIS_DEFAULT_DOWN);
+            slope_xyaxis_set_components(
+                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_LEFT]),
+                SLOPE_XYAXIS_DEFAULT_DOWN);
+            break;
+
+        case SLOPE_XYSCALE_ZERO_AXIS:
+            _xyscale_set_visible_axis(self, SLOPE_XYSCALE_FRAME_AXIS);
+            for (k=0; k<MAX_AXIS; ++k) {
+                slope_xyaxis_set_components(
+                    SLOPE_XYAXIS(priv->axis[k]), SLOPE_XYAXIS_LINE);
+            }
+            slope_xyaxis_set_components(
+                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_X]),
+                SLOPE_XYAXIS_DEFAULT_DOWN);
+            slope_xyaxis_set_components(
+                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_Y]),
+                SLOPE_XYAXIS_DEFAULT_DOWN);
+            break;
+
+        case SLOPE_XYSCALE_FRAME_LINE:
+            _xyscale_set_visible_axis(self, SLOPE_XYSCALE_FRAME_AXIS);
+            for (k=0; k<MAX_AXIS; ++k) {
+                slope_xyaxis_set_components(
+                    SLOPE_XYAXIS(priv->axis[k]), SLOPE_XYAXIS_LINE);
+            }
+            break;
+
+        case SLOPE_XYSCALE_FRAME_AXIS_GRID:
+            _xyscale_set_visible_axis(self, SLOPE_XYSCALE_FRAME_AXIS);
+            for (k=0; k<MAX_AXIS; ++k) {
+                slope_xyaxis_set_components(
+                    SLOPE_XYAXIS(priv->axis[k]), SLOPE_XYAXIS_LINE);
+            }
+            slope_xyaxis_set_components(
+                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM]),
+                SLOPE_XYAXIS_DEFAULT_DOWN_GRID);
+            slope_xyaxis_set_components(
+                SLOPE_XYAXIS(priv->axis[SLOPE_XYSCALE_AXIS_LEFT]),
+                SLOPE_XYAXIS_DEFAULT_DOWN_GRID);
             break;
     }
 }

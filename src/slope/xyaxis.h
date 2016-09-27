@@ -50,7 +50,21 @@ _SlopeXyAxisComponent
     SLOPE_XYAXIS_TICKS_DOWN     = 0x00000004,
     SLOPE_XYAXIS_TITLE          = 0x00000008,
     SLOPE_XYAXIS_GRID           = 0x00000010,
-    SLOPE_XYAXIS_ALL_COMPONENT  = 0xFFFFFFFF
+    SLOPE_XYAXIS_ALL_COMPONENT  = 0xFFFFFFFF,
+
+    SLOPE_XYAXIS_DEFAULT_DOWN         = SLOPE_XYAXIS_LINE
+                                       |SLOPE_XYAXIS_TICKS_DOWN
+                                       |SLOPE_XYAXIS_TITLE,
+
+    SLOPE_XYAXIS_DEFAULT_UP           = SLOPE_XYAXIS_LINE
+                                       |SLOPE_XYAXIS_TICKS_UP
+                                       |SLOPE_XYAXIS_TITLE,
+
+    SLOPE_XYAXIS_DEFAULT_UP_GRID      = SLOPE_XYAXIS_DEFAULT_UP
+                                       |SLOPE_XYAXIS_GRID,
+
+    SLOPE_XYAXIS_DEFAULT_DOWN_GRID    = SLOPE_XYAXIS_DEFAULT_DOWN
+                                       |SLOPE_XYAXIS_GRID
 }
 SlopeXyAxisComponent;
 
