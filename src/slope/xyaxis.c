@@ -42,7 +42,7 @@ _SlopeXyAxisPrivate
 
     gboolean selected;
 
-    SlopeXyAxisSampler *sampler;
+    SlopeSampler *sampler;
 }
 SlopeXyAxisPrivate;
 
@@ -101,7 +101,7 @@ slope_xyaxis_init (SlopeXyAxis *self)
                       |SLOPE_XYAXIS_TICKS_DOWN
                       |SLOPE_XYAXIS_TITLE;
 
-    priv->sampler = slope_xyaxis_sampler_new();
+    priv->sampler = slope_sampler_new();
 }
 
 
@@ -110,7 +110,7 @@ void _xyaxis_finalize (GObject *self)
 {
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
 
-    slope_xyaxis_sampler_destroy(priv->sampler);
+    slope_sampler_destroy(priv->sampler);
 
     G_OBJECT_CLASS(slope_xyaxis_parent_class)->finalize(self);
 }
@@ -188,19 +188,19 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
         }
     }
 
-    sampler_mode = slope_xyaxis_sampler_get_mode(priv->sampler);
-    if (sampler_mode == SLOPE_XYAXIS_SAMPLER_AUTO_DECIMAL) {
-        slope_xyaxis_sampler_auto_sample_decimal(priv->sampler,
+    sampler_mode = slope_sampler_get_mode(priv->sampler);
+    if (sampler_mode == SLOPE_SAMPLER_AUTO_DECIMAL) {
+        slope_sampler_auto_sample_decimal(priv->sampler,
             priv->min, priv->max, (p2.x - p1.x)/80.0);
     }
 
-    sample_list = slope_xyaxis_sampler_get_sample_list(priv->sampler);
+    sample_list = slope_sampler_get_sample_list(priv->sampler);
     pt1.y = scale_fig_rect.y;
     pt2.y = scale_fig_rect.y + scale_fig_rect.height;
     iter = sample_list;
 
     while (iter != NULL) {
-        SlopeXyAxisSample *sample;
+        SlopeSample *sample;
         SlopePoint sample_p1, sample_p2;
 
         sample = SLOPE_XYAXIS_SAMPLE(iter->data);
@@ -302,19 +302,19 @@ void _xyaxis_draw_vertical (SlopeXyAxis *self, cairo_t *cr)
         }
     }
 
-    sampler_mode = slope_xyaxis_sampler_get_mode(priv->sampler);
-    if (sampler_mode == SLOPE_XYAXIS_SAMPLER_AUTO_DECIMAL) {
-        slope_xyaxis_sampler_auto_sample_decimal(priv->sampler,
+    sampler_mode = slope_sampler_get_mode(priv->sampler);
+    if (sampler_mode == SLOPE_SAMPLER_AUTO_DECIMAL) {
+        slope_sampler_auto_sample_decimal(priv->sampler,
             priv->min, priv->max, (p1.y - p2.y)/80.0);
     }
 
-    sample_list = slope_xyaxis_sampler_get_sample_list(priv->sampler);
+    sample_list = slope_sampler_get_sample_list(priv->sampler);
     iter = sample_list;
     pt1.x = scale_fig_rect.x;
     pt2.x = scale_fig_rect.x + scale_fig_rect.width;
 
     while (iter != NULL) {
-        SlopeXyAxisSample *sample;
+        SlopeSample *sample;
         SlopePoint sample_p1, sample_p2;
 
         sample = SLOPE_XYAXIS_SAMPLE(iter->data);
@@ -477,7 +477,7 @@ void slope_xyaxis_set_title (SlopeXyAxis *self, const char *title)
 }
 
 
-SlopeXyAxisSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self)
+SlopeSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self)
 {
     return SLOPE_XYAXIS_GET_PRIVATE(self)->sampler;
 }

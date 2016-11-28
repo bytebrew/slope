@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     SlopeScale *scale1, *scale2;
     SlopeItem *series11, *series12, *series2;
     SlopeItem *axis;
-    SlopeXyAxisSampler *sampler;
+    SlopeSampler *sampler;
     double *x, *y11, *y12, *y2;
 
     gtk_init(&argc, &argv);
@@ -57,14 +57,14 @@ int main(int argc, char *argv[])
     slope_chart_add_scale(SLOPE_CHART(chart), scale1);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale1), SLOPE_XYSCALE_AXIS_BOTTOM);
     sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
-    slope_xyaxis_sampler_set_samples(sampler, slope_xyaxis_sampler_pi_samples, 9);
+    slope_sampler_set_samples(sampler, slope_sampler_pi_samples, 9);
 
     scale2 = slope_xyscale_new_axis("Month", "Value", "Projected profit");
     slope_scale_set_layout_rect(scale2, 0, 1, 1, 1);
     slope_chart_add_scale(SLOPE_CHART(chart), scale2);
     axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale2), SLOPE_XYSCALE_AXIS_BOTTOM);
     sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
-    slope_xyaxis_sampler_set_samples(sampler, slope_xyaxis_sampler_month_samples, 12);
+    slope_sampler_set_samples(sampler, slope_sampler_month_samples, 12);
 
     series11 = slope_xyseries_new_filled("Sine", x, y11, n, "b-");
     slope_scale_add_item(scale1, series11);

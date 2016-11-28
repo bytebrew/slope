@@ -10,7 +10,7 @@ set(slope_HDRS
    slope/xyscale.h
    slope/xyseries.h
    slope/xyaxis.h
-   slope/xyaxis-sampler.h
+   slope/sampler.h
 )
 
 if(SLOPE_USE_GTK MATCHES "TRUE")
@@ -29,7 +29,7 @@ set(slope_SRCS
    slope/xyscale.c
    slope/xyseries.c
    slope/xyaxis.c
-   slope/xyaxis-sampler.c
+   slope/sampler.c
 )
 
 if(SLOPE_USE_GTK MATCHES "TRUE")

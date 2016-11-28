@@ -18,13 +18,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/xyaxis-sampler.h>
+#include <slope/sampler.h>
 #include <math.h>
 #include <stdio.h>
 
 
 typedef struct
-_SlopeXyAxisSampler
+_SlopeSampler
 {
     GList *sample_list;
     guint32 mode;
@@ -32,43 +32,43 @@ _SlopeXyAxisSampler
     double max;
     double hint;
 }
-SlopeXyAxisSampler;
+SlopeSampler;
 
 
-void _xyaxis_sampler_delete_sample (gpointer data);
+void _sampler_delete_sample (gpointer data);
 
 
 
-SlopeXyAxisSampler *slope_xyaxis_sampler_new (void)
+SlopeSampler *slope_sampler_new (void)
 {
-    SlopeXyAxisSampler *self = g_malloc(sizeof(SlopeXyAxisSampler));
+    SlopeSampler *self = g_malloc(sizeof(SlopeSampler));
 
     self->sample_list = NULL;
     self->min = 0.0;
     self->max = 0.0;
-    self->mode = SLOPE_XYAXIS_SAMPLER_AUTO_DECIMAL;
+    self->mode = SLOPE_SAMPLER_AUTO_DECIMAL;
 
     return self;
 }
 
 
-void slope_xyaxis_sampler_destroy (SlopeXyAxisSampler *self)
+void slope_sampler_destroy (SlopeSampler *self)
 {
-    slope_xyaxis_sampler_clear(self);
+    slope_sampler_clear(self);
     g_free(self);
 }
 
 
-void slope_xyaxis_sampler_clear (SlopeXyAxisSampler *self)
+void slope_sampler_clear (SlopeSampler *self)
 {
-    g_list_free_full(self->sample_list, _xyaxis_sampler_delete_sample);
+    g_list_free_full(self->sample_list, _sampler_delete_sample);
     self->sample_list = NULL;
 }
 
 
-void slope_xyaxis_sampler_add_sample (SlopeXyAxisSampler *self, double coord, char *label)
+void slope_sampler_add_sample (SlopeSampler *self, double coord, char *label)
 {
-    SlopeXyAxisSample *sample = g_malloc(sizeof(SlopeXyAxisSample));
+    SlopeSample *sample = g_malloc(sizeof(SlopeSample));
 
     sample->coord = coord;
     sample->label = label != NULL ? g_strdup(label) : NULL;
@@ -77,40 +77,41 @@ void slope_xyaxis_sampler_add_sample (SlopeXyAxisSampler *self, double coord, ch
 }
 
 
-void slope_xyaxis_sampler_set_samples (SlopeXyAxisSampler *self,
-                                       const SlopeXyAxisSample *sample_array,
-                                       int n_samples)
+void slope_sampler_set_samples (SlopeSampler *self,
+                                const SlopeSample *sample_array,
+                                int n_samples)
 {
     int k;
 
-    self->mode = SLOPE_XYAXIS_SAMPLER_MANUAL;
+    self->mode = SLOPE_SAMPLER_MANUAL;
     for (k=0; k<n_samples; ++k) {
-        slope_xyaxis_sampler_add_sample(self, sample_array[k].coord, sample_array[k].label);
+        slope_sampler_add_sample(self, sample_array[k].coord,
+                                 sample_array[k].label);
     }
 }
 
 
-GList* slope_xyaxis_sampler_get_sample_list (SlopeXyAxisSampler *self)
+GList* slope_sampler_get_sample_list (SlopeSampler *self)
 {
     return self->sample_list;
 }
 
 
-void _xyaxis_sampler_delete_sample (gpointer data)
+void _sampler_delete_sample (gpointer data)
 {
-    g_free(((SlopeXyAxisSample*) data)->label);
+    g_free(((SlopeSample*) data)->label);
     g_free(data);
 }
 
 
-guint32 slope_xyaxis_sampler_get_mode (SlopeXyAxisSampler *self)
+guint32 slope_sampler_get_mode (SlopeSampler *self)
 {
     return self->mode;
 }
 
 
-void slope_xyaxis_sampler_auto_sample_decimal (SlopeXyAxisSampler *self,
-                                               double min, double max, double hint)
+void slope_sampler_auto_sample_decimal (SlopeSampler *self,
+                                        double min, double max, double hint)
 {
     double coord;
     double first_tick;
@@ -145,7 +146,7 @@ void slope_xyaxis_sampler_auto_sample_decimal (SlopeXyAxisSampler *self,
         first_tick = floor(fabs(min)/samp_spac + 1.0) * samp_spac;
     }
 
-    slope_xyaxis_sampler_clear(self);
+    slope_sampler_clear(self);
     coord = first_tick;
     k = 0;
 
@@ -162,7 +163,7 @@ void slope_xyaxis_sampler_auto_sample_decimal (SlopeXyAxisSampler *self,
         if (coord > 1e4 || coord < -1e4) format_idx = 1;
 
         sprintf(buf, format[format_idx], coord);
-        slope_xyaxis_sampler_add_sample(self, coord, buf);
+        slope_sampler_add_sample(self, coord, buf);
 
        coord += samp_spac;
        k += 1;
@@ -170,8 +171,8 @@ void slope_xyaxis_sampler_auto_sample_decimal (SlopeXyAxisSampler *self,
 }
 
 
-const SlopeXyAxisSample
-slope_xyaxis_sampler_pi_samples_array[] = {
+const SlopeSample
+slope_sampler_pi_samples_array[] = {
     { 0.0*G_PI, "0"},
     { 0.5*G_PI, "π/2"},
     { 1.0*G_PI, "π"},
@@ -195,13 +196,13 @@ slope_xyaxis_sampler_pi_samples_array[] = {
     { 10.0*G_PI, "20π"}
 };
 
-const SlopeXyAxisSample *const
-slope_xyaxis_sampler_pi_samples =
-        slope_xyaxis_sampler_pi_samples_array;
+const SlopeSample *const
+slope_sampler_pi_samples =
+        slope_sampler_pi_samples_array;
 
 
-const SlopeXyAxisSample
-slope_xyaxis_sampler_month_samples_array[] = {
+const SlopeSample
+slope_sampler_month_samples_array[] = {
     {1.0, "Jan"},
     {2.0, "Feb"},
     {3.0, "Mar"},
@@ -217,8 +218,8 @@ slope_xyaxis_sampler_month_samples_array[] = {
 };
 
 
-const SlopeXyAxisSample *const
-slope_xyaxis_sampler_month_samples =
-        slope_xyaxis_sampler_month_samples_array;
+const SlopeSample *const
+slope_sampler_month_samples =
+        slope_sampler_month_samples_array;
 
 /* slope/xyaxis-sampler.c */

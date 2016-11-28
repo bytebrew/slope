@@ -69,13 +69,7 @@ GtkWidget* slope_chart_get_header (SlopeChart *self);
 
 GtkWidget* slope_chart_get_view (SlopeChart *self);
 
-GtkWidget* slope_chart_get_animation_button (SlopeChart *self);
-
 void slope_chart_add_scale (SlopeChart *self, SlopeScale *scale);
-
-void slope_chart_set_show_animation_button (SlopeChart *self, gboolean showbutton);
-
-gboolean slope_chart_get_show_animation_button (SlopeChart *self);
 
 void slope_chart_write_to_png (SlopeChart *self, const char *filename,
                                int width, int height);

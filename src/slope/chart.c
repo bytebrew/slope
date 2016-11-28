@@ -25,8 +25,6 @@ _SlopeChartPrivate
 {
     GtkWidget *header;
     GtkWidget *view;
-    GtkWidget *animation_button;
-    gboolean show_animation_button;
     SlopeFigure *figure;
 }
 SlopeChartPrivate;
@@ -62,12 +60,6 @@ slope_chart_init (SlopeChart *self)
     priv->header = gtk_header_bar_new();
     priv->figure = slope_figure_new();
     priv->view = slope_view_new_with_figure(priv->figure);
-    priv->animation_button = gtk_button_new_with_label("Animate");
-    /* own a reference to prevent the button from being destroyed
-       when removed from the container */
-    g_object_ref(priv->animation_button);
-    priv->show_animation_button = FALSE;
-
     gtk_window_set_default_size(GTK_WINDOW(self), 530, 500);
 
     gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(priv->header), TRUE);
@@ -82,12 +74,7 @@ slope_chart_init (SlopeChart *self)
 static
 void _chart_finalize (GObject *self)
 {
-    SlopeChartPrivate *priv = SLOPE_CHART_GET_PRIVATE(self);
-
-    if (priv->show_animation_button == FALSE) {
-        priv->show_animation_button = TRUE;
-        gtk_widget_destroy(priv->animation_button);
-    }
+    /* SlopeChartPrivate *priv = SLOPE_CHART_GET_PRIVATE(self); */
 
     G_OBJECT_CLASS(slope_chart_parent_class)->finalize(self);
 }
@@ -130,28 +117,6 @@ void slope_chart_write_to_png (SlopeChart *self, const char *filename,
 }
 
 
-void slope_chart_set_show_animation_button (SlopeChart *self, gboolean showbutton)
-{
-    SlopeChartPrivate *priv = SLOPE_CHART_GET_PRIVATE(self);
-
-    priv->show_animation_button = showbutton;
-    if (showbutton == TRUE) {
-        gtk_header_bar_pack_start(GTK_HEADER_BAR(priv->header), priv->animation_button);
-    }
-    else {
-        gtk_container_remove(GTK_CONTAINER(priv->header), priv->animation_button);
-    }
-}
-
-
-gboolean slope_chart_get_show_animation_button (SlopeChart *self)
-{
-    SlopeChartPrivate *priv = SLOPE_CHART_GET_PRIVATE(self);
-
-    return gtk_widget_get_visible(priv->animation_button);
-}
-
-
 SlopeFigure* slope_chart_get_figure (SlopeChart *self)
 {
     return SLOPE_CHART_GET_PRIVATE(self)->figure;
@@ -161,12 +126,6 @@ SlopeFigure* slope_chart_get_figure (SlopeChart *self)
 GtkWidget* slope_chart_get_header (SlopeChart *self)
 {
     return SLOPE_CHART_GET_PRIVATE(self)->header;
-}
-
-
-GtkWidget* slope_chart_get_animation_button (SlopeChart *self)
-{
-    return SLOPE_CHART_GET_PRIVATE(self)->animation_button;
 }
 
 

@@ -22,7 +22,7 @@
 #define SLOPE_XYAXIS_H
 
 #include <slope/item.h>
-#include <slope/xyaxis-sampler.h>
+#include <slope/sampler.h>
 
 #define SLOPE_XYAXIS_TYPE              (slope_xyaxis_get_type())
 #define SLOPE_XYAXIS(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_XYAXIS_TYPE, SlopeXyAxis))
@@ -97,7 +97,7 @@ void slope_xyaxis_set_title (SlopeXyAxis *self, const char *title);
 
 const char* slope_xyaxis_get_title (SlopeXyAxis *self);
 
-SlopeXyAxisSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self);
+SlopeSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self);
 
 gboolean slope_xyaxis_get_selected (SlopeXyAxis *self);
 
