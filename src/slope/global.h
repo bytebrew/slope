@@ -37,36 +37,36 @@ typedef struct _SlopeView     SlopeView;
 
 
 typedef enum
-_SlopeItemMouseButton
+_SlopeMouseButton
 {
-    SLOPE_VIEW_LEFT_BUTTON,
-    SLOPE_VIEW_RIGHT_BUTTON,
-    SLOPE_VIEW_NO_BUTTON
+    SLOPE_MOUSE_BUTTON_LEFT,
+    SLOPE_MOUSE_BUTTON_RIGHT,
+    SLOPE_MOUSE_BUTTON_NONE
 }
-SlopeItemMouseButton;
+SlopeMouseButton;
 
 
 typedef enum
-_SlopeViewMouseEventType
+_SlopeMouseEventType
 {
-    SLOPE_VIEW_BUTTON_PRESS,
-    SLOPE_VIEW_BUTTON_DOUBLE_PRESS,
-    SLOPE_VIEW_MOVE,
-    SLOPE_VIEW_MOVE_PRESSED,
-    SLOPE_VIEW_BUTTON_RELEASE
+    SLOPE_MOUSE_PRESS,
+    SLOPE_MOUSE_DOUBLE_PRESS,
+    SLOPE_MOUSE_MOVE,
+    SLOPE_MOUSE_MOVE_PRESSED,
+    SLOPE_MOUSE_RELEASE
 }
-SlopeViewMouseEventType;
+SlopeMouseEventType;
 
 
 typedef struct
-_SlopeViewMouseEvent
+_SlopeMouseEvent
 {
     double x;
     double y;
-    int buttom;
-    unsigned int type;
+    SlopeMouseButton buttom;
+    SlopeMouseEventType type;
 }
-SlopeViewMouseEvent;
+SlopeMouseEvent;
 
 #define SLOPE_UNUSED(var) (void) var
 

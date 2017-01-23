@@ -273,7 +273,7 @@ void _figure_update_layout (SlopeFigure *self)
 }
 
 
-void _figure_handle_mouse_event (SlopeFigure *self, SlopeViewMouseEvent *event)
+void _figure_handle_mouse_event (SlopeFigure *self, SlopeMouseEvent *event)
 {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     GList *iter;

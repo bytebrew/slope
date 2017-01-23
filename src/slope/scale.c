@@ -292,7 +292,7 @@ void slope_scale_set_name (SlopeScale *self, const char *name)
 }
 
 
-gboolean _scale_handle_mouse_event(SlopeScale *self, SlopeViewMouseEvent *event)
+gboolean _scale_handle_mouse_event(SlopeScale *self, SlopeMouseEvent *event)
 {
     SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
     GList *iter;
@@ -317,7 +317,7 @@ gboolean _scale_handle_mouse_event(SlopeScale *self, SlopeViewMouseEvent *event)
 }
 
 
-gboolean _scale_mouse_event_impl (SlopeScale *self, SlopeViewMouseEvent *event)
+gboolean _scale_mouse_event_impl (SlopeScale *self, SlopeMouseEvent *event)
 {
     SLOPE_UNUSED(self);
     SLOPE_UNUSED(event);

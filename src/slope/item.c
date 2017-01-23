@@ -122,13 +122,13 @@ void slope_item_detach (SlopeItem *self)
 }
 
 
-gboolean _item_handle_mouse_event (SlopeItem *self, SlopeViewMouseEvent *event)
+gboolean _item_handle_mouse_event (SlopeItem *self, SlopeMouseEvent *event)
 {
     return SLOPE_ITEM_GET_CLASS(self)->mouse_event(self, event);
 }
 
 
-gboolean _item_mouse_event_impl (SlopeItem *self, SlopeViewMouseEvent *event)
+gboolean _item_mouse_event_impl (SlopeItem *self, SlopeMouseEvent *event)
 {
     SLOPE_UNUSED(self);
     SLOPE_UNUSED(event);

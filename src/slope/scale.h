@@ -58,7 +58,7 @@ _SlopeScaleClass
   void (*rescale) (SlopeScale *self);
   void (*get_figure_rect) (SlopeScale *self, SlopeRect *rect);
   void (*get_data_rect) (SlopeScale *self, SlopeRect *rect);
-  gboolean (*mouse_event) (SlopeScale *self, SlopeViewMouseEvent *event);
+  gboolean (*mouse_event) (SlopeScale *self, SlopeMouseEvent *event);
 
 
   /* Padding to allow adding up to 4 members

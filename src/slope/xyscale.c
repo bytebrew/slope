@@ -69,7 +69,7 @@ static void _xyscale_get_figure_rect (SlopeScale *self, SlopeRect *rect);
 static void _xyscale_get_data_rect (SlopeScale *self, SlopeRect *rect);
 static void _xyscale_position_axis (SlopeScale *self);
 static void _xyscale_apply_padding(SlopeXyScale *self);
-static gboolean _xyscale_mouse_event (SlopeScale *self, SlopeViewMouseEvent *event);
+static gboolean _xyscale_mouse_event (SlopeScale *self, SlopeMouseEvent *event);
 
 
 static void
@@ -506,7 +506,7 @@ void slope_xyscale_set_y_range (SlopeXyScale *self, double min, double max)
 
 static
 gboolean _xyscale_mouse_event (SlopeScale *self,
-                               SlopeViewMouseEvent *event)
+                               SlopeMouseEvent *event)
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
     SlopeView *view = slope_scale_get_view(self);
@@ -525,8 +525,8 @@ gboolean _xyscale_mouse_event (SlopeScale *self,
     }
 
 
-    if (event->type == SLOPE_VIEW_BUTTON_PRESS) {
-        if (event->buttom == SLOPE_VIEW_LEFT_BUTTON) {
+    if (event->type == SLOPE_MOUSE_PRESS) {
+        if (event->buttom == SLOPE_MOUSE_BUTTON_LEFT) {
             priv->mouse_p1.x = event->x;
             priv->mouse_p1.y = event->y;
             priv->mouse_p2 = priv->mouse_p1;
@@ -534,24 +534,24 @@ gboolean _xyscale_mouse_event (SlopeScale *self,
         }
     }
 
-    else if (event->type == SLOPE_VIEW_BUTTON_DOUBLE_PRESS) {
-        if (event->buttom == SLOPE_VIEW_LEFT_BUTTON) {
+    else if (event->type == SLOPE_MOUSE_DOUBLE_PRESS) {
+        if (event->buttom == SLOPE_MOUSE_BUTTON_LEFT) {
             slope_scale_rescale(self);
             slope_view_redraw(view);
         }
     }
 
-    else if (event->type == SLOPE_VIEW_MOVE_PRESSED &&
+    else if (event->type == SLOPE_MOUSE_MOVE_PRESSED &&
              priv->on_drag == TRUE) {
         priv->mouse_p2.x = event->x;
         priv->mouse_p2.y = event->y;
         slope_view_redraw(view);
     }
 
-    else if (event->type == SLOPE_VIEW_BUTTON_RELEASE) {
+    else if (event->type == SLOPE_MOUSE_RELEASE) {
         priv->on_drag = FALSE;
 
-        if (event->buttom == SLOPE_VIEW_LEFT_BUTTON) {
+        if (event->buttom == SLOPE_MOUSE_BUTTON_LEFT) {
             SlopePoint data_p1, data_p2;
 
             if (priv->mouse_p2.x < priv->mouse_p1.x) {
@@ -567,7 +567,7 @@ gboolean _xyscale_mouse_event (SlopeScale *self,
             }
 
             if (SLOPE_ABS(priv->mouse_p1.x - priv->mouse_p2.x) > 3 &&
-                    SLOPE_ABS(priv->mouse_p1.y - priv->mouse_p2.y) > 3) {
+                SLOPE_ABS(priv->mouse_p1.y - priv->mouse_p2.y) > 3) {
 
                 slope_scale_unmap(self, &data_p1, &priv->mouse_p1);
                 slope_scale_unmap(self, &data_p2, &priv->mouse_p2);
