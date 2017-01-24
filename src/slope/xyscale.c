@@ -19,8 +19,10 @@
  */
 
 #include <slope/xyscale_p.h>
-#include <slope/figure.h>
+#include <slope/figure_p.h>
 #include <slope/item_p.h>
+
+#include <stdio.h>
 
 #define MAX_AXIS 6
 
@@ -69,7 +71,7 @@ static void _xyscale_get_figure_rect (SlopeScale *self, SlopeRect *rect);
 static void _xyscale_get_data_rect (SlopeScale *self, SlopeRect *rect);
 static void _xyscale_position_axis (SlopeScale *self);
 static void _xyscale_apply_padding(SlopeXyScale *self);
-static gboolean _xyscale_mouse_event (SlopeScale *self, SlopeMouseEvent *event);
+static void _xyscale_mouse_event (SlopeScale *self, SlopeMouseEvent *event);
 
 
 static void
@@ -240,8 +242,7 @@ void _xyscale_unmap (SlopeScale *self, SlopePoint *res, const SlopePoint *src)
 }
 
 
-static
-void _xyscale_rescale (SlopeScale *self)
+static void _xyscale_rescale (SlopeScale *self)
 {
     SlopeXyScalePrivate *priv;
     GList *iter, *list;
@@ -504,54 +505,54 @@ void slope_xyscale_set_y_range (SlopeXyScale *self, double min, double max)
 }
 
 
-static
-gboolean _xyscale_mouse_event (SlopeScale *self,
-                               SlopeMouseEvent *event)
+static void _xyscale_mouse_event (
+        SlopeScale *self, SlopeMouseEvent *event)
 {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
-    SlopeView *view = slope_scale_get_view(self);
-    SlopeRect myrect;
+    SlopeFigure *figure = slope_scale_get_figure(self);
+    SlopeRect figure_rect;
+
+    if (event->type == SLOPE_MOUSE_MOVE)
+        return;
 
     /* If the mouse event is outside this scale,we have nothing to do
        with it. It on_drag is true, disable it to ensure the zoom rectangle
        does not remain visible */
-    slope_scale_get_figure_rect(self, &myrect);
-    if (slope_rect_contains(&myrect, event->x, event->y) == FALSE) {
+    slope_scale_get_figure_rect(self, &figure_rect);
+    if (slope_rect_contains(&figure_rect, event->x, event->y) == FALSE) {
         if (priv->on_drag == TRUE) {
             priv->on_drag = FALSE;
-            slope_view_redraw(view);
+            _figure_request_redraw(figure);
         }
-        return FALSE;
+        return;
     }
 
 
     if (event->type == SLOPE_MOUSE_PRESS) {
-        if (event->buttom == SLOPE_MOUSE_BUTTON_LEFT) {
+        if (event->button == SLOPE_MOUSE_BUTTON_LEFT) {
             priv->mouse_p1.x = event->x;
             priv->mouse_p1.y = event->y;
             priv->mouse_p2 = priv->mouse_p1;
             priv->on_drag = TRUE;
         }
-    }
-
-    else if (event->type == SLOPE_MOUSE_DOUBLE_PRESS) {
-        if (event->buttom == SLOPE_MOUSE_BUTTON_LEFT) {
+        else if (event->button == SLOPE_MOUSE_BUTTON_RIGHT) {
             slope_scale_rescale(self);
-            slope_view_redraw(view);
+            _figure_request_redraw(figure);
         }
     }
+
 
     else if (event->type == SLOPE_MOUSE_MOVE_PRESSED &&
              priv->on_drag == TRUE) {
         priv->mouse_p2.x = event->x;
         priv->mouse_p2.y = event->y;
-        slope_view_redraw(view);
+        _figure_request_redraw(figure);
     }
 
     else if (event->type == SLOPE_MOUSE_RELEASE) {
         priv->on_drag = FALSE;
 
-        if (event->buttom == SLOPE_MOUSE_BUTTON_LEFT) {
+        if (event->button == SLOPE_MOUSE_BUTTON_LEFT) {
             SlopePoint data_p1, data_p2;
 
             if (priv->mouse_p2.x < priv->mouse_p1.x) {
@@ -576,11 +577,9 @@ gboolean _xyscale_mouse_event (SlopeScale *self,
                 slope_xyscale_set_y_range(SLOPE_XYSCALE(self), data_p2.y, data_p1.y);
             }
 
-            slope_view_redraw(view);
+            _figure_request_redraw(figure);
         }
     }
-
-    return FALSE;
 }
 
 /* slope/xyscale.c */

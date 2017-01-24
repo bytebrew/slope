@@ -42,9 +42,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 static void _view_finalize (GObject *self);
 static void _view_set_figure (SlopeView *self, SlopeFigure *figure);
 static gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data);
-static gboolean _view_on_mouse_press (GtkWidget *self, GdkEvent *event, gpointer data);
-static gboolean _view_on_mouse_move (GtkWidget *self, GdkEvent *event, gpointer data);
-static gboolean _view_on_mouse_release (GtkWidget *self, GdkEvent *event, gpointer data);
+static gboolean _view_on_mouse_event (GtkWidget *self, GdkEvent *gdk_event, gpointer data);
 
 
 
@@ -68,21 +66,30 @@ slope_view_init (SlopeView *self)
     priv->figure = NULL;
     priv->mouse_pressed = FALSE;
 
+    /* minimum width and height of the widget */
     gtk_widget_set_size_request(gtk_widget, 250, 250);
+
+    /* select the types of events we want to be notified about */
     gtk_widget_add_events(gtk_widget,
                 GDK_EXPOSURE_MASK
                 |GDK_BUTTON_PRESS_MASK
                 |GDK_BUTTON_RELEASE_MASK
                 |GDK_POINTER_MOTION_MASK);
 
+    /* set drawing callback */
     g_signal_connect(G_OBJECT(self), "draw",
                      G_CALLBACK(_view_on_draw), NULL);
+
+    /* set mouse event callbacks */
     g_signal_connect(G_OBJECT(self), "button-press-event",
-                     G_CALLBACK(_view_on_mouse_press), NULL);
+                     G_CALLBACK(_view_on_mouse_event),
+                     GINT_TO_POINTER(SLOPE_MOUSE_PRESS));
     g_signal_connect(G_OBJECT(self), "motion-notify-event",
-                     G_CALLBACK(_view_on_mouse_move), NULL);
+                     G_CALLBACK(_view_on_mouse_event),
+                     GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
     g_signal_connect(G_OBJECT(self), "button-release-event",
-                     G_CALLBACK(_view_on_mouse_release), NULL);
+                     G_CALLBACK(_view_on_mouse_event),
+                     GINT_TO_POINTER(SLOPE_MOUSE_RELEASE));
 }
 
 
@@ -120,33 +127,8 @@ GtkWidget* slope_view_new_with_figure (SlopeFigure *figure)
 }
 
 
-static
-void _view_set_figure (SlopeView *self, SlopeFigure *figure)
-{
-    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
-
-    // TODO
-    priv->figure = figure;
-    _figure_set_view(figure, self);
-}
-
-
-void slope_view_redraw (SlopeView *self)
-{
-    gtk_widget_queue_draw(GTK_WIDGET(self));
-}
-
-
-SlopeFigure* slope_view_get_figure (SlopeFigure *self)
-{
-    if (self != NULL) {
-        return SLOPE_VIEW_GET_PRIVATE(self)->figure;
-    }
-    return NULL;
-}
-
-
-void slope_view_write_to_png (SlopeView *self, const char *filename, int width, int height)
+void slope_view_write_to_png (
+        SlopeView *self, const char *filename, int width, int height)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
 
@@ -156,8 +138,8 @@ void slope_view_write_to_png (SlopeView *self, const char *filename, int width, 
 }
 
 
-static
-gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data)
+static gboolean _view_on_draw (
+        GtkWidget *self, cairo_t *cr, gpointer data)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
     GtkAllocation allocation;
@@ -179,174 +161,75 @@ gboolean _view_on_draw (GtkWidget *self, cairo_t *cr, gpointer data)
 }
 
 
-static
-gboolean _view_save_png_dialog (GtkWidget *self, gpointer data)
-{
-    SlopeView *view = SLOPE_VIEW(data);
-    GtkWidget *parent_window = gtk_widget_get_toplevel(GTK_WIDGET(view));
-    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(data);
-    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
-    GtkWidget *save_dialog;
-    GtkFileFilter *filter;
-    gint res;
-    SLOPE_UNUSED(self);
-
-    filter = gtk_file_filter_new();
-    gtk_file_filter_add_pattern(filter, "*.png");
-
-    save_dialog = gtk_file_chooser_dialog_new(
-          "Save PNG",
-          GTK_WINDOW(parent_window),
-          action,
-          "_Cancel",
-          GTK_RESPONSE_CANCEL,
-          "_Open",
-          GTK_RESPONSE_ACCEPT,
-          NULL);
-
-    gtk_file_chooser_set_filter(
-        GTK_FILE_CHOOSER(save_dialog), filter);
-    gtk_file_chooser_set_do_overwrite_confirmation(
-        GTK_FILE_CHOOSER(save_dialog), TRUE);
-
-    res = gtk_dialog_run(GTK_DIALOG(save_dialog));
-
-    if (res == GTK_RESPONSE_ACCEPT) {
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER(save_dialog);
-        char *filename;
-        GtkAllocation alloc;
-
-        gtk_widget_get_allocation(GTK_WIDGET(view), &alloc);
-
-        filename = gtk_file_chooser_get_filename(chooser);
-        slope_figure_write_to_png(priv->figure, filename, alloc.width, alloc.height);
-        g_free(filename);
-    }
-
-    gtk_widget_destroy(save_dialog);
-    return TRUE;
-}
-
-
-static
-gboolean _view_show_context_menu (GtkWidget *self, GdkEvent *event)
-{
-    GtkWidget *menu = gtk_menu_new();
-    GtkWidget *save_option = gtk_menu_item_new_with_label("Save PNG");
-
-    g_signal_connect(G_OBJECT(save_option), "activate",
-                     G_CALLBACK(_view_save_png_dialog), self);
-
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu), save_option);
-    gtk_widget_show_all(menu);
-    gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
-                   event->button.button, event->button.time);
-
-    return TRUE;
-}
-
-
-static
-gboolean _view_on_mouse_press (GtkWidget *self, GdkEvent *event, gpointer data)
+static gboolean _view_on_mouse_event (
+        GtkWidget *self, GdkEvent *gdk_event, gpointer data)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
-    SlopeMouseEvent item_event;
+    SlopeMouseEventType event_type = GPOINTER_TO_INT(data);
+    SlopeMouseEvent mouse_event;
     SLOPE_UNUSED(data);
 
-    priv->mouse_pressed = TRUE;
-    if (priv->figure == NULL) {
-        return TRUE;
+    /* In case of move events we want to know if a mouse button is pressed */
+    if (event_type == SLOPE_MOUSE_PRESS) {
+        priv->mouse_pressed = TRUE;
+        if (gdk_event->type == GDK_2BUTTON_PRESS)
+            event_type = SLOPE_MOUSE_DOUBLE_PRESS;
     }
-
-    if (event->button.button == 1) {
-        item_event.buttom = SLOPE_MOUSE_BUTTON_LEFT;
+    else if (event_type == SLOPE_MOUSE_RELEASE) {
+        priv->mouse_pressed = FALSE;
     }
-    else if (event->button.button == 3) {
-        item_event.buttom = SLOPE_MOUSE_BUTTON_RIGHT;
+    else if (event_type == SLOPE_MOUSE_MOVE) {
+        if (priv->mouse_pressed == TRUE)
+            event_type = SLOPE_MOUSE_MOVE_PRESSED;
+    }
+    mouse_event.type = event_type;
 
-        if (event->type != GDK_2BUTTON_PRESS) {
-            if (_view_show_context_menu(self, event) == TRUE) {
-                return TRUE;
-            }
-        }
+    /* check which mouse button was pressed, we have interest only in left
+       in right buttons */
+    if (gdk_event->button.button == 1) {
+        mouse_event.button = SLOPE_MOUSE_BUTTON_LEFT;
+    }
+    else if (gdk_event->button.button == 3) {
+        mouse_event.button = SLOPE_MOUSE_BUTTON_RIGHT;
     }
     else {
-        return TRUE;
+        mouse_event.button = SLOPE_MOUSE_BUTTON_NONE;
     }
 
-    item_event.type = event->type == GDK_2BUTTON_PRESS
-               ? SLOPE_MOUSE_DOUBLE_PRESS
-               : SLOPE_MOUSE_PRESS;
+    /* mouse pointer position in widget coordinates */
+    mouse_event.x = gdk_event->button.x;
+    mouse_event.y = gdk_event->button.y;
 
-    item_event.x = event->button.x;
-    item_event.y = event->button.y;
-
-    _figure_handle_mouse_event(priv->figure, &item_event);
-    return TRUE;
+    /* finally send the event down to be handled by the figure, it's
+       scales and elements */
+    _figure_handle_mouse_event(priv->figure, &mouse_event);
+    return FALSE;
 }
 
 
-static
-gboolean _view_on_mouse_move (GtkWidget *self, GdkEvent *event, gpointer data)
+static void _view_set_figure (
+        SlopeView *self, SlopeFigure *figure)
 {
     SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
-    SlopeMouseEvent item_event;
-    SLOPE_UNUSED(data);
 
-    if (priv->figure == NULL) {
-        return TRUE;
-    }
-
-    if (event->button.button == 1) {
-        item_event.buttom = SLOPE_MOUSE_BUTTON_LEFT;
-    }
-    else if (event->button.button == 3) {
-        item_event.buttom = SLOPE_MOUSE_BUTTON_RIGHT;
-    }
-    else {
-        item_event.buttom = SLOPE_MOUSE_BUTTON_NONE;
-    }
-
-    item_event.type = (priv->mouse_pressed == TRUE)
-            ? SLOPE_MOUSE_MOVE_PRESSED
-            : SLOPE_MOUSE_MOVE;
-
-    item_event.x = event->button.x;
-    item_event.y = event->button.y;
-
-    _figure_handle_mouse_event(priv->figure, &item_event);
-    return TRUE;
+    // TODO
+    priv->figure = figure;
+    _figure_set_view(figure, self);
 }
 
 
-static
-gboolean _view_on_mouse_release (GtkWidget *self, GdkEvent *event, gpointer data)
+SlopeFigure* slope_view_get_figure (SlopeFigure *self)
 {
-    SlopeViewPrivate *priv = SLOPE_VIEW_GET_PRIVATE(self);
-    SlopeMouseEvent item_event;
-    SLOPE_UNUSED(data);
-
-    priv->mouse_pressed = FALSE;
-    if (priv->figure == NULL) {
-        return TRUE;
+    if (self != NULL) {
+        return SLOPE_VIEW_GET_PRIVATE(self)->figure;
     }
+    return NULL;
+}
 
-    if (event->button.button == 1) {
-        item_event.buttom = SLOPE_MOUSE_BUTTON_LEFT;
-    }
-    else if (event->button.button == 3) {
-        item_event.buttom = SLOPE_MOUSE_BUTTON_RIGHT;
-    }
-    else {
-        return TRUE;
-    }
 
-    item_event.type = SLOPE_MOUSE_RELEASE;
-    item_event.x = event->button.x;
-    item_event.y = event->button.y;
-
-    _figure_handle_mouse_event(priv->figure, &item_event);
-    return TRUE;
+void slope_view_redraw (SlopeView *self)
+{
+    gtk_widget_queue_draw(GTK_WIDGET(self));
 }
 
 

@@ -45,8 +45,7 @@ configure_file(
    ${CMAKE_BINARY_DIR}/config.h
 )
 
-add_library(slope SHARED ${slope_SRCS})
-#target_link_libraries(slope ${DEPENDENCY_LIBRARIES})
+add_library(slope SHARED ${slope_SRCS}  ${slope_HDRS})
 
 install(TARGETS slope DESTINATION /usr/lib)
 install(FILES ${slope_HDRS} DESTINATION /usr/include/slope)

@@ -43,8 +43,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(
     SlopeItem, slope_item, G_TYPE_OBJECT)
 
 
-static
-void _item_finalize (GObject *self);
+static void _item_finalize (GObject *self);
 
 
 
@@ -122,19 +121,18 @@ void slope_item_detach (SlopeItem *self)
 }
 
 
-gboolean _item_handle_mouse_event (SlopeItem *self, SlopeMouseEvent *event)
+void _item_handle_mouse_event (SlopeItem *self, SlopeMouseEvent *event)
 {
-    return SLOPE_ITEM_GET_CLASS(self)->mouse_event(self, event);
+    SLOPE_ITEM_GET_CLASS(self)->mouse_event(self, event);
 }
 
 
-gboolean _item_mouse_event_impl (SlopeItem *self, SlopeMouseEvent *event)
+void _item_mouse_event_impl (SlopeItem *self, SlopeMouseEvent *event)
 {
+    /* provide a place holder "do nothing" implementation */
     SLOPE_UNUSED(self);
     SLOPE_UNUSED(event);
     /* pass */
-
-    return FALSE;
 }
 
 

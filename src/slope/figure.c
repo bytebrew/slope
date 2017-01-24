@@ -20,6 +20,7 @@
 
 #include <slope/figure_p.h>
 #include <slope/scale_p.h>
+#include <slope/view.h>
 
 
 typedef struct
@@ -29,6 +30,7 @@ _SlopeFigurePrivate
     GList *scale_list;
     SlopeColor background_color;
     gboolean managed;
+    gboolean redraw_requested;
 
     double layout_rows;
     double layout_cols;
@@ -76,6 +78,7 @@ slope_figure_init (SlopeFigure *self)
     priv->scale_list = NULL;
     priv->background_color = SLOPE_WHITE;
     priv->managed = TRUE;
+    priv->redraw_requested = FALSE;
     priv->frame_mode = SLOPE_FIGURE_ROUNDRECTANGLE;
 }
 
@@ -246,8 +249,7 @@ void slope_figure_write_to_png (SlopeFigure *self, const char *filename,
 }
 
 
-static
-void _figure_update_layout (SlopeFigure *self)
+static void _figure_update_layout (SlopeFigure *self)
 {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     GList *iter;
@@ -273,23 +275,32 @@ void _figure_update_layout (SlopeFigure *self)
 }
 
 
-void _figure_handle_mouse_event (SlopeFigure *self, SlopeMouseEvent *event)
+void _figure_handle_mouse_event (
+        SlopeFigure *self, SlopeMouseEvent *event)
 {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-    GList *iter;
 
     /* delegate the handling of the event down to the scales and it's
        items */
-    iter = priv->scale_list;
+    GList *iter = priv->scale_list;
     while (iter != NULL) {
         SlopeScale *scale = SLOPE_SCALE(iter->data);
 
-        if (_scale_handle_mouse_event(scale, event) == TRUE) {
-            return;
-        }
+        _scale_handle_mouse_event(scale, event);
 
         iter = iter->next;
     }
+
+    if (priv->redraw_requested == TRUE) {
+        slope_view_redraw(priv->view);
+        priv->redraw_requested = FALSE;
+    }
+}
+
+
+void _figure_request_redraw (SlopeFigure *self)
+{
+    SLOPE_FIGURE_GET_PRIVATE(self)->redraw_requested = TRUE;
 }
 
 

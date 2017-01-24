@@ -27,4 +27,6 @@ void _figure_set_view (SlopeFigure *self, SlopeView *view);
 
 void _figure_handle_mouse_event (SlopeFigure *self, SlopeMouseEvent *event);
 
+void _figure_request_redraw (SlopeFigure *self);
+
 #endif /* SLOPE_FIGURE_P_H */

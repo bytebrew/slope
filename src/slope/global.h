@@ -63,7 +63,7 @@ _SlopeMouseEvent
 {
     double x;
     double y;
-    SlopeMouseButton buttom;
+    SlopeMouseButton button;
     SlopeMouseEventType type;
 }
 SlopeMouseEvent;

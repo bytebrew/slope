@@ -292,37 +292,30 @@ void slope_scale_set_name (SlopeScale *self, const char *name)
 }
 
 
-gboolean _scale_handle_mouse_event(SlopeScale *self, SlopeMouseEvent *event)
+void _scale_handle_mouse_event (SlopeScale *self, SlopeMouseEvent *event)
 {
-    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
     GList *iter;
 
-    /* call virtual handle and if if signals done, don't call items handlers */
-    if (SLOPE_SCALE_GET_CLASS(self)->mouse_event(self, event) == TRUE) {
-        return TRUE;
-    }
+    /* this object's own custom handling */
+    SLOPE_SCALE_GET_CLASS(self)->mouse_event(self, event);
+    iter = SLOPE_SCALE_GET_PRIVATE(self)->item_list;
 
-    iter = priv->item_list;
     while (iter != NULL) {
         SlopeItem *item = SLOPE_ITEM(iter->data);
 
-        if (_item_handle_mouse_event(item, event) == TRUE) {
-            return TRUE;
-        }
+        _item_handle_mouse_event(item, event);
 
         iter = iter->next;
     }
-
-    return FALSE;
 }
 
 
-gboolean _scale_mouse_event_impl (SlopeScale *self, SlopeMouseEvent *event)
+void _scale_mouse_event_impl (SlopeScale *self, SlopeMouseEvent *event)
 {
+    /* provide a place holder "do nothing" implementation */
     SLOPE_UNUSED(self);
     SLOPE_UNUSED(event);
     /* pass */
-    return FALSE;
 }
 
 
