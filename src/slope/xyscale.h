@@ -34,6 +34,15 @@
 SLOPE_BEGIN_DECLS
 
 typedef enum
+_SlopeXyScaleInteracion
+{
+    SLOPE_XYSCALE_INTERACTION_ZOOM  = 0,
+    SLOPE_XYSCALE_INTERACTION_TRANSLATE  = 1
+}
+SlopeXyScaleInteracion;
+
+
+typedef enum
 _SlopeXyScaleAxis
 {
     SLOPE_XYSCALE_AXIS_BOTTOM  = 0,
@@ -97,6 +106,8 @@ void slope_xyscale_set_axis (SlopeXyScale *self, int axis_flag);
 void slope_xyscale_set_x_range (SlopeXyScale *self, double min, double max);
 
 void slope_xyscale_set_y_range (SlopeXyScale *self, double min, double max);
+
+void slope_xyscale_set_interaction (SlopeXyScale *self, int interaction);
 
 SLOPE_END_DECLS
 

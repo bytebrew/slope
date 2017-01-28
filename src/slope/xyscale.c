@@ -49,6 +49,7 @@ _SlopeXyScalePrivate
     SlopePoint mouse_p2;
     SlopeColor mouse_rect_color;
     gboolean on_drag;
+    int interaction;
 }
 SlopeXyScalePrivate;
 
@@ -72,6 +73,8 @@ static void _xyscale_get_data_rect (SlopeScale *self, SlopeRect *rect);
 static void _xyscale_position_axis (SlopeScale *self);
 static void _xyscale_apply_padding(SlopeXyScale *self);
 static void _xyscale_mouse_event (SlopeScale *self, SlopeMouseEvent *event);
+static void _xyscale_zoom_event (SlopeScale *self, SlopeMouseEvent *event);
+static void _xyscale_translate_event (SlopeScale *self, SlopeMouseEvent *event);
 
 
 static void
@@ -121,6 +124,7 @@ void slope_xyscale_init (SlopeXyScale *self)
     priv->vertical_pad = 0.0;
     priv->on_drag = FALSE;
     priv->mouse_rect_color = SLOPE_GRAY(80);
+    priv->interaction = SLOPE_XYSCALE_INTERACTION_TRANSLATE;
 
     slope_scale_rescale(SLOPE_SCALE(self));
 }
@@ -512,14 +516,13 @@ static void _xyscale_mouse_event (
     SlopeFigure *figure = slope_scale_get_figure(self);
     SlopeRect figure_rect;
 
-    if (event->type == SLOPE_MOUSE_MOVE)
-        return;
-
     /* If the mouse event is outside this scale,we have nothing to do
-       with it. It on_drag is true, disable it to ensure the zoom rectangle
+       with it. If on_drag is true, disable it to ensure the zoom rectangle
        does not remain visible */
     slope_scale_get_figure_rect(self, &figure_rect);
-    if (slope_rect_contains(&figure_rect, event->x, event->y) == FALSE) {
+    if (event->type == SLOPE_MOUSE_MOVE ||
+        slope_rect_contains(&figure_rect, event->x, event->y) == FALSE)
+    {
         if (priv->on_drag == TRUE) {
             priv->on_drag = FALSE;
             _figure_request_redraw(figure);
@@ -527,59 +530,128 @@ static void _xyscale_mouse_event (
         return;
     }
 
-
-    if (event->type == SLOPE_MOUSE_PRESS) {
-        if (event->button == SLOPE_MOUSE_BUTTON_LEFT) {
-            priv->mouse_p1.x = event->x;
-            priv->mouse_p1.y = event->y;
-            priv->mouse_p2 = priv->mouse_p1;
-            priv->on_drag = TRUE;
+    if (event->type == SLOPE_MOUSE_DOUBLE_PRESS) {
+        /* Double mouse presses change interaction type */
+        if (priv->interaction == SLOPE_XYSCALE_INTERACTION_ZOOM) {
+            priv->interaction = SLOPE_XYSCALE_INTERACTION_TRANSLATE;
         }
-        else if (event->button == SLOPE_MOUSE_BUTTON_RIGHT) {
-            slope_scale_rescale(self);
-            _figure_request_redraw(figure);
+        else {
+            priv->interaction = SLOPE_XYSCALE_INTERACTION_ZOOM;
         }
     }
+    else if (event->button == SLOPE_MOUSE_BUTTON_RIGHT) {
+        slope_scale_rescale(self);
+        _figure_request_redraw(figure);
+    }
 
+    /* Delegate to action handlers */
+    else if (priv->interaction == SLOPE_XYSCALE_INTERACTION_ZOOM) {
+        _xyscale_zoom_event(self, event);
+    }
+    else if (priv->interaction == SLOPE_XYSCALE_INTERACTION_TRANSLATE) {
+        _xyscale_translate_event(self, event);
+    }
+}
+
+
+static void _xyscale_zoom_event (
+        SlopeScale *self, SlopeMouseEvent *event)
+{
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    SlopeFigure *figure = slope_scale_get_figure(self);
+
+    if (event->type == SLOPE_MOUSE_PRESS) {
+        priv->mouse_p1.x = event->x;
+        priv->mouse_p1.y = event->y;
+        priv->mouse_p2 = priv->mouse_p1;
+        priv->on_drag = TRUE;
+    }
 
     else if (event->type == SLOPE_MOUSE_MOVE_PRESSED &&
-             priv->on_drag == TRUE) {
+             priv->on_drag == TRUE)
+    {
         priv->mouse_p2.x = event->x;
         priv->mouse_p2.y = event->y;
         _figure_request_redraw(figure);
     }
 
     else if (event->type == SLOPE_MOUSE_RELEASE) {
+        SlopePoint data_p1, data_p2;
         priv->on_drag = FALSE;
 
-        if (event->button == SLOPE_MOUSE_BUTTON_LEFT) {
-            SlopePoint data_p1, data_p2;
-
-            if (priv->mouse_p2.x < priv->mouse_p1.x) {
-                double tmp = priv->mouse_p1.x;
-                priv->mouse_p1.x = priv->mouse_p2.x;
-                priv->mouse_p2.x = tmp;
-            }
-
-            if (priv->mouse_p2.y < priv->mouse_p1.y) {
-                double tmp = priv->mouse_p1.y;
-                priv->mouse_p1.y = priv->mouse_p2.y;
-                priv->mouse_p2.y = tmp;
-            }
-
-            if (SLOPE_ABS(priv->mouse_p1.x - priv->mouse_p2.x) > 3 &&
-                SLOPE_ABS(priv->mouse_p1.y - priv->mouse_p2.y) > 3) {
-
-                slope_scale_unmap(self, &data_p1, &priv->mouse_p1);
-                slope_scale_unmap(self, &data_p2, &priv->mouse_p2);
-
-                slope_xyscale_set_x_range(SLOPE_XYSCALE(self), data_p1.x, data_p2.x);
-                slope_xyscale_set_y_range(SLOPE_XYSCALE(self), data_p2.y, data_p1.y);
-            }
-
-            _figure_request_redraw(figure);
+        if (priv->mouse_p2.x < priv->mouse_p1.x) {
+            double tmp = priv->mouse_p1.x;
+            priv->mouse_p1.x = priv->mouse_p2.x;
+            priv->mouse_p2.x = tmp;
         }
+
+        if (priv->mouse_p2.y < priv->mouse_p1.y) {
+            double tmp = priv->mouse_p1.y;
+            priv->mouse_p1.y = priv->mouse_p2.y;
+            priv->mouse_p2.y = tmp;
+        }
+
+        /* Only actually change the zoom if the zoom rect is at least
+           4X4 pixels */
+        if (SLOPE_ABS(priv->mouse_p1.x - priv->mouse_p2.x) > 4 &&
+            SLOPE_ABS(priv->mouse_p1.y - priv->mouse_p2.y) > 4)
+        {
+            slope_scale_unmap(self, &data_p1, &priv->mouse_p1);
+            slope_scale_unmap(self, &data_p2, &priv->mouse_p2);
+
+            slope_xyscale_set_x_range(SLOPE_XYSCALE(self), data_p1.x, data_p2.x);
+            slope_xyscale_set_y_range(SLOPE_XYSCALE(self), data_p2.y, data_p1.y);
+        }
+
+        _figure_request_redraw(figure);
     }
+}
+
+
+static void _xyscale_translate_event (
+        SlopeScale *self, SlopeMouseEvent *event)
+{
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    SlopeFigure *figure = slope_scale_get_figure(self);
+
+    if (event->type == SLOPE_MOUSE_PRESS) {
+        priv->mouse_p1.x = event->x;
+        priv->mouse_p1.y = event->y;
+    }
+
+    else if (event->type == SLOPE_MOUSE_MOVE_PRESSED) {
+        SlopePoint data_p1, data_p2;
+        double dx, dy;
+
+        priv->mouse_p2.x = event->x;
+        priv->mouse_p2.y = event->y;
+
+        slope_scale_unmap(self, &data_p1, &priv->mouse_p1);
+        slope_scale_unmap(self, &data_p2, &priv->mouse_p2);
+
+        dx = data_p2.x - data_p1.x;
+        dy = data_p2.y - data_p1.y;
+
+        data_p1.x = priv->dat_x_min - dx;
+        data_p1.y = priv->dat_y_min - dy;
+
+        data_p2.x = priv->dat_x_max - dx;
+        data_p2.y = priv->dat_y_max - dy;
+
+        slope_xyscale_set_x_range(SLOPE_XYSCALE(self), data_p1.x, data_p2.x);
+        slope_xyscale_set_y_range(SLOPE_XYSCALE(self), data_p1.y, data_p2.y);
+
+        priv->mouse_p1 = priv->mouse_p2;
+        _figure_request_redraw(figure);
+    }
+}
+
+
+void slope_xyscale_set_interaction (
+    SlopeXyScale *self, int interaction)
+{
+    SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    priv->interaction = interaction;
 }
 
 /* slope/xyscale.c */
