@@ -66,12 +66,12 @@ int main(int argc, char *argv[])
     sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
     slope_sampler_set_samples(sampler, slope_sampler_month_samples, 12);
 
-    series11 = slope_xyseries_new_filled("Sine", x, y11, n, "b-");
+    series11 = slope_xyseries_new_filled("Sine", x, y11, n, "r-");
     slope_scale_add_item(scale1, series11);
-    series12 = slope_xyseries_new_filled("Cossine", x, y12, n, "ra");
+    series12 = slope_xyseries_new_filled("Cossine", x, y12, n, "ga");
     slope_scale_add_item(scale1, series12);
 
-    series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "la");
+    series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "kob");
     slope_scale_add_item(scale2, series2);
 
     gtk_widget_show_all(chart);

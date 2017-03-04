@@ -28,7 +28,8 @@ _SlopeXySeriesPrivate
     double x_min, x_max;
     double y_min, y_max;
 
-    const double *x_vec, *y_vec;
+    const double *x_vec;
+    const double *y_vec;
     long n_pts;
 
     SlopeColor stroke_color;
@@ -44,7 +45,6 @@ static void _xyseries_draw (SlopeItem *self, cairo_t *cr);
 static void _xyseries_finalize (GObject *self);
 static void _xyseries_get_figure_rect (SlopeItem *self, SlopeRect *rect);
 static void _xyseries_get_data_rect (SlopeItem *self, SlopeRect *rect);
-
 static void _xyseries_draw_line (SlopeXySeries *self, cairo_t *cr);
 static void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr);
 static void _xyseries_draw_areaunder (SlopeXySeries *self, cairo_t *cr);
@@ -80,8 +80,8 @@ slope_xyseries_init (SlopeXySeries *self)
     priv->mode = SLOPE_SERIES_CIRCLES;
     priv->stroke_color = SLOPE_BLUE;
     priv->fill_color = SLOPE_RED;
-    priv->line_width = 1.0;
-    priv->symbol_radius = 2.2;
+    priv->line_width = 1.5;
+    priv->symbol_radius = 3.0;
 }
 
 
@@ -270,12 +270,13 @@ void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr)
     for (k=0L; k<priv->n_pts; ++k) {
         fig_p.x = priv->x_vec[k];
         fig_p.y = priv->y_vec[k];
-        slope_scale_map(scale, &dat_p, &fig_p);
 
+        slope_scale_map(scale, &dat_p, &fig_p);
         slope_cairo_circle(cr, &dat_p, priv->symbol_radius);
 
         if (!SLOPE_COLOR_IS_NULL(priv->fill_color) &&
-        !SLOPE_COLOR_IS_NULL(priv->stroke_color)) {
+            !SLOPE_COLOR_IS_NULL(priv->stroke_color))
+        {
             slope_cairo_set_color(cr, priv->fill_color);
             cairo_fill_preserve(cr);
             slope_cairo_set_color(cr, priv->stroke_color);
@@ -366,7 +367,7 @@ slope_xyseries_set_style (SlopeXySeries *self, const char *style)
 {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
     SlopeColor fill_color=SLOPE_RED, stroke_color=SLOPE_BLUE;
-    double line_width=1.0;
+    double line_width=1.5;
     int mode=SLOPE_SERIES_LINE, k=0;
 
     /* parse the stroke and fill colors */
