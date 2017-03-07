@@ -81,7 +81,7 @@ slope_xyseries_init (SlopeXySeries *self)
     priv->stroke_color = SLOPE_BLUE;
     priv->fill_color = SLOPE_RED;
     priv->line_width = 1.5;
-    priv->symbol_radius = 3.0;
+    priv->symbol_radius = 2.7;
 }
 
 
@@ -367,7 +367,7 @@ slope_xyseries_set_style (SlopeXySeries *self, const char *style)
 {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
     SlopeColor fill_color=SLOPE_RED, stroke_color=SLOPE_BLUE;
-    double line_width=1.5;
+    double line_width=1.3;
     int mode=SLOPE_SERIES_LINE, k=0;
 
     /* parse the stroke and fill colors */
