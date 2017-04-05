@@ -10,6 +10,7 @@ set(slope_HDRS
    slope/xyscale.h
    slope/xyseries.h
    slope/xyaxis.h
+   slope/legend.h
    slope/sampler.h
 )
 
@@ -29,6 +30,7 @@ set(slope_SRCS
    slope/xyscale.c
    slope/xyseries.c
    slope/xyaxis.c
+   slope/legend.c
    slope/sampler.c
 )
 
