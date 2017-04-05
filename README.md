@@ -1,6 +1,6 @@
 # SLOPE
 
-Slope is a free (LGPL) **C** data visualization library for the Gtk+ tookit.
+Slope is a free (LGPL) **C** data visualization library for the Gtk+ toolkit.
 
 ![](https://github.com/elvismt/slope/blob/master/demos/screenshot.png)
 
@@ -16,7 +16,7 @@ Install the required development packages:
 sudo apt-get install build-essential cmake libgtk-3-dev
 ```
 
-- On Fedora/Suse:
+- On Fedora/OpenSuse:
 ```bash
 sudo dnf install gcc cmake gtk3-devel
 ```
