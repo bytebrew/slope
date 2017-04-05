@@ -48,6 +48,7 @@ typedef guint32                         SlopeColor;
 #define SLOPE_LIGHTSTEELBLUE            0xB0C4DEFF
 #define SLOPE_MIDNIGHTBLUE              0x191970FF
 #define SLOPE_MAROON                    0x800000FF
+#define SLOPE_TEAL                      0x008080FF
 #define SLOPE_PALETURQUOISE             0xAFEEEEFF
 
 #define SLOPE_GET_RED(color)            (((color)>>24)&0xFF)

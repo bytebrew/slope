@@ -140,6 +140,7 @@ SlopeColor slope_color_parse (char c)
         case 'm': return SLOPE_MAROON;
         case 'y': return SLOPE_YELLOW;
         case 'l': return SLOPE_LIGHTSKYBLUE;
+        case 't': return SLOPE_TEAL;
         default: return SLOPE_BLACK;
     }
 
