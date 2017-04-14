@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016  Elvis Teixeira
+ * Copyright (C) 2017  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,7 +18,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/xyscale_p.h>
+#include <slope/xyscale.h>
 #include <slope/figure_p.h>
 #include <slope/item_p.h>
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016  Elvis Teixeira
+ * Copyright (C) 2017  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -84,7 +84,7 @@ slope_xyaxis_init (SlopeXyAxis *self)
 
     priv->orientation = SLOPE_XYAXIS_HORIZONTAL;
 
-    priv->line_color = SLOPE_GRAY(120);
+    priv->line_color = SLOPE_BLACK; /* SLOPE_GRAY(120); */
     priv->grid_color = SLOPE_GRAY(120);
     SLOPE_SET_ALPHA(priv->grid_color, 64);
     priv->text_color = SLOPE_BLACK;
@@ -92,7 +92,7 @@ slope_xyaxis_init (SlopeXyAxis *self)
     SLOPE_SET_ALPHA(priv->select_rect_color, 100);
     priv->title_color = SLOPE_BLACK;
 
-    priv->line_width = 2.0;
+    priv->line_width = 1.0;
     priv->grid_line_width = 1.0;
     priv->title = NULL;
     priv->selected = FALSE;

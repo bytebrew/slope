@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016  Elvis Teixeira
+ * Copyright (C) 2017  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,11 +18,6 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_XYSCALE_P_H
-#define SLOPE_XYSCALE_P_H
+#include <slope/legend.h>
 
-#include <slope/xyscale.h>
-
-
-
-#endif /* SLOPE_XYSCALE_P_H */
+/* slope/legend.c */
