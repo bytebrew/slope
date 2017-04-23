@@ -59,6 +59,10 @@ SlopeLegendClass;
 
 GType slope_legend_get_type (void) G_GNUC_CONST;
 
+void slope_legend_set_orientation (SlopeLegend *self, SlopeOrientation orientation);
+
+void slope_legend_set_position (SlopeLegend *self, double x, double y);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_LEGEND_H */

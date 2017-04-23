@@ -34,15 +34,6 @@
 SLOPE_BEGIN_DECLS
 
 typedef enum
-_SlopeXyAxisOrientation
-{
-    SLOPE_XYAXIS_VERTICAL           = 0x00000001,
-    SLOPE_XYAXIS_HORIZONTAL         = 0x00000002
-}
-SlopeXyAxisOrientation;
-
-
-typedef enum
 _SlopeXyAxisComponent
 {
     SLOPE_XYAXIS_LINE           = 0x00000001,
