@@ -32,10 +32,14 @@ _SlopeXySeriesPrivate
     const double *y_vec;
     long n_pts;
 
-    SlopeColor stroke_color;
-    SlopeColor fill_color;
+    SlopeColor line_color;
+    SlopeColor symbol_stroke_color;
+    SlopeColor symbol_fill_color;
+
     double line_width;
-    double symbol_radius;
+    double symbol_stroke_width;
+    double symbol_small_radius;
+    double symbol_big_radius;
     int mode;
 }
 SlopeXySeriesPrivate;
@@ -78,18 +82,19 @@ slope_xyseries_init (SlopeXySeries *self)
 
     priv->n_pts = 0L;
     priv->mode = SLOPE_SERIES_CIRCLES;
-    priv->stroke_color = SLOPE_BLUE;
-    priv->fill_color = SLOPE_RED;
+    priv->line_color = SLOPE_BLUE;
+    priv->symbol_stroke_color = SLOPE_BLUE;
+    priv->symbol_fill_color = SLOPE_RED;
     priv->line_width = 1.5;
-    priv->symbol_radius = 2.7;
+    priv->symbol_stroke_width = 1.0;
+    priv->symbol_small_radius = 2.5;
+    priv->symbol_big_radius = 3.5;
 }
 
 
 void _xyseries_finalize (GObject *self)
 {
-    /* TODO */
-
-
+    /* nothing to do */
     G_OBJECT_CLASS(slope_xyseries_parent_class)->finalize(self);
 }
 
@@ -97,7 +102,6 @@ void _xyseries_finalize (GObject *self)
 SlopeItem *slope_xyseries_new(void)
 {
     SlopeItem *self = SLOPE_ITEM(g_object_new(SLOPE_XYSERIES_TYPE, NULL));
-
     return self;
 }
 
@@ -108,7 +112,6 @@ SlopeItem* slope_xyseries_new_filled (const char *name,
                                       const char *style)
 {
     SlopeItem *self = SLOPE_ITEM(g_object_new(SLOPE_XYSERIES_TYPE, NULL));
-
     slope_item_set_name(self, name);
     slope_xyseries_set_data(SLOPE_XYSERIES(self), x_vec, y_vec, n_pts);
     slope_xyseries_set_style(SLOPE_XYSERIES(self), style);
@@ -122,7 +125,7 @@ void slope_xyseries_set_data (SlopeXySeries *self, const double *x_vec,
 {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
 
-    if (x_vec == NULL || y_vec == NULL || n_pts == 0L) {
+    if (x_vec == NULL || y_vec == NULL || n_pts < 1L) {
         priv->n_pts = 0;
         return;
     }
@@ -147,21 +150,18 @@ void _xyseries_draw (SlopeItem *self, cairo_t *cr)
     if (priv->mode == SLOPE_SERIES_LINE) {
         _xyseries_draw_line(SLOPE_XYSERIES(self), cr);
     }
-    else if (priv->mode == SLOPE_SERIES_CIRCLES) {
+    else if (priv->mode == SLOPE_SERIES_CIRCLES ||
+             priv->mode == SLOPE_SERIES_BIGCIRCLES) {
         _xyseries_draw_circles(SLOPE_XYSERIES(self), cr);
     }
-    else if (priv->mode == (SLOPE_SERIES_LINE|SLOPE_SERIES_CIRCLES)) {
+    else if (priv->mode == (SLOPE_SERIES_LINE|SLOPE_SERIES_CIRCLES) ||
+             priv->mode == (SLOPE_SERIES_LINE|SLOPE_SERIES_BIGCIRCLES)) {
         /* TODO: write a dedicate function to improve performance */
         _xyseries_draw_line(SLOPE_XYSERIES(self), cr);
         _xyseries_draw_circles(SLOPE_XYSERIES(self), cr);
     }
     else if (priv->mode == SLOPE_SERIES_AREAUNDER) {
         _xyseries_draw_areaunder(SLOPE_XYSERIES(self), cr);
-    }
-    else if (priv->mode == (SLOPE_SERIES_AREAUNDER|SLOPE_SERIES_CIRCLES)) {
-        /* TODO: write a dedicate function to improve performance */
-        _xyseries_draw_areaunder(SLOPE_XYSERIES(self), cr);
-        _xyseries_draw_circles(SLOPE_XYSERIES(self), cr);
     }
 }
 
@@ -197,7 +197,7 @@ void _xyseries_draw_line (SlopeXySeries *self, cairo_t *cr)
     }
 
     cairo_set_line_width(cr, priv->line_width);
-    slope_cairo_set_color(cr, priv->stroke_color);
+    slope_cairo_set_color(cr, priv->symbol_stroke_color);
     cairo_stroke(cr);
 }
 
@@ -246,11 +246,12 @@ void _xyseries_draw_areaunder (SlopeXySeries *self, cairo_t *cr)
     cairo_line_to(cr, p0.x, p0.y);
     cairo_close_path(cr);
 
-    slope_cairo_set_color(cr, priv->fill_color);
+    slope_cairo_set_color(cr, priv->symbol_fill_color);
     cairo_fill(cr);
 
     cairo_append_path(cr, data_path);
-    slope_cairo_set_color(cr, priv->stroke_color);
+    slope_cairo_set_color(cr, priv->symbol_stroke_color);
+    cairo_set_line_width(cr, priv->symbol_stroke_width);
     cairo_stroke(cr);
 
     cairo_path_destroy(data_path);
@@ -272,22 +273,27 @@ void _xyseries_draw_circles (SlopeXySeries *self, cairo_t *cr)
         fig_p.y = priv->y_vec[k];
 
         slope_scale_map(scale, &dat_p, &fig_p);
-        slope_cairo_circle(cr, &dat_p, priv->symbol_radius);
+        slope_cairo_circle(cr, &dat_p,
+            (priv->mode & SLOPE_SERIES_BIGSYMBOL) ?
+                priv->symbol_big_radius :
+                priv->symbol_small_radius);
 
-        if (!SLOPE_COLOR_IS_NULL(priv->fill_color) &&
-            !SLOPE_COLOR_IS_NULL(priv->stroke_color))
+        if (!SLOPE_COLOR_IS_NULL(priv->symbol_fill_color) &&
+            !SLOPE_COLOR_IS_NULL(priv->symbol_stroke_color))
         {
-            slope_cairo_set_color(cr, priv->fill_color);
+            slope_cairo_set_color(cr, priv->symbol_fill_color);
             cairo_fill_preserve(cr);
-            slope_cairo_set_color(cr, priv->stroke_color);
+            cairo_set_line_width(cr, priv->symbol_stroke_width);
+            slope_cairo_set_color(cr, priv->symbol_stroke_color);
             cairo_stroke(cr);
         }
-        else if(!SLOPE_COLOR_IS_NULL(priv->fill_color)) {
-            slope_cairo_set_color(cr, priv->fill_color);
+        else if(!SLOPE_COLOR_IS_NULL(priv->symbol_fill_color)) {
+            slope_cairo_set_color(cr, priv->symbol_fill_color);
             cairo_fill(cr);
         }
-        else if(!SLOPE_COLOR_IS_NULL(priv->stroke_color)) {
-            slope_cairo_set_color(cr, priv->stroke_color);
+        else if(!SLOPE_COLOR_IS_NULL(priv->symbol_stroke_color)) {
+            cairo_set_line_width(cr, priv->symbol_stroke_width);
+            slope_cairo_set_color(cr, priv->symbol_stroke_color);
             cairo_stroke(cr);
         }
     }
@@ -345,12 +351,14 @@ int _xyseries_parse_mode (const char *c)
 
     switch (c[0]) {
         case 'o': { mode=SLOPE_SERIES_CIRCLES; } break;
+        case 'O': { mode=SLOPE_SERIES_BIGCIRCLES; } break;
         case 'a': { mode=SLOPE_SERIES_AREAUNDER; } break;
         case '-': {
             mode=SLOPE_SERIES_LINE;
             if (c[1]!='\0') {
                 switch (c[1]) {
                     case 'o': { mode|=SLOPE_SERIES_CIRCLES; } break;
+                    case 'O': { mode|=SLOPE_SERIES_BIGCIRCLES; } break;
                     case 'a': { mode|=SLOPE_SERIES_AREAUNDER; } break;
                 }
             }
@@ -366,24 +374,25 @@ void
 slope_xyseries_set_style (SlopeXySeries *self, const char *style)
 {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
-    SlopeColor fill_color=SLOPE_RED, stroke_color=SLOPE_BLUE;
-    double line_width=1.3;
-    int mode=SLOPE_SERIES_LINE, k=0;
+    SlopeColor fill_color = SLOPE_RED, stroke_color = SLOPE_BLUE;
+    double line_width = 1.5;
+    double symbol_stroke_width = 1.0;
+    int mode = SLOPE_SERIES_LINE, k = 0;
 
     /* parse the stroke and fill colors */
-    if (style != NULL && style[k]!='\0') {
+    if (style != NULL && style[k] != '\0') {
         stroke_color = slope_color_parse(style[k++]);
         fill_color = stroke_color;
     }
 
     /* parse the mode (symbol) */
-    if (style != NULL && style[k]!='\0') {
+    if (style != NULL && style[k] != '\0') {
         mode = _xyseries_parse_mode(style + k++);
     }
 
     /* parse an optional fill color (if you like it
      * diferent from the stroke one) */
-    if (style != NULL && style[k]!='\0') {
+    if (style != NULL && style[k] != '\0') {
         fill_color = slope_color_parse(style[k++]);
     }
 
@@ -405,10 +414,16 @@ slope_xyseries_set_style (SlopeXySeries *self, const char *style)
         line_width = 1.5;
     }
 
-    priv->fill_color = fill_color;
-    priv->stroke_color = stroke_color;
+    if (mode & SLOPE_SERIES_BIGSYMBOL) {
+        symbol_stroke_width = 1.5;
+    }
+
     priv->mode = mode;
+    priv->line_color = stroke_color;
+    priv->symbol_fill_color = fill_color;
+    priv->symbol_stroke_color = stroke_color;
     priv->line_width = line_width;
+    priv->symbol_stroke_width = symbol_stroke_width;
 }
 
 /* slope/xyseries.c */

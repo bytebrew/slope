@@ -120,8 +120,8 @@ void slope_xyscale_init (SlopeXyScale *self)
     slope_scale_set_name_top_padding(
         SLOPE_SCALE(self), priv->top_margin + 2);
 
-    priv->horiz_pad = 0.0;
-    priv->vertical_pad = 0.0;
+    priv->horiz_pad = 0.05;
+    priv->vertical_pad = 0.05;
     priv->on_drag = FALSE;
     priv->mouse_rect_color = SLOPE_GRAY(80);
     priv->interaction = SLOPE_XYSCALE_INTERACTION_TRANSLATE;

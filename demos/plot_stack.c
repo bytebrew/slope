@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     series12 = slope_xyseries_new_filled("Cossine", x, y12, n, "ga");
     slope_scale_add_item(scale1, series12);
 
-    series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "tol");
+    series2 = slope_xyseries_new_filled("Sine + Linear", x, y2, n, "bOl");
     slope_scale_add_item(scale2, series2);
 
     gtk_widget_show_all(chart);
