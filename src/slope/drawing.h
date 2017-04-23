@@ -92,6 +92,14 @@ _SlopeRect
 SlopeRect;
 
 
+typedef enum
+_SlopeOrientation
+{
+    SLOPE_VERTICAL,
+    SLOPE_HORIZONTAL
+}
+SlopeOrientation;
+
 
 gboolean slope_similar (double x1, double x2);
 
