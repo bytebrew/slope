@@ -10,13 +10,11 @@ depend on nothing outside the Gtk stack.
 ## Instalation
 
 Install the required development packages:
-
 - On Debian/Ubuntu
 ```bash
 sudo apt-get install build-essential cmake libgtk-3-dev
 ```
-
-- On Fedora/OpenSuse:
+- On Fedora:
 ```bash
 sudo dnf install gcc cmake gtk3-devel
 ```
@@ -27,6 +25,12 @@ cmake ..
 make
 sudo make install
 ```
+
+# Roadmap
+
+ - Legend (doing)
+ - More elaborate plots e.g. like boxplots (planned)
+ - Contours and variance matrixes visualization (planned)
 
 For examples of basic usage see the demos directory in the source tree.
 
