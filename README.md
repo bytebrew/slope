@@ -26,11 +26,11 @@ make
 sudo make install
 ```
 
-# Roadmap
+## Roadmap
 
  - Legend (doing)
  - More elaborate plots e.g. like boxplots (planned)
- - Contours and variance matrixes visualization (planned)
+ - Contours and variance matrices visualization (planned)
 
 For examples of basic usage see the demos directory in the source tree.
 
