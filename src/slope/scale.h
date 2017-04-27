@@ -21,8 +21,7 @@
 #ifndef SLOPE_SCALE_H
 #define SLOPE_SCALE_H
 
-#include <slope/drawing.h>
-#include <glib-object.h>
+#include <slope/legend.h>
 
 #define SLOPE_SCALE_TYPE              (slope_scale_get_type())
 #define SLOPE_SCALE(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_SCALE_TYPE, SlopeScale))

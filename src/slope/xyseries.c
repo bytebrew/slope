@@ -27,25 +27,25 @@ _SlopeXySeriesPrivate
 {
     double x_min, x_max;
     double y_min, y_max;
-
     const double *x_vec;
     const double *y_vec;
     long n_pts;
-
     SlopeColor line_color;
     SlopeColor symbol_stroke_color;
     SlopeColor symbol_fill_color;
-
     double line_width;
     double symbol_stroke_width;
     double symbol_small_radius;
     double symbol_big_radius;
+    gboolean antialias;
     int mode;
 }
 SlopeXySeriesPrivate;
 
 
 static void _xyseries_draw (SlopeItem *self, cairo_t *cr);
+static void _xyseries_draw_thumb (SlopeItem *self, cairo_t *cr,
+                                  const SlopePoint *pos);
 static void _xyseries_finalize (GObject *self);
 static void _xyseries_get_figure_rect (SlopeItem *self, SlopeRect *rect);
 static void _xyseries_get_data_rect (SlopeItem *self, SlopeRect *rect);
@@ -63,23 +63,19 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 
 
 static void
-slope_xyseries_class_init (SlopeXySeriesClass *klass)
-{
+slope_xyseries_class_init (SlopeXySeriesClass *klass) {
     GObjectClass *object_klass = G_OBJECT_CLASS(klass);
     SlopeItemClass *item_klass = SLOPE_ITEM_CLASS(klass);
-
     object_klass->finalize = _xyseries_finalize;
     item_klass->draw = _xyseries_draw;
+    item_klass->draw_thumb = _xyseries_draw_thumb;
     item_klass->get_data_rect = _xyseries_get_data_rect;
     item_klass->get_figure_rect = _xyseries_get_figure_rect;
 }
 
-
 static void
-slope_xyseries_init (SlopeXySeries *self)
-{
+slope_xyseries_init (SlopeXySeries *self) {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
-
     priv->n_pts = 0L;
     priv->mode = SLOPE_SERIES_CIRCLES;
     priv->line_color = SLOPE_BLUE;
@@ -89,8 +85,8 @@ slope_xyseries_init (SlopeXySeries *self)
     priv->symbol_stroke_width = 1.0;
     priv->symbol_small_radius = 3.0;
     priv->symbol_big_radius = 4.0;
+    priv->antialias = TRUE;
 }
-
 
 void _xyseries_finalize (GObject *self)
 {
@@ -98,55 +94,43 @@ void _xyseries_finalize (GObject *self)
     G_OBJECT_CLASS(slope_xyseries_parent_class)->finalize(self);
 }
 
-
-SlopeItem *slope_xyseries_new(void)
-{
+SlopeItem *slope_xyseries_new(void) {
     SlopeItem *self = SLOPE_ITEM(g_object_new(SLOPE_XYSERIES_TYPE, NULL));
     return self;
 }
 
-
 SlopeItem* slope_xyseries_new_filled (const char *name,
                                       const double *x_vec,
                                       const double *y_vec, long n_pts,
-                                      const char *style)
-{
+                                      const char *style) {
     SlopeItem *self = SLOPE_ITEM(g_object_new(SLOPE_XYSERIES_TYPE, NULL));
     slope_item_set_name(self, name);
     slope_xyseries_set_data(SLOPE_XYSERIES(self), x_vec, y_vec, n_pts);
     slope_xyseries_set_style(SLOPE_XYSERIES(self), style);
-
     return self;
 }
 
 
 void slope_xyseries_set_data (SlopeXySeries *self, const double *x_vec,
-                              const double *y_vec, long n_pts)
-{
+                              const double *y_vec, long n_pts) {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
-
     if (x_vec == NULL || y_vec == NULL || n_pts < 1L) {
         priv->n_pts = 0;
         return;
     }
-
     priv->x_vec = x_vec;
     priv->y_vec = y_vec;
     priv->n_pts = n_pts;
-
     slope_xyseries_update(self);
 }
 
-
-static
-void _xyseries_draw (SlopeItem *self, cairo_t *cr)
-{
+static void
+_xyseries_draw (SlopeItem *self, cairo_t *cr) {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
-
     if (priv->n_pts == 0L) {
         return;
     }
-
+    slope_cairo_set_antialias(cr, priv->antialias);
     if (priv->mode == SLOPE_SERIES_LINE) {
         _xyseries_draw_line(SLOPE_XYSERIES(self), cr);
     }
@@ -165,45 +149,77 @@ void _xyseries_draw (SlopeItem *self, cairo_t *cr)
     }
 }
 
+static void
+_xyseries_draw_thumb (SlopeItem *self, cairo_t *cr, const SlopePoint *pos) {
+    SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
+    slope_cairo_set_antialias(cr, priv->antialias);
+    /* TODO: can be improved very much */
+    if (priv->mode == SLOPE_SERIES_LINE) {
+        slope_cairo_set_color(cr, priv->line_color);
+        cairo_set_line_width(cr, priv->line_width);
+        cairo_move_to(cr, pos->x-10.0, pos->y);
+        cairo_line_to(cr, pos->x+10.0, pos->y);
+        cairo_stroke(cr);
+    }
+    else if (priv->mode == SLOPE_SERIES_CIRCLES ||
+             priv->mode == SLOPE_SERIES_BIGCIRCLES) {
+        slope_cairo_circle(cr, pos, 6.0);
+        slope_cairo_set_color(cr, priv->symbol_fill_color);
+        cairo_fill_preserve(cr);
+        slope_cairo_set_color(cr, priv->symbol_stroke_color);
+        cairo_stroke(cr);
+    }
+    else if (priv->mode == (SLOPE_SERIES_LINE|SLOPE_SERIES_CIRCLES) ||
+             priv->mode == (SLOPE_SERIES_LINE|SLOPE_SERIES_BIGCIRCLES)) {
+        slope_cairo_circle(cr, pos, 6.0);
+        slope_cairo_set_color(cr, priv->symbol_fill_color);
+        cairo_fill_preserve(cr);
+        slope_cairo_set_color(cr, priv->symbol_stroke_color);
+        cairo_stroke(cr);
+        slope_cairo_set_color(cr, priv->line_color);
+        cairo_set_line_width(cr, priv->line_width);
+        cairo_move_to(cr, pos->x-10.0, pos->y);
+        cairo_line_to(cr, pos->x+10.0, pos->y);
+        cairo_stroke(cr);
+    }
+    else if (priv->mode == SLOPE_SERIES_AREAUNDER) {
+        slope_cairo_set_color(cr, priv->symbol_fill_color);
+        cairo_rectangle(cr, pos->x-10.0, pos->y-6.0, 20.0, 12.0);
+        cairo_fill(cr);
+    }
+}
 
-static
-void _xyseries_draw_line (SlopeXySeries *self, cairo_t *cr)
-{
+static void
+_xyseries_draw_line (SlopeXySeries *self, cairo_t *cr) {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
     SlopeScale *scale = slope_item_get_scale(SLOPE_ITEM(self));
     SlopePoint p1, p2, p;
     double dx, dy, d2;
     long k;
-
     p.x = priv->x_vec[0];
     p.y = priv->y_vec[0];
     slope_scale_map(scale, &p1, &p);
     cairo_new_path(cr);
     cairo_move_to(cr, p1.x, p1.y);
-
     for (k=1L; k<priv->n_pts; ++k) {
         p.x = priv->x_vec[k];
         p.y = priv->y_vec[k];
         slope_scale_map(scale, &p2, &p);
-
         dx = p2.x - p1.x;
         dy = p2.y - p1.y;
         d2 = dx*dx + dy*dy;
-
         if (d2 >= 9.0) {
             cairo_line_to(cr, p2.x, p2.y);
             p1 = p2;
         }
     }
-
     cairo_set_line_width(cr, priv->line_width);
     slope_cairo_set_color(cr, priv->symbol_stroke_color);
     cairo_stroke(cr);
 }
 
-
-static
-void _xyseries_draw_areaunder (SlopeXySeries *self, cairo_t *cr)
+static void
+_xyseries_draw_areaunder (SlopeXySeries *self, cairo_t *cr)
 {
     SlopeXySeriesPrivate *priv = SLOPE_XYSERIES_GET_PRIVATE(self);
     SlopeScale *scale = slope_item_get_scale(SLOPE_ITEM(self));
