@@ -87,8 +87,8 @@ slope_xyseries_init (SlopeXySeries *self)
     priv->symbol_fill_color = SLOPE_RED;
     priv->line_width = 1.5;
     priv->symbol_stroke_width = 1.0;
-    priv->symbol_small_radius = 2.5;
-    priv->symbol_big_radius = 3.5;
+    priv->symbol_small_radius = 3.0;
+    priv->symbol_big_radius = 4.0;
 }
 
 
@@ -412,10 +412,6 @@ slope_xyseries_set_style (SlopeXySeries *self, const char *style)
            and a thicker line */
         SLOPE_SET_ALPHA(fill_color, 128);
         line_width = 1.5;
-    }
-
-    if (mode & SLOPE_SERIES_BIGSYMBOL) {
-        symbol_stroke_width = 1.5;
     }
 
     priv->mode = mode;

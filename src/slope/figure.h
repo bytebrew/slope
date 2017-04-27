@@ -22,7 +22,7 @@
 #define SLOPE_FIGURE_H
 
 #include <glib-object.h>
-#include <slope/drawing.h>
+#include <slope/legend.h>
 
 #define SLOPE_FIGURE_TYPE              (slope_figure_get_type())
 #define SLOPE_FIGURE(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_FIGURE_TYPE, SlopeFigure))
@@ -88,6 +88,8 @@ void slope_figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
 void slope_figure_write_to_png (SlopeFigure *self, const char *filename, int width, int height);
 
 SlopeView* slope_figure_get_view (SlopeFigure *self);
+
+SlopeItem* slope_figure_get_legend (SlopeFigure *self);
 
 SLOPE_END_DECLS
 
