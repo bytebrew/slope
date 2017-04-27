@@ -77,6 +77,7 @@ slope_figure_init (SlopeFigure *self) {
     priv->redraw_requested = FALSE;
     priv->frame_mode = SLOPE_FIGURE_ROUNDRECTANGLE;
     priv->legend = slope_legend_new(SLOPE_HORIZONTAL);
+    slope_item_set_is_visible(SLOPE_ITEM(priv->legend), FALSE);
 }
 
 static void
@@ -180,14 +181,13 @@ static void
 _figure_draw_legend (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr) {
     SLOPE_UNUSED(rect);
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-    GList *scale_iter = priv->scale_list;
     if (slope_item_get_is_visible(priv->legend)) {
         // TODO: better legend position algorithm
         slope_legend_set_position(SLOPE_LEGEND(priv->legend), 20.0, 20.0);
         slope_legend_clear_items(SLOPE_LEGEND(priv->legend));
         /* the figure's legend is a global legend, so let's update it's
            items in each draw to make sure it always has all items */
-        scale_iter = priv->scale_list;
+        GList *scale_iter = priv->scale_list;
         while (scale_iter != NULL) {
             SlopeScale *scale = SLOPE_SCALE(scale_iter->data);
             GList *item_iter = slope_scale_get_item_list(scale);

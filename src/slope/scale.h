@@ -58,6 +58,7 @@ _SlopeScaleClass
   void (*get_figure_rect) (SlopeScale *self, SlopeRect *rect);
   void (*get_data_rect) (SlopeScale *self, SlopeRect *rect);
   void (*mouse_event) (SlopeScale *self, SlopeMouseEvent *event);
+  void (*position_legend) (SlopeScale *self);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
@@ -90,6 +91,8 @@ void slope_scale_get_figure_rect (SlopeScale *self, SlopeRect *rect);
 void slope_scale_get_data_rect (SlopeScale *self, SlopeRect *rect);
 
 SlopeFigure* slope_scale_get_figure (SlopeScale *self);
+
+SlopeItem* slope_scale_get_legend (SlopeScale *self);
 
 SlopeView* slope_scale_get_view (SlopeScale *self);
 

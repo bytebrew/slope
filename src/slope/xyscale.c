@@ -108,7 +108,7 @@ void slope_xyscale_init (SlopeXyScale *self)
     priv->axis[SLOPE_XYSCALE_AXIS_X] = slope_xyaxis_new(SLOPE_HORIZONTAL, NULL);
     priv->axis[SLOPE_XYSCALE_AXIS_Y] = slope_xyaxis_new(SLOPE_VERTICAL, NULL);
 
-    slope_xyscale_set_axis(SLOPE_XYSCALE(self), SLOPE_XYSCALE_FRAME_AXIS_GRID);
+    slope_xyscale_set_axis(SLOPE_XYSCALE(self), SLOPE_XYSCALE_FRAME_AXIS);
     for (k=0; k<MAX_AXIS; ++k) {
         _item_set_scale(priv->axis[k], SLOPE_SCALE(self));
     }
