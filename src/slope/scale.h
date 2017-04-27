@@ -60,7 +60,6 @@ _SlopeScaleClass
   void (*get_data_rect) (SlopeScale *self, SlopeRect *rect);
   void (*mouse_event) (SlopeScale *self, SlopeMouseEvent *event);
 
-
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
   gpointer padding[4];
@@ -118,6 +117,8 @@ char* slope_scale_get_name (SlopeScale *self);
 void slope_scale_set_show_name (SlopeScale *self, gboolean show);
 
 void slope_scale_set_name_top_padding (SlopeScale *self, double padding);
+
+void slope_scale_detach (SlopeScale *self);
 
 gboolean slope_scale_get_show_name (SlopeScale *self);
 

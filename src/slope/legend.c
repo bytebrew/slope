@@ -20,22 +20,20 @@
 
 #include <slope/legend.h>
 #include <slope/scale.h>
+#include <slope/item_p.h>
 
 typedef struct
 _SlopeLegendPrivate
 {
     guint32 orientation;
-
-    double x;
-    double y;
-
+    double x, y;
+    double entry_height;
     double rect_stroke_width;
     SlopeColor rect_stroke_color;
     SlopeColor rect_fill_color;
+    SlopeColor text_color;
     gboolean rect_antialias;
-
     SlopePoint p1, p2;
-
     GList *items;
 }
 SlopeLegendPrivate;
@@ -55,6 +53,7 @@ static void _legend_get_figure_rect (SlopeItem *self, SlopeRect *rect);
 static void _legend_get_data_rect (SlopeItem *self, SlopeRect *rect);
 static void _legend_evaluate_rect (SlopeItem *self, cairo_t *cr);
 static void _legend_draw_rect (SlopeItem *self, cairo_t *cr);
+static void _legend_draw_thumbs (SlopeItem *self, cairo_t *cr);
 
 
 static void
@@ -72,11 +71,13 @@ static void
 slope_legend_init (SlopeLegend *self) {
     SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
     priv->orientation = SLOPE_HORIZONTAL;
-    priv->rect_fill_color = SLOPE_GREEN;
-    priv->rect_stroke_color = SLOPE_BLUE;
-    priv->rect_stroke_width = 2.0;
+    priv->rect_fill_color = SLOPE_WHITE;
+    priv->rect_stroke_color = SLOPE_BLACK;
+    priv->text_color = SLOPE_BLACK;
+    priv->rect_stroke_width = 1.0;
     priv->rect_antialias = FALSE;
     priv->items = NULL;
+    priv->entry_height = 0.0;
 }
 
 static void
@@ -95,6 +96,7 @@ static void
 _legend_draw (SlopeItem *self, cairo_t *cr) {
     _legend_evaluate_rect(self, cr);
     _legend_draw_rect(self, cr);
+    _legend_draw_thumbs(self, cr);
 }
 
 static void
@@ -120,25 +122,31 @@ _legend_evaluate_rect (SlopeItem *self, cairo_t *cr) {
     double width = 0.0;
     double height = 0.0;
     cairo_text_extents_t txt_ext;
-    GList *iter = priv->items;
-    if (priv->orientation == SLOPE_HORIZONTAL) {
-        while (iter != NULL) {
-            SlopeItem *item = SLOPE_ITEM(iter->data);
-            const char *item_name = slope_item_get_name(item);
-            cairo_text_extents(cr, item_name, &txt_ext);
-            width += txt_ext.width + 40.0;
-            if (txt_ext.height > height) height = txt_ext.height;
-            iter = iter->next;
+    GList *item_iter = priv->items;
+    priv->entry_height = 0.0;
+    while (item_iter != NULL) {
+        SlopeItem *item = SLOPE_ITEM(item_iter->data);
+        const char *item_name = slope_item_get_name(item);
+        cairo_text_extents(cr, item_name, &txt_ext);
+        if (txt_ext.height > priv->entry_height) {
+            priv->entry_height = txt_ext.height;
         }
-    } else { /* priv->orientation == SLOPE_VERTICAL  */
-        while (iter != NULL) {
-            SlopeItem *item = SLOPE_ITEM(iter->data);
-            const char *item_name = slope_item_get_name(item);
-            cairo_text_extents(cr, item_name, &txt_ext);
+        if (priv->orientation == SLOPE_HORIZONTAL) {
+            width += txt_ext.width + 50.0;
+        } else {
             if (txt_ext.width > width) width = txt_ext.width;
-            height += txt_ext.height + 5.0;
-            iter = iter->next;
+            height += 1.0;
         }
+        item_iter = item_iter->next;
+    }
+    priv->entry_height += 10.0;
+    if (priv->orientation == SLOPE_HORIZONTAL) {
+        height = priv->entry_height + 10.0;
+        width += 10.0;
+    } else {
+        height *= priv->entry_height;
+        height += 10.0;
+        width += 50.0;
     }
     priv->p2.x = priv->p1.x + width;
     priv->p2.y = priv->p1.y + height;
@@ -154,11 +162,11 @@ _legend_draw_rect (SlopeItem *self, cairo_t *cr) {
         cairo_set_line_width(cr, priv->rect_stroke_width);
         slope_cairo_set_antialias(cr, priv->rect_antialias);
         cairo_rectangle(
-                cr,
-                priv->p1.x,
-                priv->p1.y,
-                priv->p2.x - priv->p1.x,
-                priv->p2.y - priv->p1.y);
+            cr,
+            priv->p1.x,
+            priv->p1.y,
+            priv->p2.x - priv->p1.x,
+            priv->p2.y - priv->p1.y);
         if (should_fill && should_stroke) {
             slope_cairo_set_color(cr, priv->rect_fill_color);
             cairo_fill_preserve(cr);
@@ -171,6 +179,34 @@ _legend_draw_rect (SlopeItem *self, cairo_t *cr) {
             slope_cairo_set_color(cr, priv->rect_stroke_color);
             cairo_stroke(cr);
         }
+    }
+}
+
+static void
+_legend_draw_thumbs (SlopeItem *self, cairo_t *cr) {
+    SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
+    GList *item_iter = priv->items;
+    SlopePoint pos;
+    pos.x = priv->p1.x + 20.0;
+    pos.y = priv->p1.y + 10.0 + priv->entry_height/2.0;
+    while (item_iter != NULL) {
+        SlopeItem *item = SLOPE_ITEM(item_iter->data);
+        const char *item_name = slope_item_get_name(item);
+        _item_draw_thumb(item, cr, &pos);
+        if (priv->orientation == SLOPE_HORIZONTAL) {
+            slope_cairo_set_color(cr, priv->text_color);
+            slope_cairo_text(cr, pos.x + 20.0,
+                pos.y + priv->entry_height/2.0, item_name);
+            cairo_text_extents_t txt_ext;
+            cairo_text_extents(cr, item_name, &txt_ext);
+            pos.x += txt_ext.width + 50.0;
+        } else {
+            slope_cairo_set_color(cr, priv->text_color);
+            slope_cairo_text(cr, pos.x + 20.0, pos.y, item_name);
+            pos.y += priv->entry_height;
+        }
+        cairo_stroke(cr);
+        item_iter = item_iter->next;
     }
 }
 
