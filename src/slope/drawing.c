@@ -71,7 +71,8 @@ void slope_cairo_line (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2)
 }
 
 
-void slope_cairo_line_cosmetic (cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2, double width)
+void slope_cairo_line_cosmetic (cairo_t *cr, const SlopePoint *p1,
+                                const SlopePoint *p2, double width)
 {
     double round_width = round(width);
 
@@ -80,8 +81,10 @@ void slope_cairo_line_cosmetic (cairo_t *cr, const SlopePoint *p1, const SlopePo
     if (__SIMILAR_DOUBLE(round_width, 1.0) ||
             __SIMILAR_DOUBLE(round_width, 3.0) ||
             __SIMILAR_DOUBLE(round_width, 5.0)) {
-        cairo_move_to(cr, SLOPE_COORD_TO_PIXEL(p1->x), SLOPE_COORD_TO_PIXEL(p1->y));
-        cairo_line_to(cr, SLOPE_COORD_TO_PIXEL(p2->x), SLOPE_COORD_TO_PIXEL(p2->y));
+        cairo_move_to(cr, SLOPE_COORD_TO_PIXEL(p1->x),
+                      SLOPE_COORD_TO_PIXEL(p1->y));
+        cairo_line_to(cr, SLOPE_COORD_TO_PIXEL(p2->x),
+                      SLOPE_COORD_TO_PIXEL(p2->y));
     }
     else if (__SIMILAR_DOUBLE(round_width, 2.0) ||
              __SIMILAR_DOUBLE(round_width, 4.0) ||

@@ -2,7 +2,7 @@
 
 Slope is a free (LGPL) **C** data visualization library for the Gtk+ toolkit.
 
-![](https://github.com/elvismt/slope/blob/master/demos/screenshot.png)
+![](https://github.com/elvismt/slope/blob/devel/demos/screenshot.png)
 
 Slope integrates with **Gtk+** and all the drawing is made with **cairo**, so it doesn't
 depend on nothing outside the Gtk stack.
@@ -28,7 +28,7 @@ sudo make install
 
 ## Roadmap
 
- - Legend (doing)
+ - ~~Legend (done)~~
  - More elaborate plots e.g. like boxplots (planned)
  - Contours and variance matrices visualization (planned)
 

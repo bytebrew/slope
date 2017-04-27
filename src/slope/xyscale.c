@@ -31,20 +31,15 @@ typedef struct
 _SlopeXyScalePrivate
 {
     SlopeItem *axis[MAX_AXIS];
-
     double left_margin, right_margin;
     double top_margin, bottom_margin;
-
     double horiz_pad, vertical_pad;
-
     double fig_x_min, fig_x_max;
     double fig_y_min, fig_y_max;
     double fig_width, fig_height;
-
     double dat_x_min, dat_x_max;
     double dat_y_min, dat_y_max;
     double dat_width, dat_height;
-
     SlopePoint mouse_p1;
     SlopePoint mouse_p2;
     SlopeColor mouse_rect_color;
@@ -78,13 +73,10 @@ static void _xyscale_translate_event (SlopeScale *self, SlopeMouseEvent *event);
 
 
 static void
-slope_xyscale_class_init (SlopeXyScaleClass *klass)
-{
+slope_xyscale_class_init (SlopeXyScaleClass *klass) {
     GObjectClass *object_klass = G_OBJECT_CLASS(klass);
     SlopeScaleClass *scale_klass = SLOPE_SCALE_CLASS(klass);
-
     object_klass->finalize = _xyscale_finalize;
-
     scale_klass->draw = _xyscale_draw;
     scale_klass->map = _xyscale_map;
     scale_klass->unmap = _xyscale_unmap;
@@ -94,66 +86,49 @@ slope_xyscale_class_init (SlopeXyScaleClass *klass)
     scale_klass->mouse_event = _xyscale_mouse_event;
 }
 
-
-static
-void slope_xyscale_init (SlopeXyScale *self)
-{
+static void slope_xyscale_init (SlopeXyScale *self) {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
+    priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM] = slope_xyaxis_new(SLOPE_HORIZONTAL, NULL);
+    priv->axis[SLOPE_XYSCALE_AXIS_LEFT] = slope_xyaxis_new(SLOPE_VERTICAL, NULL);
+    priv->axis[SLOPE_XYSCALE_AXIS_TOP] = slope_xyaxis_new(SLOPE_HORIZONTAL, NULL);
+    priv->axis[SLOPE_XYSCALE_AXIS_RIGHT] = slope_xyaxis_new(SLOPE_VERTICAL, NULL);
+    priv->axis[SLOPE_XYSCALE_AXIS_X] = slope_xyaxis_new(SLOPE_HORIZONTAL, NULL);
+    priv->axis[SLOPE_XYSCALE_AXIS_Y] = slope_xyaxis_new(SLOPE_VERTICAL, NULL);
+    slope_xyscale_set_axis(SLOPE_XYSCALE(self), SLOPE_XYSCALE_FRAME_AXIS);
     int k;
-
-    priv->axis[SLOPE_XYSCALE_AXIS_BOTTOM] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL, NULL);
-    priv->axis[SLOPE_XYSCALE_AXIS_LEFT] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL, NULL);
-    priv->axis[SLOPE_XYSCALE_AXIS_TOP] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL, NULL);
-    priv->axis[SLOPE_XYSCALE_AXIS_RIGHT] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL, NULL);
-    priv->axis[SLOPE_XYSCALE_AXIS_X] = slope_xyaxis_new(SLOPE_XYAXIS_HORIZONTAL, NULL);
-    priv->axis[SLOPE_XYSCALE_AXIS_Y] = slope_xyaxis_new(SLOPE_XYAXIS_VERTICAL, NULL);
-
-    slope_xyscale_set_axis(SLOPE_XYSCALE(self), SLOPE_XYSCALE_FRAME_AXIS_GRID);
     for (k=0; k<MAX_AXIS; ++k) {
         _item_set_scale(priv->axis[k], SLOPE_SCALE(self));
     }
-
     priv->left_margin = 52.0;
     priv->right_margin = 15.0;
     priv->top_margin = 15.0;
     priv->bottom_margin = 43.0;
     slope_scale_set_name_top_padding(
         SLOPE_SCALE(self), priv->top_margin + 2);
-
-    priv->horiz_pad = 0.0;
-    priv->vertical_pad = 0.0;
+    priv->horiz_pad = 0.05;
+    priv->vertical_pad = 0.05;
     priv->on_drag = FALSE;
     priv->mouse_rect_color = SLOPE_GRAY(80);
     priv->interaction = SLOPE_XYSCALE_INTERACTION_TRANSLATE;
-
     slope_scale_rescale(SLOPE_SCALE(self));
 }
 
-
-static
-void _xyscale_finalize (GObject *self)
-{
+static void _xyscale_finalize (GObject *self) {
     SlopeXyScalePrivate *priv = SLOPE_XYSCALE_GET_PRIVATE(self);
-    int k;
-
     if (priv->axis[0] != NULL) {
+        int k;
         for (k=0; k<MAX_AXIS; ++k) {
             g_object_unref(priv->axis[k]);
         }
         priv->axis[0] = NULL;
     }
-
     G_OBJECT_CLASS(slope_xyscale_parent_class)->finalize(self);
 }
 
-
-SlopeScale* slope_xyscale_new (void)
-{
+SlopeScale* slope_xyscale_new (void) {
     SlopeXyScale *self = SLOPE_XYSCALE(g_object_new(SLOPE_XYSCALE_TYPE, NULL));
-
     return SLOPE_SCALE(self);
 }
-
 
 SlopeScale* slope_xyscale_new_axis (const char *x_title, const char *y_title,
                                     const char *top_title)
