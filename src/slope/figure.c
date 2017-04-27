@@ -20,6 +20,7 @@
 
 #include <slope/figure_p.h>
 #include <slope/scale_p.h>
+#include <slope/item_p.h>
 #include <slope/view.h>
 
 
@@ -35,6 +36,8 @@ _SlopeFigurePrivate
     double layout_rows;
     double layout_cols;
     int frame_mode;
+
+    SlopeItem *legend;
 }
 SlopeFigurePrivate;
 
@@ -56,14 +59,10 @@ static void _figure_clear_scale_list (gpointer data);
 static void _figure_finalize (GObject *self);
 
 
-
 static void
-slope_figure_class_init (SlopeFigureClass *klass)
-{
+slope_figure_class_init (SlopeFigureClass *klass) {
     GObjectClass *object_klass = G_OBJECT_CLASS(klass);
-
     object_klass->finalize = _figure_finalize;
-
     klass->add_scale = _figure_add_scale;
     klass->draw = _figure_draw;
 }
@@ -73,59 +72,48 @@ static void
 slope_figure_init (SlopeFigure *self)
 {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-
     priv->view = NULL;
     priv->scale_list = NULL;
     priv->background_color = SLOPE_WHITE;
     priv->managed = TRUE;
     priv->redraw_requested = FALSE;
     priv->frame_mode = SLOPE_FIGURE_ROUNDRECTANGLE;
+    priv->legend = slope_legend_new(SLOPE_VERTICAL);
 }
 
-
-static
-void _figure_finalize (GObject *self)
+static void
+_figure_finalize (GObject *self)
 {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-
     if (priv->scale_list != NULL) {
         g_list_free_full(priv->scale_list, _figure_clear_scale_list);
         priv->scale_list = NULL;
     }
-
+    g_object_unref(G_OBJECT(priv->legend));
     G_OBJECT_CLASS(slope_figure_parent_class)->finalize(self);
 }
 
-
-SlopeFigure* slope_figure_new ()
-{
+SlopeFigure* slope_figure_new () {
     SlopeFigure *self = SLOPE_FIGURE(g_object_new(SLOPE_FIGURE_TYPE, NULL));
-
     return self;
 }
 
-
-static
-void _figure_add_scale (SlopeFigure *self, SlopeScale *scale)
-{
+static void
+_figure_add_scale (SlopeFigure *self, SlopeScale *scale) {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-
     if (scale == NULL) {
         return;
     }
-
     priv->scale_list = g_list_append(priv->scale_list, scale);
     _scale_set_figure(scale, self);
     slope_scale_rescale(scale);
     _figure_update_layout(self);
 }
 
-
-static void _figure_draw_frame (SlopeFigure *self, SlopeRect *rect,
-                                const SlopeRect *in_rect, cairo_t *cr)
-{
+static void
+_figure_draw_frame (SlopeFigure *self, SlopeRect *rect,
+                                const SlopeRect *in_rect, cairo_t *cr) {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
-
     if (priv->frame_mode == SLOPE_FIGURE_ROUNDRECTANGLE) {
         rect->x = in_rect->x + 10.0;
         rect->y = in_rect->y + 10.0;
@@ -140,14 +128,11 @@ static void _figure_draw_frame (SlopeFigure *self, SlopeRect *rect,
 }
 
 
-static
-void _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr)
-{
+static void
+_figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr) {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     double layout_cell_width, layout_cell_height;
     SlopeRect rect;
-    GList *iter;
-
     /* save cr's state and clip tho the figure's rectangle,
        fill the background if required */
     cairo_save(cr);
@@ -155,7 +140,6 @@ void _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr)
           CAIRO_FONT_SLANT_NORMAL,
           CAIRO_FONT_WEIGHT_NORMAL);
     cairo_set_font_size(cr, 12);
-
     cairo_new_path(cr);
     _figure_draw_frame(self, &rect, in_rect, cr);
     if (!SLOPE_COLOR_IS_NULL(priv->background_color)) {
@@ -163,29 +147,41 @@ void _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr)
         cairo_fill_preserve(cr);
     }
     cairo_clip(cr);
-
-
     layout_cell_width = rect.width / priv->layout_cols;
     layout_cell_height = rect.height / priv->layout_rows;
-    iter = priv->scale_list;
-
-    while (iter != NULL) {
-        SlopeScale *scale = SLOPE_SCALE(iter->data);
+    GList *scale_iter = priv->scale_list;
+    while (scale_iter != NULL) {
+        SlopeScale *scale = SLOPE_SCALE(scale_iter->data);
         if (slope_scale_get_is_visible(scale) == TRUE) {
             SlopeRect scale_rect, layout;
             slope_scale_get_layout_rect(scale, &scale_rect);
-
             layout.x = rect.x + scale_rect.x * layout_cell_width;
             layout.y = rect.y + scale_rect.y * layout_cell_height;
             layout.width = scale_rect.width * layout_cell_width;
             layout.height = scale_rect.height * layout_cell_height;
-
             _scale_draw(scale, &layout, cr);
         }
-
-        iter = iter->next;
+        scale_iter = scale_iter->next;
     }
-
+    if (slope_item_get_is_visible(priv->legend)) {
+        // TODO: better legend position algorithm
+        slope_legend_set_position(SLOPE_LEGEND(priv->legend), 10.0, 10.0);
+        slope_legend_clear_items(SLOPE_LEGEND(priv->legend));
+        /* the figure's legend is a global legend, so let's update it's
+           items in each draw to make sure it always has all items */
+        scale_iter = priv->scale_list;
+        while (scale_iter != NULL) {
+            SlopeScale *scale = SLOPE_SCALE(scale_iter->data);
+            GList *item_iter = slope_scale_get_item_list(scale);
+            while (item_iter != NULL) {
+                SlopeItem *item = SLOPE_ITEM(item_iter->data);
+                slope_legend_add_item(SLOPE_LEGEND(priv->legend), item);
+                item_iter = item_iter->next;
+            }
+            scale_iter = scale_iter->next;
+        }
+        _item_draw(priv->legend, cr);
+    }
     /* give back cr in the same state as we received it */
     cairo_restore(cr);
 }
@@ -331,6 +327,11 @@ SlopeView* slope_figure_get_view (SlopeFigure *self)
 gboolean slope_figure_get_is_managed (SlopeFigure *self)
 {
     return SLOPE_FIGURE_GET_PRIVATE(self)->managed;
+}
+
+
+SlopeItem* slope_figure_get_legend (SlopeFigure *self) {
+    return SLOPE_FIGURE_GET_PRIVATE(self)->legend;
 }
 
 
