@@ -155,9 +155,19 @@ void slope_scale_remove_item_by_name (SlopeScale *self, const char *itemname) {
     slope_scale_remove_item(self, slope_scale_get_item_by_name(self, itemname));
 }
 
+void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+    SLOPE_SCALE_GET_CLASS(self)->draw(self, rect, cr);
+    /* we draw the legend as the last thing to make sure it is always on top */
+    if (slope_item_get_is_visible(priv->legend)) {
+        SLOPE_SCALE_GET_CLASS(self)->position_legend(self);
+        _scale_draw_legend(self, cr);
+    }
+}
+
 void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
     SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
-    GList *iter;
+    GList *item_iter;
     if (!SLOPE_COLOR_IS_NULL(priv->background_color)) {
         cairo_save(cr);
         cairo_new_path(cr);
@@ -166,13 +176,13 @@ void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
         cairo_fill(cr);
         cairo_restore(cr);
     }
-    iter = priv->item_list;
-    while (iter != NULL) {
-        SlopeItem *item = SLOPE_ITEM(iter->data);
+    item_iter = priv->item_list;
+    while (item_iter != NULL) {
+        SlopeItem *item = SLOPE_ITEM(item_iter->data);
         if (slope_item_get_is_visible(item) == TRUE) {
             _item_draw(item, cr);
         }
-        iter = iter->next;
+        item_iter = item_iter->next;
     }
     if (priv->name != NULL && priv->show_name == TRUE) {
         cairo_text_extents_t txt_ext;
@@ -183,10 +193,6 @@ void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
             rect->y + txt_ext.height * 1.2 + priv->name_top_padding,
             priv->name);
         cairo_stroke(cr);
-    }
-    if (slope_item_get_is_visible(priv->legend)) {
-        SLOPE_SCALE_GET_CLASS(self)->position_legend(self);
-        _scale_draw_legend(self, cr);
     }
 }
 
@@ -334,10 +340,6 @@ SlopeItem* slope_scale_get_legend (SlopeScale *self) {
 
 void slope_scale_set_background_color (SlopeScale *self, SlopeColor color) {
     SLOPE_SCALE_GET_PRIVATE(self)->background_color = color;
-}
-
-void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
-    SLOPE_SCALE_GET_CLASS(self)->draw(self, rect, cr);
 }
 
 void slope_scale_get_figure_rect (SlopeScale *self, SlopeRect *rect) {
