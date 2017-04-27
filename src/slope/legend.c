@@ -34,6 +34,7 @@ _SlopeLegendPrivate
     SlopeColor text_color;
     gboolean rect_antialias;
     SlopePoint p1, p2;
+    SlopeCorner anchor;
     GList *items;
 }
 SlopeLegendPrivate;
@@ -78,6 +79,7 @@ slope_legend_init (SlopeLegend *self) {
     priv->rect_antialias = FALSE;
     priv->items = NULL;
     priv->entry_height = 0.0;
+    priv->anchor = SLOPE_TOPLEFT;
 }
 
 static void
@@ -139,6 +141,8 @@ _legend_evaluate_rect (SlopeItem *self, cairo_t *cr) {
         }
         item_iter = item_iter->next;
     }
+    /* TODO: break it in evaluate_extents, and evaluate_rect to
+       use the anchor property */
     priv->entry_height += 10.0;
     if (priv->orientation == SLOPE_HORIZONTAL) {
         height = priv->entry_height + 10.0;
@@ -195,8 +199,7 @@ _legend_draw_thumbs (SlopeItem *self, cairo_t *cr) {
         _item_draw_thumb(item, cr, &pos);
         if (priv->orientation == SLOPE_HORIZONTAL) {
             slope_cairo_set_color(cr, priv->text_color);
-            slope_cairo_text(cr, pos.x + 20.0,
-                pos.y + priv->entry_height/2.0, item_name);
+            slope_cairo_text(cr, pos.x + 20.0, pos.y, item_name);
             cairo_text_extents_t txt_ext;
             cairo_text_extents(cr, item_name, &txt_ext);
             pos.x += txt_ext.width + 50.0;
@@ -242,6 +245,11 @@ void slope_legend_set_orientation (SlopeLegend *self,
                                    SlopeOrientation orientation) {
     SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
     priv->orientation = orientation;
+}
+
+void slope_legend_set_anchor (SlopeLegend *self, SlopeCorner anchor) {
+    SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
+    priv->anchor = anchor;
 }
 
 void slope_legend_set_position (SlopeLegend *self, double x, double y) {

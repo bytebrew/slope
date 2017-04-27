@@ -63,6 +63,8 @@ SlopeItem *slope_legend_new (SlopeOrientation orientation);
 
 void slope_legend_set_orientation (SlopeLegend *self, SlopeOrientation orientation);
 
+void slope_legend_set_anchor (SlopeLegend *self, SlopeCorner anchor);
+
 void slope_legend_set_position (SlopeLegend *self, double x, double y);
 
 void slope_legend_add_item (SlopeLegend *self, SlopeItem *item);

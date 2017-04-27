@@ -32,11 +32,9 @@ _SlopeFigurePrivate
     SlopeColor background_color;
     gboolean managed;
     gboolean redraw_requested;
-
     double layout_rows;
     double layout_cols;
     int frame_mode;
-
     SlopeItem *legend;
 }
 SlopeFigurePrivate;
@@ -78,7 +76,7 @@ slope_figure_init (SlopeFigure *self) {
     priv->managed = TRUE;
     priv->redraw_requested = FALSE;
     priv->frame_mode = SLOPE_FIGURE_ROUNDRECTANGLE;
-    priv->legend = slope_legend_new(SLOPE_VERTICAL);
+    priv->legend = slope_legend_new(SLOPE_HORIZONTAL);
 }
 
 static void
@@ -185,7 +183,7 @@ _figure_draw_legend (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr) {
     GList *scale_iter = priv->scale_list;
     if (slope_item_get_is_visible(priv->legend)) {
         // TODO: better legend position algorithm
-        slope_legend_set_position(SLOPE_LEGEND(priv->legend), 80.0, 80.0);
+        slope_legend_set_position(SLOPE_LEGEND(priv->legend), 20.0, 20.0);
         slope_legend_clear_items(SLOPE_LEGEND(priv->legend));
         /* the figure's legend is a global legend, so let's update it's
            items in each draw to make sure it always has all items */
