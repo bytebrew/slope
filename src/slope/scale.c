@@ -30,13 +30,12 @@ _SlopeScalePrivate
     SlopeColor background_color;
     gboolean managed;
     gboolean visible;
-
     char *name;
     gboolean show_name;
     SlopeColor name_color;
     double name_top_padding;
-
     SlopeRect layout_rect;
+    SlopeItem *legend;
 }
 SlopeScalePrivate;
 
@@ -51,6 +50,8 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 
 
 static void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr);
+static void _scale_draw_legend (SlopeScale *self, cairo_t *cr);
+static void _scale_position_legend (SlopeScale *self);
 static void _scale_finalize (GObject *self);
 static void _scale_add_item (SlopeScale *self, SlopeItem *item);
 static void _scale_clear_item_list (gpointer data);
@@ -65,6 +66,7 @@ slope_scale_class_init (SlopeScaleClass *klass) {
     klass->remove_item = _scale_remove_item;
     klass->draw = _scale_draw_impl;
     klass->mouse_event = _scale_mouse_event_impl;
+    klass->position_legend = _scale_position_legend;
 }
 
 static void
@@ -84,6 +86,7 @@ slope_scale_init (SlopeScale *self) {
     priv->layout_rect.y = 0.0;
     priv->layout_rect.width = 1.0;
     priv->layout_rect.height = 1.0;
+    priv->legend = slope_legend_new(SLOPE_HORIZONTAL);
 }
 
 static void
@@ -95,6 +98,7 @@ _scale_finalize (GObject *self) {
         g_list_free_full(priv->item_list, _scale_clear_item_list);
         priv->item_list = NULL;
     }
+    g_object_unref(priv->legend);
     G_OBJECT_CLASS(slope_scale_parent_class)->finalize(self);
 }
 
@@ -151,9 +155,19 @@ void slope_scale_remove_item_by_name (SlopeScale *self, const char *itemname) {
     slope_scale_remove_item(self, slope_scale_get_item_by_name(self, itemname));
 }
 
+void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+    SLOPE_SCALE_GET_CLASS(self)->draw(self, rect, cr);
+    /* we draw the legend as the last thing to make sure it is always on top */
+    if (slope_item_get_is_visible(priv->legend)) {
+        SLOPE_SCALE_GET_CLASS(self)->position_legend(self);
+        _scale_draw_legend(self, cr);
+    }
+}
+
 void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
     SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
-    GList *iter;
+    GList *item_iter;
     if (!SLOPE_COLOR_IS_NULL(priv->background_color)) {
         cairo_save(cr);
         cairo_new_path(cr);
@@ -162,13 +176,13 @@ void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
         cairo_fill(cr);
         cairo_restore(cr);
     }
-    iter = priv->item_list;
-    while (iter != NULL) {
-        SlopeItem *item = SLOPE_ITEM(iter->data);
+    item_iter = priv->item_list;
+    while (item_iter != NULL) {
+        SlopeItem *item = SLOPE_ITEM(item_iter->data);
         if (slope_item_get_is_visible(item) == TRUE) {
             _item_draw(item, cr);
         }
-        iter = iter->next;
+        item_iter = item_iter->next;
     }
     if (priv->name != NULL && priv->show_name == TRUE) {
         cairo_text_extents_t txt_ext;
@@ -180,6 +194,30 @@ void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
             priv->name);
         cairo_stroke(cr);
     }
+}
+
+static void
+_scale_position_legend (SlopeScale *self) {
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+    SlopeRect rect;
+    slope_scale_get_figure_rect(self, &rect);
+    slope_legend_set_position(SLOPE_LEGEND(priv->legend),
+                              rect.x + 6.0, rect.y + 6.0);
+}
+
+static void
+_scale_draw_legend (SlopeScale *self, cairo_t *cr) {
+    SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+    slope_legend_clear_items(SLOPE_LEGEND(priv->legend));
+    /* the figure's legend is a global legend, so let's update it's
+       items in each draw to make sure it always has all items */
+    GList *item_iter = priv->item_list;
+    while (item_iter != NULL) {
+        SlopeItem *item = SLOPE_ITEM(item_iter->data);
+        slope_legend_add_item(SLOPE_LEGEND(priv->legend), item);
+        item_iter = item_iter->next;
+    }
+    _item_draw(priv->legend, cr);
 }
 
 void _scale_set_figure (SlopeScale *self, SlopeFigure *figure) {
@@ -296,12 +334,12 @@ SlopeColor slope_scale_get_background_color (SlopeScale *self) {
     return SLOPE_SCALE_GET_PRIVATE(self)->background_color;
 }
 
-void slope_scale_set_background_color (SlopeScale *self, SlopeColor color) {
-    SLOPE_SCALE_GET_PRIVATE(self)->background_color = color;
+SlopeItem* slope_scale_get_legend (SlopeScale *self) {
+    return SLOPE_SCALE_GET_PRIVATE(self)->legend;
 }
 
-void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
-    SLOPE_SCALE_GET_CLASS(self)->draw(self, rect, cr);
+void slope_scale_set_background_color (SlopeScale *self, SlopeColor color) {
+    SLOPE_SCALE_GET_PRIVATE(self)->background_color = color;
 }
 
 void slope_scale_get_figure_rect (SlopeScale *self, SlopeRect *rect) {

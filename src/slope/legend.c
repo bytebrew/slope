@@ -26,16 +26,19 @@ typedef struct
 _SlopeLegendPrivate
 {
     guint32 orientation;
-    double x, y;
+    double user_x, user_y;
     double entry_height;
     double rect_stroke_width;
     SlopeColor rect_stroke_color;
     SlopeColor rect_fill_color;
     SlopeColor text_color;
     gboolean rect_antialias;
-    SlopePoint p1, p2;
+    SlopeRect rect;
     SlopeCorner anchor;
     GList *items;
+    guint num_items;
+    guint num_visible_items;
+    SlopeLegendPosition position;
 }
 SlopeLegendPrivate;
 
@@ -48,13 +51,18 @@ G_DEFINE_TYPE_WITH_PRIVATE(
     SlopeLegend, slope_legend, SLOPE_ITEM_TYPE)
 
 
+#define LEGEND_THUMB_WIDTH 40.0
+#define LEGEND_PADDING     10.0
+
+
 static void _legend_finalize (GObject *self);
 static void _legend_draw (SlopeItem *self, cairo_t *cr);
 static void _legend_get_figure_rect (SlopeItem *self, SlopeRect *rect);
 static void _legend_get_data_rect (SlopeItem *self, SlopeRect *rect);
-static void _legend_evaluate_rect (SlopeItem *self, cairo_t *cr);
 static void _legend_draw_rect (SlopeItem *self, cairo_t *cr);
 static void _legend_draw_thumbs (SlopeItem *self, cairo_t *cr);
+static void _legend_evaluate_rect (SlopeItem *self, cairo_t *cr);
+static void _legend_evaluate_extents(SlopeItem *self, cairo_t *cr);
 
 
 static void
@@ -73,13 +81,16 @@ slope_legend_init (SlopeLegend *self) {
     SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
     priv->orientation = SLOPE_HORIZONTAL;
     priv->rect_fill_color = SLOPE_WHITE;
-    priv->rect_stroke_color = SLOPE_BLACK;
+    priv->rect_stroke_color = SLOPE_COLOR_NULL;
     priv->text_color = SLOPE_BLACK;
     priv->rect_stroke_width = 1.0;
     priv->rect_antialias = FALSE;
     priv->items = NULL;
     priv->entry_height = 0.0;
     priv->anchor = SLOPE_TOPLEFT;
+    priv->num_items = 0;
+    priv->num_visible_items = 0;
+    priv->position = SLOPE_LEGEND_BOTTOM;
 }
 
 static void
@@ -96,9 +107,45 @@ SlopeItem *slope_legend_new (SlopeOrientation orientation) {
 
 static void
 _legend_draw (SlopeItem *self, cairo_t *cr) {
+    SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
+    _legend_evaluate_extents(self, cr);
+    if (priv->num_visible_items < 1) {
+        return;
+    }
     _legend_evaluate_rect(self, cr);
     _legend_draw_rect(self, cr);
     _legend_draw_thumbs(self, cr);
+}
+
+static void
+_legend_evaluate_extents (SlopeItem *self, cairo_t *cr) {
+    SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
+    priv->rect.width = 0.0;
+    priv->rect.height = 0.0;
+    priv->entry_height = 0.0;
+    priv->num_visible_items = 0;
+    GList *item_iter = priv->items;
+    while (item_iter != NULL) {
+        SlopeItem *item = SLOPE_ITEM(item_iter->data);
+        if (slope_item_get_is_visible(item)) {
+            priv->num_visible_items += 1;
+            const char *item_name = slope_item_get_name(item);
+            cairo_text_extents_t txt_ext;
+            cairo_text_extents(cr, item_name, &txt_ext);
+            if (txt_ext.height > priv->entry_height) {
+                priv->entry_height = txt_ext.height;
+            }
+            if (priv->orientation == SLOPE_HORIZONTAL) {
+                priv->rect.width += (txt_ext.width +
+                    LEGEND_THUMB_WIDTH + 2.0*LEGEND_PADDING);
+            } else {
+                if (txt_ext.width > priv->rect.width) {
+                    priv->rect.width = txt_ext.width;
+                }
+            }
+        }
+        item_iter = item_iter->next;
+    }
 }
 
 static void
@@ -108,52 +155,26 @@ _legend_evaluate_rect (SlopeItem *self, cairo_t *cr) {
     /* top left point (in figure coordinates) is easy because
        it is given by the user. as the x and y coordinates
        in set_position */
-    SlopePoint data_p1;
-    data_p1.x = priv->x;
-    data_p1.y = priv->y;
+    SlopePoint user_pos;
+    user_pos.x = priv->user_x;
+    user_pos.y = priv->user_y;
+    SlopePoint pos = user_pos;
     if (scale != NULL) {
-        /* if there is a scale, use it to transform the point */
-        slope_scale_map(scale, &priv->p1, &data_p1);
-    } else {
-        /* if there's none, use the user provided position as
+        /* if there is a scale, use it to transform the point.
+           if there's none, use the user provided position as
            the legend's figure position */
-        priv->p1 = data_p1;
+        slope_scale_map(scale, &pos, &user_pos);
     }
-    /* Bottom right (in figure coordinates) is tricky, because
-       it depends on legend entries extents */
-    double width = 0.0;
-    double height = 0.0;
-    cairo_text_extents_t txt_ext;
-    GList *item_iter = priv->items;
-    priv->entry_height = 0.0;
-    while (item_iter != NULL) {
-        SlopeItem *item = SLOPE_ITEM(item_iter->data);
-        const char *item_name = slope_item_get_name(item);
-        cairo_text_extents(cr, item_name, &txt_ext);
-        if (txt_ext.height > priv->entry_height) {
-            priv->entry_height = txt_ext.height;
-        }
-        if (priv->orientation == SLOPE_HORIZONTAL) {
-            width += txt_ext.width + 50.0;
-        } else {
-            if (txt_ext.width > width) width = txt_ext.width;
-            height += 1.0;
-        }
-        item_iter = item_iter->next;
-    }
-    /* TODO: break it in evaluate_extents, and evaluate_rect to
-       use the anchor property */
-    priv->entry_height += 10.0;
+    priv->rect.x = pos.x;
+    priv->rect.y = pos.y;
     if (priv->orientation == SLOPE_HORIZONTAL) {
-        height = priv->entry_height + 10.0;
-        width += 10.0;
+        priv->rect.width += LEGEND_PADDING;
+        priv->rect.height = priv->num_visible_items + 3.0*LEGEND_PADDING;
     } else {
-        height *= priv->entry_height;
-        height += 10.0;
-        width += 50.0;
+        priv->rect.width += LEGEND_THUMB_WIDTH + 3.0*LEGEND_PADDING;
+        priv->rect.height = priv->num_visible_items *
+            (priv->entry_height + LEGEND_PADDING) + LEGEND_PADDING;
     }
-    priv->p2.x = priv->p1.x + width;
-    priv->p2.y = priv->p1.y + height;
 }
 
 static void
@@ -165,12 +186,7 @@ _legend_draw_rect (SlopeItem *self, cairo_t *cr) {
         cairo_new_path(cr);
         cairo_set_line_width(cr, priv->rect_stroke_width);
         slope_cairo_set_antialias(cr, priv->rect_antialias);
-        cairo_rectangle(
-            cr,
-            priv->p1.x,
-            priv->p1.y,
-            priv->p2.x - priv->p1.x,
-            priv->p2.y - priv->p1.y);
+        slope_cairo_rect(cr, &priv->rect);
         if (should_fill && should_stroke) {
             slope_cairo_set_color(cr, priv->rect_fill_color);
             cairo_fill_preserve(cr);
@@ -191,24 +207,30 @@ _legend_draw_thumbs (SlopeItem *self, cairo_t *cr) {
     SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
     GList *item_iter = priv->items;
     SlopePoint pos;
-    pos.x = priv->p1.x + 20.0;
-    pos.y = priv->p1.y + 10.0 + priv->entry_height/2.0;
+    pos.x = priv->rect.x + LEGEND_PADDING + LEGEND_THUMB_WIDTH/2.0;
+    pos.y = priv->rect.y + LEGEND_PADDING + priv->entry_height/2.0;
     while (item_iter != NULL) {
         SlopeItem *item = SLOPE_ITEM(item_iter->data);
-        const char *item_name = slope_item_get_name(item);
-        _item_draw_thumb(item, cr, &pos);
-        if (priv->orientation == SLOPE_HORIZONTAL) {
+        if (slope_item_get_is_visible(item)) {
+            const char *item_name = slope_item_get_name(item);
+            _item_draw_thumb(item, cr, &pos);
             slope_cairo_set_color(cr, priv->text_color);
-            slope_cairo_text(cr, pos.x + 20.0, pos.y, item_name);
-            cairo_text_extents_t txt_ext;
-            cairo_text_extents(cr, item_name, &txt_ext);
-            pos.x += txt_ext.width + 50.0;
-        } else {
-            slope_cairo_set_color(cr, priv->text_color);
-            slope_cairo_text(cr, pos.x + 20.0, pos.y, item_name);
-            pos.y += priv->entry_height;
+            if (priv->orientation == SLOPE_HORIZONTAL) {
+                slope_cairo_text(cr,
+                    pos.x + LEGEND_THUMB_WIDTH/2.0 + LEGEND_PADDING,
+                    pos.y + priv->entry_height/2.0, item_name);
+                cairo_text_extents_t txt_ext;
+                cairo_text_extents(cr, item_name, &txt_ext);
+                pos.x += (txt_ext.width + LEGEND_THUMB_WIDTH +
+                          2.0*LEGEND_PADDING);
+            } else {
+                slope_cairo_text(cr,
+                    pos.x + LEGEND_THUMB_WIDTH/2.0 + LEGEND_PADDING,
+                    pos.y + priv->entry_height/2.0, item_name);
+                pos.y += priv->entry_height + LEGEND_PADDING;
+            }
+            cairo_stroke(cr);
         }
-        cairo_stroke(cr);
         item_iter = item_iter->next;
     }
 }
@@ -216,10 +238,7 @@ _legend_draw_thumbs (SlopeItem *self, cairo_t *cr) {
 static void
 _legend_get_figure_rect (SlopeItem *self, SlopeRect *rect) {
     SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
-    rect->x = priv->p1.x;
-    rect->y = priv->p1.y;
-    rect->width = priv->p2.x - priv->p1.x;
-    rect->height = priv->p2.y - priv->p1.y;
+    *rect = priv->rect;
 }
 
 static void
@@ -232,12 +251,14 @@ _legend_get_data_rect (SlopeItem *self, SlopeRect *rect) {
         rect->width = 0.0;
         rect->height = 0.0;
     } else {
-        SlopePoint data_p2;
-        slope_scale_unmap(scale, &data_p2, &priv->p2);
-        rect->x = priv->x;
-        rect->y = data_p2.y;
-        rect->width = data_p2.x - priv->x;
-        rect->height = priv->y - data_p2.y;
+        SlopePoint pos, data_pos;
+        pos.x = priv->rect.x;
+        pos.y = priv->rect.y;
+        slope_scale_unmap(scale, &data_pos, &pos);
+        rect->x = data_pos.x;
+        rect->y = data_pos.y;
+        rect->width = priv->user_x - data_pos.x;
+        rect->height = priv->user_y - data_pos.y;
     }
 }
 
@@ -254,8 +275,14 @@ void slope_legend_set_anchor (SlopeLegend *self, SlopeCorner anchor) {
 
 void slope_legend_set_position (SlopeLegend *self, double x, double y) {
     SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
-    priv->x = x;
-    priv->y = y;
+    priv->position = SLOPE_LEGEND_CUSTOM;
+    priv->user_x = x;
+    priv->user_y = y;
+}
+
+void slope_legend_position (SlopeLegend *self, SlopeLegendPosition position) {
+    SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
+    priv->position = position;
 }
 
 void slope_legend_add_item (SlopeLegend *self, SlopeItem *item) {
