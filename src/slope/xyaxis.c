@@ -34,6 +34,7 @@ _SlopeXyAxisPrivate
     SlopeColor text_color;
     SlopeColor title_color;
     SlopeColor select_rect_color;
+    gboolean line_antialias;
     double line_width;
     double grid_line_width;
     char *title;
@@ -69,13 +70,13 @@ slope_xyaxis_class_init (SlopeXyAxisClass *klass) {
     item_klass->get_figure_rect = _xyaxis_get_figure_rect;
 }
 
-
 static void
 slope_xyaxis_init (SlopeXyAxis *self) {
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
     priv->orientation = SLOPE_HORIZONTAL;
     priv->line_color = SLOPE_BLACK; /* SLOPE_GRAY(120); */
     priv->grid_color = SLOPE_GRAY(120);
+    priv->line_antialias = FALSE;
     SLOPE_SET_ALPHA(priv->grid_color, 64);
     priv->text_color = SLOPE_BLACK;
     priv->select_rect_color = SLOPE_BLUE;
@@ -91,45 +92,33 @@ slope_xyaxis_init (SlopeXyAxis *self) {
     priv->sampler = slope_sampler_new();
 }
 
-
-static
-void _xyaxis_finalize (GObject *self)
-{
+static void
+_xyaxis_finalize (GObject *self) {
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
-
     slope_sampler_destroy(priv->sampler);
-
     G_OBJECT_CLASS(slope_xyaxis_parent_class)->finalize(self);
 }
 
-
-SlopeItem* slope_xyaxis_new (int orientation, const char *title)
-{
+SlopeItem* slope_xyaxis_new (int orientation, const char *title) {
     SlopeXyAxis *self = SLOPE_XYAXIS(g_object_new(SLOPE_XYAXIS_TYPE, NULL));
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
-
     priv->orientation = orientation;
     slope_xyaxis_set_title(self, title);
-
     return SLOPE_ITEM(self);
 }
 
-
-static
-void _xyaxis_draw (SlopeItem *self, cairo_t *cr)
-{
+static void
+_xyaxis_draw (SlopeItem *self, cairo_t *cr) {
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
-
     cairo_set_line_width(cr, priv->line_width);
+    slope_cairo_set_antialias(cr, priv->line_antialias);
     cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
-
     if (priv->orientation == SLOPE_HORIZONTAL) {
         _xyaxis_draw_horizontal(SLOPE_XYAXIS(self), cr);
     }
     else if (priv->orientation == SLOPE_VERTICAL) {
         _xyaxis_draw_vertical(SLOPE_XYAXIS(self), cr);
     }
-
     if (priv->selected == TRUE) {
         SlopeRect rect;
         slope_item_get_figure_rect(self, &rect);
@@ -139,10 +128,8 @@ void _xyaxis_draw (SlopeItem *self, cairo_t *cr)
     }
 }
 
-
-static
-void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
-{
+static void
+_xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr) {
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
     SlopeScale *scale = slope_item_get_scale(SLOPE_ITEM(self));
     cairo_text_extents_t txt_ext;
@@ -151,7 +138,6 @@ void _xyaxis_draw_horizontal (SlopeXyAxis *self, cairo_t *cr)
     GList *sample_list, *iter;
     double txt_height;
     guint32 sampler_mode;
-
     slope_scale_get_figure_rect(scale, &scale_fig_rect);
     cairo_text_extents(cr, "dummy", &txt_ext);
     txt_height = txt_ext.height;
