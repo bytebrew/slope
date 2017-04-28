@@ -114,7 +114,7 @@ _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr) {
     /* save cr's state and clip tho the figure's rectangle,
        fill the background if required */
     cairo_save(cr);
-    cairo_select_font_face(cr, "Sans",
+    cairo_select_font_face(cr, "Droid Sans Mono",
           CAIRO_FONT_SLANT_NORMAL,
           CAIRO_FONT_WEIGHT_NORMAL);
     cairo_set_font_size(cr, 12);
