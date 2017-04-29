@@ -81,7 +81,7 @@ slope_legend_init (SlopeLegend *self) {
     SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
     priv->orientation = SLOPE_HORIZONTAL;
     priv->rect_fill_color = SLOPE_WHITE;
-    priv->rect_stroke_color = SLOPE_COLOR_NULL;
+    priv->rect_stroke_color = SLOPE_BLACK;
     priv->text_color = SLOPE_BLACK;
     priv->rect_stroke_width = 1.0;
     priv->rect_antialias = FALSE;
