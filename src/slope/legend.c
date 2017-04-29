@@ -180,26 +180,11 @@ _legend_evaluate_rect (SlopeItem *self, cairo_t *cr) {
 static void
 _legend_draw_rect (SlopeItem *self, cairo_t *cr) {
     SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
-    gboolean should_stroke = !SLOPE_COLOR_IS_NULL(priv->rect_stroke_color);
-    gboolean should_fill = !SLOPE_COLOR_IS_NULL(priv->rect_fill_color);
-    if (should_fill || should_stroke) {
-        cairo_new_path(cr);
-        cairo_set_line_width(cr, priv->rect_stroke_width);
-        slope_cairo_set_antialias(cr, priv->rect_antialias);
-        slope_cairo_rect(cr, &priv->rect);
-        if (should_fill && should_stroke) {
-            slope_cairo_set_color(cr, priv->rect_fill_color);
-            cairo_fill_preserve(cr);
-            slope_cairo_set_color(cr, priv->rect_stroke_color);
-            cairo_stroke(cr);
-        } else if (should_fill) {
-            slope_cairo_set_color(cr, priv->rect_fill_color);
-            cairo_fill(cr);
-        } else {
-            slope_cairo_set_color(cr, priv->rect_stroke_color);
-            cairo_stroke(cr);
-        }
-    }
+    cairo_set_line_width(cr, priv->rect_stroke_width);
+    slope_cairo_set_antialias(cr, priv->rect_antialias);
+    cairo_new_path(cr);
+    slope_cairo_rect(cr, &priv->rect);
+    slope_cairo_draw(cr,priv->rect_stroke_color, priv->rect_fill_color);
 }
 
 static void
@@ -296,6 +281,30 @@ void slope_legend_clear_items (SlopeLegend *self) {
         g_list_free(priv->items);
         priv->items = NULL;
     }
+}
+
+void slope_legend_set_fill_color (SlopeLegend *self, SlopeColor color) {
+    SLOPE_LEGEND_GET_PRIVATE(self)->rect_fill_color = color;
+}
+
+SlopeColor slope_legend_get_fill_color (SlopeLegend *self) {
+    return SLOPE_LEGEND_GET_PRIVATE(self)->rect_fill_color;
+}
+
+void slope_legend_set_stroke_color (SlopeLegend *self, SlopeColor color) {
+    SLOPE_LEGEND_GET_PRIVATE(self)->rect_stroke_color = color;
+}
+
+SlopeColor slope_legend_get_stroke_color (SlopeLegend *self) {
+    return SLOPE_LEGEND_GET_PRIVATE(self)->rect_stroke_color;
+}
+
+void slope_legend_set_stroke_width (SlopeLegend *self, double width) {
+    SLOPE_LEGEND_GET_PRIVATE(self)->rect_stroke_width = width;
+}
+
+double slope_legend_get_stroke_width (SlopeLegend *self) {
+    return SLOPE_LEGEND_GET_PRIVATE(self)->rect_stroke_width;
 }
 
 /* slope/legend.c */

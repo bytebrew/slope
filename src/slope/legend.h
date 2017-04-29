@@ -75,6 +75,18 @@ GType slope_legend_get_type (void) G_GNUC_CONST;
 
 SlopeItem *slope_legend_new (SlopeOrientation orientation);
 
+SlopeColor slope_legend_get_fill_color (SlopeLegend *self);
+
+void slope_legend_set_fill_color (SlopeLegend *self, SlopeColor color);
+
+SlopeColor slope_legend_get_stroke_color (SlopeLegend *self);
+
+void slope_legend_set_stroke_color (SlopeLegend *self, SlopeColor color);
+
+void slope_legend_set_stroke_width (SlopeLegend *self, double width);
+
+double slope_legend_get_stroke_width (SlopeLegend *self);
+
 void slope_legend_set_orientation (SlopeLegend *self, SlopeOrientation orientation);
 
 void slope_legend_set_anchor (SlopeLegend *self, SlopeCorner anchor);
