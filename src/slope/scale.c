@@ -167,6 +167,7 @@ void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
 
 void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
     SlopeScalePrivate *priv = SLOPE_SCALE_GET_PRIVATE(self);
+    /* TODO: break this in smaller tasks */
     GList *item_iter;
     if (!SLOPE_COLOR_IS_NULL(priv->background_color)) {
         cairo_save(cr);
@@ -178,10 +179,7 @@ void _scale_draw_impl (SlopeScale *self, const SlopeRect *rect, cairo_t *cr) {
     }
     item_iter = priv->item_list;
     while (item_iter != NULL) {
-        SlopeItem *item = SLOPE_ITEM(item_iter->data);
-        if (slope_item_get_is_visible(item) == TRUE) {
-            _item_draw(item, cr);
-        }
+        _item_draw(SLOPE_ITEM(item_iter->data), cr);
         item_iter = item_iter->next;
     }
     if (priv->name != NULL && priv->show_name == TRUE) {

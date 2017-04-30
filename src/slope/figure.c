@@ -50,7 +50,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 
 static void _figure_update_layout (SlopeFigure *self);
 static void _figure_add_scale (SlopeFigure *self, SlopeScale *scale);
-static void _figure_evaluate_rect (SlopeFigure *self, SlopeRect *rect,
+static void _figure_add_rect_path (SlopeFigure *self, SlopeRect *rect,
                                    const SlopeRect *in_rect, cairo_t *cr);
 static void _figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
 static void _figure_clear_scale_list (gpointer data);
@@ -114,12 +114,12 @@ _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr) {
     /* save cr's state and clip tho the figure's rectangle,
        fill the background if required */
     cairo_save(cr);
-    cairo_select_font_face(cr, "Sans",
-          CAIRO_FONT_SLANT_NORMAL,
-          CAIRO_FONT_WEIGHT_NORMAL);
-    cairo_set_font_size(cr, 11);
     cairo_new_path(cr);
-    _figure_evaluate_rect(self, &rect, in_rect, cr);
+    cairo_select_font_face(cr, "Sans",
+        CAIRO_FONT_SLANT_NORMAL,
+        CAIRO_FONT_WEIGHT_NORMAL);
+    cairo_set_font_size(cr, 11);
+    _figure_add_rect_path(self, &rect, in_rect, cr);
     _figure_draw_background(self, &rect, cr);
     cairo_clip(cr);
     _figure_draw_scales(self, &rect, cr);
@@ -129,7 +129,7 @@ _figure_draw (SlopeFigure *self, const SlopeRect *in_rect, cairo_t *cr) {
 }
 
 static void
-_figure_evaluate_rect (SlopeFigure *self, SlopeRect *rect,
+_figure_add_rect_path (SlopeFigure *self, SlopeRect *rect,
                        const SlopeRect *in_rect, cairo_t *cr) {
     SlopeFigurePrivate *priv = SLOPE_FIGURE_GET_PRIVATE(self);
     if (priv->frame_mode == SLOPE_FIGURE_ROUNDRECTANGLE) {

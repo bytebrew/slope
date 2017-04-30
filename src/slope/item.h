@@ -74,6 +74,12 @@ SlopeFigure* slope_item_get_figure (SlopeItem *self);
 
 SlopeScale* slope_item_get_scale (SlopeItem *self);
 
+void slope_item_add_subitem (SlopeItem *self, SlopeItem *subitem);
+
+GList *slope_item_get_subitem_list (SlopeItem *self);
+
+SlopeItem* slope_item_get_sub_item (SlopeItem *self, const char *name);
+
 gboolean slope_item_get_is_managed (SlopeItem *self);
 
 void slope_item_set_is_managed (SlopeItem *self, gboolean managed);

@@ -31,6 +31,7 @@ _SlopeItemPrivate
     char *name;
     gboolean managed;
     gboolean visible;
+    GList *subitem_list;
 }
 SlopeItemPrivate;
 
@@ -45,7 +46,9 @@ G_DEFINE_TYPE_WITH_PRIVATE(
 
 
 static void _item_finalize (GObject *self);
-static void _item_draw_thumb_impl (SlopeItem *self, cairo_t *cr, const SlopePoint *pos);
+static void _item_draw_thumb_impl (SlopeItem *self, cairo_t *cr,
+                                   const SlopePoint *pos);
+static void _item_clear_subitem_list (gpointer subitem);
 
 
 static void
@@ -65,12 +68,17 @@ slope_item_init (SlopeItem *self) {
     priv->name = NULL;
     priv->managed = TRUE;
     priv->visible = TRUE;
+    priv->subitem_list = NULL;
 }
 
 static void
 _item_finalize (GObject *self) {
-    /* release the name's memory */
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
     slope_item_set_name(SLOPE_ITEM(self), NULL);
+    if (priv->subitem_list != NULL) {
+        g_list_free_full(priv->subitem_list, _item_clear_subitem_list);
+        priv->subitem_list = NULL;
+    }
     G_OBJECT_CLASS(slope_item_parent_class)->finalize(self);
 }
 
@@ -106,7 +114,17 @@ void _item_mouse_event_impl (SlopeItem *self, SlopeMouseEvent *event) {
 }
 
 void _item_draw (SlopeItem *self, cairo_t *cr) {
-    SLOPE_ITEM_GET_CLASS(self)->draw(self, cr);
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+    /* draw this item's contents if it is visible */
+    if (priv->visible) {
+        SLOPE_ITEM_GET_CLASS(self)->draw(self, cr);
+        GList *subitem_iter = priv->subitem_list;
+        /* and then draw subitems' contents on top of it */
+        while (subitem_iter != NULL) {
+            _item_draw(SLOPE_ITEM(subitem_iter->data), cr);
+            subitem_iter = subitem_iter->next;
+        }
+    }
 }
 
 void _item_draw_thumb (SlopeItem *self, cairo_t *cr, const SlopePoint *pos) {
@@ -160,6 +178,45 @@ void slope_item_set_name (SlopeItem *self, const char *name) {
     } else {
         priv->name = NULL;
     }
+}
+
+static void
+_item_clear_subitem_list (gpointer subitem) {
+    if (slope_item_get_is_managed(SLOPE_ITEM(subitem)) == TRUE) {
+        g_object_unref(G_OBJECT(subitem));
+    }
+}
+
+void slope_item_add_subitem (SlopeItem *self, SlopeItem *subitem) {
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+    if (subitem != NULL) {
+        slope_item_detach(subitem);
+        _item_set_scale(subitem, priv->scale);
+        priv->subitem_list = g_list_append(priv->subitem_list, subitem);
+    }
+}
+
+SlopeItem* slope_item_get_sub_item (SlopeItem *self, const char *name) {
+    SlopeItemPrivate *priv = SLOPE_ITEM_GET_PRIVATE(self);
+    GList *subitem_iter = priv->subitem_list;
+    while (subitem_iter != NULL) {
+        /* is it this subitem? */
+        SlopeItem *subitem = SLOPE_ITEM(subitem_iter->data);
+        if (g_strcmp0(slope_item_get_name(subitem), name) == 0) {
+            return subitem;
+        }
+        /* try it's subitems */
+        subitem = slope_item_get_sub_item(subitem, name);
+        if (subitem != NULL) {
+            return subitem;
+        }
+        subitem_iter = subitem_iter->next;
+    }
+    return NULL;
+}
+
+GList* slope_item_get_subitem_list (SlopeItem *self) {
+    return SLOPE_ITEM_GET_PRIVATE(self)->subitem_list;
 }
 
 SlopeScale* slope_item_get_scale (SlopeItem *self) {
