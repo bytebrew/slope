@@ -161,20 +161,15 @@ _xyseries_draw_thumb (SlopeItem *self, cairo_t *cr, const SlopePoint *pos) {
     }
     else if (priv->mode == SLOPE_SERIES_CIRCLES ||
              priv->mode == SLOPE_SERIES_BIGCIRCLES) {
-        cairo_set_line_width(cr, 1.0);
+        cairo_set_line_width(cr, 1.1);
         slope_cairo_circle(cr, pos, 4.5);
-        slope_cairo_set_color(cr, priv->symbol_fill_color);
-        cairo_fill_preserve(cr);
-        slope_cairo_set_color(cr, priv->symbol_stroke_color);
-        cairo_stroke(cr);
+        slope_cairo_draw(cr, priv->symbol_stroke_color, priv->symbol_fill_color);
     }
     else if (priv->mode == (SLOPE_SERIES_LINE|SLOPE_SERIES_CIRCLES) ||
              priv->mode == (SLOPE_SERIES_LINE|SLOPE_SERIES_BIGCIRCLES)) {
-        slope_cairo_circle(cr, pos, 6.0);
-        slope_cairo_set_color(cr, priv->symbol_fill_color);
-        cairo_fill_preserve(cr);
-        slope_cairo_set_color(cr, priv->symbol_stroke_color);
-        cairo_stroke(cr);
+        cairo_set_line_width(cr, 1.1);
+        slope_cairo_circle(cr, pos, 4.5);
+        slope_cairo_draw(cr, priv->symbol_stroke_color, priv->symbol_fill_color);
         slope_cairo_set_color(cr, priv->line_color);
         cairo_set_line_width(cr, priv->line_width);
         cairo_move_to(cr, pos->x-10.0, pos->y);

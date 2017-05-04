@@ -86,7 +86,7 @@ slope_scale_init (SlopeScale *self) {
     priv->layout_rect.y = 0.0;
     priv->layout_rect.width = 1.0;
     priv->layout_rect.height = 1.0;
-    priv->legend = slope_legend_new(SLOPE_HORIZONTAL);
+    priv->legend = slope_legend_new(SLOPE_VERTICAL);
 }
 
 static void
