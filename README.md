@@ -29,6 +29,9 @@ make
 sudo make install
 ```
 
+Compile using the command (simple.c for example):
+gcc simple.c -lslope -lm -o simple `pkg-config --cflags --libs gtk+-3.0`
+
 ## Roadmap
 
  - ~~Legend (done)~~
