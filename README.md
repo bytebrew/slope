@@ -27,6 +27,9 @@ cmake ..
 make
 sudo make install
 ```
+You can compile it using the following command (simple.c for example):
+
+gcc simple.c -lslope -lm -o simple `pkg-config --cflags --libs gtk+-3.0`
 
 ## Roadmap
 
