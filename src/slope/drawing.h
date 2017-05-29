@@ -27,7 +27,6 @@
 
 SLOPE_BEGIN_DECLS
 
-
 typedef guint32                         SlopeColor;
 #define SLOPE_WHITE                     0xFFFFFFFF
 #define SLOPE_RED                       0xFF0000FF
@@ -68,8 +67,9 @@ typedef guint32                         SlopeColor;
 #define SLOPE_COORD_TO_PIXEL(coord)     (((int) coord) + 0.5)
 #define SLOPE_GRAY(value)               SLOPE_COLOR(value,value,value,0xFF)
 
-
 #define SLOPE_ABS(a)	   (((a) < 0) ? -(a) : (a))
+#define SLOPE_MIN(a,b)	   (((a) < (b)) ? (a) : (b))
+#define SLOPE_MAX(a,b)	   (((a) > (b)) ? (a) : (b))
 
 
 typedef struct
@@ -91,6 +91,25 @@ _SlopeRect
 }
 SlopeRect;
 
+
+typedef enum
+_SlopeOrientation
+{
+    SLOPE_VERTICAL,
+    SLOPE_HORIZONTAL
+}
+SlopeOrientation;
+
+
+typedef enum
+_SlopeCorner
+{
+    SLOPE_TOPLEFT,
+    SLOPE_TOPRIGHT,
+    SLOPE_BOTTOMLEFT,
+    SLOPE_BOTTOMRIGHT
+}
+SlopeCorner;
 
 
 gboolean slope_similar (double x1, double x2);

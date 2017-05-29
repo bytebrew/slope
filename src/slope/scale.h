@@ -21,8 +21,7 @@
 #ifndef SLOPE_SCALE_H
 #define SLOPE_SCALE_H
 
-#include <slope/drawing.h>
-#include <glib-object.h>
+#include <slope/legend.h>
 
 #define SLOPE_SCALE_TYPE              (slope_scale_get_type())
 #define SLOPE_SCALE(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_SCALE_TYPE, SlopeScale))
@@ -59,7 +58,7 @@ _SlopeScaleClass
   void (*get_figure_rect) (SlopeScale *self, SlopeRect *rect);
   void (*get_data_rect) (SlopeScale *self, SlopeRect *rect);
   void (*mouse_event) (SlopeScale *self, SlopeMouseEvent *event);
-
+  void (*position_legend) (SlopeScale *self);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
@@ -93,6 +92,8 @@ void slope_scale_get_data_rect (SlopeScale *self, SlopeRect *rect);
 
 SlopeFigure* slope_scale_get_figure (SlopeScale *self);
 
+SlopeItem* slope_scale_get_legend (SlopeScale *self);
+
 SlopeView* slope_scale_get_view (SlopeScale *self);
 
 gboolean slope_scale_get_is_managed (SlopeScale *self);
@@ -118,6 +119,8 @@ char* slope_scale_get_name (SlopeScale *self);
 void slope_scale_set_show_name (SlopeScale *self, gboolean show);
 
 void slope_scale_set_name_top_padding (SlopeScale *self, double padding);
+
+void slope_scale_detach (SlopeScale *self);
 
 gboolean slope_scale_get_show_name (SlopeScale *self);
 

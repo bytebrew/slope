@@ -1,8 +1,11 @@
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0)
+[![Version](https://img.shields.io/badge/version-0.0.5-red.svg)](http://github.com/bytebrew/slope)
+
 # SLOPE
 
 Slope is a free (LGPL) **C** data visualization library for the Gtk+ toolkit.
 
-![](https://github.com/elvismt/slope/blob/master/demos/screenshot.png)
+![](https://github.com/elvismt/slope/blob/devel/demos/screenshot.png)
 
 Slope integrates with **Gtk+** and all the drawing is made with **cairo**, so it doesn't
 depend on nothing outside the Gtk stack.
@@ -27,9 +30,12 @@ demos directory would be:
 gcc simple.c -lslope -lm -o simple `pkg-config --cflags --libs gtk+-3.0`
 ```
 
+Compile using the command (simple.c for example):
+gcc simple.c -lslope -lm -o simple `pkg-config --cflags --libs gtk+-3.0`
+
 ## Roadmap
 
- - Legend (doing)
+ - ~~Legend (done)~~
  - More elaborate plots e.g. like boxplots (planned)
  - Contours and variance matrices visualization (planned)
 

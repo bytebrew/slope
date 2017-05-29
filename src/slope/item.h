@@ -51,6 +51,7 @@ _SlopeItemClass
   GObjectClass parent_class;
 
   void (*draw) (SlopeItem *self, cairo_t *cr);
+  void (*draw_thumb) (SlopeItem *self, cairo_t *cr, const SlopePoint *pos);
   void (*get_figure_rect) (SlopeItem *self, SlopeRect *rect);
   void (*get_data_rect) (SlopeItem *self, SlopeRect *rect);
   void (*mouse_event) (SlopeItem *self, SlopeMouseEvent *event);
@@ -82,6 +83,8 @@ gboolean slope_item_get_is_visible (SlopeItem *self);
 void slope_item_set_is_visible (SlopeItem *self, gboolean visible);
 
 char* slope_item_get_name (SlopeItem *self);
+
+SlopeView* slope_item_get_view (SlopeItem *self);
 
 void slope_item_set_name (SlopeItem *self, const char *name);
 

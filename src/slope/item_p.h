@@ -26,6 +26,8 @@
 
 void _item_draw (SlopeItem *self, cairo_t *cr);
 
+void _item_draw_thumb (SlopeItem *self, cairo_t *cr, const SlopePoint *pos);
+
 void _item_set_scale (SlopeItem *self, SlopeScale *scale);
 
 void _item_handle_mouse_event (SlopeItem *self, SlopeMouseEvent *event);

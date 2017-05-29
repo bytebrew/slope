@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     scale = slope_xyscale_new();
     slope_chart_add_scale(SLOPE_CHART(chart), scale);
 
-    series = slope_xyseries_new_filled("Sine", x, y, n, "kor");
+    series = slope_xyseries_new_filled("Sine", x, y, n, "kOr");
     slope_scale_add_item(scale, series);
 
     gtk_widget_show_all(chart);

@@ -32,6 +32,20 @@
 
 SLOPE_BEGIN_DECLS
 
+typedef enum
+_SlopeLegendPosition
+{
+    SLOPE_LEGEND_CUSTOM,
+    SLOPE_LEGEND_TOP,
+    SLOPE_LEGEND_BOTTOM,
+    SLOPE_LEGEND_TOPLEFT,
+    SLOPE_LEGEND_TOPRIGHT,
+    SLOPE_LEGEND_BOTTOMLEFT,
+    SLOPE_LEGEND_BOTTOMRIGHT
+}
+SlopeLegendPosition;
+
+
 typedef struct
 _SlopeLegend
 {
@@ -58,6 +72,20 @@ SlopeLegendClass;
 
 
 GType slope_legend_get_type (void) G_GNUC_CONST;
+
+SlopeItem *slope_legend_new (SlopeOrientation orientation);
+
+void slope_legend_set_orientation (SlopeLegend *self, SlopeOrientation orientation);
+
+void slope_legend_set_anchor (SlopeLegend *self, SlopeCorner anchor);
+
+void slope_legend_set_position (SlopeLegend *self, double x, double y);
+
+void slope_legend_position (SlopeLegend *self, SlopeLegendPosition position);
+
+void slope_legend_add_item (SlopeLegend *self, SlopeItem *item);
+
+void slope_legend_clear_items (SlopeLegend *self);
 
 SLOPE_END_DECLS
 
