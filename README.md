@@ -19,11 +19,12 @@ sudo apt-get install build-essential cmake libgtk-3-dev
 sudo dnf install gcc cmake gtk3-devel
 ```
 
-Then build and install slope by going into the source directory and typing
+After the library is installed you can compile your applications adding the -lslope
+flag to the compiler flags. An example for a simple program, like the ones in the
+demos directory would be:
+
 ```bash
-cmake ..
-make
-sudo make install
+gcc simple.c -lslope -lm -o simple `pkg-config --cflags --libs gtk+-3.0`
 ```
 
 ## Roadmap
