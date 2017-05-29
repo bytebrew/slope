@@ -27,9 +27,14 @@ cmake ..
 make
 sudo make install
 ```
-You can compile it using the following command (simple.c for example):
 
+After the library is installed you can compile your applications adding the -lslope
+flag to the compiler flags. An example for a simple program, like the ones in the
+demos directory would be:
+
+```bash
 gcc simple.c -lslope -lm -o simple `pkg-config --cflags --libs gtk+-3.0`
+```
 
 ## Roadmap
 
