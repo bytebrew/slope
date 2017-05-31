@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
     series = slope_xyseries_new_filled("Sine", x, y, n, "b-");
     slope_scale_add_item(scale, series);
 
-    g_timeout_add(15, (GSourceFunc) time_handler, (gpointer) chart);
+    g_timeout_add(30, (GSourceFunc) time_handler, (gpointer) chart);
     gtk_widget_show_all(chart);
     gtk_main();
 
