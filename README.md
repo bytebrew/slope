@@ -1,6 +1,9 @@
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0)
+[![Version](https://img.shields.io/badge/version-0.0.5-red.svg)](http://github.com/bytebrew/slope)
+
 # SLOPE
 
-Slope is a free (LGPL) **C** data visualization library for the Gtk+ tookit.
+Slope is a free (LGPL) **C** data visualization library for the Gtk+ toolkit.
 
 ![](https://github.com/elvismt/slope/blob/devel/demos/screenshot.png)
 
@@ -10,22 +13,21 @@ depend on nothing outside the Gtk stack.
 ## Instalation
 
 Install the required development packages:
-
 - On Debian/Ubuntu
 ```bash
 sudo apt-get install build-essential cmake libgtk-3-dev
 ```
-
 - On Fedora:
 ```bash
 sudo dnf install gcc cmake gtk3-devel
 ```
 
-Then build and install slope by going into the source directory and typing
+After the library is installed you can compile your applications adding the -lslope
+flag to the compiler flags. An example for a simple program, like the ones in the
+demos directory would be:
+
 ```bash
-cmake ..
-make
-sudo make install
+gcc simple.c -lslope -lm -o simple `pkg-config --cflags --libs gtk+-3.0`
 ```
 
 After the library is installed you can compile your applications adding the -lslope
@@ -38,7 +40,7 @@ gcc simple.c -lslope -lm -o simple `pkg-config --cflags --libs gtk+-3.0`
 
 ## Roadmap
 
- - ~~Legend (Done)~~
+ - ~~Legend (done)~~
  - More elaborate plots e.g. like boxplots (planned)
  - Contours and variance matrices visualization (planned)
 
