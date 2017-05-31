@@ -1,6 +1,5 @@
 /*
- *Copyright (C) 2017 Nuno Ferreira
- *Copyright (C) 2016 Elvis Teixeira
+ * Copyright (C) 2017 Nuno Ferreira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -22,7 +21,6 @@
 #include <slope/slope.h>
 #include <math.h>
 
-
 SlopeScale *scale;
 SlopeItem *series;
 double *x, *y;
@@ -30,10 +28,7 @@ double dx;
 GtkWidget *chart;
 
 /*Animated plot Y-axis SCALE*/
-Max_scale = 2.5;        
-    
-
-
+#define MAX_SCALE = 2.5
 gboolean timer = TRUE;
 
 static void do_drawing(cairo_t *cr)
@@ -99,7 +94,7 @@ int main(int argc, char *argv[])
     /* the amplitude for the sine wave gives the SCALE of the plot */
     for (k=0; k<n; ++k) {
         x[k] = k * dx;
-        y[k] = Max_scale * sin(x[k]);
+        y[k] = MAX_SCALE * sin(x[k]);
     }
 
     scale = slope_xyscale_new();
