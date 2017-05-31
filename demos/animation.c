@@ -28,68 +28,52 @@ double dx;
 GtkWidget *chart;
 
 /*Animated plot Y-axis SCALE*/
-#define MAX_SCALE = 2.5
+#define MAX_SCALE 2.5
 gboolean timer = TRUE;
 
-static void do_drawing(cairo_t *cr)
-{
-  static long k, n = 200;
-  static gint count = 0;
-  count++;
-
+static void do_drawing(cairo_t *cr) {
+    static long k, n = 200;
+    static gint count = 0;
+    count++;
     for (k=0; k<n; ++k) {
         x[k] = k * dx;
         y[k] = sin(x[k] + 0.1 * count) + sin(1.2 * x[k] - 0.1 * count) ;
     }
-
-    series = slope_xyseries_new_filled("Sine", x, y, n, "b-");
+    slope_xyseries_set_data(SLOPE_XYSERIES(series), x, y, n);
 }
 
 
-
-
-static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, 
-    gpointer user_data)
-{      
-  do_drawing(cr);  
+static gboolean on_draw_event(GtkWidget *widget,
+    cairo_t *cr, gpointer user_data) {
+  do_drawing(cr);
   return FALSE;
 }
 
 
-
-
-static gboolean time_handler(GtkWidget *widget)
-{
+static gboolean time_handler(GtkWidget *widget) {
   if (!timer) return FALSE;
-
   gtk_widget_queue_draw(widget);
   return TRUE;
 }
 
 
-
-
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     /* number of points */
-    long k, n = 200;    
+    long k, n = 200;
     /*spatial resolution */
     dx = 4.0 * G_PI / n;
-    
-    
+
     gtk_init(&argc, &argv);
     chart = slope_chart_new();
 
-    g_signal_connect(G_OBJECT(chart), "draw", 
-      G_CALLBACK(on_draw_event), NULL); 
+    g_signal_connect(G_OBJECT(chart), "draw",
+      G_CALLBACK(on_draw_event), NULL);
     g_signal_connect(G_OBJECT(chart), "destroy",
                      G_CALLBACK(gtk_main_quit), NULL);
 
     /* create some sinusoidal data points */
-
     x = g_malloc(n * sizeof(double));
     y = g_malloc(n * sizeof(double));
-
 
     /* the amplitude for the sine wave gives the SCALE of the plot */
     for (k=0; k<n; ++k) {
@@ -102,13 +86,12 @@ int main(int argc, char *argv[])
 
     series = slope_xyseries_new_filled("Sine", x, y, n, "b-");
     slope_scale_add_item(scale, series);
-    
+
     g_timeout_add(15, (GSourceFunc) time_handler, (gpointer) chart);
     gtk_widget_show_all(chart);
     gtk_main();
 
     g_free(x);
     g_free(y);
-
     return 0;
 }
