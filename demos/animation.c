@@ -24,50 +24,33 @@
 SlopeScale *scale;
 SlopeItem *series;
 double *x, *y;
-double dx;
+const long n = 200;
+const double dx = 4.0 * G_PI / 200;
 GtkWidget *chart;
 
 /*Animated plot Y-axis SCALE*/
 #define MAX_SCALE 2.5
-gboolean timer = TRUE;
 
-static void do_drawing(cairo_t *cr) {
-    static long k, n = 200;
-    static gint count = 0;
+
+static gboolean timer_callback(GtkWidget *chart) {
+    static long count = 0;
     count++;
+
+    long k;
     for (k=0; k<n; ++k) {
         x[k] = k * dx;
         y[k] = sin(x[k] + 0.1 * count) + sin(1.2 * x[k] - 0.1 * count) ;
     }
+
     slope_xyseries_set_data(SLOPE_XYSERIES(series), x, y, n);
-}
-
-
-static gboolean on_draw_event(GtkWidget *widget,
-    cairo_t *cr, gpointer user_data) {
-  do_drawing(cr);
-  return FALSE;
-}
-
-
-static gboolean time_handler(GtkWidget *widget) {
-  if (!timer) return FALSE;
-  gtk_widget_queue_draw(widget);
-  return TRUE;
+    gtk_widget_queue_draw(SLOPE_CHART(chart));
+    return TRUE;
 }
 
 
 int main(int argc, char *argv[]) {
-    /* number of points */
-    long k, n = 200;
-    /*spatial resolution */
-    dx = 4.0 * G_PI / n;
-
     gtk_init(&argc, &argv);
     chart = slope_chart_new();
-
-    g_signal_connect(G_OBJECT(chart), "draw",
-      G_CALLBACK(on_draw_event), NULL);
     g_signal_connect(G_OBJECT(chart), "destroy",
                      G_CALLBACK(gtk_main_quit), NULL);
 
@@ -76,6 +59,7 @@ int main(int argc, char *argv[]) {
     y = g_malloc(n * sizeof(double));
 
     /* the amplitude for the sine wave gives the SCALE of the plot */
+    long k;
     for (k=0; k<n; ++k) {
         x[k] = k * dx;
         y[k] = MAX_SCALE * sin(x[k]);
@@ -87,7 +71,7 @@ int main(int argc, char *argv[]) {
     series = slope_xyseries_new_filled("Sine", x, y, n, "b-");
     slope_scale_add_item(scale, series);
 
-    g_timeout_add(30, (GSourceFunc) time_handler, (gpointer) chart);
+    g_timeout_add(30, (GSourceFunc) timer_callback, (gpointer) chart);
     gtk_widget_show_all(chart);
     gtk_main();
 

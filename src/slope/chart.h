@@ -69,6 +69,8 @@ GtkWidget* slope_chart_get_header (SlopeChart *self);
 
 GtkWidget* slope_chart_get_view (SlopeChart *self);
 
+void slope_chart_redraw (SlopeChart *self);
+
 void slope_chart_add_scale (SlopeChart *self, SlopeScale *scale);
 
 void slope_chart_write_to_png (SlopeChart *self, const char *filename,
