@@ -104,7 +104,7 @@ SlopeItem* slope_xyseries_new_filled (const char *name,
                                       const char *style) {
     SlopeItem *self = SLOPE_ITEM(g_object_new(SLOPE_XYSERIES_TYPE, NULL));
     slope_item_set_name(self, name);
-    slope_xyseries_set_data(SLOPE_XYSERIES(self), x_vec, y_vec, n_pts);
+    slope_xyseries_update_data(SLOPE_XYSERIES(self), x_vec, y_vec, n_pts);
     slope_xyseries_set_style(SLOPE_XYSERIES(self), style);
     return self;
 }
@@ -119,6 +119,11 @@ void slope_xyseries_set_data (SlopeXySeries *self, const double *x_vec,
     priv->x_vec = x_vec;
     priv->y_vec = y_vec;
     priv->n_pts = n_pts;
+}
+
+void slope_xyseries_update_data (SlopeXySeries *self, const double *x_vec,
+                                 const double *y_vec, long n_pts) {
+    slope_xyseries_set_data(self, x_vec, y_vec, n_pts);
     slope_xyseries_update(self);
 }
 

@@ -43,7 +43,7 @@ static gboolean timer_callback(GtkWidget *chart) {
     }
 
     slope_xyseries_set_data(SLOPE_XYSERIES(series), x, y, n);
-    gtk_widget_queue_draw(SLOPE_CHART(chart));
+    gtk_widget_queue_draw(chart);
     return TRUE;
 }
 
