@@ -39,7 +39,10 @@ static void do_drawing(cairo_t *cr) {
         x[k] = k * dx;
         y[k] = sin(x[k] + 0.1 * count) + sin(1.2 * x[k] - 0.1 * count) ;
     }
-    slope_xyseries_set_data(SLOPE_XYSERIES(series), x, y, n);
+    series = slope_xyseries_new_filled("Sine", x, y, n, "b-");
+    /*Uncomment the following to allow the Y-axis to change */
+    //slope_xyseries_set_data(SLOPE_XYSERIES(series), x, y, n);
+    
 }
 
 
