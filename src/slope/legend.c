@@ -222,8 +222,7 @@ _legend_draw_thumbs (SlopeItem *self, cairo_t *cr) {
 
 static void
 _legend_get_figure_rect (SlopeItem *self, SlopeRect *rect) {
-    SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
-    *rect = priv->rect;
+    *rect = SLOPE_LEGEND_GET_PRIVATE(self)->rect;
 }
 
 static void
@@ -249,13 +248,19 @@ _legend_get_data_rect (SlopeItem *self, SlopeRect *rect) {
 
 void slope_legend_set_orientation (SlopeLegend *self,
                                    SlopeOrientation orientation) {
-    SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
-    priv->orientation = orientation;
+    SLOPE_LEGEND_GET_PRIVATE(self)->orientation = orientation;
+}
+
+SlopeOrientation slope_legend_get_orientation (SlopeLegend *self) {
+    return SLOPE_LEGEND_GET_PRIVATE(self)->orientation;
 }
 
 void slope_legend_set_anchor (SlopeLegend *self, SlopeCorner anchor) {
-    SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
-    priv->anchor = anchor;
+    SLOPE_LEGEND_GET_PRIVATE(self)->anchor = anchor;
+}
+
+SlopeCorner slope_legend_get_anchor (SlopeLegend *self) {
+    return SLOPE_LEGEND_GET_PRIVATE(self)->anchor;
 }
 
 void slope_legend_set_position (SlopeLegend *self, double x, double y) {
@@ -265,9 +270,17 @@ void slope_legend_set_position (SlopeLegend *self, double x, double y) {
     priv->user_y = y;
 }
 
-void slope_legend_position (SlopeLegend *self, SlopeLegendPosition position) {
+void slope_legend_get_position (SlopeLegend *self, double *x, double *y) {
     SlopeLegendPrivate *priv = SLOPE_LEGEND_GET_PRIVATE(self);
-    priv->position = position;
+    if (priv->position == SLOPE_LEGEND_CUSTOM) {
+        *x = priv->user_x;
+        *y = priv->user_y;
+    }
+}
+
+void slope_legend_set_default_position (SlopeLegend *self,
+                                        SlopeLegendPosition position) {
+    SLOPE_LEGEND_GET_PRIVATE(self)->position = position;
 }
 
 void slope_legend_add_item (SlopeLegend *self, SlopeItem *item) {

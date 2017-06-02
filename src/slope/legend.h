@@ -89,13 +89,21 @@ void slope_legend_set_stroke_width (SlopeLegend *self, double width);
 
 double slope_legend_get_stroke_width (SlopeLegend *self);
 
-void slope_legend_set_orientation (SlopeLegend *self, SlopeOrientation orientation);
+void slope_legend_set_orientation (SlopeLegend *self,
+                                   SlopeOrientation orientation);
+
+SlopeOrientation slope_legend_get_orientation (SlopeLegend *self);
 
 void slope_legend_set_anchor (SlopeLegend *self, SlopeCorner anchor);
 
+SlopeCorner slope_legend_get_anchor (SlopeLegend *self);
+
 void slope_legend_set_position (SlopeLegend *self, double x, double y);
 
-void slope_legend_position (SlopeLegend *self, SlopeLegendPosition position);
+void slope_legend_get_position (SlopeLegend *self, double *x, double *y);
+
+void slope_legend_set_default_position (SlopeLegend *self,
+                                        SlopeLegendPosition position);
 
 void slope_legend_add_item (SlopeLegend *self, SlopeItem *item);
 

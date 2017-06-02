@@ -94,6 +94,22 @@ gboolean slope_xyaxis_get_selected (SlopeXyAxis *self);
 
 void slope_xyaxis_set_selected (SlopeXyAxis *self, gboolean selected);
 
+void slope_xyaxis_set_line_color (SlopeXyAxis *self, SlopeColor color);
+
+SlopeColor slope_xyaxis_get_line_color (SlopeXyAxis *self);
+
+void slope_xyaxis_set_grid_color (SlopeXyAxis *self, SlopeColor color);
+
+SlopeColor slope_xyaxis_get_grid_color (SlopeXyAxis *self);
+
+void slope_xyaxis_set_title_color (SlopeXyAxis *self, SlopeColor color);
+
+SlopeColor slope_xyaxis_get_title_color (SlopeXyAxis *self);
+
+void slope_xyaxis_set_selection_color (SlopeXyAxis *self, SlopeColor color);
+
+SlopeColor slope_xyaxis_get_selection_color (SlopeXyAxis *self);
+
 SLOPE_END_DECLS
 
 #endif /* SLOPE_XYAXIS_H */

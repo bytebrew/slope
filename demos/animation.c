@@ -28,27 +28,23 @@ const long n = 200;
 const double dx = 4.0 * G_PI / 200;
 GtkWidget *chart;
 
-/*Animated plot Y-axis SCALE*/
-#define MAX_SCALE 2.5
 
-
-static gboolean timer_callback(GtkWidget *chart) {
+static gboolean timer_callback (GtkWidget *chart) {
     static long count = 0;
     count++;
 
     long k;
     for (k=0; k<n; ++k) {
-        x[k] = k * dx;
-        y[k] = sin(x[k] + 0.1 * count) + sin(1.2 * x[k] - 0.1 * count) ;
+        y[k] = sin(x[k] + 0.1 * count) + sin(1.2 * x[k] - 0.1 * count);
     }
 
     slope_xyseries_set_data(SLOPE_XYSERIES(series), x, y, n);
-    gtk_widget_queue_draw(chart);
+    slope_chart_redraw(SLOPE_CHART(chart));
     return TRUE;
 }
 
 
-int main(int argc, char *argv[]) {
+int main (int argc, char *argv[]) {
     gtk_init(&argc, &argv);
     chart = slope_chart_new();
     g_signal_connect(G_OBJECT(chart), "destroy",
@@ -62,7 +58,7 @@ int main(int argc, char *argv[]) {
     long k;
     for (k=0; k<n; ++k) {
         x[k] = k * dx;
-        y[k] = MAX_SCALE * sin(x[k]);
+        y[k] = 2.5 * sin(x[k]);
     }
 
     scale = slope_xyscale_new();

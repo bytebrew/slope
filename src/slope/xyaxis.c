@@ -434,14 +434,11 @@ void _xyaxis_get_data_rect (SlopeItem *self, SlopeRect *rect)
 }
 
 
-void slope_xyaxis_set_title (SlopeXyAxis *self, const char *title)
-{
+void slope_xyaxis_set_title (SlopeXyAxis *self, const char *title) {
     SlopeXyAxisPrivate *priv = SLOPE_XYAXIS_GET_PRIVATE(self);
-
     if (priv->title != NULL) {
         g_free(priv->title);
     }
-
     if (title != NULL) {
         priv->title = g_strdup(title);
     } else {
@@ -449,28 +446,52 @@ void slope_xyaxis_set_title (SlopeXyAxis *self, const char *title)
     }
 }
 
-
-SlopeSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self)
-{
+SlopeSampler* slope_xyaxis_get_sampler (SlopeXyAxis *self) {
     return SLOPE_XYAXIS_GET_PRIVATE(self)->sampler;
 }
 
-
-const char* slope_xyaxis_get_title (SlopeXyAxis *self)
-{
+const char* slope_xyaxis_get_title (SlopeXyAxis *self) {
     return SLOPE_XYAXIS_GET_PRIVATE(self)->title;
 }
 
-
-gboolean slope_xyaxis_get_selected (SlopeXyAxis *self)
-{
+gboolean slope_xyaxis_get_selected (SlopeXyAxis *self) {
     return SLOPE_XYAXIS_GET_PRIVATE(self)->selected;
 }
 
-
-void slope_xyaxis_set_selected (SlopeXyAxis *self, gboolean selected)
-{
+void slope_xyaxis_set_selected (SlopeXyAxis *self, gboolean selected) {
     SLOPE_XYAXIS_GET_PRIVATE(self)->selected = selected;
+}
+
+void slope_xyaxis_set_line_color (SlopeXyAxis *self, SlopeColor color) {
+    SLOPE_XYAXIS_GET_PRIVATE(self)->line_color = color;
+}
+
+SlopeColor slope_xyaxis_get_line_color (SlopeXyAxis *self) {
+    return SLOPE_XYAXIS_GET_PRIVATE(self)->line_color;
+}
+
+void slope_xyaxis_set_grid_color (SlopeXyAxis *self, SlopeColor color) {
+    SLOPE_XYAXIS_GET_PRIVATE(self)->grid_color = color;
+}
+
+SlopeColor slope_xyaxis_get_grid_color (SlopeXyAxis *self) {
+    return SLOPE_XYAXIS_GET_PRIVATE(self)->grid_color;
+}
+
+void slope_xyaxis_set_title_color (SlopeXyAxis *self, SlopeColor color) {
+    SLOPE_XYAXIS_GET_PRIVATE(self)->title_color = color;
+}
+
+SlopeColor slope_xyaxis_get_title_color (SlopeXyAxis *self) {
+    return SLOPE_XYAXIS_GET_PRIVATE(self)->title_color;
+}
+
+void slope_xyaxis_set_selection_color (SlopeXyAxis *self, SlopeColor color) {
+    SLOPE_XYAXIS_GET_PRIVATE(self)->select_rect_color = color;
+}
+
+SlopeColor slope_xyaxis_get_selection_color (SlopeXyAxis *self) {
+    return SLOPE_XYAXIS_GET_PRIVATE(self)->select_rect_color;
 }
 
 /* slope/xyaxis.c */
