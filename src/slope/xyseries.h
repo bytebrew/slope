@@ -49,11 +49,11 @@ SlopeXySeriesMode;
 typedef struct
 _SlopeXySeries
 {
-  SlopeItem parent;
+    SlopeItem parent;
 
-  /* Padding to allow adding up to 4 members
-     without breaking ABI. */
-  gpointer padding[4];
+    /* Padding to allow adding up to 4 members
+     * without breaking ABI. */
+    gpointer padding[4];
 }
 SlopeXySeries;
 
@@ -61,14 +61,13 @@ SlopeXySeries;
 typedef struct
 _SlopeXySeriesClass
 {
-  SlopeItemClass parent_class;
+    SlopeItemClass parent_class;
 
-  /* Padding to allow adding up to 4 members
-     without breaking ABI. */
-  gpointer padding[4];
+    /* Padding to allow adding up to 4 members
+     * without breaking ABI. */
+    gpointer padding[4];
 }
 SlopeXySeriesClass;
-
 
 
 GType slope_xyseries_get_type (void) G_GNUC_CONST;
@@ -83,7 +82,7 @@ SlopeItem* slope_xyseries_new_filled (const char *name,
 void slope_xyseries_set_data (SlopeXySeries *self, const double *x_vec,
                               const double *y_vec, long n_pts);
 
-void slope_xyseries_update_data (SlopeXySeries *self, const double *x_vec,
+void slope_xyseries_update_data (SlopeXySeries *self, const double *x_vec, 
                                  const double *y_vec, long n_pts);
 
 void slope_xyseries_set_style (SlopeXySeries *self, const char *style);
@@ -93,3 +92,4 @@ void slope_xyseries_update (SlopeXySeries *self);
 SLOPE_END_DECLS
 
 #endif /* SLOPE_XYSERIES_H */
+
