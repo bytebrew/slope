@@ -7,6 +7,12 @@ configure_file(
    ${CMAKE_BINARY_DIR}/config.h
 )
 
+include_directories(
+   "${GTK_INCLUDE_DIRS}"
+   "${CMAKE_CURRENT_SOURCE_DIR}"
+   "${CMAKE_BINARY_DIR}"
+)
+
 add_library(slope SHARED ${slope_SRCS}  ${slope_HDRS})
 
 install(TARGETS slope DESTINATION /usr/lib)
