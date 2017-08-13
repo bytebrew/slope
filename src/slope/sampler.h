@@ -23,58 +23,43 @@
 
 #include <slope/drawing.h>
 
-#define SLOPE_XYAXIS_SAMPLE(ptr) ((SlopeSample*) (ptr))
+#define SLOPE_XYAXIS_SAMPLE(ptr) ((SlopeSample *) (ptr))
 
 SLOPE_BEGIN_DECLS
 
-typedef enum
-_SlopeSamplerMode
-{
-    SLOPE_SAMPLER_MANUAL,
-    SLOPE_SAMPLER_AUTO_DECIMAL
-}
-SlopeSamplerMode;
+typedef enum _SlopeSamplerMode {
+  SLOPE_SAMPLER_MANUAL,
+  SLOPE_SAMPLER_AUTO_DECIMAL
+} SlopeSamplerMode;
 
+typedef struct _SlopeSample {
+  double coord;
+  char *label;
+} SlopeSample;
 
-typedef struct
-_SlopeSample
-{
-    double coord;
-    char *label;
-}
-SlopeSample;
+typedef struct _SlopeSampler SlopeSampler;
 
+SlopeSampler *slope_sampler_new(void);
 
-typedef struct _SlopeSampler  SlopeSampler;
+void slope_sampler_destroy(SlopeSampler *self);
 
+void slope_sampler_clear(SlopeSampler *self);
 
-SlopeSampler* slope_sampler_new (void);
+void slope_sampler_add_sample(SlopeSampler *self, double coord, char *label);
 
-void slope_sampler_destroy (SlopeSampler *self);
+void slope_sampler_set_samples(
+    SlopeSampler *self, const SlopeSample *sample_array, int n_samples);
 
-void slope_sampler_clear (SlopeSampler *self);
+GList *slope_sampler_get_sample_list(SlopeSampler *self);
 
-void slope_sampler_add_sample (SlopeSampler  *self, double coord, char *label);
+guint32 slope_sampler_get_mode(SlopeSampler *self);
 
-void slope_sampler_set_samples (SlopeSampler *self,
-                                const SlopeSample *sample_array,
-                                int n_samples);
+void slope_sampler_auto_sample_decimal(
+    SlopeSampler *self, double min, double max, double hint);
 
-GList* slope_sampler_get_sample_list (SlopeSampler *self);
+extern const SlopeSample *const slope_sampler_pi_samples;
 
-guint32 slope_sampler_get_mode (SlopeSampler *self);
-
-void slope_sampler_auto_sample_decimal (SlopeSampler *self,
-                                        double min, double max, double hint);
-
-
-extern
-const SlopeSample *const
-slope_sampler_pi_samples;
-
-extern
-const SlopeSample *const
-slope_sampler_month_samples;
+extern const SlopeSample *const slope_sampler_month_samples;
 
 SLOPE_END_DECLS
 

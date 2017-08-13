@@ -18,45 +18,42 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/slope.h>
 #include <math.h>
+#include <slope/slope.h>
 
+int main(int argc, char *argv[]) {
+  GtkWidget *chart;
+  SlopeScale *scale;
+  SlopeItem *series;
+  double *x, *y;
 
-int main(int argc, char *argv[])
-{
-    GtkWidget *chart;
-    SlopeScale *scale;
-    SlopeItem *series;
-    double *x, *y;
+  gtk_init(&argc, &argv);
+  chart = slope_chart_new();
 
-    gtk_init(&argc, &argv);
-    chart = slope_chart_new();
+  g_signal_connect(G_OBJECT(chart), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
-    g_signal_connect(G_OBJECT(chart), "destroy",
-                     G_CALLBACK(gtk_main_quit), NULL);
+  /* create some sinusoidal data points */
+  long k, n = 50;
+  x = g_malloc(n * sizeof(double));
+  y = g_malloc(n * sizeof(double));
+  double dx = 4.0 * G_PI / n;
 
-    /* create some sinusoidal data points */
-    long k, n = 50;
-    x = g_malloc(n * sizeof(double));
-    y = g_malloc(n * sizeof(double));
-    double dx = 4.0 * G_PI / n;
+  for (k = 0; k < n; ++k) {
+    x[k] = k * dx;
+    y[k] = sin(x[k]);
+  }
 
-    for (k=0; k<n; ++k) {
-        x[k] = k * dx;
-        y[k] = sin(x[k]);
-    }
+  scale = slope_xyscale_new();
+  slope_chart_add_scale(SLOPE_CHART(chart), scale);
 
-    scale = slope_xyscale_new();
-    slope_chart_add_scale(SLOPE_CHART(chart), scale);
+  series = slope_xyseries_new_filled("Sine", x, y, n, "kOr");
+  slope_scale_add_item(scale, series);
 
-    series = slope_xyseries_new_filled("Sine", x, y, n, "kOr");
-    slope_scale_add_item(scale, series);
+  gtk_widget_show_all(chart);
+  gtk_main();
 
-    gtk_widget_show_all(chart);
-    gtk_main();
+  g_free(x);
+  g_free(y);
 
-    g_free(x);
-    g_free(y);
-
-    return 0;
+  return 0;
 }

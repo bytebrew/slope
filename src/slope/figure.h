@@ -24,26 +24,26 @@
 #include <glib-object.h>
 #include <slope/legend.h>
 
-#define SLOPE_FIGURE_TYPE              (slope_figure_get_type())
-#define SLOPE_FIGURE(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_FIGURE_TYPE, SlopeFigure))
-#define SLOPE_FIGURE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_FIGURE_TYPE, SlopeFigureClass))
-#define SLOPE_IS_FIGURE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_FIGURE_TYPE))
-#define SLOPE_IS_FIGURE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_FIGURE_TYPE))
-#define SLOPE_FIGURE_GET_CLASS(obj)    (SLOPE_FIGURE_CLASS(G_OBJECT_GET_CLASS(obj)))
+#define SLOPE_FIGURE_TYPE (slope_figure_get_type())
+#define SLOPE_FIGURE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_FIGURE_TYPE, SlopeFigure))
+#define SLOPE_FIGURE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_FIGURE_TYPE, SlopeFigureClass))
+#define SLOPE_IS_FIGURE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_FIGURE_TYPE))
+#define SLOPE_IS_FIGURE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_FIGURE_TYPE))
+#define SLOPE_FIGURE_GET_CLASS(obj) \
+  (SLOPE_FIGURE_CLASS(G_OBJECT_GET_CLASS(obj)))
 
 SLOPE_BEGIN_DECLS
 
-typedef enum
-_SlopeFigureFrameMode
-{
-    SLOPE_FIGURE_RECTANGLE,
-    SLOPE_FIGURE_ROUNDRECTANGLE,
-}
-SlopeFigureFrameMode;
+typedef enum _SlopeFigureFrameMode {
+  SLOPE_FIGURE_RECTANGLE,
+  SLOPE_FIGURE_ROUNDRECTANGLE,
+} SlopeFigureFrameMode;
 
-
-struct _SlopeFigure
-{
+struct _SlopeFigure {
   GObject parent;
 
   /* Padding to allow adding up to 4 members
@@ -51,45 +51,41 @@ struct _SlopeFigure
   gpointer padding[4];
 };
 
-
-typedef struct
-_SlopeFigureClass
-{
+typedef struct _SlopeFigureClass {
   GObjectClass parent_class;
 
-  void (*draw) (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
-  void (*add_scale) (SlopeFigure *self, SlopeScale *scale);
+  void (*draw)(SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
+  void (*add_scale)(SlopeFigure *self, SlopeScale *scale);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
   gpointer padding[4];
-}
-SlopeFigureClass;
+} SlopeFigureClass;
 
+GType slope_figure_get_type(void) G_GNUC_CONST;
 
-GType slope_figure_get_type (void) G_GNUC_CONST;
+SlopeFigure *slope_figure_new(void);
 
-SlopeFigure* slope_figure_new (void);
+GList *slope_figure_get_scale_list(SlopeFigure *self);
 
-GList* slope_figure_get_scale_list (SlopeFigure *self);
+void slope_figure_add_scale(SlopeFigure *self, SlopeScale *scale);
 
-void slope_figure_add_scale (SlopeFigure *self, SlopeScale *scale);
+SlopeColor slope_figure_get_background_color(SlopeFigure *self);
 
-SlopeColor slope_figure_get_background_color (SlopeFigure *self);
+void slope_figure_set_background_color(SlopeFigure *self, SlopeColor color);
 
-void slope_figure_set_background_color (SlopeFigure *self, SlopeColor color);
+gboolean slope_figure_get_is_managed(SlopeFigure *self);
 
-gboolean slope_figure_get_is_managed (SlopeFigure *self);
+void slope_figure_set_is_managed(SlopeFigure *self, gboolean managed);
 
-void slope_figure_set_is_managed (SlopeFigure *self, gboolean managed);
+void slope_figure_draw(SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
 
-void slope_figure_draw (SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
+void slope_figure_write_to_png(
+    SlopeFigure *self, const char *filename, int width, int height);
 
-void slope_figure_write_to_png (SlopeFigure *self, const char *filename, int width, int height);
+SlopeView *slope_figure_get_view(SlopeFigure *self);
 
-SlopeView* slope_figure_get_view (SlopeFigure *self);
-
-SlopeItem* slope_figure_get_legend (SlopeFigure *self);
+SlopeItem *slope_figure_get_legend(SlopeFigure *self);
 
 SLOPE_END_DECLS
 

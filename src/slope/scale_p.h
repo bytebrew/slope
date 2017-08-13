@@ -23,12 +23,12 @@
 
 #include <slope/scale.h>
 
-void _scale_set_figure (SlopeScale *self, SlopeFigure *figure);
+void _scale_set_figure(SlopeScale *self, SlopeFigure *figure);
 
-void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr);
+void _scale_draw(SlopeScale *self, const SlopeRect *rect, cairo_t *cr);
 
-void _scale_handle_mouse_event (SlopeScale *self, SlopeMouseEvent *event);
+void _scale_handle_mouse_event(SlopeScale *self, SlopeMouseEvent *event);
 
-void _scale_mouse_event_impl (SlopeScale *self, SlopeMouseEvent *event);
+void _scale_mouse_event_impl(SlopeScale *self, SlopeMouseEvent *event);
 
 #endif /* SLOPE_SCALE_P_H */

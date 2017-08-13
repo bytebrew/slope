@@ -25,14 +25,14 @@
  * basic and most often used slope headers
  * all at once */
 
-#include <slope/view.h>
 #include <slope/figure.h>
-#include <slope/scale.h>
 #include <slope/item.h>
+#include <slope/scale.h>
+#include <slope/view.h>
 
+#include <slope/xyaxis.h>
 #include <slope/xyscale.h>
 #include <slope/xyseries.h>
-#include <slope/xyaxis.h>
 
 #include <slope/chart.h>
 

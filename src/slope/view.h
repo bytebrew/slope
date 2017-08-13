@@ -24,17 +24,19 @@
 #include <gtk/gtk.h>
 #include <slope/figure.h>
 
-#define SLOPE_VIEW_TYPE              (slope_view_get_type())
-#define SLOPE_VIEW(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_VIEW_TYPE, SlopeView))
-#define SLOPE_VIEW_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_VIEW_TYPE, SlopeViewClass))
-#define SLOPE_IS_VIEW(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_VIEW_TYPE))
-#define SLOPE_IS_VIEW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_VIEW_TYPE))
-#define SLOPE_VIEW_GET_CLASS(obj)    (SLOPE_VIEW_CLASS(G_OBJECT_GET_CLASS(obj)))
+#define SLOPE_VIEW_TYPE (slope_view_get_type())
+#define SLOPE_VIEW(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_VIEW_TYPE, SlopeView))
+#define SLOPE_VIEW_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_VIEW_TYPE, SlopeViewClass))
+#define SLOPE_IS_VIEW(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_VIEW_TYPE))
+#define SLOPE_IS_VIEW_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_VIEW_TYPE))
+#define SLOPE_VIEW_GET_CLASS(obj) (SLOPE_VIEW_CLASS(G_OBJECT_GET_CLASS(obj)))
 
 SLOPE_BEGIN_DECLS
 
-struct _SlopeView
-{
+struct _SlopeView {
   GtkDrawingArea parent;
 
   /* Padding to allow adding up to 4 members
@@ -42,34 +44,30 @@ struct _SlopeView
   gpointer padding[4];
 };
 
-
-typedef struct
-_SlopeViewClass
-{
+typedef struct _SlopeViewClass {
   GtkDrawingAreaClass parent_class;
 
-  void (*set_figure) (SlopeView *self, SlopeFigure *figure);
+  void (*set_figure)(SlopeView *self, SlopeFigure *figure);
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
   gpointer padding[4];
-}
-SlopeViewClass;
+} SlopeViewClass;
 
+GType slope_view_get_type(void) G_GNUC_CONST;
 
-GType slope_view_get_type (void) G_GNUC_CONST;
+GtkWidget *slope_view_new(void);
 
-GtkWidget* slope_view_new (void);
+GtkWidget *slope_view_new_with_figure(SlopeFigure *figure);
 
-GtkWidget* slope_view_new_with_figure (SlopeFigure *figure);
+void slope_view_set_figure(SlopeView *self, SlopeFigure *figure);
 
-void slope_view_set_figure (SlopeView *self, SlopeFigure *figure);
+void slope_view_redraw(SlopeView *self);
 
-void slope_view_redraw (SlopeView *self);
+SlopeFigure *slope_view_get_figure(SlopeFigure *self);
 
-SlopeFigure* slope_view_get_figure (SlopeFigure *self);
-
-void slope_view_write_to_png (SlopeView *self, const char *filename, int width, int height);
+void slope_view_write_to_png(
+    SlopeView *self, const char *filename, int width, int height);
 
 SLOPE_END_DECLS
 

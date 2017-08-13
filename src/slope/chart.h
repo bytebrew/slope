@@ -23,58 +23,53 @@
 
 #include <slope/view.h>
 
-#define SLOPE_CHART_TYPE              (slope_chart_get_type())
-#define SLOPE_CHART(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_CHART_TYPE, SlopeChart))
-#define SLOPE_CHART_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_CHART_TYPE, SlopeChartClass))
-#define SLOPE_IS_CHART(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_CHART_TYPE))
-#define SLOPE_IS_CHART_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_CHART_TYPE))
-#define SLOPE_CHART_GET_CLASS(obj)    (SLOPE_CHART_CLASS(G_OBJECT_GET_CLASS(obj)))
+#define SLOPE_CHART_TYPE (slope_chart_get_type())
+#define SLOPE_CHART(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), SLOPE_CHART_TYPE, SlopeChart))
+#define SLOPE_CHART_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), SLOPE_CHART_TYPE, SlopeChartClass))
+#define SLOPE_IS_CHART(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), SLOPE_CHART_TYPE))
+#define SLOPE_IS_CHART_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), SLOPE_CHART_TYPE))
+#define SLOPE_CHART_GET_CLASS(obj) (SLOPE_CHART_CLASS(G_OBJECT_GET_CLASS(obj)))
 
 SLOPE_BEGIN_DECLS
 
-typedef struct
-_SlopeChart
-{
+typedef struct _SlopeChart {
   GtkWindow parent;
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
   gpointer padding[4];
-}
-SlopeChart;
+} SlopeChart;
 
-
-typedef struct
-_SlopeChartClass
-{
+typedef struct _SlopeChartClass {
   GtkWindowClass parent_class;
 
   /* Padding to allow adding up to 4 members
      without breaking ABI. */
   gpointer padding[4];
-}
-SlopeChartClass;
+} SlopeChartClass;
 
+GType slope_chart_get_type(void) G_GNUC_CONST;
 
+GtkWidget *slope_chart_new();
 
-GType slope_chart_get_type (void) G_GNUC_CONST;
+GtkWidget *slope_chart_new_detailed(const gchar *title, int width, int height);
 
-GtkWidget* slope_chart_new ();
+SlopeFigure *slope_chart_get_figure(SlopeChart *self);
 
-GtkWidget* slope_chart_new_detailed (const gchar *title, int width, int height);
+GtkWidget *slope_chart_get_header(SlopeChart *self);
 
-SlopeFigure* slope_chart_get_figure (SlopeChart *self);
+GtkWidget *slope_chart_get_view(SlopeChart *self);
 
-GtkWidget* slope_chart_get_header (SlopeChart *self);
+void slope_chart_redraw(SlopeChart *self);
 
-GtkWidget* slope_chart_get_view (SlopeChart *self);
+void slope_chart_add_scale(SlopeChart *self, SlopeScale *scale);
 
-void slope_chart_redraw (SlopeChart *self);
-
-void slope_chart_add_scale (SlopeChart *self, SlopeScale *scale);
-
-void slope_chart_write_to_png (SlopeChart *self, const char *filename,
-                               int width, int height);
+void slope_chart_write_to_png(
+    SlopeChart *self, const char *filename, int width, int height);
 
 SLOPE_END_DECLS
 

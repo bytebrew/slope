@@ -24,14 +24,14 @@
 #include <slope/item.h>
 #include <slope/view.h>
 
-void _item_draw (SlopeItem *self, cairo_t *cr);
+void _item_draw(SlopeItem *self, cairo_t *cr);
 
-void _item_draw_thumb (SlopeItem *self, cairo_t *cr, const SlopePoint *pos);
+void _item_draw_thumb(SlopeItem *self, cairo_t *cr, const SlopePoint *pos);
 
-void _item_set_scale (SlopeItem *self, SlopeScale *scale);
+void _item_set_scale(SlopeItem *self, SlopeScale *scale);
 
-void _item_handle_mouse_event (SlopeItem *self, SlopeMouseEvent *event);
+void _item_handle_mouse_event(SlopeItem *self, SlopeMouseEvent *event);
 
-void _item_mouse_event_impl (SlopeItem *self, SlopeMouseEvent *event);
+void _item_mouse_event_impl(SlopeItem *self, SlopeMouseEvent *event);
 
 #endif /* SLOPE_ITEM_P_H */
