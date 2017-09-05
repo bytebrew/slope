@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
   scale = slope_xyscale_new();
   slope_chart_add_scale(SLOPE_CHART(chart), scale);
 
-  series = slope_xyseries_new_filled("Sine", x, y, n, "b-");
+  series = slope_xyseries_new_filled("Wave", x, y, n, "b-");
   slope_scale_add_item(scale, series);
 
   g_timeout_add(30, (GSourceFunc) timer_callback, (gpointer) chart);
@@ -72,3 +72,4 @@ int main(int argc, char *argv[]) {
   g_free(y);
   return 0;
 }
+
