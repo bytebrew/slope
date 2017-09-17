@@ -1,35 +1,35 @@
+#
+# Copyright (C) 2017  Elvis Teixeira
+#
+# This source code is free software: you can redistribute it
+# and/or modify it under the terms of the GNU Lesser General
+# Public License as published by the Free Software Foundation,
+# either version 3 of the License, or (at your option) any
+# later version.
+#
+# This source code is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied
+# warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+# PURPOSE.  See the GNU Lesser General Public License for
+# more details.
+#
+# You should have received a copy of the GNU Lesser General
+# Public License along with this program.
+# If not, see <http://www.gnu.org/licenses/>.
+#
+
 project(slope C)
 cmake_minimum_required(VERSION 2.8)
 
 set(SLOPE_MAJOR_VERSION 2)
-set(SLOPE_MINOR_VERSION 5)
+set(SLOPE_MINOR_VERSION 6)
 set(SLOPE_PATCH_VERSION 0)
+set(SLOPE_VERSION_STRING "${SLOPE_MAJOR_VERSION}.${SLOPE_MINOR_VERSION}.${SLOPE_PATCH_VERSION}")
 
-set(SLOPE_USE_GTK "TRUE")
-set(SLOPE_ENABLE_DEBUG "TRUE")
-
-find_package(PkgConfig REQUIRED)
-if(SLOPE_USE_GTK MATCHES "TRUE")
-   set(SLOPE_HAVE_GTK 1)
-   PKG_CHECK_MODULES(DEPENDENCY "gtk+-3.0")
-else()
-   set(SLOPE_HAVE_GTK 0)
-   PKG_CHECK_MODULES(DEPENDENCY "cairo")
-endif()
-
-if(SLOPE_ENABLE_DEBUG MATCHES "TRUE")
-   set(CMAKE_CC_FLAGS "${CMAKE_CC_FLAGS} -Wall -g}")
-   set(SLOPE_BUILD_DEBUG 1)
-else()
-   set(CMAKE_CC_FLAGS "${CMAKE_CC_FLAGS} -O2}")
-endif()
-   
-include_directories(
-   "${DEPENDENCY_INCLUDE_DIRS}"
-   "${CMAKE_SOURCE_DIR}/src"
-)
+set(SLOPE_BASE_DIR ${CMAKE_SOURCE_DIR})
+set(SLOPE_AUTOGEN_DIR ${CMAKE_BINARY_DIR})
 
 subdirs(
-   "${CMAKE_SOURCE_DIR}/src"
+   "${CMAKE_SOURCE_DIR}/slope"
    "${CMAKE_SOURCE_DIR}/demos"
 )

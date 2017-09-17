@@ -27,8 +27,14 @@
 
 #define SLOPE_PATCH_VERSION  @SLOPE_PATCH_VERSION@
 
-#define SLOPE_HAVE_GTK  @SLOPE_HAVE_GTK@
+#define SLOPE_VERSION_STRING  "@SLOPE_VERSION_STRING@"
 
 #define SLOPE_BUILD_DEBUG  @SLOPE_BUILD_DEBUG@
+
+#if SLOPE_BUILD_DEBUG
+#  define SLOPE_ASSERT assert
+#else
+#  define SLOPE_ASSERT /* nothing */
+#endif
 
 #endif /* SLOPE_CONFIG_H */
