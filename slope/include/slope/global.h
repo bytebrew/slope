@@ -30,9 +30,9 @@
 #endif
 
 typedef struct _SlopeFigure SlopeFigure;
-typedef struct _SlopeScale SlopeScale;
-typedef struct _SlopeItem SlopeItem;
-typedef struct _SlopeView SlopeView;
+typedef struct _SlopeScale  SlopeScale;
+typedef struct _SlopeItem   SlopeItem;
+typedef struct _SlopeView   SlopeView;
 
 typedef enum _SlopeMouseButton {
   SLOPE_MOUSE_BUTTON_LEFT,
@@ -48,10 +48,11 @@ typedef enum _SlopeMouseEventType {
   SLOPE_MOUSE_RELEASE
 } SlopeMouseEventType;
 
-typedef struct _SlopeMouseEvent {
-  double x;
-  double y;
-  SlopeMouseButton button;
+typedef struct _SlopeMouseEvent
+{
+  double              x;
+  double              y;
+  SlopeMouseButton    button;
   SlopeMouseEventType type;
 } SlopeMouseEvent;
 

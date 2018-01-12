@@ -21,13 +21,14 @@
 #include <math.h>
 #include <slope/slope.h>
 
-int main(int argc, char *argv[]) {
-  GtkWidget *chart;
-  SlopeScale *scale1, *scale2;
-  SlopeItem *series11, *series12, *series2;
-  SlopeItem *axis;
+int main(int argc, char *argv[])
+{
+  GtkWidget *   chart;
+  SlopeScale *  scale1, *scale2;
+  SlopeItem *   series11, *series12, *series2;
+  SlopeItem *   axis;
   SlopeSampler *sampler;
-  double *x, *y11, *y12, *y2;
+  double *      x, *y11, *y12, *y2;
 
   gtk_init(&argc, &argv);
   chart = slope_chart_new();
@@ -36,18 +37,19 @@ int main(int argc, char *argv[]) {
 
   /* create some sinusoidal data points */
   long k, n = 50;
-  x = g_malloc(n * sizeof(double));
-  y11 = g_malloc(n * sizeof(double));
-  y12 = g_malloc(n * sizeof(double));
-  y2 = g_malloc(n * sizeof(double));
+  x         = g_malloc(n * sizeof(double));
+  y11       = g_malloc(n * sizeof(double));
+  y12       = g_malloc(n * sizeof(double));
+  y2        = g_malloc(n * sizeof(double));
   double dx = 4.0 * G_PI / n;
 
-  for (k = 0; k < n; ++k) {
-    x[k] = k * dx;
-    y11[k] = sin(x[k]);
-    y12[k] = cos(x[k]);
-    y2[k] = 1.0 + y11[k] + 0.1 * k;
-  }
+  for (k = 0; k < n; ++k)
+    {
+      x[k]   = k * dx;
+      y11[k] = sin(x[k]);
+      y12[k] = cos(x[k]);
+      y2[k]  = 1.0 + y11[k] + 0.1 * k;
+    }
 
   scale1 = slope_xyscale_new_axis("Phase", "Amplitude", "Sinusoidal functions");
   slope_scale_set_layout_rect(scale1, 0, 0, 1, 1);

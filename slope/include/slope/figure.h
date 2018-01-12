@@ -43,7 +43,8 @@ typedef enum _SlopeFigureFrameMode {
   SLOPE_FIGURE_ROUNDRECTANGLE,
 } SlopeFigureFrameMode;
 
-struct _SlopeFigure {
+struct _SlopeFigure
+{
   GObject parent;
 
   /* Padding to allow adding up to 4 members
@@ -51,7 +52,8 @@ struct _SlopeFigure {
   gpointer padding[4];
 };
 
-typedef struct _SlopeFigureClass {
+typedef struct _SlopeFigureClass
+{
   GObjectClass parent_class;
 
   void (*draw)(SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
@@ -80,8 +82,10 @@ void slope_figure_set_is_managed(SlopeFigure *self, gboolean managed);
 
 void slope_figure_draw(SlopeFigure *self, const SlopeRect *rect, cairo_t *cr);
 
-void slope_figure_write_to_png(
-    SlopeFigure *self, const char *filename, int width, int height);
+void slope_figure_write_to_png(SlopeFigure *self,
+                               const char * filename,
+                               int          width,
+                               int          height);
 
 SlopeView *slope_figure_get_view(SlopeFigure *self);
 

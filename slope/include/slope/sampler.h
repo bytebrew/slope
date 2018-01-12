@@ -32,9 +32,10 @@ typedef enum _SlopeSamplerMode {
   SLOPE_SAMPLER_AUTO_DECIMAL
 } SlopeSamplerMode;
 
-typedef struct _SlopeSample {
+typedef struct _SlopeSample
+{
   double coord;
-  char *label;
+  char * label;
 } SlopeSample;
 
 typedef struct _SlopeSampler SlopeSampler;
@@ -47,15 +48,18 @@ void slope_sampler_clear(SlopeSampler *self);
 
 void slope_sampler_add_sample(SlopeSampler *self, double coord, char *label);
 
-void slope_sampler_set_samples(
-    SlopeSampler *self, const SlopeSample *sample_array, int n_samples);
+void slope_sampler_set_samples(SlopeSampler *     self,
+                               const SlopeSample *sample_array,
+                               int                n_samples);
 
 GList *slope_sampler_get_sample_list(SlopeSampler *self);
 
 guint32 slope_sampler_get_mode(SlopeSampler *self);
 
-void slope_sampler_auto_sample_decimal(
-    SlopeSampler *self, double min, double max, double hint);
+void slope_sampler_auto_sample_decimal(SlopeSampler *self,
+                                       double        min,
+                                       double        max,
+                                       double        hint);
 
 extern const SlopeSample *const slope_sampler_pi_samples;
 

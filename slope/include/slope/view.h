@@ -36,7 +36,8 @@
 
 SLOPE_BEGIN_DECLS
 
-struct _SlopeView {
+struct _SlopeView
+{
   GtkDrawingArea parent;
 
   /* Padding to allow adding up to 4 members
@@ -44,7 +45,8 @@ struct _SlopeView {
   gpointer padding[4];
 };
 
-typedef struct _SlopeViewClass {
+typedef struct _SlopeViewClass
+{
   GtkDrawingAreaClass parent_class;
 
   void (*set_figure)(SlopeView *self, SlopeFigure *figure);
@@ -66,8 +68,10 @@ void slope_view_redraw(SlopeView *self);
 
 SlopeFigure *slope_view_get_figure(SlopeFigure *self);
 
-void slope_view_write_to_png(
-    SlopeView *self, const char *filename, int width, int height);
+void slope_view_write_to_png(SlopeView * self,
+                             const char *filename,
+                             int         width,
+                             int         height);
 
 SLOPE_END_DECLS
 

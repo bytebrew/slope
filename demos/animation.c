@@ -21,28 +21,31 @@
 #include <math.h>
 #include <slope/slope.h>
 
-SlopeScale *scale;
-SlopeItem *series;
-double *x, *y;
-const long n = 200;
+SlopeScale * scale;
+SlopeItem *  series;
+double *     x, *y;
+const long   n  = 200;
 const double dx = 4.0 * G_PI / 200;
-GtkWidget *chart;
+GtkWidget *  chart;
 
-static gboolean timer_callback(GtkWidget *chart) {
+static gboolean timer_callback(GtkWidget *chart)
+{
   static long count = 0;
   count++;
 
   long k;
-  for (k = 0; k < n; ++k) {
-    y[k] = sin(x[k] + 0.1 * count) + sin(1.2 * x[k] - 0.1 * count);
-  }
+  for (k = 0; k < n; ++k)
+    {
+      y[k] = sin(x[k] + 0.1 * count) + sin(1.2 * x[k] - 0.1 * count);
+    }
 
   slope_xyseries_set_data(SLOPE_XYSERIES(series), x, y, n);
   slope_chart_redraw(SLOPE_CHART(chart));
   return TRUE;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
   gtk_init(&argc, &argv);
   chart = slope_chart_new();
   g_signal_connect(G_OBJECT(chart), "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -53,10 +56,11 @@ int main(int argc, char *argv[]) {
 
   /* the amplitude for the sine wave gives the SCALE of the plot */
   long k;
-  for (k = 0; k < n; ++k) {
-    x[k] = k * dx;
-    y[k] = 2.5 * sin(x[k]);
-  }
+  for (k = 0; k < n; ++k)
+    {
+      x[k] = k * dx;
+      y[k] = 2.5 * sin(x[k]);
+    }
 
   scale = slope_xyscale_new();
   slope_chart_add_scale(SLOPE_CHART(chart), scale);
@@ -72,4 +76,3 @@ int main(int argc, char *argv[]) {
   g_free(y);
   return 0;
 }
-

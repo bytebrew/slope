@@ -36,7 +36,8 @@
 
 SLOPE_BEGIN_DECLS
 
-typedef struct _SlopeItem {
+typedef struct _SlopeItem
+{
   GObject parent;
 
   /* Padding to allow adding up to 4 members
@@ -44,7 +45,8 @@ typedef struct _SlopeItem {
   gpointer padding[4];
 } SlopeItem;
 
-typedef struct _SlopeItemClass {
+typedef struct _SlopeItemClass
+{
   GObjectClass parent_class;
 
   void (*draw)(SlopeItem *self, cairo_t *cr);

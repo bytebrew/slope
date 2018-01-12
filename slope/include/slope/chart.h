@@ -36,7 +36,8 @@
 
 SLOPE_BEGIN_DECLS
 
-typedef struct _SlopeChart {
+typedef struct _SlopeChart
+{
   GtkWindow parent;
 
   /* Padding to allow adding up to 4 members
@@ -44,7 +45,8 @@ typedef struct _SlopeChart {
   gpointer padding[4];
 } SlopeChart;
 
-typedef struct _SlopeChartClass {
+typedef struct _SlopeChartClass
+{
   GtkWindowClass parent_class;
 
   /* Padding to allow adding up to 4 members
@@ -68,8 +70,10 @@ void slope_chart_redraw(SlopeChart *self);
 
 void slope_chart_add_scale(SlopeChart *self, SlopeScale *scale);
 
-void slope_chart_write_to_png(
-    SlopeChart *self, const char *filename, int width, int height);
+void slope_chart_write_to_png(SlopeChart *self,
+                              const char *filename,
+                              int         width,
+                              int         height);
 
 SLOPE_END_DECLS
 

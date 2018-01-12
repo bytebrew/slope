@@ -39,17 +39,17 @@
 SLOPE_BEGIN_DECLS
 
 typedef enum _SlopeXyScaleInteracion {
-  SLOPE_XYSCALE_INTERACTION_ZOOM = 0,
+  SLOPE_XYSCALE_INTERACTION_ZOOM      = 0,
   SLOPE_XYSCALE_INTERACTION_TRANSLATE = 1
 } SlopeXyScaleInteracion;
 
 typedef enum _SlopeXyScaleAxis {
   SLOPE_XYSCALE_AXIS_BOTTOM = 0,
-  SLOPE_XYSCALE_AXIS_TOP = 1,
-  SLOPE_XYSCALE_AXIS_LEFT = 2,
-  SLOPE_XYSCALE_AXIS_RIGHT = 3,
-  SLOPE_XYSCALE_AXIS_X = 4,
-  SLOPE_XYSCALE_AXIS_Y = 5
+  SLOPE_XYSCALE_AXIS_TOP    = 1,
+  SLOPE_XYSCALE_AXIS_LEFT   = 2,
+  SLOPE_XYSCALE_AXIS_RIGHT  = 3,
+  SLOPE_XYSCALE_AXIS_X      = 4,
+  SLOPE_XYSCALE_AXIS_Y      = 5
 } SlopeXyScaleAxis;
 
 typedef enum _SlopeXyScaleAxisFlag {
@@ -60,7 +60,8 @@ typedef enum _SlopeXyScaleAxisFlag {
   SLOPE_XYSCALE_FRAME_LINE
 } SlopeXyScaleAxisFlag;
 
-typedef struct _SlopeXyScale {
+typedef struct _SlopeXyScale
+{
   SlopeScale parent;
 
   /* Padding to allow adding up to 4 members
@@ -68,7 +69,8 @@ typedef struct _SlopeXyScale {
   gpointer padding[4];
 } SlopeXyScale;
 
-typedef struct _SlopeXyScaleClass {
+typedef struct _SlopeXyScaleClass
+{
   SlopeScaleClass parent_class;
 
   /* Padding to allow adding up to 4 members
@@ -80,8 +82,9 @@ GType slope_xyscale_get_type(void) G_GNUC_CONST;
 
 SlopeScale *slope_xyscale_new(void);
 
-SlopeScale *slope_xyscale_new_axis(
-    const char *x_title, const char *y_title, const char *top_title);
+SlopeScale *slope_xyscale_new_axis(const char *x_title,
+                                   const char *y_title,
+                                   const char *top_title);
 
 SlopeItem *slope_xyscale_get_axis(SlopeXyScale *self, int axis_id);
 

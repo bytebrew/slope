@@ -39,11 +39,11 @@
 SLOPE_BEGIN_DECLS
 
 typedef enum _SlopeXyAxisComponent {
-  SLOPE_XYAXIS_LINE = 0x00000001,
-  SLOPE_XYAXIS_TICKS_UP = 0x00000002,
-  SLOPE_XYAXIS_TICKS_DOWN = 0x00000004,
-  SLOPE_XYAXIS_TITLE = 0x00000008,
-  SLOPE_XYAXIS_GRID = 0x00000010,
+  SLOPE_XYAXIS_LINE          = 0x00000001,
+  SLOPE_XYAXIS_TICKS_UP      = 0x00000002,
+  SLOPE_XYAXIS_TICKS_DOWN    = 0x00000004,
+  SLOPE_XYAXIS_TITLE         = 0x00000008,
+  SLOPE_XYAXIS_GRID          = 0x00000010,
   SLOPE_XYAXIS_ALL_COMPONENT = 0xFFFFFFFF,
 
   SLOPE_XYAXIS_DEFAULT_DOWN =
@@ -57,9 +57,13 @@ typedef enum _SlopeXyAxisComponent {
   SLOPE_XYAXIS_DEFAULT_DOWN_GRID = SLOPE_XYAXIS_DEFAULT_DOWN | SLOPE_XYAXIS_GRID
 } SlopeXyAxisComponent;
 
-typedef struct _SlopeXyAxis { SlopeItem parent; } SlopeXyAxis;
+typedef struct _SlopeXyAxis
+{
+  SlopeItem parent;
+} SlopeXyAxis;
 
-typedef struct _SlopeXyAxisClass {
+typedef struct _SlopeXyAxisClass
+{
   SlopeItemClass parent_klass;
 } SlopeXyAxisClass;
 
@@ -67,8 +71,10 @@ GType slope_xyaxis_get_type(void) G_GNUC_CONST;
 
 SlopeItem *slope_xyaxis_new(int orientation, const char *title);
 
-void slope_xyaxis_set_position(
-    SlopeXyAxis *self, double min, double max, double anchor);
+void slope_xyaxis_set_position(SlopeXyAxis *self,
+                               double       min,
+                               double       max,
+                               double       anchor);
 
 void slope_xyaxis_set_components(SlopeXyAxis *self, guint32 components);
 

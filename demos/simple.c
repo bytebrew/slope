@@ -21,11 +21,12 @@
 #include <math.h>
 #include <slope/slope.h>
 
-int main(int argc, char *argv[]) {
-  GtkWidget *chart;
+int main(int argc, char *argv[])
+{
+  GtkWidget * chart;
   SlopeScale *scale;
-  SlopeItem *series;
-  double *x, *y;
+  SlopeItem * series;
+  double *    x, *y;
 
   gtk_init(&argc, &argv);
   chart = slope_chart_new();
@@ -34,14 +35,15 @@ int main(int argc, char *argv[]) {
 
   /* create some sinusoidal data points */
   long k, n = 50;
-  x = g_malloc(n * sizeof(double));
-  y = g_malloc(n * sizeof(double));
+  x         = g_malloc(n * sizeof(double));
+  y         = g_malloc(n * sizeof(double));
   double dx = 4.0 * G_PI / n;
 
-  for (k = 0; k < n; ++k) {
-    x[k] = k * dx;
-    y[k] = sin(x[k]);
-  }
+  for (k = 0; k < n; ++k)
+    {
+      x[k] = k * dx;
+      y[k] = sin(x[k]);
+    }
 
   scale = slope_xyscale_new();
   slope_chart_add_scale(SLOPE_CHART(chart), scale);

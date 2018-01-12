@@ -24,34 +24,37 @@
 
 /* globals. yes, good or not, it is a demo */
 const long n = 100;
-double *x, *y;
+double *   x, *y;
 GtkWidget *view;
 
-gboolean update_plot(GtkWidget *button, gpointer data) {
+gboolean update_plot(GtkWidget *button, gpointer data)
+{
   long k;
-  for (k = 0; k < n; ++k) {
-    x[k] = g_random_double();
-    y[k] = g_random_double();
-  }
+  for (k = 0; k < n; ++k)
+    {
+      x[k] = g_random_double();
+      y[k] = g_random_double();
+    }
   slope_view_redraw(SLOPE_VIEW(view));
   return TRUE;
 }
 
-int main(int argc, char *argv[]) {
-  GtkWidget *window;
-  GtkWidget *box;
-  GtkWidget *button;
+int main(int argc, char *argv[])
+{
+  GtkWidget *  window;
+  GtkWidget *  box;
+  GtkWidget *  button;
   SlopeFigure *figure;
-  SlopeScale *scale;
-  SlopeItem *series;
+  SlopeScale * scale;
+  SlopeItem *  series;
 
   gtk_init(&argc, &argv);
 
   /* create window layout */
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+  box    = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
   button = gtk_button_new_with_label("Update plot");
-  view = slope_view_new();
+  view   = slope_view_new();
   figure = slope_figure_new();
   gtk_window_set_default_size(GTK_WINDOW(window), 500, 400);
   g_signal_connect(

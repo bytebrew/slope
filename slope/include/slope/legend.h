@@ -49,7 +49,8 @@ typedef enum _SlopeLegendPosition {
   SLOPE_LEGEND_BOTTOMRIGHT
 } SlopeLegendPosition;
 
-typedef struct _SlopeLegend {
+typedef struct _SlopeLegend
+{
   SlopeItem parent;
 
   /* Padding to allow adding up to 4 members
@@ -57,7 +58,8 @@ typedef struct _SlopeLegend {
   gpointer padding[4];
 } SlopeLegend;
 
-typedef struct _SlopeLegendClass {
+typedef struct _SlopeLegendClass
+{
   SlopeItemClass parent_class;
 
   /* Padding to allow adding up to 4 members
@@ -81,8 +83,8 @@ void slope_legend_set_stroke_width(SlopeLegend *self, double width);
 
 double slope_legend_get_stroke_width(SlopeLegend *self);
 
-void slope_legend_set_orientation(
-    SlopeLegend *self, SlopeOrientation orientation);
+void slope_legend_set_orientation(SlopeLegend *    self,
+                                  SlopeOrientation orientation);
 
 SlopeOrientation slope_legend_get_orientation(SlopeLegend *self);
 
@@ -94,8 +96,8 @@ void slope_legend_set_position(SlopeLegend *self, double x, double y);
 
 void slope_legend_get_position(SlopeLegend *self, double *x, double *y);
 
-void slope_legend_set_default_position(
-    SlopeLegend *self, SlopeLegendPosition position);
+void slope_legend_set_default_position(SlopeLegend *       self,
+                                       SlopeLegendPosition position);
 
 void slope_legend_add_item(SlopeLegend *self, SlopeItem *item);
 

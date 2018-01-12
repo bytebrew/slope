@@ -38,16 +38,17 @@
 SLOPE_BEGIN_DECLS
 
 typedef enum _SlopeXySeriesMode {
-  SLOPE_SERIES_LINE = 0x00000001,
-  SLOPE_SERIES_CIRCLES = 0x00000002,
-  SLOPE_SERIES_SQUARES = 0x00000004,
-  SLOPE_SERIES_AREAUNDER = 0x00000008,
-  SLOPE_SERIES_BIGSYMBOL = 0x00000010,
+  SLOPE_SERIES_LINE       = 0x00000001,
+  SLOPE_SERIES_CIRCLES    = 0x00000002,
+  SLOPE_SERIES_SQUARES    = 0x00000004,
+  SLOPE_SERIES_AREAUNDER  = 0x00000008,
+  SLOPE_SERIES_BIGSYMBOL  = 0x00000010,
   SLOPE_SERIES_BIGSQUARES = SLOPE_SERIES_SQUARES | SLOPE_SERIES_BIGSYMBOL,
   SLOPE_SERIES_BIGCIRCLES = SLOPE_SERIES_CIRCLES | SLOPE_SERIES_BIGSYMBOL
 } SlopeXySeriesMode;
 
-typedef struct _SlopeXySeries {
+typedef struct _SlopeXySeries
+{
   SlopeItem parent;
 
   /* Padding to allow adding up to 4 members
@@ -55,7 +56,8 @@ typedef struct _SlopeXySeries {
   gpointer padding[4];
 } SlopeXySeries;
 
-typedef struct _SlopeXySeriesClass {
+typedef struct _SlopeXySeriesClass
+{
   SlopeItemClass parent_class;
 
   /* Padding to allow adding up to 4 members
@@ -67,15 +69,21 @@ GType slope_xyseries_get_type(void) G_GNUC_CONST;
 
 SlopeItem *slope_xyseries_new(void);
 
-SlopeItem *slope_xyseries_new_filled(
-    const char *name, const double *x_vec, const double *y_vec, long n_pts,
-    const char *style);
+SlopeItem *slope_xyseries_new_filled(const char *  name,
+                                     const double *x_vec,
+                                     const double *y_vec,
+                                     long          n_pts,
+                                     const char *  style);
 
-void slope_xyseries_set_data(
-    SlopeXySeries *self, const double *x_vec, const double *y_vec, long n_pts);
+void slope_xyseries_set_data(SlopeXySeries *self,
+                             const double * x_vec,
+                             const double * y_vec,
+                             long           n_pts);
 
-void slope_xyseries_update_data(
-    SlopeXySeries *self, const double *x_vec, const double *y_vec, long n_pts);
+void slope_xyseries_update_data(SlopeXySeries *self,
+                                const double * x_vec,
+                                const double * y_vec,
+                                long           n_pts);
 
 void slope_xyseries_set_style(SlopeXySeries *self, const char *style);
 

@@ -76,12 +76,14 @@ typedef guint32 SlopeColor;
 #define SLOPE_MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define SLOPE_MAX(a, b) (((a) > (b)) ? (a) : (b))
 
-typedef struct _SlopePoint {
+typedef struct _SlopePoint
+{
   double x;
   double y;
 } SlopePoint;
 
-typedef struct _SlopeRect {
+typedef struct _SlopeRect
+{
   double x;
   double y;
   double width;
@@ -112,8 +114,10 @@ void slope_cairo_set_antialias(cairo_t *cr, gboolean antialias);
 
 void slope_cairo_line(cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2);
 
-void slope_cairo_line_cosmetic(
-    cairo_t *cr, const SlopePoint *p1, const SlopePoint *p2, double width);
+void slope_cairo_line_cosmetic(cairo_t *         cr,
+                               const SlopePoint *p1,
+                               const SlopePoint *p2,
+                               double            width);
 
 void slope_cairo_rect(cairo_t *cr, const SlopeRect *rec);
 

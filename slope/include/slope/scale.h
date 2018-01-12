@@ -36,7 +36,8 @@
 
 SLOPE_BEGIN_DECLS
 
-typedef struct _SlopeScale {
+typedef struct _SlopeScale
+{
   GObject parent;
 
   /* Padding to allow adding up to 4 members
@@ -44,7 +45,8 @@ typedef struct _SlopeScale {
   gpointer padding[4];
 } SlopeScale;
 
-typedef struct _SlopeScaleClass {
+typedef struct _SlopeScaleClass
+{
   GObjectClass parent_class;
 
   void (*add_item)(SlopeScale *self, SlopeItem *item);
@@ -77,8 +79,9 @@ SlopeItem *slope_scale_get_item_by_name(SlopeScale *self, const char *itemname);
 
 void slope_scale_map(SlopeScale *self, SlopePoint *res, const SlopePoint *src);
 
-void slope_scale_unmap(
-    SlopeScale *self, SlopePoint *res, const SlopePoint *src);
+void slope_scale_unmap(SlopeScale *      self,
+                       SlopePoint *      res,
+                       const SlopePoint *src);
 
 void slope_scale_rescale(SlopeScale *self);
 
