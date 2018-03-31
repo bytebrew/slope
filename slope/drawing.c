@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017  Elvis Teixeira
+ * Copyright (C) 2018  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,17 +18,24 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_CONFIG_H
-#define SLOPE_CONFIG_H
+#include <stdlib.h>
+#include "slope/svg.h"
 
-#define SLOPE_MAJOR_VERSION  @SLOPE_MAJOR_VERSION@
+int main()
+{
+  // slope_pen_t *pen = slope_svg_pen_new(NULL, 300, 300);
+  slope_pen_t *pen =
+      slope_svgpen_new("drawing.html", 300, 300, SLOPE_SVG_OUTPUT_HTML);
 
-#define SLOPE_MINOR_VERSION  @SLOPE_MINOR_VERSION@
+  slope_pen_set_colors(pen, SLOPE_BLUE, SLOPE_GREEN);
 
-#define SLOPE_PATCH_VERSION  @SLOPE_PATCH_VERSION@
+  slope_pen_begin_path(pen);
+  slope_pen_move_to(pen, 0.0, 0.0);
+  slope_pen_line_to(pen, 100.0, 100.0);
+  slope_pen_line_to(pen, 100.0, 200.0);
+  slope_pen_close_path(pen);
+  slope_pen_end_path(pen);
 
-#define SLOPE_HAVE_GTK  @SLOPE_HAVE_GTK@
-
-#define SLOPE_BUILD_DEBUG  @SLOPE_BUILD_DEBUG@
-
-#endif /* SLOPE_CONFIG_H */
+  slope_pen_destroy(pen);
+  return 0;
+}

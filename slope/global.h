@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017  Elvis Teixeira
+ * Copyright (C) 2018  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,17 +18,24 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_SCALE_P_H
-#define SLOPE_SCALE_P_H
+#ifndef slope_global_h
+#define slope_global_h
 
-#include <slope/scale.h>
+typedef double           slope_float_t;
+typedef int              slope_int32_t;
+typedef unsigned int     slope_uint32_t;
+typedef long             slope_int64_t;
+typedef unsigned long    slope_uint64_t;
+typedef char             slope_bool_t;
 
-void _scale_set_figure (SlopeScale *self, SlopeFigure *figure);
+#define SLOPE_TRUE  ((slope_bool_t) (1==1))
+#define SLOPE_FALSE ((slope_bool_t) (1==0))
+#define SLOPE_NULL  ((void *) 0)
 
-void _scale_draw (SlopeScale *self, const SlopeRect *rect, cairo_t *cr);
+#define slope_enabled(flags, bit) \
+  (((flags) & (bit)) == (bit))
 
-void _scale_handle_mouse_event (SlopeScale *self, SlopeMouseEvent *event);
+#define slope_enable(flags, bit, yes_no) \
+  flags = (yes_no) ? (flags | bit) : (flags & ~(bit))
 
-void _scale_mouse_event_impl (SlopeScale *self, SlopeMouseEvent *event);
-
-#endif /* SLOPE_SCALE_P_H */
+#endif /* slope_global_h */

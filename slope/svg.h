@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017  Elvis Teixeira
+ * Copyright (C) 2018  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,22 +18,29 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_SLOPE_H
-#define SLOPE_SLOPE_H
+#ifndef slope_svg_h
+#define slope_svg_h
 
-/* this header is a shortcut to include the
- * basic and most often used slope headers
- * all at once */
+#include "slope/pen.h"
 
-#include <slope/view.h>
-#include <slope/figure.h>
-#include <slope/scale.h>
-#include <slope/item.h>
+#define SLOPE_SVG_NONE_OPT       (0U)
+#define SLOPE_SVG_OUTPUT_HTML    (1U)
 
-#include <slope/xyscale.h>
-#include <slope/xyseries.h>
-#include <slope/xyaxis.h>
+typedef struct slope_svgpen slope_svgpen_t;
+#define SLOPE_SVGPEN(self) ((slope_svgpen_t*) (self))
 
-#include <slope/chart.h>
+/** @brief Creates a new SVG pen */
+slope_pen_t* slope_svgpen_new(
+  const char *file_name,
+  slope_float_t width,
+  slope_float_t height,
+  slope_uint32_t opts
+);
 
-#endif /* SLOPE_SLOPE_H */
+/** @brief Toggle HTML output */
+void slope_svgpen_set_html_output(
+  slope_svgpen_t *self,
+  slope_bool_t enable
+);
+
+#endif /* slope_svg_h */
