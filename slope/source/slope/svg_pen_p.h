@@ -18,70 +18,91 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef slope_pen_h
-#define slope_pen_h
+#ifndef slope_svg_pen_p_h
+#define slope_svg_pen_p_h
 
-#include "slope/color.h"
-#include "slope/geometry.h"
+#include "slope/pen_p.h"
+#include "slope/svg.h"
+#include <stdio.h>
 
-/** @brief Opaque pen type */
-typedef struct slope_pen slope_pen_t;
-#define SLOPE_PEN(self) ((slope_pen_t*) (self))
+#define SLOPE_SVG_OP_IN_PROGRESS  (1U << 15U)
+#define SLOPE_SVG_INSIDE_PATH     ((1U << 16U) | SLOPE_SVG_OP_IN_PROGRESS)
 
 
-/** @brief Destroys a pen*/
-void slope_pen_destroy (
+extern slope_pen_class_t slope_svgpen_class;
+
+struct slope_svgpen {
+  slope_pen_t base;
+  slope_uint32_t opts;
+  char *file_name;
+  FILE *file;
+  slope_point2d_t pos;
+  slope_color_t fill_color;
+  slope_color_t stroke_color;
+  slope_float_t stroke_width;
+};
+
+void slope_svgpen_destroy (
   slope_pen_t *self
 );
 
-/** @brief Starts a new pen path */
-void slope_pen_begin_path (
+void slope_svgpen_initialize_file (
+  slope_svgpen_t *self,
+  slope_float_t width,
+  slope_float_t height
+);
+
+void slope_svgpen_finalize_file (
+  slope_svgpen_t *self
+);
+
+void slope_svgpen_begin_path (
   slope_pen_t *self
 );
 
-/** @brief Ends a pen path */
-void slope_pen_end_path (
+void slope_svgpen_end_path (
   slope_pen_t *self
 );
 
-/** @brief Moves the pen without drawing */
-void slope_pen_move_to (
+void slope_svgpen_move_to (
   slope_pen_t *self,
   slope_float_t x,
   slope_float_t y
 );
 
-/** @brief Moves the pen drawing to the output */
-void slope_pen_line_to (
+void slope_svgpen_line_to (
   slope_pen_t *self,
   slope_float_t x,
   slope_float_t y
 );
 
-/** @brief Closes the current path */
-void slope_pen_close_path (
+void slope_svgpen_close_path (
   slope_pen_t *self
 );
 
-/** @brief Sets the pen colors */
-void slope_pen_set_colors (
+void slope_svgpen_set_colors (
   slope_pen_t *self,
   slope_color_t stroke,
   slope_color_t fill
 );
 
-/** @brief Sets the pen colors */
-void slope_pen_circle (
+void slope_svgpen_circle (
   slope_pen_t *self,
   slope_float_t x,
   slope_float_t y,
   slope_float_t r
 );
 
-/** @brief Sets the pen width */
-void slope_pen_set_width (
+void slope_svgpen_set_width (
   slope_pen_t *self,
   slope_float_t width
 );
 
-#endif /* slope_pen_h */
+void slope_svgpen_text (
+  slope_pen_t *self,
+  slope_float_t x,
+  slope_float_t y,
+  const char *text
+);
+
+#endif /* slope_svgpen_p_h */

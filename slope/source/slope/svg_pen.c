@@ -29,7 +29,8 @@ slope_pen_class_t slope_svgpen_class = {0U,
                                         slope_svgpen_set_colors,
                                         slope_svgpen_close_path,
                                         slope_svgpen_circle,
-                                        slope_svgpen_set_width};
+                                        slope_svgpen_set_width,
+                                        slope_svgpen_text};
 
 slope_pen_t *slope_svgpen_new(const char *   file_name,
                               slope_float_t  width,
@@ -319,4 +320,56 @@ void slope_svgpen_set_width(slope_pen_t *self, slope_float_t width)
   svg->stroke_width   = width;
 }
 
+void slope_svgpen_text (
+  slope_pen_t *self,
+  slope_float_t x,
+  slope_float_t y,
+  const char *text
+)
+{
+  slope_svgpen_t *svg = SLOPE_SVGPEN(self);
+
+  if (slope_enabled(svg->opts, SLOPE_SVG_OP_IN_PROGRESS))
+    {
+      /* TODO report error */
+      return;
+    }
+
+  if (slope_color_is_visible(svg->stroke_color) &&
+      slope_color_is_visible(svg->fill_color))
+    {
+      fprintf(svg->file,
+              "<text x=\"%.1lf\" y=\"%.1lf\" "
+              "stroke=\"#%08x\" fill=\"#%08x\" stroke-width=\"%.1lf\">%s</text>\n",
+              x,
+              y,
+              svg->stroke_color,
+              svg->fill_color,
+              svg->stroke_width,
+              text);
+    }
+  else if (slope_color_is_visible(svg->stroke_color))
+    {
+      fprintf(svg->file,
+              "<text x=\"%.1lf\" y=\"%.1lf\" "
+              "stroke=\"#%08x\" fill=\"none\" stroke-width=\"%.1lf\">%s</text>\n",
+              x,
+              y,
+              svg->stroke_color,
+              svg->stroke_width,
+              text);
+    }
+  else if (slope_color_is_visible(svg->fill_color))
+    {
+      fprintf(svg->file,
+              "<text x=\"%.1lf\" y=\"%.1lf\" "
+              "fill=\"#%08x\" stroke=\"none\">%s</text>\n",
+              x,
+              y,
+              svg->fill_color,
+              text);
+    }
+}
+
 /* slope_svgpen.c */
+

@@ -79,6 +79,12 @@ typedef struct slope_pen_class {
     slope_pen_t *self,
     slope_float_t width
   );
+  void (*text) (
+    slope_pen_t *self,
+    slope_float_t x,
+    slope_float_t y,
+    const char *text
+  );
 } slope_pen_class_t;
 
 

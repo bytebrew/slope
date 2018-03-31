@@ -37,9 +37,14 @@ int main()
   slope_pen_end_path(pen);
 
   /* circle */
-  slope_pen_set_colors(pen, SLOPE_BLUE, SLOPE_RED);
+  slope_pen_set_colors(pen, SLOPE_BLUE, SLOPE_BLUEVIOLET);
   slope_pen_set_width(pen, 4.0);
   slope_pen_circle(pen, 200, 200, 50);
+
+  /* circle */
+  slope_pen_set_colors(pen, SLOPE_NO_COLOR, SLOPE_BLACK);
+  slope_pen_set_width(pen, 1.0);
+  slope_pen_text(pen, 100.0, 250.0, "Hello SLOPE SVG");
 
   slope_pen_destroy(pen);
   return 0;
