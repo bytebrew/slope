@@ -19,12 +19,12 @@
  */
 
 #include <stdlib.h>
-#include "slope/svg.h"
+#include "slope/eps.h"
 
 int main()
 {
   slope_pen_t *pen =
-      slope_svgpen_new("drawing.html", 300, 300, SLOPE_SVG_OUTPUT_HTML);
+      slope_epspen_new("drawing.eps", 300, 300, SLOPE_EPS_NO_OPT);
 
   /* triangle */
   slope_pen_set_colors(pen, SLOPE_BLUE, SLOPE_GREEN);
@@ -35,16 +35,16 @@ int main()
   slope_pen_line_to(pen, 100.0, 200.0);
   slope_pen_close_path(pen);
   slope_pen_end_path(pen);
-
+#if 0
   /* circle */
   slope_pen_set_colors(pen, SLOPE_BLUE, SLOPE_BLUEVIOLET);
   slope_pen_set_width(pen, 4.0);
   slope_pen_circle(pen, 200, 200, 50);
-
+#endif
   /* circle */
   slope_pen_set_colors(pen, SLOPE_NO_COLOR, SLOPE_BLACK);
   slope_pen_set_width(pen, 1.0);
-  slope_pen_text(pen, 100.0, 250.0, "Hello SLOPE SVG");
+  slope_pen_text(pen, 100.0, 250.0, "Hello SLOPE EPS");
 
   slope_pen_destroy(pen);
   return 0;

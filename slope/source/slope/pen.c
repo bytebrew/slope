@@ -70,15 +70,12 @@ void slope_pen_set_width(slope_pen_t *self, slope_float_t width)
   self->klass->set_width(self, width);
 }
 
-void slope_pen_text (
-  slope_pen_t *self,
-  slope_float_t x,
-  slope_float_t y,
-  const char *text
-)
+void slope_pen_text(slope_pen_t * self,
+                    slope_float_t x,
+                    slope_float_t y,
+                    const char *  text)
 {
   self->klass->text(self, x, y, text);
 }
 
 /* slope/pen.c */
-

@@ -320,12 +320,10 @@ void slope_svgpen_set_width(slope_pen_t *self, slope_float_t width)
   svg->stroke_width   = width;
 }
 
-void slope_svgpen_text (
-  slope_pen_t *self,
-  slope_float_t x,
-  slope_float_t y,
-  const char *text
-)
+void slope_svgpen_text(slope_pen_t * self,
+                       slope_float_t x,
+                       slope_float_t y,
+                       const char *  text)
 {
   slope_svgpen_t *svg = SLOPE_SVGPEN(self);
 
@@ -338,26 +336,28 @@ void slope_svgpen_text (
   if (slope_color_is_visible(svg->stroke_color) &&
       slope_color_is_visible(svg->fill_color))
     {
-      fprintf(svg->file,
-              "<text x=\"%.1lf\" y=\"%.1lf\" "
-              "stroke=\"#%08x\" fill=\"#%08x\" stroke-width=\"%.1lf\">%s</text>\n",
-              x,
-              y,
-              svg->stroke_color,
-              svg->fill_color,
-              svg->stroke_width,
-              text);
+      fprintf(
+          svg->file,
+          "<text x=\"%.1lf\" y=\"%.1lf\" "
+          "stroke=\"#%08x\" fill=\"#%08x\" stroke-width=\"%.1lf\">%s</text>\n",
+          x,
+          y,
+          svg->stroke_color,
+          svg->fill_color,
+          svg->stroke_width,
+          text);
     }
   else if (slope_color_is_visible(svg->stroke_color))
     {
-      fprintf(svg->file,
-              "<text x=\"%.1lf\" y=\"%.1lf\" "
-              "stroke=\"#%08x\" fill=\"none\" stroke-width=\"%.1lf\">%s</text>\n",
-              x,
-              y,
-              svg->stroke_color,
-              svg->stroke_width,
-              text);
+      fprintf(
+          svg->file,
+          "<text x=\"%.1lf\" y=\"%.1lf\" "
+          "stroke=\"#%08x\" fill=\"none\" stroke-width=\"%.1lf\">%s</text>\n",
+          x,
+          y,
+          svg->stroke_color,
+          svg->stroke_width,
+          text);
     }
   else if (slope_color_is_visible(svg->fill_color))
     {
@@ -372,4 +372,3 @@ void slope_svgpen_text (
 }
 
 /* slope_svgpen.c */
-
