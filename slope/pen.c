@@ -20,9 +20,21 @@
 
 #include "slope/pen_p.h"
 
-void slope_pen_destroy(slope_pen_t *self) { self->klass->destroy(self); }
-void slope_pen_begin_path(slope_pen_t *self) { self->klass->begin_path(self); }
-void slope_pen_end_path(slope_pen_t *self) { self->klass->end_path(self); }
+void slope_pen_destroy(slope_pen_t *self)
+{
+  self->klass->destroy(self);
+}
+
+void slope_pen_begin_path(slope_pen_t *self)
+{
+  self->klass->begin_path(self);
+}
+
+void slope_pen_end_path(slope_pen_t *self)
+{
+  self->klass->end_path(self);
+}
+
 void slope_pen_move_to(slope_pen_t *self, slope_float_t x, slope_float_t y)
 {
   self->klass->move_to(self, x, y);
@@ -33,12 +45,29 @@ void slope_pen_line_to(slope_pen_t *self, slope_float_t x, slope_float_t y)
   self->klass->line_to(self, x, y);
 }
 
-void slope_pen_close_path(slope_pen_t *self) { self->klass->close_path(self); }
+void slope_pen_close_path(slope_pen_t *self)
+{
+  self->klass->close_path(self);
+}
+
 void slope_pen_set_colors(slope_pen_t * self,
                           slope_color_t stroke,
                           slope_color_t fill)
 {
   self->klass->set_colors(self, stroke, fill);
+}
+
+void slope_pen_circle(slope_pen_t * self,
+                      slope_float_t x,
+                      slope_float_t y,
+                      slope_float_t r)
+{
+  self->klass->circle(self, x, y, r);
+}
+
+void slope_pen_set_width(slope_pen_t *self, slope_float_t width)
+{
+  self->klass->set_width(self, width);
 }
 
 /* slope/pen.c */

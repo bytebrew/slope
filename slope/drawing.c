@@ -23,18 +23,23 @@
 
 int main()
 {
-  // slope_pen_t *pen = slope_svg_pen_new(NULL, 300, 300);
   slope_pen_t *pen =
       slope_svgpen_new("drawing.html", 300, 300, SLOPE_SVG_OUTPUT_HTML);
 
+  /* triangle */
   slope_pen_set_colors(pen, SLOPE_BLUE, SLOPE_GREEN);
-
+  slope_pen_set_width(pen, 2.0);
   slope_pen_begin_path(pen);
   slope_pen_move_to(pen, 0.0, 0.0);
   slope_pen_line_to(pen, 100.0, 100.0);
   slope_pen_line_to(pen, 100.0, 200.0);
   slope_pen_close_path(pen);
   slope_pen_end_path(pen);
+
+  /* circle */
+  slope_pen_set_colors(pen, SLOPE_BLUE, SLOPE_RED);
+  slope_pen_set_width(pen, 4.0);
+  slope_pen_circle(pen, 200, 200, 50);
 
   slope_pen_destroy(pen);
   return 0;

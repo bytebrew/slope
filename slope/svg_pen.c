@@ -27,7 +27,9 @@ slope_pen_class_t slope_svgpen_class = {0U,
                                         slope_svgpen_move_to,
                                         slope_svgpen_line_to,
                                         slope_svgpen_set_colors,
-                                        slope_svgpen_close_path};
+                                        slope_svgpen_close_path,
+                                        slope_svgpen_circle,
+                                        slope_svgpen_set_width};
 
 slope_pen_t *slope_svgpen_new(const char *   file_name,
                               slope_float_t  width,
@@ -62,7 +64,7 @@ slope_pen_t *slope_svgpen_new(const char *   file_name,
   self->pos.y        = 0.0;
   self->fill_color   = SLOPE_NO_COLOR;
   self->stroke_color = SLOPE_BLACK;
-  self->stroke_width = 1.0;
+  self->stroke_width = 2.0;
   self->opts         = opts;
 
   /*
@@ -160,6 +162,16 @@ void slope_svgpen_destroy(slope_pen_t *self)
 void slope_svgpen_begin_path(slope_pen_t *self)
 {
   slope_svgpen_t *svg = SLOPE_SVGPEN(self);
+
+  if (slope_enabled(svg->opts, SLOPE_SVG_OP_IN_PROGRESS))
+    {
+      /* TODO report error */
+      return;
+    }
+
+  /* let everyone know we are drawing a path */
+  slope_enable(svg->opts, SLOPE_SVG_INSIDE_PATH);
+
   fprintf(svg->file, "<path d=\"");
 }
 
@@ -167,19 +179,30 @@ void slope_svgpen_end_path(slope_pen_t *self)
 {
   slope_svgpen_t *svg = SLOPE_SVGPEN(self);
 
+  if (!slope_enabled(svg->opts, SLOPE_SVG_INSIDE_PATH))
+    {
+      /* TODO report error */
+      return;
+    }
+
+  /* let everyone know we are done drawing the path */
+  slope_disable(svg->opts, SLOPE_SVG_INSIDE_PATH);
+
   if (slope_color_is_visible(svg->stroke_color) &&
       slope_color_is_visible(svg->fill_color))
     {
       fprintf(svg->file,
-              "\" stroke=\"#%08x\" fill=\"#%08x\" />\n",
+              "\" stroke=\"#%08x\" fill=\"#%08x\" stroke-width=\"%.1lf\" />\n",
               svg->stroke_color,
-              svg->fill_color);
+              svg->fill_color,
+              svg->stroke_width);
     }
   else if (slope_color_is_visible(svg->stroke_color))
     {
       fprintf(svg->file,
-              "\" stroke=\"#%08x\" fill=\"none\" />\n",
-              svg->stroke_color);
+              "\" stroke=\"#%08x\" fill=\"none\" stroke-width=\"%.1lf\" />\n",
+              svg->stroke_color,
+              svg->stroke_width);
     }
   else if (slope_color_is_visible(svg->fill_color))
     {
@@ -191,18 +214,39 @@ void slope_svgpen_end_path(slope_pen_t *self)
 void slope_svgpen_move_to(slope_pen_t *self, slope_float_t x, slope_float_t y)
 {
   slope_svgpen_t *svg = SLOPE_SVGPEN(self);
+
+  if (!slope_enabled(svg->opts, SLOPE_SVG_INSIDE_PATH))
+    {
+      /* TODO report error */
+      return;
+    }
+
   fprintf(svg->file, "M%.1lf %.1lf ", x, y);
 }
 
 void slope_svgpen_line_to(slope_pen_t *self, slope_float_t x, slope_float_t y)
 {
   slope_svgpen_t *svg = SLOPE_SVGPEN(self);
+
+  if (!slope_enabled(svg->opts, SLOPE_SVG_INSIDE_PATH))
+    {
+      /* TODO report error */
+      return;
+    }
+
   fprintf(svg->file, "L%.1lf %.1lf ", x, y);
 }
 
 void slope_svgpen_close_path(slope_pen_t *self)
 {
   slope_svgpen_t *svg = SLOPE_SVGPEN(self);
+
+  if (!slope_enabled(svg->opts, SLOPE_SVG_INSIDE_PATH))
+    {
+      /* TODO report error */
+      return;
+    }
+
   fprintf(svg->file, "Z ");
 }
 
@@ -217,7 +261,62 @@ void slope_svgpen_set_colors(slope_pen_t * self,
 
 void slope_svgpen_set_html_output(slope_svgpen_t *self, slope_bool_t enable)
 {
-  slope_enable(self->opts, SLOPE_SVG_OUTPUT_HTML, enable);
+  slope_enable_if(self->opts, SLOPE_SVG_OUTPUT_HTML, enable);
+}
+
+void slope_svgpen_circle(slope_pen_t * self,
+                         slope_float_t x,
+                         slope_float_t y,
+                         slope_float_t r)
+{
+  slope_svgpen_t *svg = SLOPE_SVGPEN(self);
+
+  if (slope_enabled(svg->opts, SLOPE_SVG_OP_IN_PROGRESS))
+    {
+      /* TODO report error */
+      return;
+    }
+
+  if (slope_color_is_visible(svg->stroke_color) &&
+      slope_color_is_visible(svg->fill_color))
+    {
+      fprintf(svg->file,
+              "<circle cx=\"%.1lf\" cy=\"%.1lf\" r=\"%.1lf\" "
+              "stroke=\"#%08x\" fill=\"#%08x\" stroke-width=\"%.1lf\" />\n",
+              x,
+              y,
+              r,
+              svg->stroke_color,
+              svg->fill_color,
+              svg->stroke_width);
+    }
+  else if (slope_color_is_visible(svg->stroke_color))
+    {
+      fprintf(svg->file,
+              "<circle cx=\"%.1lf\" cy=\"%.1lf\" r=\"%.1lf\" "
+              "stroke=\"#%08x\" fill=\"none\" stroke-width=\"%.1lf\" />\n",
+              x,
+              y,
+              r,
+              svg->stroke_color,
+              svg->stroke_width);
+    }
+  else if (slope_color_is_visible(svg->fill_color))
+    {
+      fprintf(svg->file,
+              "<circle cx=\"%.1lf\" cy=\"%.1lf\" r=\"%.1lf\" "
+              "fill=\"#%08x\" stroke=\"none\" />\n",
+              x,
+              y,
+              r,
+              svg->fill_color);
+    }
+}
+
+void slope_svgpen_set_width(slope_pen_t *self, slope_float_t width)
+{
+  slope_svgpen_t *svg = SLOPE_SVGPEN(self);
+  svg->stroke_width   = width;
 }
 
 /* slope_svgpen.c */

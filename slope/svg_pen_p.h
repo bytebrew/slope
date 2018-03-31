@@ -25,6 +25,10 @@
 #include "slope/svg.h"
 #include <stdio.h>
 
+#define SLOPE_SVG_OP_IN_PROGRESS  (1U << 15U)
+#define SLOPE_SVG_INSIDE_PATH     ((1U << 16U) | SLOPE_SVG_OP_IN_PROGRESS)
+
+
 extern slope_pen_class_t slope_svgpen_class;
 
 struct slope_svgpen {
@@ -80,6 +84,18 @@ void slope_svgpen_set_colors (
   slope_pen_t *self,
   slope_color_t stroke,
   slope_color_t fill
+);
+
+void slope_svgpen_circle (
+  slope_pen_t *self,
+  slope_float_t x,
+  slope_float_t y,
+  slope_float_t r
+);
+
+void slope_svgpen_set_width (
+  slope_pen_t *self,
+  slope_float_t width
 );
 
 #endif /* slope_svgpen_p_h */

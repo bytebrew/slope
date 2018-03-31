@@ -34,8 +34,14 @@
 
 
 typedef struct slope_pen_class {
+  /*
+   * class-wide traits
+   */
   slope_uint32_t traits;
 
+  /*
+   * virtual functions
+   */
   void (*destroy) (
     slope_pen_t *self
   );
@@ -63,11 +69,27 @@ typedef struct slope_pen_class {
   void (*close_path) (
     slope_pen_t *self
   );
+  void (*circle) (
+    slope_pen_t *self,
+    slope_float_t x,
+    slope_float_t y,
+    slope_float_t r
+  );
+  void (*set_width) (
+    slope_pen_t *self,
+    slope_float_t width
+  );
 } slope_pen_class_t;
 
 
 struct slope_pen {
+  /*
+   * instance-wide traits
+   */
   slope_uint32_t traits;
+  /*
+   * class pointer
+   */
   slope_pen_class_t *klass;
 };
 

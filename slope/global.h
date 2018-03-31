@@ -35,7 +35,13 @@ typedef char             slope_bool_t;
 #define slope_enabled(flags, bit) \
   (((flags) & (bit)) == (bit))
 
-#define slope_enable(flags, bit, yes_no) \
+#define slope_enable_if(flags, bit, yes_no) \
   flags = (yes_no) ? (flags | bit) : (flags & ~(bit))
+
+#define slope_enable(flags, bit) \
+  flags |= (bit)
+
+#define slope_disable(flags, bit) \
+  flags &= ~(bit)
 
 #endif /* slope_global_h */

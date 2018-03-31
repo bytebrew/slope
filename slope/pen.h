@@ -70,4 +70,18 @@ void slope_pen_set_colors (
   slope_color_t fill
 );
 
+/** @brief Sets the pen colors */
+void slope_pen_circle (
+  slope_pen_t *self,
+  slope_float_t x,
+  slope_float_t y,
+  slope_float_t r
+);
+
+/** @brief Sets the pen width */
+void slope_pen_set_width (
+  slope_pen_t *self,
+  slope_float_t width
+);
+
 #endif /* slope_pen_h */
