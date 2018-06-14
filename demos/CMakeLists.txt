@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018  Elvis Teixeira
+# Copyright (C) 2017  Elvis Teixeira
 #
 # This source code is free software: you can redistribute it
 # and/or modify it under the terms of the GNU Lesser General

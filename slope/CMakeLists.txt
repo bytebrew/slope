@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018  Elvis Teixeira
+# Copyright (C) 2017  Elvis Teixeira
 #
 # This source code is free software: you can redistribute it
 # and/or modify it under the terms of the GNU Lesser General
@@ -18,6 +18,9 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK "gtk+-3.0")
+
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Werror -O0 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Werror -O2")
 
@@ -30,6 +33,11 @@ endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 # BUILD_SHARED_LIBS is a standard CMake variable, but we declare it here
 # to make it prominent in the GUI.
 option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." ON)
+
+configure_file(
+   config.h.in
+   ${SLOPE_AUTOGEN_DIR}/config.h
+)
 
 # Collects the source files recursively from this
 # directory and use them to build the main shared library
@@ -49,6 +57,7 @@ target_include_directories(
     "include"
     "source"
     ${SLOPE_AUTOGEN_DIR}
+    ${GTK_INCLUDE_DIRS}
 )
 
 # Install only the public headers (those not anding with _p.h)

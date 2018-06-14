@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018  Elvis Teixeira
+ * Copyright (C) 2017  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,29 +18,23 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef slope_svg_h
-#define slope_svg_h
+#ifndef SLOPE_CONFIG_H
+#define SLOPE_CONFIG_H
 
-#include "slope/pen.h"
+#define SLOPE_MAJOR_VERSION  @SLOPE_MAJOR_VERSION@
 
-#define SLOPE_SVG_NONE_OPT       (0U)
-#define SLOPE_SVG_OUTPUT_HTML    (1U)
+#define SLOPE_MINOR_VERSION  @SLOPE_MINOR_VERSION@
 
-typedef struct slope_svgpen slope_svgpen_t;
-#define SLOPE_SVGPEN(self) ((slope_svgpen_t*) (self))
+#define SLOPE_PATCH_VERSION  @SLOPE_PATCH_VERSION@
 
-/** @brief Creates a new SVG pen */
-slope_pen_t* slope_svgpen_new(
-  const char *file_name,
-  slope_float_t width,
-  slope_float_t height,
-  slope_uint32_t opts
-);
+#define SLOPE_VERSION_STRING  "@SLOPE_VERSION_STRING@"
 
-/** @brief Toggle HTML output */
-void slope_svgpen_set_html_output(
-  slope_svgpen_t *self,
-  slope_bool_t enable
-);
+#define SLOPE_BUILD_DEBUG  @SLOPE_BUILD_DEBUG@
 
-#endif /* slope_svg_h */
+#if SLOPE_BUILD_DEBUG
+#  define SLOPE_ASSERT assert
+#else
+#  define SLOPE_ASSERT /* nothing */
+#endif
+
+#endif /* SLOPE_CONFIG_H */

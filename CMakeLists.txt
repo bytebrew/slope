@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018  Elvis Teixeira
+# Copyright (C) 2017  Elvis Teixeira
 #
 # This source code is free software: you can redistribute it
 # and/or modify it under the terms of the GNU Lesser General
@@ -19,7 +19,7 @@
 #
 
 project(slope C)
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 2.8)
 
 set(SLOPE_MAJOR_VERSION 2)
 set(SLOPE_MINOR_VERSION 6)

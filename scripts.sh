@@ -13,7 +13,7 @@ fi
 
 # clang-format adjusts source code format (braces placement, indentation, etc)
 if [[ $1 == 'clang-format' ]]; then
-    find . -iname *.c | xargs clang-format-3.9 -i
+    find . -iname *.h -o -iname *.c | xargs clang-format-3.9 -i
 fi
 
 # builds slope in debug mode
