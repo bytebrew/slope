@@ -1,5 +1,4 @@
-#
-# Copyright (C) 2017  Elvis Teixeira
+# Copyright (C) 2018  Elvis Teixeira
 #
 # This source code is free software: you can redistribute it
 # and/or modify it under the terms of the GNU Lesser General
@@ -16,20 +15,20 @@
 # You should have received a copy of the GNU Lesser General
 # Public License along with this program.
 # If not, see <http://www.gnu.org/licenses/>.
-#
 
 project(slope C)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.7.2 FATAL_ERROR)
 
-set(SLOPE_MAJOR_VERSION 2)
-set(SLOPE_MINOR_VERSION 6)
-set(SLOPE_PATCH_VERSION 0)
-set(SLOPE_VERSION_STRING "${SLOPE_MAJOR_VERSION}.${SLOPE_MINOR_VERSION}.${SLOPE_PATCH_VERSION}")
+set(SLOPE_VERSION_MAJOR  0)
+set(SLOPE_VERSION_MINOR  1)
+set(SLOPE_VERSION_PATCH  5)
 
-set(SLOPE_BASE_DIR ${CMAKE_SOURCE_DIR})
-set(SLOPE_AUTOGEN_DIR ${CMAKE_BINARY_DIR})
+string(CONCAT SLOPE_VERSION_STRING
+    "${SLOPE_VERSION_MAJOR}"
+    ".${SLOPE_VERSION_MINOR}"
+    ".${SLOPE_VERSION_PATCH}")
 
-subdirs(
-   "${CMAKE_SOURCE_DIR}/slope"
-   "${CMAKE_SOURCE_DIR}/demos"
-)
+include(cmake/settings.cmake)
+include(cmake/platform.cmake)
+
+add_subdirectory(library)

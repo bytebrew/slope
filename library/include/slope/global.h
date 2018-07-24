@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017  Elvis Teixeira
+ * Copyright (C) 2018  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,23 +18,10 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_CONFIG_H
-#define SLOPE_CONFIG_H
+#ifndef SLOPE_GLOBAL_H
+#define SLOPE_GLOBAL_H
 
-#define SLOPE_MAJOR_VERSION  @SLOPE_MAJOR_VERSION@
+#include "slope/platform.h"
+#include <glib/glib.h>
 
-#define SLOPE_MINOR_VERSION  @SLOPE_MINOR_VERSION@
-
-#define SLOPE_PATCH_VERSION  @SLOPE_PATCH_VERSION@
-
-#define SLOPE_VERSION_STRING  "@SLOPE_VERSION_STRING@"
-
-#define SLOPE_BUILD_DEBUG  @SLOPE_BUILD_DEBUG@
-
-#if SLOPE_BUILD_DEBUG
-#  define SLOPE_ASSERT assert
-#else
-#  define SLOPE_ASSERT /* nothing */
-#endif
-
-#endif /* SLOPE_CONFIG_H */
+#endif /* SLOPE_GLOBAL_H */
