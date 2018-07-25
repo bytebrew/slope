@@ -23,6 +23,9 @@ set(SLOPE_VERSION_MAJOR  0)
 set(SLOPE_VERSION_MINOR  1)
 set(SLOPE_VERSION_PATCH  5)
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK "gtk+-3.0")
+
 string(CONCAT SLOPE_VERSION_STRING
     "${SLOPE_VERSION_MAJOR}"
     ".${SLOPE_VERSION_MINOR}"

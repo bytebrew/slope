@@ -18,14 +18,22 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLP_GLOBAL_H
-#define SLP_GLOBAL_H
+#ifndef SLP_COLOR_H
+#define SLP_COLOR_H
 
-#include "slope/platform.h"
-#include <glib.h>
+#include "slope/global.h"
 
-#define slp_enabled(X,BIT) (((X) & (BIT)) == (BIT))
-#define slp_enable(X,BIT)  (X) |= (BIT)
-#define slp_disable(X,BIT)  (X) &= ~(BIT)
+typedef guint32 SlpColor;
 
-#endif /* SLP_GLOBAL_H */
+#define SLP_BLACK 0x000000FF
+#define SLP_WHITE 0xFFFFFFFF
+#define SLP_RED   0xFF0000FF
+#define SLP_GREEN 0x00FF00FF
+#define SLP_BLUE  0x0000FFFF
+
+#define slp_get_red(C)    (((C) >> 24U) & 0xFF)
+#define slp_get_green(C)  (((C) >> 16U) & 0xFF)
+#define slp_get_blue(C)   (((C) >> 8U) & 0xFF)
+#define slp_get_alpha(C)  ((C) & 0xFF)
+
+#endif /* SLP_COLOR_H */

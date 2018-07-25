@@ -18,14 +18,23 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLP_GLOBAL_H
-#define SLP_GLOBAL_H
+#ifndef SLOPE_LIST_H
+#define SLOPE_LIST_H
 
-#include "slope/platform.h"
-#include <glib.h>
+#include "slope/global.h"
 
-#define slp_enabled(X,BIT) (((X) & (BIT)) == (BIT))
-#define slp_enable(X,BIT)  (X) |= (BIT)
-#define slp_disable(X,BIT)  (X) &= ~(BIT)
+typedef struct _SlpList SlpList;
+#define SLP_LIST(Addr) ((SlpList*) (Addr))
 
-#endif /* SLP_GLOBAL_H */
+struct _SlpList {
+    SlpList *front;
+    SlpList *back;
+};
+
+#define SLP_LIST_INIT(L) \
+    G_STMT_START { \
+        SLP_LIST(L)->front = NULL; \
+        SLP_LIST(L)->back = NULL; \
+    } G_STMT_END
+
+#endif /* SLOPE_LIST_H */

@@ -33,7 +33,8 @@ target_include_directories(
     "${SLOPE_INCLUDE_DIR}"
     "${SLOPE_SOURCE_DIR}"
     "${SLOPE_AUTOGEN_INCLUDE_DIR}"
-    "${SLOPE_AUTOGEN_SOURCE_DIR}")
+    "${SLOPE_AUTOGEN_SOURCE_DIR}"
+    "${GTK_INCLUDE_DIRS}")
 
 target_compile_definitions(
     slope PRIVATE
