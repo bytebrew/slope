@@ -63,6 +63,6 @@ target_include_directories(
 # Install only the public headers (those not anding with _p.h)
 # the non-public ones should be under the source directory
 file(GLOB_RECURSE PublicHeaders "include/*.h")
-install(TARGETS slope DESTINATION /usr/lib)
-install(FILES ${PublicHeaders} DESTINATION /usr/include/slope)
-install(FILES ${SLOPE_AUTOGEN_DIR}/config.h DESTINATION /usr/include/slope)
+install(TARGETS slope RUNTIME DESTINATION bin LIBRARY DESTINATION lib)
+install(FILES ${PublicHeaders} DESTINATION include/slope)
+install(FILES ${SLOPE_AUTOGEN_DIR}/config.h DESTINATION include/slope)
