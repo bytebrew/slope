@@ -24,12 +24,6 @@ pkg_check_modules(GTK "gtk+-3.0")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Werror -O0 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Werror -O2")
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(SLOPE_BUILD_DEBUG 1)
-else()
-  set(SLOPE_BUILD_DEBUG 0)
-endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
-
 # BUILD_SHARED_LIBS is a standard CMake variable, but we declare it here
 # to make it prominent in the GUI.
 option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." ON)
@@ -63,6 +57,6 @@ target_include_directories(
 # Install only the public headers (those not anding with _p.h)
 # the non-public ones should be under the source directory
 file(GLOB_RECURSE PublicHeaders "include/*.h")
-install(TARGETS slope DESTINATION /usr/lib)
-install(FILES ${PublicHeaders} DESTINATION /usr/include/slope)
-install(FILES ${SLOPE_AUTOGEN_DIR}/config.h DESTINATION /usr/include/slope)
+install(TARGETS slope RUNTIME DESTINATION bin LIBRARY DESTINATION lib)
+install(FILES ${PublicHeaders} DESTINATION include/slope)
+install(FILES ${SLOPE_AUTOGEN_DIR}/config.h DESTINATION include/slope)
