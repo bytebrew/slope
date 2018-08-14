@@ -24,12 +24,6 @@ pkg_check_modules(GTK "gtk+-3.0")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Werror -O0 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Werror -O2")
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(SLOPE_BUILD_DEBUG 1)
-else()
-  set(SLOPE_BUILD_DEBUG 0)
-endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
-
 # BUILD_SHARED_LIBS is a standard CMake variable, but we declare it here
 # to make it prominent in the GUI.
 option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." ON)
