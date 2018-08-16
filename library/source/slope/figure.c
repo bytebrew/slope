@@ -35,7 +35,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeFigure, slope_figure, G_TYPE_OBJECT)
 /* local decls */
 static void slope_figure_finalize(GObject *self);
 static void slope_figure_dispose (GObject *self);
-
+static void base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
 
 static void
 slope_figure_class_init (SlopeFigureClass *klass)
@@ -45,7 +45,7 @@ slope_figure_class_init (SlopeFigureClass *klass)
     gobject_class->dispose = slope_figure_dispose;
     gobject_class->finalize = slope_figure_finalize;
 
-
+    klass->draw = base_figure_draw;
 
 }
 
@@ -88,5 +88,25 @@ slope_figure_new (void)
     return SLOPE_FIGURE (g_object_new (SLOPE_TYPE_FIGURE, NULL));
 }
 
+
+static void
+base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect)
+{
+    SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+
+    if (slope_rgb_is_visible(m->background_color)) {
+        slope_draw_rect(cr, rect);
+        slope_cairo_set_rgba (cr, m->background_color);
+        cairo_fill (cr);
+    }
+}
+
+
+void
+slope_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect)
+{
+    g_return_if_fail (SLOPE_IS_FIGURE (self));
+    SLOPE_FIGURE_GET_CLASS(self)->draw(self, cr, rect);
+}
 
 /* slope/figure.c */

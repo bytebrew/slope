@@ -56,7 +56,8 @@ slope_view_init (SlopeView *view)
     GtkWidget * gtk_widget = GTK_WIDGET(view);
     SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (view);
 
-    m->figure = slope_figure_new();
+    /* expect figure from user */
+    m->figure = NULL;
 
     /* minimum width and height of the widget */
     gtk_widget_set_size_request(gtk_widget, 450, 380);
@@ -106,11 +107,23 @@ slope_view_new (void)
 
 static gboolean slope_view_draw(GtkWidget *self, cairo_t *cr, gpointer data)
 {
-  SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (self);
+    SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (self);
+    GtkAllocation alloc;
+    SlopeRect rect;
 
-  // TODO
+    if (m->figure == NULL) {
+        return TRUE;
+    }
 
-  return TRUE;
+    gtk_widget_get_allocation(self, &alloc);
+    rect.x = 0.0;
+    rect.y = 0.0;
+    rect.width = (double) alloc.width;
+    rect.height = (double) alloc.height;
+
+    slope_figure_draw(m->figure, cr, &rect);
+
+    return TRUE;
 }
 
 

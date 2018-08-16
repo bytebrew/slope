@@ -22,7 +22,8 @@
 #define _slope_figure_h_
 
 #include <glib-object.h>
-#include "slope/color.h"
+#include <cairo.h>
+#include "slope/drawing.h"
 
 G_BEGIN_DECLS
 
@@ -51,6 +52,8 @@ struct _SlopeFigureClass
 {
   GObjectClass parent_class;
 
+  void (*draw) (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
+
   /* Padding for future expansion */
   void (*_slope_reserved1) (void);
   void (*_slope_reserved2) (void);
@@ -62,6 +65,8 @@ struct _SlopeFigureClass
 GType slope_figure_get_type (void) G_GNUC_CONST;
 
 SlopeFigure* slope_figure_new (void);
+
+void slope_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
 
 G_END_DECLS
 

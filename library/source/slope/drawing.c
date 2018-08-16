@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016  Elvis Teixeira
+ * Copyright (C) 2018  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,26 +18,20 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/view.h>
+#include "slope/drawing.h"
 
-int main(int argc, char *argv[])
+void slope_cairo_set_rgba (cairo_t *cr, SlopeRGB color)
 {
-    GtkWidget *window;
-    GtkWidget *view;
-    SlopeFigure *figure;
-
-    gtk_init(&argc, &argv);
-
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-
-    view = slope_view_new();
-    figure = slope_figure_new();
-
-    slope_view_set_figure (SLOPE_VIEW (view), figure);
-
-    gtk_container_add(GTK_CONTAINER(window), view);
-    gtk_widget_show_all(window);
-    gtk_main();
-    return 0;
+    cairo_set_source_rgba(cr,
+        (double) slope_rgb_get_red(color),
+        (double) slope_rgb_get_green(color),
+        (double) slope_rgb_get_blue(color),
+        (double) slope_rgb_get_alpha(color));
 }
+
+void slope_draw_rect (cairo_t *cr, const SlopeRect *rect)
+{
+    cairo_rectangle(cr, rect->x, rect->y, rect->width, rect->height);
+}
+
+/* slope/drawing.c */

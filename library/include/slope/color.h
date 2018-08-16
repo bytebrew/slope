@@ -62,6 +62,9 @@ typedef guint32 SlopeRGB;
 /*! \brief Returns a shade of gray between 0 (black) and 255 (white) */
 #define slope_rgb_gray(x) ((((x) & 0xFF) << 24U) | (((x) & 0xFF) << 16U) | (((x) & 0xFF) << 8U) | 0xFF)
 
+/*! \brief Returns TRUE if Color is visible */
+#define slope_rgb_is_visible(Color) (slope_rgb_get_alpha(Color) > 0U)
+
 G_END_DECLS
 
 #endif /* _slope_color_h_ */

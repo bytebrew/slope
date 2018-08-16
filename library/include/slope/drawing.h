@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016  Elvis Teixeira
+ * Copyright (C) 2018  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,26 +18,34 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/view.h>
+#ifndef _slope_drawing_h_
+#define _slope_drawing_h_
 
-int main(int argc, char *argv[])
-{
-    GtkWidget *window;
-    GtkWidget *view;
-    SlopeFigure *figure;
+#include "slope/color.h"
+#include <cairo.h>
 
-    gtk_init(&argc, &argv);
+G_BEGIN_DECLS
 
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+typedef struct
+_SlopePoint {
+    double x;
+    double y;
+} SlopePoint;
 
-    view = slope_view_new();
-    figure = slope_figure_new();
 
-    slope_view_set_figure (SLOPE_VIEW (view), figure);
+typedef struct
+_SlopeRect {
+    double x;
+    double y;
+    double width;
+    double height;
+} SlopeRect;
 
-    gtk_container_add(GTK_CONTAINER(window), view);
-    gtk_widget_show_all(window);
-    gtk_main();
-    return 0;
-}
+
+void slope_cairo_set_rgba (cairo_t *cr, SlopeRGB color);
+
+void slope_draw_rect (cairo_t *cr, const SlopeRect *rect);
+
+G_END_DECLS
+
+#endif /* _slope_drawing_h_ */
