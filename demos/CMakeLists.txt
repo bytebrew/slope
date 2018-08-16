@@ -28,8 +28,8 @@ foreach(FileName ${DemoSources})
     target_link_libraries(${DemoName} slope ${GTK_LIBRARIES} -lm)
     target_include_directories(
         ${DemoName} PRIVATE
-        ${SLOPE_BASE_DIR}/slope/include
-        ${SLOPE_AUTOGEN_DIR}
+        ${SLOPE_INCLUDE_DIR}
+        ${SLOPE_AUTOGEN_INCLUDE_DIR}
         ${GTK_INCLUDE_DIRS}
     )
 endforeach()

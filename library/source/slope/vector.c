@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016  Elvis Teixeira
+ * Copyright (C) 2018  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,24 +18,4 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <slope/view.h>
-
-int main(int argc, char *argv[])
-{
-    GtkWidget *window;
-    GtkWidget *view;
-
-    gtk_init(&argc, &argv);
-
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-
-    view = slope_view_new();
-
-    gtk_container_add(GTK_CONTAINER(window), view);
-    gtk_widget_show_all(window);
-
-
-    gtk_main();
-    return 0;
-}
+/* TODO */

@@ -16,23 +16,10 @@
 # Public License along with this program.
 # If not, see <http://www.gnu.org/licenses/>.
 
-project(slope C)
-cmake_minimum_required(VERSION 3.7.2 FATAL_ERROR)
-
-set(SLOPE_VERSION_MAJOR  0)
-set(SLOPE_VERSION_MINOR  1)
-set(SLOPE_VERSION_PATCH  5)
-
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK "gtk+-3.0")
-
-string(CONCAT SLOPE_VERSION_STRING
-    "${SLOPE_VERSION_MAJOR}"
-    ".${SLOPE_VERSION_MINOR}"
-    ".${SLOPE_VERSION_PATCH}")
-
-include(cmake/settings.cmake)
-include(cmake/platform.cmake)
-
-add_subdirectory(library)
-add_subdirectory(demos)
+set(SLOPE_SOURCE_DIR                  "${CMAKE_SOURCE_DIR}/library/source")
+set(SLOPE_INCLUDE_DIR                 "${CMAKE_SOURCE_DIR}/library/include")
+set(SLOPE_AUTOGEN_DIR                 "${CMAKE_BINARY_DIR}/slope_autogen")
+set(SLOPE_AUTOGEN_INCLUDE_DIR         "${SLOPE_AUTOGEN_DIR}/include")
+set(SLOPE_AUTOGEN_SOURCE_DIR          "${SLOPE_AUTOGEN_DIR}/source")
+set(SLOPE_LIB_INSTALL_DIR             "/usr/lib")
+set(BUILD_SHARED_LIBS                 ON)
