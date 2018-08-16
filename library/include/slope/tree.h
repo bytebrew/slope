@@ -27,23 +27,29 @@ typedef struct _SlopeTree SlopeTree;
 #define SLOPE_TREE(Addr) ((SlopeTree *) (Addr))
 
 struct _SlopeTree {
+    SlopeTree *parent;
     SlopeTree *prev;
     SlopeTree *next;
     SlopeTree *first;
     SlopeTree *last;
+    gpointer data;
 };
 
 #define slope_list_init(Addr) \
     G_STMT_START { \
+        SLOPE_TREE(Addr)->parent = NULL; \
         SLOPE_TREE(Addr)->prev = NULL; \
         SLOPE_TREE(Addr)->next = NULL; \
         SLOPE_TREE(Addr)->first = NULL; \
         SLOPE_TREE(Addr)->last = NULL; \
+        SLOPE_TREE(Addr)->data = NULL; \
     } G_STMT_END
 
 
 SlopeTree* slope_tree_append (SlopeTree *parent, SlopeTree *child);
 
 SlopeTree* slope_tree_prepend (SlopeTree *parent, SlopeTree *child);
+
+void slope_tree_destroy (SlopeTree *root, SlopeCB cleanup);
 
 #endif /* _slope_tree_h_ */

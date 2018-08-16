@@ -32,6 +32,7 @@ slope_tree_append (SlopeTree *parent, SlopeTree *child)
         parent->first = child;
     }
 
+    child->parent = parent;
     parent->last = child;
     return child;
 }
@@ -49,8 +50,43 @@ slope_tree_prepend (SlopeTree *parent, SlopeTree *child)
         parent->last = child;
     }
 
+    child->parent = parent;
     parent->first = child;
     return child;
+}
+
+
+void
+slope_tree_destroy (SlopeTree *node, SlopeCB cleanup)
+{
+    while (node != NULL) {
+        SlopeTree *parent = node->parent;
+
+        /* if this node has any children, descend onto them */
+        if (node->first != NULL) {
+            node = node->first;
+            continue;
+        } else if (node->last != NULL) {
+            node = node->last;
+            continue;
+        }
+
+        /* remove the link from the parent */
+        if (parent != NULL) {
+            if (parent->first == node) {
+                parent->first = NULL;
+            } else {
+                parent->last = NULL;
+            }
+        }
+
+        /* If there is an user provided cleanup, apply it */
+        if (cleanup != NULL) {
+            cleanup(node, NULL);
+        }
+
+        node = parent;
+    }
 }
 
 /* slope/tree.c */

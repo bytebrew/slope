@@ -27,6 +27,9 @@
 typedef struct _SlopeFigure SlopeFigure;
 typedef struct _SlopeItem SlopeItem;
 
+/* general purpose function type */
+typedef gpointer (*SlopeCB) (gpointer data, gpointer context);
+
 #define slope_enabled(X,b) (((X) & (b)) == (b))
 #define slope_enable(X,b) ((X) |= (b))
 #define slope_disable(X,b) ((X) &= ~(b))

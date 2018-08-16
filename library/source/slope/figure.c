@@ -19,8 +19,10 @@
  */
 
 #include "slope/figure.h"
+#include "slope/item.h"
+#include "slope/tree.h"
 
-#define SlopeFigure_RoundedRect   (1U)
+#define RoundedRect   (1U)
 
 
 typedef struct _SlopeFigurePrivate SlopeFigurePrivate;
@@ -31,7 +33,7 @@ struct _SlopeFigurePrivate
     SlopeRGB bg_fill_color;
     SlopeRGB bg_stroke_color;
     double bg_stroke_width;
-    GList *item_list;
+    SlopeTree *item_tree;
     guint64 options;
 };
 
@@ -69,9 +71,16 @@ slope_figure_init (SlopeFigure *self)
 
     m->bg_fill_color = SlopeRGB_White;
     m->bg_stroke_color = SlopeRGB_Black;
-    m->options = SlopeFigure_RoundedRect;
+    m->options = RoundedRect;
     m->bg_stroke_width = 2.0;
-    m->item_list = NULL;
+    m->item_tree = NULL;
+}
+
+
+gpointer cleanup (gpointer data, gpointer context)
+{
+    g_object_unref (G_OBJECT (data));
+    return NULL;
 }
 
 
@@ -80,21 +89,15 @@ slope_figure_dispose (GObject *object)
 {
     SlopeFigure *self = SLOPE_FIGURE (object);
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
-    GList *iter = m->item_list;
 
-    while (iter != NULL) {
-        SlopeItem *item = (SlopeItem *) iter->data;
-        g_object_unref (G_OBJECT (item));
-        iter = iter->next;
-    }
-    g_list_free (m->item_list);
+    slope_tree_destroy (m->item_tree, cleanup);
 
     G_OBJECT_CLASS (slope_figure_parent_class)->dispose (object);
 }
 
 
 static void
-slope_figure_finalize(GObject *object)
+slope_figure_finalize (GObject *object)
 {
     SlopeFigure *self = SLOPE_FIGURE (object);
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
@@ -113,11 +116,11 @@ slope_figure_new (void)
 
 
 static void
-base_figure_draw_rect (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
+figure_draw_rect (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
-    if (slope_enabled(m->options, SlopeFigure_RoundedRect)) {
+    if (slope_enabled(m->options, RoundedRect)) {
         rect->x += 10;
         rect->y += 10;
         rect->width -= 20;
@@ -133,20 +136,41 @@ base_figure_draw_rect (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 
 
 static void
+figure_draw_item (SlopeFigure *self, SlopeTree *node,
+                  cairo_t *cr, SlopeRect *rect)
+{
+    /* TODO: */
+}
+
+
+static void
+figure_draw_items (SlopeFigure *self, SlopeTree *node,
+                   cairo_t *cr, SlopeRect *rect)
+{
+    /* Do this node's drawing */
+    figure_draw_item (self, node, cr, rect);
+
+    /* Recurse to the child nodes */
+    node = node->first;
+    while (node != NULL) {
+        figure_draw_items(self, node, cr, rect);
+        node = node->next;
+    }
+}
+
+
+static void
 base_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
-    GList *iter = m->item_list;
 
     if (slope_rgb_is_visible(m->bg_fill_color) ||
             slope_rgb_is_visible(m->bg_stroke_color)) {
-        base_figure_draw_rect (self, cr, rect);
+        figure_draw_rect (self, cr, rect);
     }
 
-    while (iter != NULL) {
-        SlopeItem *item = (SlopeItem *) iter->data;
-        /* TPDP: draw items */
-        iter = iter->next;
+    if (m->item_tree != NULL) {
+        figure_draw_items(self, m->item_tree, cr, rect);
     }
 }
 
