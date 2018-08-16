@@ -18,14 +18,11 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLP_GLOBAL_H
-#define SLP_GLOBAL_H
+#ifndef _slope_global_h_
+#define _slope_global_h_
 
-#include "slope/platform.h"
 #include <glib.h>
 
-#define slp_enabled(X,BIT) (((X) & (BIT)) == (BIT))
-#define slp_enable(X,BIT)  (X) |= (BIT)
-#define slp_disable(X,BIT)  (X) &= ~(BIT)
 
-#endif /* SLP_GLOBAL_H */
+
+#endif /* _slope_global_h_ */

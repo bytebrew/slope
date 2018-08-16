@@ -18,9 +18,29 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_PLATFORM_P_H
-#define SLOPE_PLATFORM_P_H
+#ifndef _slope_text_h_
+#define _slope_text_h_
 
-#define SLOPE_AUTOGEN_DIR "@SLOPE_AUTOGEN_DIR@"
+#include "slope/global.h"
+#include <pango/pangocairo.h>
 
-#endif /* SLOPE_PLATFORM_P_H */
+G_BEGIN_DECLS
+
+/*! \brief Holds text layout and style infor for slope items */
+typedef struct _SlopeText SlopeText;
+#define SLOPE_TEXT(Addr) ((SlopeText *) (Addr))
+struct _SlopeText {
+    PangoLayout *layout;
+    const char font_desc;
+};
+
+
+SlopeText* slope_text_new (const char *font_desc);
+
+void slope_text_delete (SlopeText *self);
+
+int slope_text_show (SlopeText *self, const char *text);
+
+G_END_DECLS
+
+#endif /* _slope_text_h_ */

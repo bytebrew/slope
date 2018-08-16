@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018  Elvis Teixeira
+ * Copyright (C) 2017  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -18,22 +18,15 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLP_COLOR_H
-#define SLP_COLOR_H
+#ifndef SLOPE_CONFIG_H
+#define SLOPE_CONFIG_H
 
-#include "slope/global.h"
+#define SLOPE_MAJOR_VERSION  @SLOPE_MAJOR_VERSION@
 
-typedef guint32 SlpColor;
+#define SLOPE_MINOR_VERSION  @SLOPE_MINOR_VERSION@
 
-#define SLP_BLACK 0x000000FF
-#define SLP_WHITE 0xFFFFFFFF
-#define SLP_RED   0xFF0000FF
-#define SLP_GREEN 0x00FF00FF
-#define SLP_BLUE  0x0000FFFF
+#define SLOPE_PATCH_VERSION  @SLOPE_PATCH_VERSION@
 
-#define slp_get_red(C)    (((C) >> 24U) & 0xFF)
-#define slp_get_green(C)  (((C) >> 16U) & 0xFF)
-#define slp_get_blue(C)   (((C) >> 8U) & 0xFF)
-#define slp_get_alpha(C)  ((C) & 0xFF)
+#define SLOPE_VERSION_STRING  "@SLOPE_VERSION_STRING@"
 
-#endif /* SLP_COLOR_H */
+#endif /* SLOPE_CONFIG_H */
