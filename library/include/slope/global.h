@@ -23,6 +23,10 @@
 
 #include <glib.h>
 
+/* forward typename definitions */
+typedef struct _SlopeFigure SlopeFigure;
+typedef struct _SlopeItem SlopeItem;
+
 #define slope_enabled(X,b) (((X) & (b)) == (b))
 #define slope_enable(X,b) ((X) |= (b))
 #define slope_disable(X,b) ((X) &= ~(b))

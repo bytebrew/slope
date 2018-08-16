@@ -22,6 +22,7 @@
 
 #define SlopeFigure_RoundedRect   (1U)
 
+
 typedef struct _SlopeFigurePrivate SlopeFigurePrivate;
 #define SLOPE_FIGURE_PRIVATE(Addr) ((SlopeFigurePrivate*) (Addr))
 
@@ -30,17 +31,24 @@ struct _SlopeFigurePrivate
     SlopeRGB bg_fill_color;
     SlopeRGB bg_stroke_color;
     double bg_stroke_width;
+    GList *item_list;
     guint64 options;
 };
 
 
-G_DEFINE_TYPE_WITH_PRIVATE (SlopeFigure, slope_figure, G_TYPE_OBJECT)
-#define SLOPE_FIGURE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_FIGURE, SlopeFigurePrivate))
+G_DEFINE_TYPE_WITH_PRIVATE(SlopeFigure, slope_figure, G_TYPE_OBJECT)
+
+
+#define SLOPE_FIGURE_GET_PRIVATE(obj) \
+    (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
+    SLOPE_TYPE_FIGURE, SlopeFigurePrivate))
+
 
 /* local decls */
 static void slope_figure_finalize (GObject *self);
 static void slope_figure_dispose (GObject *self);
 static void base_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect);
+
 
 static void
 slope_figure_class_init (SlopeFigureClass *klass)
@@ -63,18 +71,25 @@ slope_figure_init (SlopeFigure *self)
     m->bg_stroke_color = SlopeRGB_Black;
     m->options = SlopeFigure_RoundedRect;
     m->bg_stroke_width = 2.0;
+    m->item_list = NULL;
 }
 
 
 static void
 slope_figure_dispose (GObject *object)
 {
-  SlopeFigure *self = SLOPE_FIGURE (object);
-  SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+    SlopeFigure *self = SLOPE_FIGURE (object);
+    SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+    GList *iter = m->item_list;
 
-  // TODO
+    while (iter != NULL) {
+        SlopeItem *item = (SlopeItem *) iter->data;
+        g_object_unref (G_OBJECT (item));
+        iter = iter->next;
+    }
+    g_list_free (m->item_list);
 
-  G_OBJECT_CLASS (slope_figure_parent_class)->dispose (object);
+    G_OBJECT_CLASS (slope_figure_parent_class)->dispose (object);
 }
 
 
@@ -112,7 +127,8 @@ base_figure_draw_rect (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
         slope_draw_rect (cr, rect);
     }
 
-    slope_draw (cr, m->bg_stroke_width, m->bg_fill_color, m->bg_stroke_color);
+    slope_draw (cr, m->bg_stroke_width,
+                m->bg_fill_color, m->bg_stroke_color);
 }
 
 
@@ -120,10 +136,17 @@ static void
 base_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+    GList *iter = m->item_list;
 
     if (slope_rgb_is_visible(m->bg_fill_color) ||
             slope_rgb_is_visible(m->bg_stroke_color)) {
-        base_figure_draw_rect(self, cr, rect);
+        base_figure_draw_rect (self, cr, rect);
+    }
+
+    while (iter != NULL) {
+        SlopeItem *item = (SlopeItem *) iter->data;
+        /* TPDP: draw items */
+        iter = iter->next;
     }
 }
 
@@ -131,13 +154,17 @@ base_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 void
 slope_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 {
+    SlopeRect Mrect;
     g_return_if_fail (SLOPE_IS_FIGURE (self));
-    SLOPE_FIGURE_GET_CLASS (self)->draw(self, cr, rect);
+    /* copy rect to avoid changing users data */
+    Mrect = *rect;
+    SLOPE_FIGURE_GET_CLASS (self)->draw(self, cr, &Mrect);
 }
 
 
-int slope_figure_save (SlopeFigure *self, const gchar *file_name,
-                       int width, int height, const gchar *format)
+int
+slope_figure_save (SlopeFigure *self, const gchar *file_name,
+                   int width, int height, const gchar *format)
 {
     cairo_surface_t *surf;
     cairo_t *cr;
@@ -162,7 +189,7 @@ int slope_figure_save (SlopeFigure *self, const gchar *file_name,
         return -2;
     }
 
-    cairo_surface_destroy(surf);
+    cairo_surface_destroy (surf);
     cairo_destroy (cr);
     return 0;
 }
