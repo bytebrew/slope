@@ -25,7 +25,7 @@ typedef struct _SlopeViewPrivate SlopeViewPrivate;
 
 struct _SlopeViewPrivate
 {
-    int dummy;
+    SlopeFigure *figure;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeView, slope_view, GTK_TYPE_DRAWING_AREA)
@@ -54,9 +54,12 @@ static void
 slope_view_init (SlopeView *view)
 {
     GtkWidget * gtk_widget = GTK_WIDGET(view);
+    SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (view);
+
+    m->figure = slope_figure_new();
 
     /* minimum width and height of the widget */
-    gtk_widget_set_size_request(gtk_widget, 250, 250);
+    gtk_widget_set_size_request(gtk_widget, 450, 380);
 
     /* select the types of events we want to be notified about */
     gtk_widget_add_events(gtk_widget,
@@ -73,7 +76,10 @@ slope_view_dispose (GObject *object)
   SlopeView *self = SLOPE_VIEW (object);
   SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (self);
 
-  // TODO
+  if (m->figure != NULL) {
+      g_object_unref(G_OBJECT (m->figure));
+      m->figure = NULL;
+  }
 
   G_OBJECT_CLASS (slope_view_parent_class)->dispose (object);
 }
@@ -105,6 +111,21 @@ static gboolean slope_view_draw(GtkWidget *self, cairo_t *cr, gpointer data)
   // TODO
 
   return TRUE;
+}
+
+
+void
+slope_view_set_figure (SlopeView *self, SlopeFigure *figure)
+{
+    g_return_if_fail(SLOPE_IS_VIEW(self));
+    SLOPE_VIEW_GET_PRIVATE (self)->figure = figure;
+}
+
+SlopeFigure*
+slope_view_get_figure (SlopeView *self)
+{
+    g_return_val_if_fail(SLOPE_IS_VIEW(self), NULL);
+    return SLOPE_VIEW_GET_PRIVATE (self)->figure;
 }
 
 /* slope/view.c */

@@ -21,8 +21,8 @@
 #ifndef _slope_view_h_
 #define _slope_view_h_
 
-#include "slope/global.h"
 #include <gtk/gtk.h>
+#include "slope/figure.h"
 
 G_BEGIN_DECLS
 
@@ -60,10 +60,16 @@ struct _SlopeViewClass
 
 
 GDK_AVAILABLE_IN_ALL
-GType          slope_view_get_type          (void) G_GNUC_CONST;
+GType slope_view_get_type (void) G_GNUC_CONST;
 
 GDK_AVAILABLE_IN_ALL
-GtkWidget*     slope_view_new               (void);
+GtkWidget* slope_view_new (void);
+
+GDK_AVAILABLE_IN_ALL
+void slope_view_set_figure (SlopeView *self, SlopeFigure *figure);
+
+GDK_AVAILABLE_IN_ALL
+SlopeFigure* slope_view_get_figure (SlopeView *self);
 
 G_END_DECLS
 

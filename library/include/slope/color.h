@@ -59,15 +59,8 @@ typedef guint32 SlopeRGB;
 /*! \brief Sets the alpha component of the color */
 #define slope_rgb_set_alpha(Val,x)  ((SLOPE_RGB(Val) & 0xFFFFFF00) | (SLOPE_RGB(x) & 0xFF))
 
-/*! \brief Holds color information for a chart theme */
-typedef struct _SlopeColorTheme SlopeColorTheme;
-#define SLOPE_COLOR_THEME(Addr) ((SlopeColorTheme *) (Addr))
-struct _SlopeColorTheme {
-    SlopeRGB background;
-    SlopeRGB text;
-    SlopeRGB line;
-    SlopeRGB marker;
-};
+/*! \brief Returns a shade of gray between 0 (black) and 255 (white) */
+#define slope_rgb_gray(x) ((((x) & 0xFF) << 24U) | (((x) & 0xFF) << 16U) | (((x) & 0xFF) << 8U) | 0xFF)
 
 G_END_DECLS
 
