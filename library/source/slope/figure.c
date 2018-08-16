@@ -20,12 +20,17 @@
 
 #include "slope/figure.h"
 
+#define SlopeFigure_RoundedRect   (1U)
+
 typedef struct _SlopeFigurePrivate SlopeFigurePrivate;
 #define SLOPE_FIGURE_PRIVATE(Addr) ((SlopeFigurePrivate*) (Addr))
 
 struct _SlopeFigurePrivate
 {
-    SlopeRGB background_color;
+    SlopeRGB bg_fill_color;
+    SlopeRGB bg_stroke_color;
+    double bg_stroke_width;
+    guint64 options;
 };
 
 
@@ -33,9 +38,9 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeFigure, slope_figure, G_TYPE_OBJECT)
 #define SLOPE_FIGURE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_FIGURE, SlopeFigurePrivate))
 
 /* local decls */
-static void slope_figure_finalize(GObject *self);
+static void slope_figure_finalize (GObject *self);
 static void slope_figure_dispose (GObject *self);
-static void base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
+static void base_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect);
 
 static void
 slope_figure_class_init (SlopeFigureClass *klass)
@@ -54,7 +59,10 @@ slope_figure_init (SlopeFigure *self)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
-    m->background_color = SlopeRGB_White;
+    m->bg_fill_color = SlopeRGB_White;
+    m->bg_stroke_color = SlopeRGB_Black;
+    m->options = SlopeFigure_RoundedRect;
+    m->bg_stroke_width = 2.0;
 }
 
 
@@ -90,23 +98,73 @@ slope_figure_new (void)
 
 
 static void
-base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect)
+base_figure_draw_rect (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
-    if (slope_rgb_is_visible(m->background_color)) {
-        slope_draw_rect(cr, rect);
-        slope_cairo_set_rgba (cr, m->background_color);
-        cairo_fill (cr);
+    if (slope_enabled(m->options, SlopeFigure_RoundedRect)) {
+        rect->x += 10;
+        rect->y += 10;
+        rect->width -= 20;
+        rect->height -= 20;
+        slope_draw_round_rect (cr, rect, 10);
+    } else {
+        slope_draw_rect (cr, rect);
+    }
+
+    slope_draw (cr, m->bg_stroke_width, m->bg_fill_color, m->bg_stroke_color);
+}
+
+
+static void
+base_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
+{
+    SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+
+    if (slope_rgb_is_visible(m->bg_fill_color) ||
+            slope_rgb_is_visible(m->bg_stroke_color)) {
+        base_figure_draw_rect(self, cr, rect);
     }
 }
 
 
 void
-slope_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect)
+slope_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 {
     g_return_if_fail (SLOPE_IS_FIGURE (self));
-    SLOPE_FIGURE_GET_CLASS(self)->draw(self, cr, rect);
+    SLOPE_FIGURE_GET_CLASS (self)->draw(self, cr, rect);
+}
+
+
+int slope_figure_save (SlopeFigure *self, const gchar *file_name,
+                       int width, int height, const gchar *format)
+{
+    cairo_surface_t *surf;
+    cairo_t *cr;
+    SlopeRect rect;
+
+    g_return_val_if_fail (SLOPE_IS_FIGURE (self), -1);
+    g_return_val_if_fail (file_name, -1);
+    g_return_val_if_fail (width > 0 && height > 0, -1);
+    g_return_val_if_fail (format, -1);
+
+    rect.x = 0.0;
+    rect.y = 0.0;
+    rect.width = (double) width;
+    rect.height = (double) height;
+
+    if (g_strcmp0(format, "png") == 0) {
+        surf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+        cr = cairo_create (surf);
+        slope_figure_draw (self, cr, &rect);
+        cairo_surface_write_to_png (surf, file_name);
+    } else {
+        return -2;
+    }
+
+    cairo_surface_destroy(surf);
+    cairo_destroy (cr);
+    return 0;
 }
 
 /* slope/figure.c */

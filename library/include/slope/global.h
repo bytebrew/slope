@@ -23,6 +23,8 @@
 
 #include <glib.h>
 
-
+#define slope_enabled(X,b) (((X) & (b)) == (b))
+#define slope_enable(X,b) ((X) |= (b))
+#define slope_disable(X,b) ((X) &= ~(b))
 
 #endif /* _slope_global_h_ */

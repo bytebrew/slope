@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
     figure = slope_figure_new();
 
     slope_view_set_figure (SLOPE_VIEW (view), figure);
+    slope_figure_save (figure, "Figure.png", 500, 400, "png");
 
     gtk_container_add(GTK_CONTAINER(window), view);
     gtk_widget_show_all(window);
