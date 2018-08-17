@@ -19,7 +19,7 @@
  */
 
 #include "slope/figure.h"
-#include "slope/item.h"
+#include "slope/item_p.h"
 #include "slope/tree.h"
 
 #define RoundedRect   (1U)
@@ -35,6 +35,10 @@ struct _SlopeFigurePrivate
     double bg_stroke_width;
     SlopeTree *item_tree;
     guint64 options;
+    SlopeText *text;
+
+    SlopeRGB title_color;
+    gchar *title;
 };
 
 
@@ -49,7 +53,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(SlopeFigure, slope_figure, G_TYPE_OBJECT)
 /* local decls */
 static void slope_figure_finalize (GObject *self);
 static void slope_figure_dispose (GObject *self);
-static void base_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect);
+static void base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
 
 
 static void
@@ -70,15 +74,19 @@ slope_figure_init (SlopeFigure *self)
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
     m->bg_fill_color = SlopeRGB_White;
-    m->bg_stroke_color = SlopeRGB_Black;
+    m->bg_stroke_color = SlopeRGB_None;
     m->options = RoundedRect;
     m->bg_stroke_width = 2.0;
     m->item_tree = NULL;
+    m->text = slope_text_new ("Monospace 9");
+    m->title = g_strdup("Slope Gtk Plot");
+    m->title_color = SlopeRGB_Blue;
 }
 
 
-gpointer cleanup (gpointer data, gpointer context)
+gpointer item_cleanup (gpointer data, gpointer context)
 {
+    SLOPE_UNUSED(context);
     g_object_unref (G_OBJECT (data));
     return NULL;
 }
@@ -90,7 +98,8 @@ slope_figure_dispose (GObject *object)
     SlopeFigure *self = SLOPE_FIGURE (object);
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
-    slope_tree_destroy (m->item_tree, cleanup);
+    slope_tree_destroy (m->item_tree, item_cleanup);
+    slope_text_delete (m->text);
 
     G_OBJECT_CLASS (slope_figure_parent_class)->dispose (object);
 }
@@ -108,7 +117,7 @@ slope_figure_finalize (GObject *object)
 }
 
 
-SlopeFigure*
+SlopeFigure* /* public new() function*/
 slope_figure_new (void)
 {
     return SLOPE_FIGURE (g_object_new (SLOPE_TYPE_FIGURE, NULL));
@@ -136,21 +145,13 @@ figure_draw_rect (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 
 
 static void
-figure_draw_item (SlopeFigure *self, SlopeTree *node,
-                  cairo_t *cr, SlopeRect *rect)
-{
-    /* TODO: */
-}
-
-
-static void
 figure_draw_items (SlopeFigure *self, SlopeTree *node,
-                   cairo_t *cr, SlopeRect *rect)
+                   cairo_t *cr, const SlopeRect *rect)
 {
     /* Do this node's drawing */
-    figure_draw_item (self, node, cr, rect);
+    draw_item_p ((SlopeItemPrivate *) node, cr, rect);
 
-    /* Recurse to the child nodes */
+    /* Recurse to the subtrees */
     node = node->first;
     while (node != NULL) {
         figure_draw_items(self, node, cr, rect);
@@ -160,33 +161,45 @@ figure_draw_items (SlopeFigure *self, SlopeTree *node,
 
 
 static void
-base_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
+base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *user_rect)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+    SlopeRect rect = *user_rect; /* mutable */
+
+    slope_text_init (m->text, cr);
 
     if (slope_rgb_is_visible(m->bg_fill_color) ||
             slope_rgb_is_visible(m->bg_stroke_color)) {
-        figure_draw_rect (self, cr, rect);
+        figure_draw_rect (self, cr, &rect);
     }
 
     if (m->item_tree != NULL) {
-        figure_draw_items(self, m->item_tree, cr, rect);
+        figure_draw_items(self, m->item_tree, cr, &rect);
+    }
+
+    /* Draw the title, if is is visible no the current background color */
+    if (m->title != NULL &&
+            slope_rgb_is_visible(m->title_color) &&
+            (m->title_color != m->bg_fill_color)) {
+        int width, height;
+        slope_text_set (m->text, m->title);
+        slope_text_get_size (m->text, &width, &height);
+        slope_cairo_set_rgba (cr, m->title_color);
+        cairo_move_to (cr, (((int) rect.width) - width) /2.0, 20);
+        slope_text_show (m->text);
     }
 }
 
 
-void
-slope_figure_draw (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
+void /* public draw() function*/
+slope_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect)
 {
-    SlopeRect Mrect;
     g_return_if_fail (SLOPE_IS_FIGURE (self));
-    /* copy rect to avoid changing users data */
-    Mrect = *rect;
-    SLOPE_FIGURE_GET_CLASS (self)->draw(self, cr, &Mrect);
+    SLOPE_FIGURE_GET_CLASS (self)->draw(self, cr, rect);
 }
 
 
-int
+int /* public save() function*/
 slope_figure_save (SlopeFigure *self, const gchar *file_name,
                    int width, int height, const gchar *format)
 {

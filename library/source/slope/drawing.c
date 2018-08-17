@@ -67,7 +67,7 @@ void slope_draw (cairo_t *cr, double stroke_width,
         cairo_stroke (cr);
     } else if (slope_rgb_is_visible(fill_color)) {
         slope_cairo_set_rgba (cr, fill_color);
-        cairo_stroke (cr);
+        cairo_fill (cr);
     }
 }
 

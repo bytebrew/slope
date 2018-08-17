@@ -32,17 +32,15 @@ struct _SlopeTree {
     SlopeTree *next;
     SlopeTree *first;
     SlopeTree *last;
-    gpointer data;
 };
 
-#define slope_list_init(Addr) \
+#define slope_tree_init(Addr) \
     G_STMT_START { \
         SLOPE_TREE(Addr)->parent = NULL; \
         SLOPE_TREE(Addr)->prev = NULL; \
         SLOPE_TREE(Addr)->next = NULL; \
         SLOPE_TREE(Addr)->first = NULL; \
         SLOPE_TREE(Addr)->last = NULL; \
-        SLOPE_TREE(Addr)->data = NULL; \
     } G_STMT_END
 
 

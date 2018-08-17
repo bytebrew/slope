@@ -29,6 +29,7 @@ G_BEGIN_DECLS
 typedef guint32 SlopeRGB;
 #define SLOPE_RGB(Val) ((SlopeRGB) (Val))
 
+#define SlopeRGB_None             0x00000000
 #define SlopeRGB_Black            0x000000FF
 #define SlopeRGB_White            0xFFFFFFFF
 #define SlopeRGB_Red              0xFF0000FF

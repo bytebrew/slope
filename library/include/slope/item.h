@@ -52,7 +52,7 @@ struct _SlopeItemClass
 {
   GObjectClass parent_class;
 
-  void (*draw) (SlopeItem *self, cairo_t *cr, SlopeRect *rect);
+  void (*draw) (SlopeItem *self, cairo_t *cr, const SlopeRect *rect);
 
   /* Padding for future expansion */
   void (*_slope_reserved1) (void);

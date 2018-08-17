@@ -18,37 +18,26 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _slope_text_h_
-#define _slope_text_h_
+#ifndef _slope_item_p_h_
+#define _slope_item_p_h_
 
-#include "slope/global.h"
-#include <pango/pangocairo.h>
+#include "slope/item.h"
+#include "slope/tree.h"
+#include "slope/text.h"
 
-G_BEGIN_DECLS
+typedef struct _SlopeItemPrivate SlopeItemPrivate;
+#define SLOPE_ITEM_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_ITEM, SlopeItemPrivate))
 
-/*! \brief Holds text layout and style infor for slope items */
-typedef struct _SlopeText SlopeText;
-#define SLOPE_TEXT(Addr) ((SlopeText *) (Addr))
-
-struct _SlopeText {
-    PangoFontDescription *font_desc;
-    PangoLayout *layout;
-    cairo_t *cr;
+struct _SlopeItemPrivate
+{
+    SlopeTree tree_node;
+    SlopeItem *publ_obj;
+    SlopeFigure *figure;
+    SlopeText *text;
 };
 
 
-SlopeText* slope_text_new (const char *font_desc);
+void draw_item_p (SlopeItemPrivate *m, cairo_t *cr, const SlopeRect *rec);
 
-void slope_text_init (SlopeText *self, cairo_t *cr);
 
-void slope_text_delete (SlopeText *self);
-
-int slope_text_set (SlopeText *self, const char *text);
-
-int slope_text_show (SlopeText *self);
-
-int slope_text_get_size (SlopeText *self, int *width, int *height);
-
-G_END_DECLS
-
-#endif /* _slope_text_h_ */
+#endif /* _slope_item_p_h_ */
