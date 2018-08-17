@@ -195,11 +195,7 @@ slope_figure_dispose (GObject *object)
 static void
 slope_figure_finalize (GObject *object)
 {
-    SlopeFigure *self = SLOPE_FIGURE (object);
-    SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
-
     // TODO
-
     G_OBJECT_CLASS (slope_figure_parent_class)->finalize (object);
 }
 
@@ -332,12 +328,14 @@ slope_figure_set_title (SlopeFigure *self, const gchar *title)
     g_return_if_fail(SLOPE_IS_FIGURE(self));
     m = SLOPE_FIGURE_GET_PRIVATE (self);
 
-    if (m->title)
+    if (m->title) {
         g_free(m->title);
+        m->title = NULL;
+    }
 
-    m->title = NULL;
-    if (title)
+    if (title) {
         m->title = g_strdup(title);
+    }
 }
 
 

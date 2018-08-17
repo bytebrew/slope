@@ -63,15 +63,15 @@ slope_grid_init (SlopeGrid *grid)
 static void
 slope_grid_dispose (GObject *object)
 {
-
-  G_OBJECT_CLASS (slope_grid_parent_class)->dispose (object);
+    // TODO
+    G_OBJECT_CLASS (slope_grid_parent_class)->dispose (object);
 }
 
 
 static void
 slope_grid_finalize(GObject *object)
 {
-
+    // TODO
     G_OBJECT_CLASS (slope_grid_parent_class)->finalize (object);
 }
 
@@ -79,7 +79,7 @@ slope_grid_finalize(GObject *object)
 SlopeItem*
 slope_grid_new (void)
 {
- return SLOPE_ITEM (g_object_new (SLOPE_TYPE_GRID, NULL));
+    return SLOPE_ITEM (g_object_new (SLOPE_TYPE_GRID, NULL));
 }
 
 
