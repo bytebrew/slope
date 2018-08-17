@@ -365,8 +365,9 @@ base_figure_set_root_item (SlopeFigure *self, SlopeItem *item)
     item_p->figure = self;
     fig_p->item_tree = SLOPE_TREE (item_p);
 
-    if (item_class->added)
-        item_class->added (item, self);
+    if (item_class->added) {
+        item_class->added (item, NULL, self);
+    }
 }
 
 

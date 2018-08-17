@@ -37,15 +37,17 @@ G_BEGIN_DECLS
 
 typedef struct _SlopeItem             SlopeItem;
 typedef struct _SlopeItemClass        SlopeItemClass;
-typedef struct _SlopeItemDrawingCtx  SlopeItemDrawingCtx;
+typedef struct _SlopeItemDC           SlopeItemDC;
 
 
-struct _SlopeItemDrawingCtx
+/* The item drawing context */
+struct _SlopeItemDC
 {
-    SlopeFigure *figure;
-    cairo_t *cr;
-    const SlopeRect *parent_rect;
-    SlopeText *default_text;
+    SlopeFigure       *figure;
+    SlopeItem         *parent;
+    cairo_t           *cr;
+    const SlopeRect   *parent_rect;
+    SlopeText         *default_text;
 };
 
 
@@ -63,8 +65,8 @@ struct _SlopeItemClass
 {
   GObjectClass parent_class;
 
-  void (*added) (SlopeItem *self, SlopeFigure *figure);
-  void (*draw) (SlopeItem *self, const SlopeItemDrawingCtx *ctx);
+  void (*added) (SlopeItem *self, SlopeItem *parent, SlopeFigure *figure);
+  void (*draw) (SlopeItem *self, const SlopeItemDC *dc);
 
   /* Padding for future expansion */
   void (*_slope_reserved1) (void);

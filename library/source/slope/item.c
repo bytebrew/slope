@@ -148,17 +148,18 @@ void draw_item_p (SlopeItemPrivate *m, cairo_t *cr, const SlopeRect *rec)
 {
     SlopeItem *self = m->publ_obj;
     SlopeFigurePrivate *fig_p = SLOPE_FIGURE_GET_PRIVATE(m->figure);
-    SlopeItemDrawingCtx ctx;
+    SlopeItemDC dc;
 
     g_return_if_fail (SLOPE_IS_ITEM (self));
     g_return_if_fail (SLOPE_ITEM_GET_CLASS (self)->draw != NULL);
 
-    ctx.figure = m->figure;
-    ctx.cr = cr;
-    ctx.default_text = fig_p->text;
-    ctx.parent_rect = rec;
+    dc.parent = SLOPE_ITEM_PRIVATE (SLOPE_TREE (m)->parent)->publ_obj;
+    dc.figure = m->figure;
+    dc.cr = cr;
+    dc.default_text = fig_p->text;
+    dc.parent_rect = rec;
 
-    SLOPE_ITEM_GET_CLASS (self)->draw(self, &ctx);
+    SLOPE_ITEM_GET_CLASS (self)->draw(self, &dc);
 }
 
 /* slope/item.c */

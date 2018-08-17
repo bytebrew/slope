@@ -35,7 +35,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeGrid, slope_grid, SLOPE_TYPE_ITEM)
 /* local decls */
 static void slope_grid_finalize(GObject *self);
 static void slope_grid_dispose (GObject *self);
-static void grid_draw (SlopeItem *self, const SlopeItemDrawingCtx *ctx);
+static void grid_draw (SlopeItem *self, const SlopeItemDC *dc);
 
 static void
 slope_grid_class_init (SlopeGridClass *klass)
@@ -84,10 +84,10 @@ slope_grid_new (void)
 
 
 static void
-grid_draw (SlopeItem *self, const SlopeItemDrawingCtx *ctx)
+grid_draw (SlopeItem *self, const SlopeItemDC *dc)
 {
     SlopeGridPrivate *m = SLOPE_GRID_GET_PRIVATE (self);
-    SlopeRect rec = *ctx->parent_rect;
+    SlopeRect rec = *dc->parent_rect;
 
     rec.x += 10;
     rec.y += 10;
@@ -96,11 +96,18 @@ grid_draw (SlopeItem *self, const SlopeItemDrawingCtx *ctx)
 
     /* just to show something */
     /* TODO: add the grid logic */
-    slope_cairo_rect (ctx->cr, &rec);
-    slope_cairo_set_rgba(ctx->cr, m->lines_color);
-    cairo_set_line_width (ctx->cr, m->lines_width);
-    cairo_set_antialias (ctx->cr, CAIRO_ANTIALIAS_NONE);
-    cairo_stroke (ctx->cr);
+    slope_cairo_rect (dc->cr, &rec);
+    slope_cairo_set_rgba(dc->cr, m->lines_color);
+    cairo_set_line_width (dc->cr, m->lines_width);
+    cairo_set_antialias (dc->cr, CAIRO_ANTIALIAS_NONE);
+    cairo_stroke (dc->cr);
+}
+
+
+void
+slope_grid_emplace (SlopeGrid *self, SlopeItem *child)
+{
+    // TODO
 }
 
 /* slope/view.c */
