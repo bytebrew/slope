@@ -26,45 +26,60 @@
 G_BEGIN_DECLS
 
 /*! \brief 32bit integer representing a color */
-typedef guint32 SlopeRGB;
-#define SLOPE_RGB(Val) ((SlopeRGB) (Val))
+typedef guint32 SlopeRGBA;
+#define SLOPE_RGBA(Val) ((SlopeRGBA) (Val))
 
-#define SlopeRGB_None             0x00000000
-#define SlopeRGB_Black            0x000000FF
-#define SlopeRGB_White            0xFFFFFFFF
-#define SlopeRGB_Red              0xFF0000FF
-#define SlopeRGB_Green            0x00FF00FF
-#define SlopeRGB_Blue             0x0000FFFF
+#define SLOPE_WHITE                0xFFFFFFFF
+#define SLOPE_RED                  0xFF0000FF
+#define SLOPE_GREEN                0x00FF00FF
+#define SLOPE_BLUE                 0x0000FFFF
+#define SLOPE_BLACK                0x000000FF
+#define SLOPE_COLOR_NULL           0x00000000
+#define SLOPE_YELLOW               0xFFFF00FF
+#define SLOPE_CYAN                 0x00FFFFFF
+#define SLOPE_BLUEVIOLET           0x8A2BE2FF
+#define SLOPE_BROWN                0xA52A2AFF
+#define SLOPE_CADETBLUE            0x5F9EA0FF
+#define SLOPE_CHOCOLATE            0xD2691EFF
+#define SLOPE_DARKGOLDENROD        0xB8860BFF
+#define SLOPE_DARKMAGENTA          0x8B008BFF
+#define SLOPE_HOTPINK              0xFF69B4FF
+#define SLOPE_LIGHTSKYBLUE         0x87CEFAFF
+#define SLOPE_LIGHTSTEELBLUE       0xB0C4DEFF
+#define SLOPE_MIDNIGHTBLUE         0x191970FF
+#define SLOPE_MAROON               0x800000FF
+#define SLOPE_TEAL                 0x008080FF
+#define SLOPE_PALETURQUOISE        0xAFEEEEFF
 
 /*! \brief Returns the red component of the color */
-#define slope_rgb_get_red(Val)    ((SLOPE_RGB(Val) >> 24U) & 0xFF)
+#define slope_get_red(Val)    ((SLOPE_RGBA(Val) >> 24U) & 0xFF)
 
 /*! \brief Returns the green component of the color */
-#define slope_rgb_get_green(Val)  ((SLOPE_RGB(Val) >> 16U) & 0xFF)
+#define slope_get_green(Val)  ((SLOPE_RGBA(Val) >> 16U) & 0xFF)
 
 /*! \brief Returns the blue component of the color */
-#define slope_rgb_get_blue(Val)   ((SLOPE_RGB(Val) >> 8U) & 0xFF)
+#define slope_get_blue(Val)   ((SLOPE_RGBA(Val) >> 8U) & 0xFF)
 
 /*! \brief Returns the alpha component of the color */
-#define slope_rgb_get_alpha(Val)  (SLOPE_RGB(Val) & 0xFF)
+#define slope_get_alpha(Val)  (SLOPE_RGBA(Val) & 0xFF)
 
 /*! \brief Sets the red component of the color */
-#define slope_rgb_set_red(Val,x)    ((SLOPE_RGB(Val) & 0x00FFFFFF) | ((SLOPE_RGB(x) & 0xFF) << 24U))
+#define slope_set_red(Val,x)    ((SLOPE_RGBA(Val) & 0x00FFFFFF) | ((SLOPE_RGBA(x) & 0xFF) << 24U))
 
 /*! \brief Sets the green component of the color */
-#define slope_rgb_set_green(Val,x)  ((SLOPE_RGB(Val) & 0xFF00FFFF) | ((SLOPE_RGB(x) & 0xFF) << 16U))
+#define slope_set_green(Val,x)  ((SLOPE_RGBA(Val) & 0xFF00FFFF) | ((SLOPE_RGBA(x) & 0xFF) << 16U))
 
 /*! \brief Sets the blue component of the color */
-#define slope_rgb_set_blue(Val,x)   ((SLOPE_RGB(Val) & 0xFFFF00FF) | ((SLOPE_RGB(x) & 0xFF) << 8U))
+#define slope_set_blue(Val,x)   ((SLOPE_RGBA(Val) & 0xFFFF00FF) | ((SLOPE_RGBA(x) & 0xFF) << 8U))
 
 /*! \brief Sets the alpha component of the color */
-#define slope_rgb_set_alpha(Val,x)  ((SLOPE_RGB(Val) & 0xFFFFFF00) | (SLOPE_RGB(x) & 0xFF))
+#define slope_set_alpha(Val,x)  ((SLOPE_RGBA(Val) & 0xFFFFFF00) | (SLOPE_RGBA(x) & 0xFF))
 
 /*! \brief Returns a shade of gray between 0 (black) and 255 (white) */
-#define slope_rgb_gray(x) ((((x) & 0xFF) << 24U) | (((x) & 0xFF) << 16U) | (((x) & 0xFF) << 8U) | 0xFF)
+#define slope_gray(x) ((((x) & 0xFF) << 24U) | (((x) & 0xFF) << 16U) | (((x) & 0xFF) << 8U) | 0xFF)
 
 /*! \brief Returns TRUE if Color is visible */
-#define slope_rgb_is_visible(Color) (slope_rgb_get_alpha(Color) > 0U)
+#define slope_rgba_is_visible(Color) (slope_get_alpha(Color) > 0U)
 
 G_END_DECLS
 

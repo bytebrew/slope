@@ -30,14 +30,14 @@ typedef struct _SlopeFigurePrivate SlopeFigurePrivate;
 
 struct _SlopeFigurePrivate
 {
-    SlopeRGB bg_fill_color;
-    SlopeRGB bg_stroke_color;
+    SlopeRGBA bg_fill_color;
+    SlopeRGBA bg_stroke_color;
     double bg_stroke_width;
     SlopeTree *item_tree;
     guint64 options;
     SlopeText *text;
 
-    SlopeRGB title_color;
+    SlopeRGBA title_color;
     gchar *title;
 };
 
@@ -95,14 +95,14 @@ slope_figure_class_init (SlopeFigureClass *klass)
           g_param_spec_uint ("bg-fill-color",
                              "Background fill color",
                              "Specify the background fill color",
-                             SlopeRGB_None, SlopeRGB_White, SlopeRGB_White,
+                             SLOPE_COLOR_NULL, SLOPE_WHITE, SLOPE_WHITE,
                              G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
 
     figure_props[PROP_BG_STROKE_COLOR] =
           g_param_spec_uint ("bg-stroke-color",
                              "Background stroke color",
                              "Specify the background stroke color",
-                             SlopeRGB_None, SlopeRGB_White, SlopeRGB_None,
+                             SLOPE_COLOR_NULL, SLOPE_WHITE, SLOPE_COLOR_NULL,
                              G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
 
     figure_props[PROP_BG_STROKE_WIDTH] =
@@ -131,14 +131,14 @@ slope_figure_init (SlopeFigure *self)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
-    m->bg_fill_color = SlopeRGB_White;
-    m->bg_stroke_color = SlopeRGB_None;
+    m->bg_fill_color = SLOPE_WHITE;
+    m->bg_stroke_color = SLOPE_COLOR_NULL;
     m->options = RoundedRect;
     m->bg_stroke_width = 2.0;
     m->item_tree = NULL;
     m->text = slope_text_new ("Monospace 9");
     m->title = g_strdup("Slope Gtk Plot");
-    m->title_color = SlopeRGB_Blue;
+    m->title_color = SLOPE_DARKMAGENTA;
 }
 
 
@@ -266,8 +266,8 @@ base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *user_rect)
 
     slope_text_init (m->text, cr);
 
-    if (slope_rgb_is_visible(m->bg_fill_color) ||
-            slope_rgb_is_visible(m->bg_stroke_color)) {
+    if (slope_rgba_is_visible(m->bg_fill_color) ||
+            slope_rgba_is_visible(m->bg_stroke_color)) {
         figure_draw_rect (self, cr, &rect);
     }
 
@@ -277,7 +277,7 @@ base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *user_rect)
 
     /* Draw the title, if is is visible no the current background color */
     if (m->title != NULL &&
-            slope_rgb_is_visible(m->title_color) &&
+            slope_rgba_is_visible(m->title_color) &&
             (m->title_color != m->bg_fill_color)) {
         int width, height;
         slope_text_set (m->text, m->title);
@@ -348,8 +348,6 @@ void slope_figure_set_title (SlopeFigure *self, const gchar *title)
 
 const gchar* slope_figure_get_title (SlopeFigure *self)
 {
-    SlopeFigurePrivate *m;
-
     g_return_val_if_fail(SLOPE_IS_FIGURE(self), NULL);
     return SLOPE_FIGURE_GET_PRIVATE (self)->title;
 }

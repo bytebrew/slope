@@ -20,13 +20,13 @@
 
 #include "slope/drawing.h"
 
-void slope_cairo_set_rgba (cairo_t *cr, SlopeRGB color)
+void slope_cairo_set_rgba (cairo_t *cr, SlopeRGBA color)
 {
     cairo_set_source_rgba(cr,
-        (double) slope_rgb_get_red(color),
-        (double) slope_rgb_get_green(color),
-        (double) slope_rgb_get_blue(color),
-        (double) slope_rgb_get_alpha(color));
+        (double) slope_get_red(color),
+        (double) slope_get_green(color),
+        (double) slope_get_blue(color),
+        (double) slope_get_alpha(color));
 }
 
 
@@ -55,17 +55,17 @@ void slope_draw_round_rect (cairo_t *cr, const SlopeRect *rec, double radius)
 
 
 void slope_draw (cairo_t *cr, double stroke_width,
-                 SlopeRGB fill_color, SlopeRGB stroke_color)
+                 SlopeRGBA fill_color, SlopeRGBA stroke_color)
 {
-    if (slope_rgb_is_visible(stroke_color)) {
-        if (slope_rgb_is_visible(fill_color)) {
+    if (slope_rgba_is_visible(stroke_color)) {
+        if (slope_rgba_is_visible(fill_color)) {
             slope_cairo_set_rgba (cr, fill_color);
             cairo_fill_preserve (cr);
         }
         cairo_set_line_width (cr, stroke_width);
         slope_cairo_set_rgba (cr, stroke_color);
         cairo_stroke (cr);
-    } else if (slope_rgb_is_visible(fill_color)) {
+    } else if (slope_rgba_is_visible(fill_color)) {
         slope_cairo_set_rgba (cr, fill_color);
         cairo_fill (cr);
     }
