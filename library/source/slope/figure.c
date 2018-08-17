@@ -48,10 +48,11 @@ static GParamSpec *figure_props[PROP_LAST] = { NULL };
 /* local decls */
 static void slope_figure_finalize (GObject *self);
 static void slope_figure_dispose (GObject *self);
-static void base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
+static void base_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height);
 static void slope_figure_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void slope_figure_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
-static void base_figure_add (SlopeFigure *self, SlopeItem *item);
+static void base_figure_set_root_item (SlopeFigure *self, SlopeItem *item);
+
 
 static void
 slope_figure_class_init (SlopeFigureClass *klass)
@@ -64,7 +65,7 @@ slope_figure_class_init (SlopeFigureClass *klass)
     gobject_class->get_property = slope_figure_get_property;
 
     klass->draw = base_figure_draw;
-    klass->add = base_figure_add;
+    klass->set_root_item = base_figure_set_root_item;
 
     figure_props[PROP_BG_FILL_COLOR] =
           g_param_spec_uint ("bg-fill-color",
@@ -94,7 +95,7 @@ slope_figure_class_init (SlopeFigureClass *klass)
         g_signal_new ("add",
                       G_OBJECT_CLASS_TYPE (gobject_class),
                       G_SIGNAL_RUN_FIRST,
-                      G_STRUCT_OFFSET (SlopeFigureClass, add),
+                      G_STRUCT_OFFSET (SlopeFigureClass, set_root_item),
                       NULL, NULL,
                       NULL,
                       G_TYPE_NONE, 0);
@@ -120,7 +121,7 @@ slope_figure_init (SlopeFigure *self)
     m->bg_stroke_color = SLOPE_COLOR_NULL;
     m->options = RoundedRect;
     m->bg_stroke_width = 2.0;
-    slope_tree_init(&m->item_trees);
+    m->item_tree = NULL;
     m->text = slope_text_new ("Monospace 9");
     m->title = g_strdup("Slope");
     m->title_color = SLOPE_BLACK;
@@ -167,7 +168,8 @@ slope_figure_get_property (GObject *object, guint prop_id,
 }
 
 
-gpointer item_cleanup (gpointer data, gpointer context)
+gpointer
+item_cleanup (gpointer data, gpointer context)
 {
     SlopeItem *item = SLOPE_ITEM_PRIVATE (data)->publ_obj;
     SLOPE_UNUSED(context);
@@ -182,11 +184,8 @@ slope_figure_dispose (GObject *object)
 {
     SlopeFigure *self = SLOPE_FIGURE (object);
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
-    SlopeTree *next, *iter = m->item_trees.first;
 
-
-
-    slope_tree_init(&m->item_trees);
+    slope_tree_destroy (SLOPE_TREE (m->item_tree), item_cleanup);
     slope_text_delete (m->text);
 
     G_OBJECT_CLASS (slope_figure_parent_class)->dispose (object);
@@ -222,13 +221,14 @@ figure_draw_rect (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
         rect->width -= 20;
         rect->height -= 20;
         cairo_translate (cr, 10.0, 10.0);
-        slope_draw_round_rect (cr, rect, 10);
+        slope_cairo_round_rect (cr, rect, 10);
     } else {
-        slope_draw_rect (cr, rect);
+        slope_cairo_rect (cr, rect);
     }
 
-    slope_draw (cr, m->bg_stroke_width,
-                m->bg_fill_color, m->bg_stroke_color);
+    slope_cairo_draw (
+          cr, m->bg_stroke_width,
+          m->bg_fill_color, m->bg_stroke_color);
 }
 
 
@@ -249,23 +249,26 @@ figure_draw_items (SlopeFigure *self, SlopeTree *node,
 
 
 static void
-base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *user_rect)
+base_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
-    SlopeTree *next, *iter = m->item_trees.first;
-    SlopeRect rect = *user_rect; /* mutable */
+    SlopeRect rect;
 
+    cairo_save (cr);
     slope_text_init (m->text, cr);
+
+    rect.x = 0.0;
+    rect.y = 0.0;
+    rect.width = (double) width;
+    rect.height = (double) height;
 
     if (slope_rgba_is_visible(m->bg_fill_color) ||
             slope_rgba_is_visible(m->bg_stroke_color)) {
         figure_draw_rect (self, cr, &rect);
     }
 
-    while (iter) {
-        next= iter->next;
-        figure_draw_items(self, iter, cr, &rect);
-        iter = next;
+    if (m->item_tree != NULL) {
+        figure_draw_items(self, SLOPE_TREE (m->item_tree), cr, &rect);
     }
 
     /* Draw the title, if is is visible no the current background color */
@@ -279,14 +282,18 @@ base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *user_rect)
         cairo_move_to (cr, (rect.width - logical.width) / 2.0, 10.0);
         slope_text_show (m->text);
     }
+
+    /* Give the cairo context back to the user in
+     * the same state in which we received it */
+    cairo_restore (cr);
 }
 
 
 void /* public draw() function*/
-slope_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect)
+slope_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
 {
     g_return_if_fail (SLOPE_IS_FIGURE (self));
-    SLOPE_FIGURE_GET_CLASS (self)->draw(self, cr, rect);
+    SLOPE_FIGURE_GET_CLASS (self)->draw(self, cr, width, height);
 }
 
 
@@ -296,22 +303,16 @@ slope_figure_save (SlopeFigure *self, const gchar *file_name,
 {
     cairo_surface_t *surf;
     cairo_t *cr;
-    SlopeRect rect;
 
     g_return_val_if_fail (SLOPE_IS_FIGURE (self), -1);
     g_return_val_if_fail (file_name, -1);
     g_return_val_if_fail (width > 0 && height > 0, -1);
     g_return_val_if_fail (format, -1);
 
-    rect.x = 0.0;
-    rect.y = 0.0;
-    rect.width = (double) width;
-    rect.height = (double) height;
-
     if (g_strcmp0(format, "png") == 0) {
         surf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
         cr = cairo_create (surf);
-        slope_figure_draw (self, cr, &rect);
+        slope_figure_draw (self, cr, width, height);
         cairo_surface_write_to_png (surf, file_name);
     } else {
         return -2;
@@ -349,7 +350,7 @@ slope_figure_get_title (SlopeFigure *self)
 
 
 static void
-base_figure_add (SlopeFigure *self, SlopeItem *item)
+base_figure_set_root_item (SlopeFigure *self, SlopeItem *item)
 {
     SlopeItemPrivate *item_p;
     SlopeFigurePrivate *fig_p;
@@ -359,16 +360,20 @@ base_figure_add (SlopeFigure *self, SlopeItem *item)
     item_p = SLOPE_ITEM_GET_PRIVATE (item);
     item_class = SLOPE_ITEM_GET_CLASS (item);
 
+    slope_tree_destroy (SLOPE_TREE (fig_p->item_tree), item_cleanup);
+
     item_p->figure = self;
-    slope_tree_append (&fig_p->item_trees, SLOPE_TREE (item_p));
-    if (item_class->added) item_class->added (item, self);
+    fig_p->item_tree = SLOPE_TREE (item_p);
+
+    if (item_class->added)
+        item_class->added (item, self);
 }
 
 
-void slope_figure_add (SlopeFigure *self, SlopeItem *item) {
+void slope_figure_set_root_item (SlopeFigure *self, SlopeItem *item) {
     g_return_if_fail (SLOPE_IS_FIGURE (self));
     g_return_if_fail (SLOPE_IS_ITEM (item));
-    SLOPE_FIGURE_GET_CLASS (self)->add (self, item);
+    SLOPE_FIGURE_GET_CLASS (self)->set_root_item (self, item);
 }
 
 /* slope/figure.c */

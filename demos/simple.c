@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     g_object_set_property(G_OBJECT (figure), "bg-stroke-color", &stroke_color);
 
     grid = slope_grid_new();
-    slope_figure_add (figure, grid);
+    slope_figure_set_root_item (figure, grid);
 
     slope_view_set_figure (SLOPE_VIEW (view), figure);
     gtk_window_set_title (GTK_WINDOW (window), slope_figure_get_title (SLOPE_FIGURE (figure)));

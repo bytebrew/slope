@@ -80,11 +80,7 @@ slope_tree_destroy (SlopeTree *node, SlopeCB cleanup)
             }
         }
 
-        /* If there is an user provided cleanup, apply it */
-        if (cleanup != NULL) {
-            cleanup(node, NULL);
-        }
-
+        cleanup(node, NULL);
         node = parent;
     }
 }

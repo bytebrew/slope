@@ -106,19 +106,14 @@ static gboolean slope_view_draw(GtkWidget *self, cairo_t *cr, gpointer data)
 {
     SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (self);
     GtkAllocation alloc;
-    SlopeRect rect;
+    SLOPE_UNUSED(data);
 
     if (m->figure == NULL) {
         return TRUE;
     }
 
     gtk_widget_get_allocation(self, &alloc);
-    rect.x = 0.0;
-    rect.y = 0.0;
-    rect.width = (double) alloc.width;
-    rect.height = (double) alloc.height;
-
-    slope_figure_draw(m->figure, cr, &rect);
+    slope_figure_draw(m->figure, cr, alloc.width, alloc.height);
 
     return TRUE;
 }

@@ -52,8 +52,8 @@ struct _SlopeFigureClass
 {
   GObjectClass parent_class;
 
-  void (*add) (SlopeFigure *self, SlopeItem *item);
-  void (*draw) (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
+  void (*set_root_item) (SlopeFigure *self, SlopeItem *item);
+  void (*draw) (SlopeFigure *self, cairo_t *cr, int width, int height);
 
   /* Padding for future expansion */
   void (*_slope_reserved1) (void);
@@ -67,7 +67,7 @@ GType slope_figure_get_type (void) G_GNUC_CONST;
 
 SlopeFigure* slope_figure_new (void);
 
-void slope_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
+void slope_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height);
 
 int slope_figure_save (SlopeFigure *self, const gchar *file_name,
                        int width, int height, const gchar *format);
@@ -76,7 +76,7 @@ void slope_figure_set_title (SlopeFigure *self, const gchar *title);
 
 const gchar* slope_figure_get_title (SlopeFigure *self);
 
-void slope_figure_add (SlopeFigure *self, SlopeItem *item);
+void slope_figure_set_root_item (SlopeFigure *self, SlopeItem *item);
 
 G_END_DECLS
 

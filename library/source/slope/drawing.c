@@ -30,13 +30,13 @@ void slope_cairo_set_rgba (cairo_t *cr, SlopeRGBA color)
 }
 
 
-void slope_draw_rect (cairo_t *cr, const SlopeRect *rect)
+void slope_cairo_rect (cairo_t *cr, const SlopeRect *rect)
 {
     cairo_rectangle(cr, rect->x, rect->y, rect->width, rect->height);
 }
 
 
-void slope_draw_round_rect (cairo_t *cr, const SlopeRect *rec, double radius)
+void slope_cairo_round_rect (cairo_t *cr, const SlopeRect *rec, double radius)
 {
   static const double degrees = 0.01745329252; /* ~pi/180 */
 
@@ -54,7 +54,7 @@ void slope_draw_round_rect (cairo_t *cr, const SlopeRect *rec, double radius)
 }
 
 
-void slope_draw (cairo_t *cr, double stroke_width,
+void slope_cairo_draw (cairo_t *cr, double stroke_width,
                  SlopeRGBA fill_color, SlopeRGBA stroke_color)
 {
     if (slope_rgba_is_visible(stroke_color)) {

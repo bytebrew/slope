@@ -44,11 +44,11 @@ _SlopeRect {
 
 void slope_cairo_set_rgba (cairo_t *cr, SlopeRGBA color);
 
-void slope_draw_rect (cairo_t *cr, const SlopeRect *rect);
+void slope_cairo_rect (cairo_t *cr, const SlopeRect *rect);
 
-void slope_draw_round_rect (cairo_t *cr, const SlopeRect *rec, double radius);
+void slope_cairo_round_rect (cairo_t *cr, const SlopeRect *rec, double radius);
 
-void slope_draw (cairo_t *cr, double stroke_width, SlopeRGBA fill_color, SlopeRGBA stroke_color);
+void slope_cairo_draw (cairo_t *cr, double stroke_width, SlopeRGBA fill_color, SlopeRGBA stroke_color);
 
 G_END_DECLS
 
