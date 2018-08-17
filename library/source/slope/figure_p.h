@@ -18,33 +18,35 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _slope_item_p_h_
-#define _slope_item_p_h_
+#ifndef _slope_figure_p_h_
+#define _slope_figure_p_h_
 
-#include "slope/item.h"
-#include "slope/tree.h"
+#include "slope/figure.h"
 #include "slope/text.h"
+#include "slope/tree.h"
 
-typedef struct _SlopeItemPrivate SlopeItemPrivate;
-#define SLOPE_ITEM_PRIVATE(Addr) ((SlopeItemPrivate *) (Addr))
-
-#define ItemVisible    (1U)
+#define RoundedRect   (1U)
 
 
-struct _SlopeItemPrivate
+typedef struct _SlopeFigurePrivate SlopeFigurePrivate;
+#define SLOPE_FIGURE_PRIVATE(Addr) ((SlopeFigurePrivate*) (Addr))
+
+struct _SlopeFigurePrivate
 {
-    SlopeTree tree_node;
-    SlopeItem *publ_obj;
-    SlopeFigure *figure;
-    guint32 options;
+    SlopeRGBA bg_fill_color;
+    SlopeRGBA bg_stroke_color;
+    double bg_stroke_width;
+    SlopeTree item_trees;
+    guint64 options;
+    SlopeText *text;
+
+    SlopeRGBA title_color;
+    gchar *title;
 };
 
-#define SLOPE_ITEM_GET_PRIVATE(obj) \
+
+#define SLOPE_FIGURE_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
-    SLOPE_TYPE_ITEM, SlopeItemPrivate))
+    SLOPE_TYPE_FIGURE, SlopeFigurePrivate))
 
-
-void draw_item_p (SlopeItemPrivate *m, cairo_t *cr, const SlopeRect *rec);
-
-
-#endif /* _slope_item_p_h_ */
+#endif /* _slope_figure_p_h_ */

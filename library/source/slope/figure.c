@@ -18,30 +18,8 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/figure.h"
+#include "slope/figure_p.h"
 #include "slope/item_p.h"
-#include "slope/tree.h"
-
-
-#define RoundedRect   (1U)
-
-
-typedef struct _SlopeFigurePrivate SlopeFigurePrivate;
-#define SLOPE_FIGURE_PRIVATE(Addr) ((SlopeFigurePrivate*) (Addr))
-
-struct _SlopeFigurePrivate
-{
-    SlopeRGBA bg_fill_color;
-    SlopeRGBA bg_stroke_color;
-    double bg_stroke_width;
-    SlopeTree *item_tree;
-    guint64 options;
-    SlopeText *text;
-
-    SlopeRGBA title_color;
-    gchar *title;
-};
-
 
 G_DEFINE_TYPE_WITH_PRIVATE(SlopeFigure, slope_figure, G_TYPE_OBJECT)
 
@@ -67,18 +45,13 @@ enum {
 static GParamSpec *figure_props[PROP_LAST] = { NULL };
 
 
-#define SLOPE_FIGURE_GET_PRIVATE(obj) \
-    (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
-    SLOPE_TYPE_FIGURE, SlopeFigurePrivate))
-
-
 /* local decls */
 static void slope_figure_finalize (GObject *self);
 static void slope_figure_dispose (GObject *self);
 static void base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
 static void slope_figure_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void slope_figure_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
-
+static void base_figure_add (SlopeFigure *self, SlopeItem *item);
 
 static void
 slope_figure_class_init (SlopeFigureClass *klass)
@@ -91,6 +64,7 @@ slope_figure_class_init (SlopeFigureClass *klass)
     gobject_class->get_property = slope_figure_get_property;
 
     klass->draw = base_figure_draw;
+    klass->add = base_figure_add;
 
     figure_props[PROP_BG_FILL_COLOR] =
           g_param_spec_uint ("bg-fill-color",
@@ -136,9 +110,9 @@ slope_figure_init (SlopeFigure *self)
     m->bg_stroke_color = SLOPE_COLOR_NULL;
     m->options = RoundedRect;
     m->bg_stroke_width = 2.0;
-    m->item_tree = NULL;
+    slope_tree_init(&m->item_trees);
     m->text = slope_text_new ("Monospace 9");
-    m->title = g_strdup("Slope Gtk Plot");
+    m->title = g_strdup("Slope");
     m->title_color = SLOPE_BLACK;
 }
 
@@ -196,8 +170,14 @@ slope_figure_dispose (GObject *object)
 {
     SlopeFigure *self = SLOPE_FIGURE (object);
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+    SlopeTree *next, *iter = m->item_trees.first;
 
-    slope_tree_destroy (m->item_tree, item_cleanup);
+    while (iter) {
+        next = iter->next;
+        slope_tree_destroy (iter, item_cleanup);
+        iter = next;
+    }
+
     slope_text_delete (m->text);
 
     G_OBJECT_CLASS (slope_figure_parent_class)->dispose (object);
@@ -263,6 +243,7 @@ static void
 base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *user_rect)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+    SlopeTree *next, *iter = m->item_trees.first;
     SlopeRect rect = *user_rect; /* mutable */
 
     slope_text_init (m->text, cr);
@@ -272,8 +253,10 @@ base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *user_rect)
         figure_draw_rect (self, cr, &rect);
     }
 
-    if (m->item_tree != NULL) {
-        figure_draw_items(self, m->item_tree, cr, &rect);
+    while (iter) {
+        next= iter->next;
+        figure_draw_items(self, iter, cr, &rect);
+        iter = next;
     }
 
     /* Draw the title, if is is visible no the current background color */
@@ -331,7 +314,8 @@ slope_figure_save (SlopeFigure *self, const gchar *file_name,
 }
 
 
-void slope_figure_set_title (SlopeFigure *self, const gchar *title)
+void
+slope_figure_set_title (SlopeFigure *self, const gchar *title)
 {
     SlopeFigurePrivate *m;
 
@@ -347,10 +331,31 @@ void slope_figure_set_title (SlopeFigure *self, const gchar *title)
 }
 
 
-const gchar* slope_figure_get_title (SlopeFigure *self)
+const gchar*
+slope_figure_get_title (SlopeFigure *self)
 {
     g_return_val_if_fail(SLOPE_IS_FIGURE(self), NULL);
     return SLOPE_FIGURE_GET_PRIVATE (self)->title;
+}
+
+
+static void
+base_figure_add (SlopeFigure *self, SlopeItem *item)
+{
+    SlopeItemPrivate *item_p;
+    SlopeFigurePrivate *fig_p;
+    SlopeItemClass *item_class;
+
+    g_return_if_fail (SLOPE_IS_FIGURE (self));
+    g_return_if_fail (SLOPE_IS_ITEM (item));
+
+    fig_p = SLOPE_FIGURE_GET_PRIVATE (self);
+    item_p = SLOPE_ITEM_GET_PRIVATE (item);
+    item_class = SLOPE_ITEM_GET_CLASS (item);
+
+    item_p->figure = self;
+    slope_tree_append (&fig_p->item_trees, SLOPE_TREE (item_p));
+    if (item_class->added) item_class->added (item, self);
 }
 
 /* slope/figure.c */

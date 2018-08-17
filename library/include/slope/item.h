@@ -24,6 +24,7 @@
 #include <glib-object.h>
 #include <cairo.h>
 #include "slope/drawing.h"
+#include "slope/text.h"
 
 G_BEGIN_DECLS
 
@@ -36,6 +37,15 @@ G_BEGIN_DECLS
 
 typedef struct _SlopeItem             SlopeItem;
 typedef struct _SlopeItemClass        SlopeItemClass;
+typedef struct _SlopeItemDrawingCtx  SlopeItemDrawingCtx;
+
+
+struct _SlopeItemDrawingCtx
+{
+  cairo_t *cr;
+  const SlopeRect *parent_rect;
+  SlopeText *default_text;
+};
 
 
 struct _SlopeItem
@@ -52,7 +62,8 @@ struct _SlopeItemClass
 {
   GObjectClass parent_class;
 
-  void (*draw) (SlopeItem *self, cairo_t *cr, const SlopeRect *rect);
+  void (*added) (SlopeItem *self, SlopeFigure *figure);
+  void (*draw) (SlopeItem *self, const SlopeItemDrawingCtx *ctx);
 
   /* Padding for future expansion */
   void (*_slope_reserved1) (void);

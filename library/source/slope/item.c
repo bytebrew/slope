@@ -18,16 +18,36 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "slope/figure_p.h"
 #include "slope/item_p.h"
-
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeItem, slope_item, G_TYPE_OBJECT)
 
+
+/* signals */
+enum {
+    SIG_ADD,
+    SIG_REMOVE,
+    SIG_CHANGED,
+    SIG_LAST
+};
+static guint item_signals[SIG_LAST] = { 0 };
+
+
+/* properties */
+enum {
+  PROP_0,
+  PROP_VISIBLE,
+  PROP_LAST
+};
+static GParamSpec *item_props[PROP_LAST] = { NULL };
 
 
 /* local decls */
 static void slope_item_finalize (GObject *self);
 static void slope_item_dispose (GObject *self);
+static void slope_item_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+static void slope_item_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
 
 static void
@@ -37,6 +57,49 @@ slope_item_class_init (SlopeItemClass *klass)
 
     gobject_class->dispose = slope_item_dispose;
     gobject_class->finalize = slope_item_finalize;
+    gobject_class->set_property = slope_item_set_property;
+    gobject_class->get_property = slope_item_get_property;
+
+    item_props[PROP_VISIBLE] =
+          g_param_spec_boolean ("visible",
+                                "Background fill color",
+                                "Specify the background fill color",
+                                TRUE,
+                                G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
+
+    g_object_class_install_properties (gobject_class, PROP_LAST, item_props);
+}
+
+
+static void
+slope_item_set_property (GObject *object, guint prop_id,
+                         const GValue *value, GParamSpec *pspec)
+{
+    SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE(object);
+
+    switch (prop_id) {
+        case PROP_VISIBLE:
+            if (g_value_get_boolean(value)) {
+                slope_enable(m->options, ItemVisible);
+            } else {
+                slope_disable(m->options, ItemVisible);
+            }
+            break;
+    }
+}
+
+
+static void
+slope_item_get_property (GObject *object, guint prop_id,
+                           GValue *value, GParamSpec *pspec)
+{
+    SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE(object);
+
+    switch (prop_id) {
+        case PROP_VISIBLE:
+            g_value_set_boolean(value, slope_enabled(m->options, ItemVisible));
+            break;
+    }
 }
 
 
@@ -48,7 +111,6 @@ slope_item_init (SlopeItem *self)
     m->figure = NULL;
     slope_tree_init(&m->tree_node);
     m->publ_obj = self;
-    m->text = slope_text_new("Droid Sans Mono 11");
 }
 
 
@@ -82,7 +144,14 @@ slope_item_new (void)
 void draw_item_p (SlopeItemPrivate *m, cairo_t *cr, const SlopeRect *rec)
 {
     SlopeItem *self = m->publ_obj;
-    SLOPE_ITEM_GET_CLASS (self)->draw(self, cr, rec);
+    SlopeFigurePrivate *fig_p = SLOPE_FIGURE_GET_PRIVATE(m->figure);
+    SlopeItemDrawingCtx ctx;
+
+    ctx.cr = cr;
+    ctx.default_text = fig_p->text;
+    ctx.parent_rect = rec;
+
+    SLOPE_ITEM_GET_CLASS (self)->draw(self, &ctx);
 }
 
 /* slope/item.c */
