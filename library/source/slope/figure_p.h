@@ -27,6 +27,7 @@
 
 #define DrawRect       (1U)
 #define RoundedRect    (1U << 1U)
+#define DrawTitle      (1U << 2U)
 
 
 typedef struct _SlopeFigurePrivate SlopeFigurePrivate;

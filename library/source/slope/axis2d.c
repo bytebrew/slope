@@ -24,11 +24,28 @@
 typedef struct _SlopeAxis2DPrivate SlopeAxis2DPrivate;
 #define SLOPE_AXIS2D_PRIVATE(Addr) ((SlopeAxis2DPrivate*) (Addr))
 
+typedef struct _AxisLine AxisLine;
+#define AXIS_LINE(Addr) ((AxisLine *) (Addr))
+
+
+struct _AxisLine {
+    SlopeRGBA line_color;
+    double line_width;
+    guint32 options;
+
+    double fig_x_min, fig_x_max;
+    double fig_y_min, fig_y_max;
+
+    double dat_x_min, dat_x_max;
+    double dat_y_min, dat_y_max;
+};
+
+
 struct _SlopeAxis2DPrivate
 {
-    SlopeRGBA lines_color;
-    double lines_width;
+    AxisLine lines[6];
 };
+
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeAxis2D, slope_axis2d, SLOPE_TYPE_ITEM)
 #define SLOPE_AXIS2D_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_AXIS2D, SlopeAxis2DPrivate))
@@ -57,8 +74,29 @@ slope_axis2d_init (SlopeAxis2D *axis)
 {
     SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (axis);
 
-    m->lines_color = SLOPE_BLACK;
-    m->lines_width = 1.0;
+    m->lines[SLOPE_AXIS2D_BOTTOM].line_color = SLOPE_BLACK;
+    m->lines[SLOPE_AXIS2D_BOTTOM].line_width = 1.0;
+    m->lines[SLOPE_AXIS2D_BOTTOM].options = SLOPE_AXIS2D_DRAW_TICKS;
+
+    m->lines[SLOPE_AXIS2D_LEFT].line_color = SLOPE_BLACK;
+    m->lines[SLOPE_AXIS2D_LEFT].line_width = 1.0;
+    m->lines[SLOPE_AXIS2D_LEFT].options = SLOPE_AXIS2D_DRAW_TICKS;
+
+    m->lines[SLOPE_AXIS2D_TOP].line_color = SLOPE_BLACK;
+    m->lines[SLOPE_AXIS2D_TOP].line_width = 1.0;
+    m->lines[SLOPE_AXIS2D_TOP].options = SLOPE_AXIS2D_DRAW_TICKS;
+
+    m->lines[SLOPE_AXIS2D_RIGHT].line_color = SLOPE_BLACK;
+    m->lines[SLOPE_AXIS2D_RIGHT].line_width = 1.0;
+    m->lines[SLOPE_AXIS2D_RIGHT].options = SLOPE_AXIS2D_DRAW_TICKS;
+
+    m->lines[SLOPE_AXIS2D_X].line_color = SLOPE_BLACK;
+    m->lines[SLOPE_AXIS2D_X].line_width = 1.0;
+    m->lines[SLOPE_AXIS2D_X].options = SLOPE_AXIS2D_DRAW_TICKS;
+
+    m->lines[SLOPE_AXIS2D_Y].line_color = SLOPE_BLACK;
+    m->lines[SLOPE_AXIS2D_Y].line_width = 1.0;
+    m->lines[SLOPE_AXIS2D_Y].options = SLOPE_AXIS2D_DRAW_TICKS;
 }
 
 

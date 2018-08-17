@@ -46,6 +46,12 @@ typedef enum {
 } SlopeAxisID;
 
 
+typedef enum {
+    SLOPE_AXIS2D_LINE_ANTIALIAS     = (1U),
+    SLOPE_AXIS2D_DRAW_TICKS         = (1U << 1U)
+} SlopeAxisOption;
+
+
 struct _SlopeAxis2D
 {
   /*< parent object space >*/

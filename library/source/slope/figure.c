@@ -134,8 +134,8 @@ slope_figure_init (SlopeFigure *self)
 
     m->bg_fill_color = SLOPE_WHITE;
     m->bg_stroke_color = SLOPE_MAROON;
-    m->options = DrawRect | RoundedRect;
-    m->bg_stroke_width = 2.0;
+    m->options = DrawRect | RoundedRect | DrawTitle;
+    m->bg_stroke_width = 1.5;
     m->item_tree = NULL;
     m->text = slope_text_new ("Monospace 9");
     m->title = g_strdup("Slope");
@@ -193,6 +193,7 @@ slope_figure_dispose (GObject *object)
     }
 
     slope_text_delete (m->text);
+    if (m->title) g_free(m->title);
 
     G_OBJECT_CLASS (slope_figure_parent_class)->dispose (object);
 }
@@ -284,7 +285,8 @@ base_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
     }
 
     /* Draw the title, if is is visible no the current background color */
-    if (m->title != NULL &&
+    if (slope_enabled(m->options, DrawTitle) &&
+            (m->title != NULL) &&
             slope_rgba_is_visible(m->title_color) &&
             (m->title_color != m->bg_fill_color)) {
         SlopeRect ink, logical;

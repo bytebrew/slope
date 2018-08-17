@@ -48,7 +48,8 @@ static void slope_item_finalize (GObject *self);
 static void slope_item_dispose (GObject *self);
 static void slope_item_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void slope_item_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
-
+static void item_added (SlopeItem *self, SlopeItem *parent, SlopeFigure *figure);
+static void item_draw (SlopeItem *self, const SlopeItemDC *dc);
 
 static void
 slope_item_class_init (SlopeItemClass *klass)
@@ -60,8 +61,8 @@ slope_item_class_init (SlopeItemClass *klass)
     gobject_class->set_property = slope_item_set_property;
     gobject_class->get_property = slope_item_get_property;
 
-    klass->added = NULL;
-    klass->draw = NULL;
+    klass->added = item_added;
+    klass->draw = item_draw;
 
     item_props[PROP_VISIBLE] =
           g_param_spec_boolean ("visible",
@@ -200,6 +201,23 @@ slope_item_destroy_tree (SlopeItem *self)
     m = SLOPE_ITEM_GET_PRIVATE (self);
 
     slope_tree_destroy (SLOPE_TREE (m), tree_cleanup);
+}
+
+
+static void
+item_added (SlopeItem *self, SlopeItem *parent, SlopeFigure *figure)
+{
+    SLOPE_UNUSED(self);
+    SLOPE_UNUSED(parent);
+    SLOPE_UNUSED(figure);
+}
+
+
+static void
+item_draw (SlopeItem *self, const SlopeItemDC *dc)
+{
+    SLOPE_UNUSED(self);
+    SLOPE_UNUSED(dc);
 }
 
 /* slope/item.c */
