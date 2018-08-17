@@ -21,7 +21,8 @@
 #include "slope/figure.h"
 #include "slope/item_p.h"
 #include "slope/tree.h"
-#include <gtk/gtk.h>
+
+
 #define RoundedRect   (1U)
 
 
@@ -138,7 +139,7 @@ slope_figure_init (SlopeFigure *self)
     m->item_tree = NULL;
     m->text = slope_text_new ("Monospace 9");
     m->title = g_strdup("Slope Gtk Plot");
-    m->title_color = SLOPE_DARKMAGENTA;
+    m->title_color = SLOPE_BLACK;
 }
 
 
@@ -228,10 +229,10 @@ figure_draw_rect (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
     if (slope_enabled(m->options, RoundedRect)) {
-        rect->x += 10;
-        rect->y += 10;
+        /* translate cr to account for the area loss */
         rect->width -= 20;
         rect->height -= 20;
+        cairo_translate (cr, 10.0, 10.0);
         slope_draw_round_rect (cr, rect, 10);
     } else {
         slope_draw_rect (cr, rect);
@@ -279,11 +280,11 @@ base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *user_rect)
     if (m->title != NULL &&
             slope_rgba_is_visible(m->title_color) &&
             (m->title_color != m->bg_fill_color)) {
-        int width, height;
+        SlopeRect ink, logical;
         slope_text_set (m->text, m->title);
-        slope_text_get_size (m->text, &width, &height);
+        slope_text_get_extents (m->text, &ink, &logical);
         slope_cairo_set_rgba (cr, m->title_color);
-        cairo_move_to (cr, (((int) rect.width) - width) /2.0, 20);
+        cairo_move_to (cr, (rect.width - logical.width) / 2.0, 10.0);
         slope_text_show (m->text);
     }
 }

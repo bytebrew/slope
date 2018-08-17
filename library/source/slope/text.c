@@ -33,9 +33,17 @@ SlopeText* slope_text_new (const char *font_desc)
 
 void slope_text_init (SlopeText *self, cairo_t *cr)
 {
-    if (self->layout) g_object_unref (self->layout);
+    if (self->layout)
+        g_object_unref (self->layout);
+
     self->layout = pango_cairo_create_layout (cr);
+    pango_layout_set_justify(self->layout, FALSE);
+    pango_layout_set_alignment(self->layout, PANGO_ALIGN_LEFT);
+    pango_layout_set_single_paragraph_mode(self->layout, TRUE);
+    pango_layout_set_indent(self->layout, 0);
+    pango_layout_set_ellipsize(self->layout, PANGO_ELLIPSIZE_NONE);
     pango_layout_set_font_description (self->layout, self->font_desc);
+
     self->cr = cr;
 }
 
@@ -61,9 +69,21 @@ int slope_text_show (SlopeText *self) {
 }
 
 
-int slope_text_get_size (SlopeText *self, int *width, int *height)
+int slope_text_get_extents (SlopeText *self, SlopeRect *ink_rect,
+                            SlopeRect *logical_rect)
 {
-    pango_layout_get_pixel_size(self->layout, width, height);
+    PangoRectangle pango_ink_rect;
+    PangoRectangle pango_logical_rect;
+
+    pango_layout_get_pixel_extents(
+        self->layout, &pango_ink_rect, &pango_logical_rect);
+
+    ink_rect->width = (double) pango_ink_rect.width;
+    ink_rect->height = (double) pango_ink_rect.height;
+
+    logical_rect->width = (double) pango_logical_rect.width;
+    logical_rect->height = (double) pango_logical_rect.height;
+
     return 0;
 }
 

@@ -21,7 +21,7 @@
 #ifndef _slope_text_h_
 #define _slope_text_h_
 
-#include "slope/global.h"
+#include "slope/drawing.h"
 #include <pango/pangocairo.h>
 
 G_BEGIN_DECLS
@@ -47,7 +47,7 @@ int slope_text_set (SlopeText *self, const char *text);
 
 int slope_text_show (SlopeText *self);
 
-int slope_text_get_size (SlopeText *self, int *width, int *height);
+int slope_text_get_extents (SlopeText *self, SlopeRect *ink_rect, SlopeRect *logical_rect);
 
 G_END_DECLS
 

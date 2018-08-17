@@ -45,9 +45,6 @@ slope_view_class_init (SlopeViewClass *klass)
 
     gobject_class->dispose = slope_view_dispose;
     gobject_class->finalize = slope_view_finalize;
-
-
-
 }
 
 static void

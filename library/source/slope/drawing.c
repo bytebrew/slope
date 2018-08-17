@@ -23,10 +23,10 @@
 void slope_cairo_set_rgba (cairo_t *cr, SlopeRGBA color)
 {
     cairo_set_source_rgba(cr,
-        (double) slope_get_red(color),
-        (double) slope_get_green(color),
-        (double) slope_get_blue(color),
-        (double) slope_get_alpha(color));
+              ((double) slope_get_red(color) / 255.0),
+              ((double) slope_get_green(color) / 255.0),
+              ((double) slope_get_blue(color) / 255.0),
+              ((double) slope_get_alpha(color) / 255.0));
 }
 
 
