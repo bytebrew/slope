@@ -134,6 +134,7 @@ slope_view_set_figure (SlopeView *self, SlopeFigure *figure)
     SLOPE_VIEW_GET_PRIVATE (self)->figure = figure;
 }
 
+
 SlopeFigure*
 slope_view_get_figure (SlopeView *self)
 {

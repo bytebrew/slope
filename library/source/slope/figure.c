@@ -21,7 +21,7 @@
 #include "slope/figure.h"
 #include "slope/item_p.h"
 #include "slope/tree.h"
-
+#include <gtk/gtk.h>
 #define RoundedRect   (1U)
 
 
@@ -45,6 +45,27 @@ struct _SlopeFigurePrivate
 G_DEFINE_TYPE_WITH_PRIVATE(SlopeFigure, slope_figure, G_TYPE_OBJECT)
 
 
+/* signals */
+enum {
+    SIG_ADD,
+    SIG_REMOVE,
+    SIG_CHANGED,
+    SIG_LAST
+};
+static guint figure_signals[SIG_LAST] = { 0 };
+
+
+/* properties */
+enum {
+  PROP_0,
+  PROP_BG_FILL_COLOR,
+  PROP_BG_STROKE_COLOR,
+  PROP_BG_STROKE_WIDTH,
+  PROP_LAST
+};
+static GParamSpec *figure_props[PROP_LAST] = { NULL };
+
+
 #define SLOPE_FIGURE_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
     SLOPE_TYPE_FIGURE, SlopeFigurePrivate))
@@ -54,6 +75,8 @@ G_DEFINE_TYPE_WITH_PRIVATE(SlopeFigure, slope_figure, G_TYPE_OBJECT)
 static void slope_figure_finalize (GObject *self);
 static void slope_figure_dispose (GObject *self);
 static void base_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
+static void slope_figure_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+static void slope_figure_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
 
 static void
@@ -63,10 +86,45 @@ slope_figure_class_init (SlopeFigureClass *klass)
 
     gobject_class->dispose = slope_figure_dispose;
     gobject_class->finalize = slope_figure_finalize;
+    gobject_class->set_property = slope_figure_set_property;
+    gobject_class->get_property = slope_figure_get_property;
 
     klass->draw = base_figure_draw;
 
+    figure_props[PROP_BG_FILL_COLOR] =
+          g_param_spec_uint ("bg-fill-color",
+                             "Background fill color",
+                             "Specify the background fill color",
+                             SlopeRGB_None, SlopeRGB_White, SlopeRGB_White,
+                             G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
+
+    figure_props[PROP_BG_STROKE_COLOR] =
+          g_param_spec_uint ("bg-stroke-color",
+                             "Background stroke color",
+                             "Specify the background stroke color",
+                             SlopeRGB_None, SlopeRGB_White, SlopeRGB_None,
+                             G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
+
+    figure_props[PROP_BG_STROKE_WIDTH] =
+          g_param_spec_double ("bg-stroke-width",
+                               "Background stroke width",
+                               "Specify the background stroke width",
+                               0.0, 8.0, 2.0,
+                               G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
+
+    g_object_class_install_properties (gobject_class, PROP_LAST, figure_props);
+
+
+    figure_signals[SIG_ADD] =
+        g_signal_new ("add",
+                      G_OBJECT_CLASS_TYPE (gobject_class),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (SlopeFigureClass, add),
+                      NULL, NULL,
+                      NULL,
+                      G_TYPE_NONE, 0);
 }
+
 
 static void
 slope_figure_init (SlopeFigure *self)
@@ -81,6 +139,46 @@ slope_figure_init (SlopeFigure *self)
     m->text = slope_text_new ("Monospace 9");
     m->title = g_strdup("Slope Gtk Plot");
     m->title_color = SlopeRGB_Blue;
+}
+
+
+static void
+slope_figure_set_property (GObject *object, guint prop_id,
+                           const GValue *value, GParamSpec *pspec)
+{
+    SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE(object);
+
+    switch (prop_id) {
+        case PROP_BG_FILL_COLOR:
+            m->bg_fill_color = g_value_get_uint(value);
+            break;
+        case PROP_BG_STROKE_COLOR:
+            m->bg_stroke_color = g_value_get_uint(value);
+            break;
+        case PROP_BG_STROKE_WIDTH:
+            m->bg_stroke_width = g_value_get_double(value);
+            break;
+    }
+}
+
+
+static void
+slope_figure_get_property (GObject *object, guint prop_id,
+                           GValue *value, GParamSpec *pspec)
+{
+    SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE(object);
+
+    switch (prop_id) {
+        case PROP_BG_FILL_COLOR:
+            g_value_set_uint(value, m->bg_fill_color);
+            break;
+        case PROP_BG_STROKE_COLOR:
+            g_value_set_uint(value, m->bg_stroke_color);
+            break;
+        case PROP_BG_STROKE_WIDTH:
+            g_value_set_double(value, m->bg_stroke_width);
+            break;
+    }
 }
 
 
@@ -229,6 +327,31 @@ slope_figure_save (SlopeFigure *self, const gchar *file_name,
     cairo_surface_destroy (surf);
     cairo_destroy (cr);
     return 0;
+}
+
+
+void slope_figure_set_title (SlopeFigure *self, const gchar *title)
+{
+    SlopeFigurePrivate *m;
+
+    g_return_if_fail(SLOPE_IS_FIGURE(self));
+    m = SLOPE_FIGURE_GET_PRIVATE (self);
+
+    if (m->title)
+        g_free(m->title);
+
+    m->title = NULL;
+    if (title)
+        m->title = g_strdup(title);
+}
+
+
+const gchar* slope_figure_get_title (SlopeFigure *self)
+{
+    SlopeFigurePrivate *m;
+
+    g_return_val_if_fail(SLOPE_IS_FIGURE(self), NULL);
+    return SLOPE_FIGURE_GET_PRIVATE (self)->title;
 }
 
 /* slope/figure.c */

@@ -52,6 +52,7 @@ struct _SlopeFigureClass
 {
   GObjectClass parent_class;
 
+  void (*add) (SlopeFigure *self, SlopeItem *item);
   void (*draw) (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
 
   /* Padding for future expansion */
@@ -70,6 +71,10 @@ void slope_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
 
 int slope_figure_save (SlopeFigure *self, const gchar *file_name,
                        int width, int height, const gchar *format);
+
+void slope_figure_set_title (SlopeFigure *self, const gchar *title);
+
+const gchar* slope_figure_get_title (SlopeFigure *self);
 
 G_END_DECLS
 
