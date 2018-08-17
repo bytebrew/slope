@@ -48,8 +48,10 @@ static void slope_item_finalize (GObject *self);
 static void slope_item_dispose (GObject *self);
 static void slope_item_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void slope_item_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
-static void item_added (SlopeItem *self, SlopeItem *parent, SlopeFigure *figure);
+static void item_attached_detached (SlopeItem *self, SlopeItem *parent);
 static void item_draw (SlopeItem *self, const SlopeItemDC *dc);
+static void item_draw_tree (SlopeItem *self, cairo_t *cr, const SlopeRect *rect);
+
 
 static void
 slope_item_class_init (SlopeItemClass *klass)
@@ -61,7 +63,9 @@ slope_item_class_init (SlopeItemClass *klass)
     gobject_class->set_property = slope_item_set_property;
     gobject_class->get_property = slope_item_get_property;
 
-    klass->added = item_added;
+    klass->draw_tree = item_draw_tree;
+    klass->attached = item_attached_detached;
+    klass->detached = item_attached_detached;
     klass->draw = item_draw;
 
     item_props[PROP_VISIBLE] =
@@ -174,8 +178,8 @@ void slope_item_append (SlopeItem *parent, SlopeItem *child)
     child_p->figure = parent_p->figure;
     slope_tree_append (SLOPE_TREE (parent_p), SLOPE_TREE (child_p));
 
-    if (child_class->added) {
-        child_class->added (child, parent, parent_p->figure);
+    if (child_class->attached) {
+        child_class->attached (child, parent);
     }
 }
 
@@ -204,12 +208,27 @@ slope_item_destroy_tree (SlopeItem *self)
 }
 
 
+
 static void
-item_added (SlopeItem *self, SlopeItem *parent, SlopeFigure *figure)
+item_draw_tree (SlopeItem *self, cairo_t *cr, const SlopeRect *rect)
+{
+    // TODO
+}
+
+
+void
+slope_item_draw_tree (SlopeItem *self, cairo_t *cr, const SlopeRect *rect)
+{
+    g_return_if_fail (SLOPE_IS_ITEM (self));
+    SLOPE_ITEM_GET_CLASS (self)->draw_tree (self, cr, rect);
+}
+
+
+static void
+item_attached_detached (SlopeItem *self, SlopeItem *parent)
 {
     SLOPE_UNUSED(self);
     SLOPE_UNUSED(parent);
-    SLOPE_UNUSED(figure);
 }
 
 
