@@ -25,7 +25,8 @@
 #include "slope/text.h"
 #include "slope/tree.h"
 
-#define RoundedRect   (1U)
+#define DrawRect       (1U)
+#define RoundedRect    (1U << 1U)
 
 
 typedef struct _SlopeFigurePrivate SlopeFigurePrivate;

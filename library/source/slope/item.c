@@ -79,14 +79,11 @@ slope_item_set_property (GObject *object, guint prop_id,
                          const GValue *value, GParamSpec *pspec)
 {
     SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE(object);
+    SLOPE_UNUSED(pspec);
 
     switch (prop_id) {
         case PROP_VISIBLE:
-            if (g_value_get_boolean(value)) {
-                slope_enable(m->options, ItemVisible);
-            } else {
-                slope_disable(m->options, ItemVisible);
-            }
+            slope_enable_if(m->options, g_value_get_boolean(value), ItemVisible);
             break;
     }
 }
@@ -97,6 +94,7 @@ slope_item_get_property (GObject *object, guint prop_id,
                            GValue *value, GParamSpec *pspec)
 {
     SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE(object);
+    SLOPE_UNUSED(pspec);
 
     switch (prop_id) {
         case PROP_VISIBLE:
@@ -114,25 +112,20 @@ slope_item_init (SlopeItem *self)
     m->figure = NULL;
     slope_tree_init(&m->tree_node);
     m->publ_obj = self;
+    m->options = ItemVisible;
 }
 
 
 static void
 slope_item_dispose (GObject *object)
 {
-  //SlopeItem *self = SLOPE_ITEM (object);
-  //SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE (self);
-
-  G_OBJECT_CLASS (slope_item_parent_class)->dispose (object);
+    G_OBJECT_CLASS (slope_item_parent_class)->dispose (object);
 }
 
 
 static void
 slope_item_finalize (GObject *object)
 {
-    //SlopeItem *self = SLOPE_ITEM (object);
-    //SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE (self);
-
     G_OBJECT_CLASS (slope_item_parent_class)->finalize (object);
 }
 
@@ -161,6 +154,28 @@ void draw_item_p (SlopeItemPrivate *m, cairo_t *cr, const SlopeRect *rec)
     dc.parent_rect = rec;
 
     SLOPE_ITEM_GET_CLASS (self)->draw(self, &dc);
+}
+
+
+void slope_item_append (SlopeItem *parent, SlopeItem *child)
+{
+    SlopeItemPrivate *parent_p;
+    SlopeItemPrivate *child_p;
+    SlopeItemClass *child_class;
+
+    g_return_if_fail (SLOPE_IS_ITEM (parent));
+    g_return_if_fail (SLOPE_IS_ITEM (child));
+
+    parent_p = SLOPE_ITEM_GET_PRIVATE (parent);
+    child_p = SLOPE_ITEM_GET_PRIVATE (child);
+    child_class = SLOPE_ITEM_GET_CLASS (child);
+
+    child_p->figure = parent_p->figure;
+    slope_tree_append (SLOPE_TREE (parent_p), SLOPE_TREE (child_p));
+
+    if (child_class->added) {
+        child_class->added (child, parent, parent_p->figure);
+    }
 }
 
 /* slope/item.c */

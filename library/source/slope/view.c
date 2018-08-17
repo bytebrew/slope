@@ -56,7 +56,7 @@ slope_view_init (SlopeView *view)
     /* expect figure from user */
     m->figure = NULL;
 
-    /* minimum width and height of the widget */
+    /* Minimum width and height to be meaningful */
     gtk_widget_set_size_request(gtk_widget, 450, 380);
 
     /* select the types of events we want to be notified about */

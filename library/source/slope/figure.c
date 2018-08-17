@@ -20,6 +20,9 @@
 
 #include "slope/figure_p.h"
 #include "slope/item_p.h"
+#include <cairo/cairo-svg.h>
+#include <cairo/cairo-ps.h>
+
 
 G_DEFINE_TYPE_WITH_PRIVATE(SlopeFigure, slope_figure, G_TYPE_OBJECT)
 
@@ -29,6 +32,7 @@ enum {
     SIG_ADD,
     SIG_REMOVE,
     SIG_CHANGED,
+    SIG_NUMERR,
     SIG_LAST
 };
 static guint figure_signals[SIG_LAST] = { 0 };
@@ -109,6 +113,17 @@ slope_figure_class_init (SlopeFigureClass *klass)
                       NULL,
                       G_TYPE_NONE,
                       0);
+
+
+    figure_signals[SIG_NUMERR] =
+        g_signal_new ("numeric-error",
+                      G_OBJECT_CLASS_TYPE (gobject_class),
+                      G_SIGNAL_RUN_FIRST,
+                      0,
+                      NULL, NULL,
+                      NULL,
+                      G_TYPE_NONE,
+                      0);
 }
 
 
@@ -118,8 +133,8 @@ slope_figure_init (SlopeFigure *self)
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
     m->bg_fill_color = SLOPE_WHITE;
-    m->bg_stroke_color = SLOPE_COLOR_NULL;
-    m->options = RoundedRect;
+    m->bg_stroke_color = SLOPE_MAROON;
+    m->options = DrawRect | RoundedRect;
     m->bg_stroke_width = 2.0;
     m->item_tree = NULL;
     m->text = slope_text_new ("Monospace 9");
@@ -232,10 +247,15 @@ static void
 figure_draw_items (SlopeFigure *self, SlopeTree *node,
                    cairo_t *cr, const SlopeRect *rect)
 {
-    /* Do this node's drawing */
+    if (FALSE == slope_enabled(SLOPE_ITEM_PRIVATE (node)->options, ItemVisible)) {
+        /* Do not draw invisible items (including their subtrees) */
+        return;
+    }
+
+    /* Draw the current item node */
     draw_item_p ((SlopeItemPrivate *) node, cr, rect);
 
-    /* Recurse to the subtrees */
+    /* Recurse to the node subtrees */
     node = node->first;
     while (node != NULL) {
         figure_draw_items(self, node, cr, rect);
@@ -250,6 +270,8 @@ base_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
     SlopeRect rect;
 
+    /* Save the cairo context's state so we can
+     * return it unchanged */
     cairo_save (cr);
     slope_text_init (m->text, cr);
 
@@ -258,11 +280,14 @@ base_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
     rect.width = (double) width;
     rect.height = (double) height;
 
-    if (slope_rgba_is_visible(m->bg_fill_color) ||
-            slope_rgba_is_visible(m->bg_stroke_color)) {
+    /* Draw the figure rectangle if desired */
+    if (slope_enabled(m->options, DrawRect) &&
+            (slope_rgba_is_visible(m->bg_fill_color) ||
+            slope_rgba_is_visible(m->bg_stroke_color))) {
         figure_draw_rect (self, cr, &rect);
     }
 
+    /* Draw all the visible ites in this figure */
     if (m->item_tree != NULL) {
         figure_draw_items(self, SLOPE_TREE (m->item_tree), cr, &rect);
     }
@@ -310,6 +335,10 @@ slope_figure_save (SlopeFigure *self, const gchar *file_name,
         cr = cairo_create (surf);
         slope_figure_draw (self, cr, width, height);
         cairo_surface_write_to_png (surf, file_name);
+    } else if (g_strcmp0(format, "svg") == 0) {
+        surf = cairo_svg_surface_create(file_name, width, height);
+        cr = cairo_create (surf);
+        slope_figure_draw (self, cr, width, height);
     } else {
         return -2;
     }

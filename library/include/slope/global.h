@@ -32,6 +32,7 @@ typedef gpointer (*SlopeCB) (gpointer data, gpointer context);
 
 #define slope_enabled(X,b) (((X) & (b)) == (b))
 #define slope_enable(X,b) ((X) |= (b))
+#define slope_enable_if(X,Cond,b) (X = ((Cond) ? (X) | (b) : (X) & ~(b)))
 #define slope_disable(X,b) ((X) &= ~(b))
 
 #define SLOPE_UNUSED(Var) (void) (Var)

@@ -75,7 +75,8 @@ slope_tree_destroy (SlopeTree *node, SlopeCB cleanup)
         if (parent != NULL) {
             if (parent->first == node) {
                 parent->first = NULL;
-            } else {
+            }
+            if (parent->last == node) {
                 parent->last = NULL;
             }
         }

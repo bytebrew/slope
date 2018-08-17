@@ -80,6 +80,8 @@ GType slope_item_get_type (void) G_GNUC_CONST;
 
 SlopeItem* slope_item_new (void);
 
+void slope_item_append (SlopeItem *parent, SlopeItem *child);
+
 G_END_DECLS
 
 #endif /* _slope_item_h_ */
