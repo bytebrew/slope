@@ -35,7 +35,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeView, slope_view, GTK_TYPE_DRAWING_AREA)
 static void slope_view_finalize(GObject *self);
 static void slope_view_dispose (GObject *self);
 static gboolean slope_view_draw(GtkWidget *self, cairo_t *cr, gpointer data);
-
+static void on_figure_change (GObject *figure, gpointer user_data);
 
 static void
 slope_view_class_init (SlopeViewClass *klass)
@@ -64,7 +64,7 @@ slope_view_init (SlopeView *view)
                           GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK |
                           GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 
-    g_signal_connect (view, "draw", G_CALLBACK (slope_view_draw), NULL);
+    g_signal_connect (view, "draw", G_CALLBACK (slope_view_draw), view);
 }
 
 
@@ -129,6 +129,7 @@ slope_view_set_figure (SlopeView *self, SlopeFigure *figure)
 {
     g_return_if_fail(SLOPE_IS_VIEW(self));
     SLOPE_VIEW_GET_PRIVATE (self)->figure = figure;
+    g_signal_connect (G_OBJECT (figure), "changed", (GCallback) on_figure_change, self);
 }
 
 
@@ -137,6 +138,15 @@ slope_view_get_figure (SlopeView *self)
 {
     g_return_val_if_fail(SLOPE_IS_VIEW(self), NULL);
     return SLOPE_VIEW_GET_PRIVATE (self)->figure;
+}
+
+
+static void
+on_figure_change (GObject *figure, gpointer user_data)
+{
+    GtkWidget *view = GTK_WIDGET (user_data);
+    SLOPE_UNUSED (figure);
+    gtk_widget_queue_draw (view);
 }
 
 /* slope/view.c */

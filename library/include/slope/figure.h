@@ -76,6 +76,8 @@ void slope_figure_set_title (SlopeFigure *self, const gchar *title);
 
 const gchar* slope_figure_get_title (SlopeFigure *self);
 
+void slope_figure_add (SlopeFigure *self, SlopeItem *item);
+
 G_END_DECLS
 
 #endif /* _slope_figure_h_ */

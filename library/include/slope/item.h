@@ -42,9 +42,10 @@ typedef struct _SlopeItemDrawingCtx  SlopeItemDrawingCtx;
 
 struct _SlopeItemDrawingCtx
 {
-  cairo_t *cr;
-  const SlopeRect *parent_rect;
-  SlopeText *default_text;
+    SlopeFigure *figure;
+    cairo_t *cr;
+    const SlopeRect *parent_rect;
+    SlopeText *default_text;
 };
 
 

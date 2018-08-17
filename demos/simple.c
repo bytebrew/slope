@@ -19,12 +19,14 @@
  */
 
 #include <slope/view.h>
+#include <slope/grid.h>
 
 int main(int argc, char *argv[])
 {
     GtkWidget *window;
     GtkWidget *view;
     SlopeFigure *figure;
+    SlopeItem *grid;
 
     gtk_init(&argc, &argv);
 
@@ -39,6 +41,9 @@ int main(int argc, char *argv[])
     g_value_init(&stroke_color, G_TYPE_UINT);
     g_value_set_uint(&stroke_color, SLOPE_MAROON);
     g_object_set_property(G_OBJECT (figure), "bg-stroke-color", &stroke_color);
+
+    grid = slope_grid_new();
+    slope_figure_add (figure, grid);
 
     slope_view_set_figure (SLOPE_VIEW (view), figure);
     gtk_window_set_title (GTK_WINDOW (window), slope_figure_get_title (SLOPE_FIGURE (figure)));

@@ -60,6 +60,9 @@ slope_item_class_init (SlopeItemClass *klass)
     gobject_class->set_property = slope_item_set_property;
     gobject_class->get_property = slope_item_get_property;
 
+    klass->added = NULL;
+    klass->draw = NULL;
+
     item_props[PROP_VISIBLE] =
           g_param_spec_boolean ("visible",
                                 "Background fill color",
@@ -147,6 +150,10 @@ void draw_item_p (SlopeItemPrivate *m, cairo_t *cr, const SlopeRect *rec)
     SlopeFigurePrivate *fig_p = SLOPE_FIGURE_GET_PRIVATE(m->figure);
     SlopeItemDrawingCtx ctx;
 
+    g_return_if_fail (SLOPE_IS_ITEM (self));
+    g_return_if_fail (SLOPE_ITEM_GET_CLASS (self)->draw != NULL);
+
+    ctx.figure = m->figure;
     ctx.cr = cr;
     ctx.default_text = fig_p->text;
     ctx.parent_rect = rec;

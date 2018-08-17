@@ -98,6 +98,16 @@ slope_figure_class_init (SlopeFigureClass *klass)
                       NULL, NULL,
                       NULL,
                       G_TYPE_NONE, 0);
+
+    figure_signals[SIG_CHANGED] =
+        g_signal_new ("changed",
+                      G_OBJECT_CLASS_TYPE (gobject_class),
+                      G_SIGNAL_RUN_FIRST,
+                      0,
+                      NULL, NULL,
+                      NULL,
+                      G_TYPE_NONE,
+                      0);
 }
 
 
@@ -159,8 +169,10 @@ slope_figure_get_property (GObject *object, guint prop_id,
 
 gpointer item_cleanup (gpointer data, gpointer context)
 {
+    SlopeItem *item = SLOPE_ITEM_PRIVATE (data)->publ_obj;
     SLOPE_UNUSED(context);
-    g_object_unref (G_OBJECT (data));
+
+    g_object_unref (G_OBJECT (item));
     return NULL;
 }
 
@@ -172,12 +184,9 @@ slope_figure_dispose (GObject *object)
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
     SlopeTree *next, *iter = m->item_trees.first;
 
-    while (iter) {
-        next = iter->next;
-        slope_tree_destroy (iter, item_cleanup);
-        iter = next;
-    }
 
+
+    slope_tree_init(&m->item_trees);
     slope_text_delete (m->text);
 
     G_OBJECT_CLASS (slope_figure_parent_class)->dispose (object);
@@ -346,9 +355,6 @@ base_figure_add (SlopeFigure *self, SlopeItem *item)
     SlopeFigurePrivate *fig_p;
     SlopeItemClass *item_class;
 
-    g_return_if_fail (SLOPE_IS_FIGURE (self));
-    g_return_if_fail (SLOPE_IS_ITEM (item));
-
     fig_p = SLOPE_FIGURE_GET_PRIVATE (self);
     item_p = SLOPE_ITEM_GET_PRIVATE (item);
     item_class = SLOPE_ITEM_GET_CLASS (item);
@@ -356,6 +362,13 @@ base_figure_add (SlopeFigure *self, SlopeItem *item)
     item_p->figure = self;
     slope_tree_append (&fig_p->item_trees, SLOPE_TREE (item_p));
     if (item_class->added) item_class->added (item, self);
+}
+
+
+void slope_figure_add (SlopeFigure *self, SlopeItem *item) {
+    g_return_if_fail (SLOPE_IS_FIGURE (self));
+    g_return_if_fail (SLOPE_IS_ITEM (item));
+    SLOPE_FIGURE_GET_CLASS (self)->add (self, item);
 }
 
 /* slope/figure.c */
