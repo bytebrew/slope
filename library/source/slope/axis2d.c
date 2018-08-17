@@ -81,7 +81,7 @@ axis2d_finalize(GObject *object)
 SlopeItem*
 slope_axis2d_new (void)
 {
-    return SLOPE_AXIS2D (g_object_new (SLOPE_TYPE_AXIS2D, NULL));
+    return SLOPE_ITEM (g_object_new (SLOPE_TYPE_AXIS2D, NULL));
 }
 
 

@@ -178,4 +178,28 @@ void slope_item_append (SlopeItem *parent, SlopeItem *child)
     }
 }
 
+
+static gpointer
+tree_cleanup (gpointer data, gpointer context)
+{
+    SlopeItem *item = SLOPE_ITEM_PRIVATE (data)->publ_obj;
+    SLOPE_UNUSED(context);
+
+    g_object_unref (G_OBJECT (item));
+    return NULL;
+}
+
+
+void
+slope_item_destroy_tree (SlopeItem *self)
+{
+    SlopeItemPrivate *m;
+
+    g_return_if_fail (SLOPE_IS_ITEM (self));
+
+    m = SLOPE_ITEM_GET_PRIVATE (self);
+
+    slope_tree_destroy (SLOPE_TREE (m), tree_cleanup);
+}
+
 /* slope/item.c */

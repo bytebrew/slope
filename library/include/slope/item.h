@@ -35,7 +35,6 @@ G_BEGIN_DECLS
 #define SLOPE_IS_ITEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), SLOPE_TYPE_ITEM))
 #define SLOPE_ITEM_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), SLOPE_TYPE_ITEM, SlopeItemClass))
 
-typedef struct _SlopeItem             SlopeItem;
 typedef struct _SlopeItemClass        SlopeItemClass;
 typedef struct _SlopeItemDC           SlopeItemDC;
 
@@ -81,6 +80,8 @@ GType slope_item_get_type (void) G_GNUC_CONST;
 SlopeItem* slope_item_new (void);
 
 void slope_item_append (SlopeItem *parent, SlopeItem *child);
+
+void slope_item_destroy_tree (SlopeItem *self);
 
 G_END_DECLS
 

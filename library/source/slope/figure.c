@@ -182,25 +182,16 @@ slope_figure_get_property (GObject *object, guint prop_id,
     }
 }
 
-
-gpointer
-item_cleanup (gpointer data, gpointer context)
-{
-    SlopeItem *item = SLOPE_ITEM_PRIVATE (data)->publ_obj;
-    SLOPE_UNUSED(context);
-
-    g_object_unref (G_OBJECT (item));
-    return NULL;
-}
-
-
 static void
 slope_figure_dispose (GObject *object)
 {
     SlopeFigure *self = SLOPE_FIGURE (object);
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
-    slope_tree_destroy (SLOPE_TREE (m->item_tree), item_cleanup);
+    if (m->item_tree != NULL) {
+        slope_item_destroy_tree (SLOPE_ITEM_PRIVATE (m->item_tree)->publ_obj);
+    }
+
     slope_text_delete (m->text);
 
     G_OBJECT_CLASS (slope_figure_parent_class)->dispose (object);
@@ -387,7 +378,9 @@ base_figure_set_root_item (SlopeFigure *self, SlopeItem *item)
     item_p = SLOPE_ITEM_GET_PRIVATE (item);
     item_class = SLOPE_ITEM_GET_CLASS (item);
 
-    slope_tree_destroy (SLOPE_TREE (fig_p->item_tree), item_cleanup);
+    if (fig_p->item_tree != NULL) {
+        slope_item_destroy_tree (SLOPE_ITEM_PRIVATE (fig_p->item_tree)->publ_obj);
+    }
 
     item_p->figure = self;
     fig_p->item_tree = SLOPE_TREE (item_p);

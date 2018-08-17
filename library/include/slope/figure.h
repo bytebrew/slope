@@ -34,7 +34,6 @@ G_BEGIN_DECLS
 #define SLOPE_IS_FIGURE_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), SLOPE_TYPE_FIGURE))
 #define SLOPE_FIGURE_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), SLOPE_TYPE_FIGURE, SlopeFigureClass))
 
-typedef struct _SlopeFigure             SlopeFigure;
 typedef struct _SlopeFigureClass        SlopeFigureClass;
 
 
