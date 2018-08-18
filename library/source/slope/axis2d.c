@@ -21,6 +21,12 @@
 #include "slope/axis2d.h"
 #include "slope/item_p.h"
 
+
+#define DrawRect       (1U)
+#define RoundedRect    (1U << 1U)
+#define DrawTitle      (1U << 2U)
+
+
 typedef struct _SlopeAxis2DPrivate SlopeAxis2DPrivate;
 #define SLOPE_AXIS2D_PRIVATE(Addr) ((SlopeAxis2DPrivate*) (Addr))
 
@@ -43,7 +49,17 @@ struct _AxisLine {
 
 struct _SlopeAxis2DPrivate
 {
-    AxisLine lines[6];
+    AxisLine l[6];
+
+    SlopeRGBA bg_fill_color;
+    SlopeRGBA bg_stroke_color;
+    double bg_stroke_width;
+    int margin;
+    SlopeRGBA title_color;
+
+    gchar *title;
+
+    guint64 options;
 };
 
 
@@ -74,29 +90,39 @@ slope_axis2d_init (SlopeAxis2D *axis)
 {
     SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (axis);
 
-    m->lines[SLOPE_AXIS2D_BOTTOM].line_color = SLOPE_BLACK;
-    m->lines[SLOPE_AXIS2D_BOTTOM].line_width = 1.0;
-    m->lines[SLOPE_AXIS2D_BOTTOM].options = SLOPE_AXIS2D_DRAW_TICKS;
+    /* metic lines initialization */
+    m->l[SLOPE_AXIS2D_BOTTOM].line_color = SLOPE_BLACK;
+    m->l[SLOPE_AXIS2D_BOTTOM].line_width = 1.0;
+    m->l[SLOPE_AXIS2D_BOTTOM].options = SLOPE_AXIS2D_DRAW_TICKS;
 
-    m->lines[SLOPE_AXIS2D_LEFT].line_color = SLOPE_BLACK;
-    m->lines[SLOPE_AXIS2D_LEFT].line_width = 1.0;
-    m->lines[SLOPE_AXIS2D_LEFT].options = SLOPE_AXIS2D_DRAW_TICKS;
+    m->l[SLOPE_AXIS2D_LEFT].line_color = SLOPE_BLACK;
+    m->l[SLOPE_AXIS2D_LEFT].line_width = 1.0;
+    m->l[SLOPE_AXIS2D_LEFT].options = SLOPE_AXIS2D_DRAW_TICKS;
 
-    m->lines[SLOPE_AXIS2D_TOP].line_color = SLOPE_BLACK;
-    m->lines[SLOPE_AXIS2D_TOP].line_width = 1.0;
-    m->lines[SLOPE_AXIS2D_TOP].options = SLOPE_AXIS2D_DRAW_TICKS;
+    m->l[SLOPE_AXIS2D_TOP].line_color = SLOPE_BLACK;
+    m->l[SLOPE_AXIS2D_TOP].line_width = 1.0;
+    m->l[SLOPE_AXIS2D_TOP].options = SLOPE_AXIS2D_DRAW_TICKS;
 
-    m->lines[SLOPE_AXIS2D_RIGHT].line_color = SLOPE_BLACK;
-    m->lines[SLOPE_AXIS2D_RIGHT].line_width = 1.0;
-    m->lines[SLOPE_AXIS2D_RIGHT].options = SLOPE_AXIS2D_DRAW_TICKS;
+    m->l[SLOPE_AXIS2D_RIGHT].line_color = SLOPE_BLACK;
+    m->l[SLOPE_AXIS2D_RIGHT].line_width = 1.0;
+    m->l[SLOPE_AXIS2D_RIGHT].options = SLOPE_AXIS2D_DRAW_TICKS;
 
-    m->lines[SLOPE_AXIS2D_X].line_color = SLOPE_BLACK;
-    m->lines[SLOPE_AXIS2D_X].line_width = 1.0;
-    m->lines[SLOPE_AXIS2D_X].options = SLOPE_AXIS2D_DRAW_TICKS;
+    m->l[SLOPE_AXIS2D_X].line_color = SLOPE_BLACK;
+    m->l[SLOPE_AXIS2D_X].line_width = 1.0;
+    m->l[SLOPE_AXIS2D_X].options = SLOPE_AXIS2D_DRAW_TICKS;
 
-    m->lines[SLOPE_AXIS2D_Y].line_color = SLOPE_BLACK;
-    m->lines[SLOPE_AXIS2D_Y].line_width = 1.0;
-    m->lines[SLOPE_AXIS2D_Y].options = SLOPE_AXIS2D_DRAW_TICKS;
+    m->l[SLOPE_AXIS2D_Y].line_color = SLOPE_BLACK;
+    m->l[SLOPE_AXIS2D_Y].line_width = 1.0;
+    m->l[SLOPE_AXIS2D_Y].options = SLOPE_AXIS2D_DRAW_TICKS;
+
+    /* Visible frame initialization */
+    m->bg_fill_color = SLOPE_WHITE;
+    m->bg_stroke_color = SLOPE_MAROON;
+    m->options = DrawRect | DrawTitle | RoundedRect;
+    m->bg_stroke_width = 2.0;
+    m->title = g_strdup("Slope");
+    m->title_color = SLOPE_BLACK;
+    m->margin = 4;
 }
 
 
@@ -122,11 +148,61 @@ slope_axis2d_new (void)
 
 
 static void
+axis2d_draw_rect (SlopeAxis2D *self, cairo_t *cr, SlopeRect *rect)
+{
+    SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
+
+    if (!slope_enabled(m->options, DrawRect) ||
+            (!slope_rgba_is_visible(m->bg_fill_color) &&
+             !slope_rgba_is_visible(m->bg_stroke_color))) {
+        return;
+    }
+
+    rect->width -= 2 * m->margin;
+    rect->height -= 2 * m->margin;
+    cairo_translate (cr, m->margin, m->margin);
+
+    if (slope_enabled(m->options, RoundedRect)) {
+        slope_cairo_round_rect (cr, rect, 10);
+    } else {
+        slope_cairo_rect (cr, rect);
+    }
+
+    slope_cairo_draw (
+          cr, m->bg_stroke_width,
+          m->bg_fill_color, m->bg_stroke_color);
+}
+
+
+static void
+axis2d_draw_title (SlopeAxis2D *self,
+                   const SlopeItemDC *dc)
+{
+    SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
+    SlopeRect ink, logical;
+    cairo_t *cr = dc->cr;
+
+    if (!slope_enabled(m->options, DrawTitle) ||
+            (m->title == NULL) ||
+            !slope_rgba_is_visible(m->title_color) ||
+            (m->title_color == m->bg_fill_color)) {
+        return;
+    }
+
+    slope_text_set (dc->text, m->title);
+    slope_text_get_extents (dc->text, &ink, &logical);
+    slope_cairo_set_rgba (cr, m->title_color);
+    cairo_move_to (cr, (dc->rect.width - logical.width) / 2.0, 10.0);
+    slope_text_show (dc->text);
+}
+
+
+static void
 axis2d_draw (SlopeItem *self, const SlopeItemDC *dc)
 {
-    /* TODO: */
-    SLOPE_UNUSED(self);
-    SLOPE_UNUSED(dc);
+    SlopeRect rec = dc->rect;
+    axis2d_draw_rect (SLOPE_AXIS2D (self), dc->cr, &rec);
+    axis2d_draw_title (SLOPE_AXIS2D (self), dc);
 }
 
 /* slope/axis2d.c */

@@ -115,7 +115,7 @@ static gboolean slope_view_draw(GtkWidget *self, cairo_t *cr, gpointer data)
     }
 
     gtk_widget_get_allocation(self, &alloc);
-    slope_figure_draw(m->figure, cr, alloc.width, alloc.height);
+    slope_figure_draw(m->figure, cr, 0, 0, alloc.width, alloc.height);
 
     return TRUE;
 }

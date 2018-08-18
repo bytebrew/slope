@@ -52,7 +52,7 @@ struct _SlopeFigureClass
   GObjectClass parent_class;
 
   void (*set_root_item) (SlopeFigure *self, SlopeItem *item);
-  void (*draw) (SlopeFigure *self, cairo_t *cr, int width, int height);
+  void (*draw) (SlopeFigure *self, cairo_t *cr, int x, int y, int width, int height);
 
   /* Padding for future expansion */
   void (*_slope_reserved1) (void);
@@ -66,7 +66,7 @@ GType slope_figure_get_type (void) G_GNUC_CONST;
 
 SlopeFigure* slope_figure_new (void);
 
-void slope_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height);
+void slope_figure_draw (SlopeFigure *self, cairo_t *cr, int x, int y, int width, int height);
 
 int slope_figure_save (SlopeFigure *self, const gchar *file_name,
                        int width, int height, const gchar *format);

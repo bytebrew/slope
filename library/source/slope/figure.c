@@ -52,7 +52,7 @@ static GParamSpec *figure_props[PROP_LAST] = { NULL };
 /* local decls */
 static void figure_finalize (GObject *self);
 static void figure_dispose (GObject *self);
-static void figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height);
+static void figure_draw (SlopeFigure *self, cairo_t *cr, int x, int y, int width, int height);
 static void figure_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void figure_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 static void figure_set_root_item (SlopeFigure *self, SlopeItem *item);
@@ -134,7 +134,7 @@ slope_figure_init (SlopeFigure *self)
 
     m->bg_fill_color = SLOPE_WHITE;
     m->bg_stroke_color = SLOPE_MAROON;
-    m->options = DrawRect | RoundedRect | DrawTitle;
+    m->options = 0UL;
     m->bg_stroke_width = 1.5;
     m->root_item = NULL;
     m->text = slope_text_new ("Monospace 9");
@@ -287,14 +287,21 @@ figure_draw_title (SlopeFigure *self,
 
 
 static void
-figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
+figure_draw (SlopeFigure *self, cairo_t *cr,
+             int x, int y, int width, int height)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
     SlopeRect rect;
 
-    /* Save the cairo context's state so we can
-     * return it unchanged */
+    /* Save the cairo context's state */
     cairo_save (cr);
+    /* let's items think we are at the origin */
+    cairo_translate (cr, x, y);
+    /* don't let them draw outside */
+    cairo_rectangle (cr, 0.0, 0.0, width, height);
+    cairo_clip (cr);
+
+    /* Initialize text rendering stuff */
     slope_text_init (m->text, cr);
 
     rect.x = 0.0;
@@ -313,10 +320,11 @@ figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
 
 
 void /* public draw() function*/
-slope_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
+slope_figure_draw (SlopeFigure *self, cairo_t *cr,
+                   int x, int y, int width, int height)
 {
     g_return_if_fail (SLOPE_IS_FIGURE (self));
-    SLOPE_FIGURE_GET_CLASS (self)->draw (self, cr, width, height);
+    SLOPE_FIGURE_GET_CLASS (self)->draw (self, cr, x, y, width, height);
 }
 
 
@@ -335,12 +343,12 @@ slope_figure_save (SlopeFigure *self, const gchar *file_name,
     if (g_strcmp0(format, "png") == 0) {
         surf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
         cr = cairo_create (surf);
-        slope_figure_draw (self, cr, width, height);
+        slope_figure_draw (self, cr, 0, 0, width, height);
         cairo_surface_write_to_png (surf, file_name);
     } else if (g_strcmp0(format, "svg") == 0) {
         surf = cairo_svg_surface_create(file_name, width, height);
         cr = cairo_create (surf);
-        slope_figure_draw (self, cr, width, height);
+        slope_figure_draw (self, cr, 0, 0, width, height);
     } else {
         return -2;
     }
