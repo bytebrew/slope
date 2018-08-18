@@ -35,15 +35,9 @@ typedef struct _SlopeFigurePrivate SlopeFigurePrivate;
 
 struct _SlopeFigurePrivate
 {
-    SlopeRGBA bg_fill_color;
-    SlopeRGBA bg_stroke_color;
-    double bg_stroke_width;
     SlopeItem *root_item;
     guint64 options;
     SlopeText *text;
-
-    SlopeRGBA title_color;
-    gchar *title;
 };
 
 

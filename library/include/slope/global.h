@@ -37,4 +37,9 @@ typedef gpointer (*SlopeCB) (gpointer data, gpointer context);
 
 #define SLOPE_UNUSED(Var) (void) (Var)
 
+typedef enum {
+    SLOPE_VERTICAL     = 1,
+    SLOPE_HORIZONTAL   = 2,
+} SlopeOrientation;
+
 #endif /* _slope_global_h_ */

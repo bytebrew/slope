@@ -21,12 +21,6 @@
 #include "slope/axis2d.h"
 #include "slope/item_p.h"
 
-
-#define DrawRect       (1U)
-#define RoundedRect    (1U << 1U)
-#define DrawTitle      (1U << 2U)
-
-
 typedef struct _SlopeAxis2DPrivate SlopeAxis2DPrivate;
 #define SLOPE_AXIS2D_PRIVATE(Addr) ((SlopeAxis2DPrivate*) (Addr))
 
@@ -37,7 +31,14 @@ typedef struct _AxisLine AxisLine;
 struct _AxisLine {
     SlopeRGBA line_color;
     double line_width;
+    SlopeOrientation orient;
     guint32 options;
+};
+
+
+struct _SlopeAxis2DPrivate
+{
+    AxisLine l[6];
 
     double fig_x_min, fig_x_max;
     double fig_y_min, fig_y_max;
@@ -47,23 +48,7 @@ struct _AxisLine {
 };
 
 
-struct _SlopeAxis2DPrivate
-{
-    AxisLine l[6];
-
-    SlopeRGBA bg_fill_color;
-    SlopeRGBA bg_stroke_color;
-    double bg_stroke_width;
-    int margin;
-    SlopeRGBA title_color;
-
-    gchar *title;
-
-    guint64 options;
-};
-
-
-G_DEFINE_TYPE_WITH_PRIVATE (SlopeAxis2D, slope_axis2d, SLOPE_TYPE_ITEM)
+G_DEFINE_TYPE_WITH_PRIVATE (SlopeAxis2D, slope_axis2d, SLOPE_TYPE_FRAME)
 #define SLOPE_AXIS2D_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_AXIS2D, SlopeAxis2DPrivate))
 
 /* local decls */
@@ -115,14 +100,17 @@ slope_axis2d_init (SlopeAxis2D *axis)
     m->l[SLOPE_AXIS2D_Y].line_width = 1.0;
     m->l[SLOPE_AXIS2D_Y].options = SLOPE_AXIS2D_DRAW_TICKS;
 
-    /* Visible frame initialization */
-    m->bg_fill_color = SLOPE_WHITE;
-    m->bg_stroke_color = SLOPE_MAROON;
-    m->options = DrawRect | DrawTitle | RoundedRect;
-    m->bg_stroke_width = 2.0;
-    m->title = g_strdup("Slope");
-    m->title_color = SLOPE_BLACK;
-    m->margin = 4;
+    m->fig_x_min = 0.0;
+    m->fig_x_max = 1.0;
+
+    m->fig_y_min = 0.0;
+    m->fig_y_max = 1.0;
+
+    m->dat_x_min = 0.0;
+    m->dat_x_max = 1.0;
+
+    m->dat_y_min = 0.0;
+    m->dat_y_max = 1.0;
 }
 
 
@@ -148,61 +136,10 @@ slope_axis2d_new (void)
 
 
 static void
-axis2d_draw_rect (SlopeAxis2D *self, cairo_t *cr, SlopeRect *rect)
-{
-    SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
-
-    if (!slope_enabled(m->options, DrawRect) ||
-            (!slope_rgba_is_visible(m->bg_fill_color) &&
-             !slope_rgba_is_visible(m->bg_stroke_color))) {
-        return;
-    }
-
-    rect->width -= 2 * m->margin;
-    rect->height -= 2 * m->margin;
-    cairo_translate (cr, m->margin, m->margin);
-
-    if (slope_enabled(m->options, RoundedRect)) {
-        slope_cairo_round_rect (cr, rect, 10);
-    } else {
-        slope_cairo_rect (cr, rect);
-    }
-
-    slope_cairo_draw (
-          cr, m->bg_stroke_width,
-          m->bg_fill_color, m->bg_stroke_color);
-}
-
-
-static void
-axis2d_draw_title (SlopeAxis2D *self,
-                   const SlopeItemDC *dc)
-{
-    SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
-    SlopeRect ink, logical;
-    cairo_t *cr = dc->cr;
-
-    if (!slope_enabled(m->options, DrawTitle) ||
-            (m->title == NULL) ||
-            !slope_rgba_is_visible(m->title_color) ||
-            (m->title_color == m->bg_fill_color)) {
-        return;
-    }
-
-    slope_text_set (dc->text, m->title);
-    slope_text_get_extents (dc->text, &ink, &logical);
-    slope_cairo_set_rgba (cr, m->title_color);
-    cairo_move_to (cr, (dc->rect.width - logical.width) / 2.0, 10.0);
-    slope_text_show (dc->text);
-}
-
-
-static void
 axis2d_draw (SlopeItem *self, const SlopeItemDC *dc)
 {
-    SlopeRect rec = dc->rect;
-    axis2d_draw_rect (SLOPE_AXIS2D (self), dc->cr, &rec);
-    axis2d_draw_title (SLOPE_AXIS2D (self), dc);
+    /* draw the frame stuff */
+    SLOPE_ITEM_CLASS (slope_axis2d_parent_class)->draw (self, dc);
 }
 
 /* slope/axis2d.c */

@@ -39,26 +39,29 @@ typedef struct _SlopeFigureClass        SlopeFigureClass;
 
 struct _SlopeFigure
 {
-  /*< parent object space >*/
-  GObject parent;
+    /*< parent object space >*/
+    GObject parent;
 
-  /*< private >*/
-  gpointer dummy;
+    /*< private >*/
+    gpointer _slope_reserved1;
+    gpointer _slope_reserved2;
+    gpointer _slope_reserved3;
+    gpointer _slope_reserved4;
 };
 
 
 struct _SlopeFigureClass
 {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 
-  void (*set_root_item) (SlopeFigure *self, SlopeItem *item);
-  void (*draw) (SlopeFigure *self, cairo_t *cr, int x, int y, int width, int height);
+    void (*set_root_item) (SlopeFigure *self, SlopeItem *item);
+    void (*draw) (SlopeFigure *self, cairo_t *cr, int x, int y, int width, int height);
 
-  /* Padding for future expansion */
-  void (*_slope_reserved1) (void);
-  void (*_slope_reserved2) (void);
-  void (*_slope_reserved3) (void);
-  void (*_slope_reserved4) (void);
+    /* Padding for future expansion */
+    void (*_slope_reserved1) (void);
+    void (*_slope_reserved2) (void);
+    void (*_slope_reserved3) (void);
+    void (*_slope_reserved4) (void);
 };
 
 
@@ -70,10 +73,6 @@ void slope_figure_draw (SlopeFigure *self, cairo_t *cr, int x, int y, int width,
 
 int slope_figure_save (SlopeFigure *self, const gchar *file_name,
                        int width, int height, const gchar *format);
-
-void slope_figure_set_title (SlopeFigure *self, const gchar *title);
-
-const gchar* slope_figure_get_title (SlopeFigure *self);
 
 void slope_figure_set_root_item (SlopeFigure *self, SlopeItem *item);
 

@@ -21,13 +21,13 @@
 #ifndef _slope_axis2d_h_
 #define _slope_axis2d_h_
 
-#include "slope/item.h"
+#include "slope/frame.h"
 
 G_BEGIN_DECLS
 
 #define SLOPE_TYPE_AXIS2D                 (slope_axis2d_get_type ())
 #define SLOPE_AXIS2D(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), SLOPE_TYPE_AXIS2D, SlopeAxis2D))
-#define SLOPE_AXIS2D_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), SLOPE_TYPE_AXIS2D, SlopeAxia2DClass))
+#define SLOPE_AXIS2D_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), SLOPE_TYPE_AXIS2D, SlopeAxis2DClass))
 #define SLOPE_IS_AXIS2D(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), SLOPE_TYPE_AXIS2D))
 #define SLOPE_IS_AXIS2D_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), SLOPE_TYPE_AXIS2D))
 #define SLOPE_AXIS2D_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), SLOPE_TYPE_AXIS2D, SlopeAxis2DClass))
@@ -54,23 +54,26 @@ typedef enum {
 
 struct _SlopeAxis2D
 {
-  /*< parent object space >*/
-  SlopeItem parent;
+    /*< parent object space >*/
+    SlopeFrame parent;
 
-  /*< private >*/
-  gpointer dummy;
+    /*< private >*/
+    gpointer _slope_reserved1;
+    gpointer _slope_reserved2;
+    gpointer _slope_reserved3;
+    gpointer _slope_reserved4;
 };
 
 
 struct _SlopeAxis2DClass
 {
-  SlopeItemClass parent_class;
+    SlopeFrameClass parent_class;
 
-  /* Padding for future expansion */
-  void (*_slope_reserved1) (void);
-  void (*_slope_reserved2) (void);
-  void (*_slope_reserved3) (void);
-  void (*_slope_reserved4) (void);
+    /* Padding for future expansion */
+    void (*_slope_reserved1) (void);
+    void (*_slope_reserved2) (void);
+    void (*_slope_reserved3) (void);
+    void (*_slope_reserved4) (void);
 };
 
 

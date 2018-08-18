@@ -59,7 +59,7 @@ slope_view_init (SlopeView *view)
     m->figure = NULL;
 
     /* Minimum width and height to be meaningful */
-    gtk_widget_set_size_request(gtk_widget, 450, 380);
+    gtk_widget_set_size_request(gtk_widget, 350, 260);
 
     /* select the types of events we want to be notified about */
     gtk_widget_add_events(gtk_widget,
@@ -73,15 +73,15 @@ slope_view_init (SlopeView *view)
 static void
 view_dispose (GObject *object)
 {
-  SlopeView *self = SLOPE_VIEW (object);
-  SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (self);
+    SlopeView *self = SLOPE_VIEW (object);
+    SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (self);
 
-  if (m->figure != NULL) {
-    g_object_unref (G_OBJECT (m->figure));
-    m->figure = NULL;
-  }
+    if (m->figure != NULL) {
+        g_object_unref (G_OBJECT (m->figure));
+        m->figure = NULL;
+    }
 
-  G_OBJECT_CLASS (slope_view_parent_class)->dispose (object);
+    G_OBJECT_CLASS (slope_view_parent_class)->dispose (object);
 }
 
 
@@ -100,7 +100,7 @@ view_finalize(GObject *object)
 GtkWidget*
 slope_view_new (void)
 {
- return g_object_new (SLOPE_TYPE_VIEW, NULL);
+    return g_object_new (SLOPE_TYPE_VIEW, NULL);
 }
 
 
@@ -126,7 +126,9 @@ slope_view_set_figure (SlopeView *self, SlopeFigure *figure)
 {
     g_return_if_fail(SLOPE_IS_VIEW(self));
     SLOPE_VIEW_GET_PRIVATE (self)->figure = figure;
-    g_signal_connect (G_OBJECT (figure), "changed", (GCallback) on_figure_change, self);
+
+    g_signal_connect (G_OBJECT (figure), "changed",
+                      (GCallback) on_figure_change, self);
 }
 
 

@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 
     /* Add the figureonto the view */
     slope_view_set_figure (SLOPE_VIEW (view), figure);
-    gtk_window_set_title (GTK_WINDOW (window), slope_figure_get_title (SLOPE_FIGURE (figure)));
+    gtk_window_set_title (GTK_WINDOW (window), slope_frame_get_title (SLOPE_FRAME (axis)));
 
     /* Save to image files */
     slope_figure_save (figure, "Figure.png", 500, 400, "png");
