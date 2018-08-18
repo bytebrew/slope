@@ -35,8 +35,8 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeGrid, slope_grid, SLOPE_TYPE_ITEM)
 
 
 /* local decls */
-static void slope_grid_finalize(GObject *self);
-static void slope_grid_dispose (GObject *self);
+static void grid_finalize(GObject *self);
+static void grid_dispose (GObject *self);
 
 
 static void
@@ -45,8 +45,8 @@ slope_grid_class_init (SlopeGridClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
     SlopeItemClass *item_class = SLOPE_ITEM_CLASS (klass);
 
-    gobject_class->dispose = slope_grid_dispose;
-    gobject_class->finalize = slope_grid_finalize;
+    gobject_class->dispose = grid_dispose;
+    gobject_class->finalize = grid_finalize;
 }
 
 
@@ -61,17 +61,15 @@ slope_grid_init (SlopeGrid *grid)
 
 
 static void
-slope_grid_dispose (GObject *object)
+grid_dispose (GObject *object)
 {
-    // TODO
     G_OBJECT_CLASS (slope_grid_parent_class)->dispose (object);
 }
 
 
 static void
-slope_grid_finalize(GObject *object)
+grid_finalize(GObject *object)
 {
-    // TODO
     G_OBJECT_CLASS (slope_grid_parent_class)->finalize (object);
 }
 

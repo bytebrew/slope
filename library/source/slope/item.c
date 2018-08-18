@@ -44,13 +44,13 @@ static GParamSpec *item_props[PROP_LAST] = { NULL };
 
 
 /* local decls */
-static void slope_item_finalize (GObject *self);
-static void slope_item_dispose (GObject *self);
-static void slope_item_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
-static void slope_item_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
+static void item_finalize (GObject *self);
+static void item_dispose (GObject *self);
+static void item_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+static void item_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 static void item_attached_detached (SlopeItem *self, SlopeItem *parent);
 static void item_draw (SlopeItem *self, const SlopeItemDC *dc);
-static void item_draw_tree (SlopeItem *self, cairo_t *cr, const SlopeRect *rect);
+static void item_draw_tree (SlopeItem *self, SlopeItemDC *dc);
 
 
 static void
@@ -58,10 +58,10 @@ slope_item_class_init (SlopeItemClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-    gobject_class->dispose = slope_item_dispose;
-    gobject_class->finalize = slope_item_finalize;
-    gobject_class->set_property = slope_item_set_property;
-    gobject_class->get_property = slope_item_get_property;
+    gobject_class->dispose = item_dispose;
+    gobject_class->finalize = item_finalize;
+    gobject_class->set_property = item_set_property;
+    gobject_class->get_property = item_get_property;
 
     klass->draw_tree = item_draw_tree;
     klass->attached = item_attached_detached;
@@ -73,14 +73,14 @@ slope_item_class_init (SlopeItemClass *klass)
                                 "Background fill color",
                                 "Specify the background fill color",
                                 TRUE,
-                                G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
+                                G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
     g_object_class_install_properties (gobject_class, PROP_LAST, item_props);
 }
 
 
 static void
-slope_item_set_property (GObject *object, guint prop_id,
+item_set_property (GObject *object, guint prop_id,
                          const GValue *value, GParamSpec *pspec)
 {
     SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE(object);
@@ -95,7 +95,7 @@ slope_item_set_property (GObject *object, guint prop_id,
 
 
 static void
-slope_item_get_property (GObject *object, guint prop_id,
+item_get_property (GObject *object, guint prop_id,
                            GValue *value, GParamSpec *pspec)
 {
     SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE(object);
@@ -122,43 +122,16 @@ slope_item_init (SlopeItem *self)
 
 
 static void
-slope_item_dispose (GObject *object)
+item_dispose (GObject *object)
 {
     G_OBJECT_CLASS (slope_item_parent_class)->dispose (object);
 }
 
 
 static void
-slope_item_finalize (GObject *object)
+item_finalize (GObject *object)
 {
     G_OBJECT_CLASS (slope_item_parent_class)->finalize (object);
-}
-
-
-SlopeItem*
-slope_item_new (void)
-{
-    return SLOPE_ITEM (g_object_new (SLOPE_TYPE_ITEM, NULL));
-}
-
-
-void draw_item_p (SlopeItemPrivate *m, cairo_t *cr, const SlopeRect *rec)
-{
-    SlopeItem *self = m->publ_obj;
-    SlopeItemPrivate *parent_p = SLOPE_ITEM_PRIVATE (SLOPE_TREE (m)->parent);
-    SlopeFigurePrivate *fig_p = SLOPE_FIGURE_GET_PRIVATE(m->figure);
-    SlopeItemDC dc;
-
-    g_return_if_fail (SLOPE_IS_ITEM (self));
-    g_return_if_fail (SLOPE_ITEM_GET_CLASS (self)->draw != NULL);
-
-    dc.parent = parent_p ? parent_p->publ_obj : NULL;
-    dc.figure = m->figure;
-    dc.cr = cr;
-    dc.default_text = fig_p->text;
-    dc.parent_rect = rec;
-
-    SLOPE_ITEM_GET_CLASS (self)->draw(self, &dc);
 }
 
 
@@ -166,26 +139,21 @@ void slope_item_append (SlopeItem *parent, SlopeItem *child)
 {
     SlopeItemPrivate *parent_p;
     SlopeItemPrivate *child_p;
-    SlopeItemClass *child_class;
 
     g_return_if_fail (SLOPE_IS_ITEM (parent));
     g_return_if_fail (SLOPE_IS_ITEM (child));
 
     parent_p = SLOPE_ITEM_GET_PRIVATE (parent);
     child_p = SLOPE_ITEM_GET_PRIVATE (child);
-    child_class = SLOPE_ITEM_GET_CLASS (child);
 
     child_p->figure = parent_p->figure;
     slope_tree_append (SLOPE_TREE (parent_p), SLOPE_TREE (child_p));
-
-    if (child_class->attached) {
-        child_class->attached (child, parent);
-    }
+    SLOPE_ITEM_GET_CLASS (child)->attached (child, parent);
 }
 
 
 static gpointer
-tree_cleanup (gpointer data, gpointer context)
+tree_node_cleanup (gpointer data, gpointer context)
 {
     SlopeItem *item = SLOPE_ITEM_PRIVATE (data)->publ_obj;
     SLOPE_UNUSED(context);
@@ -199,36 +167,33 @@ void
 slope_item_destroy_tree (SlopeItem *self)
 {
     SlopeItemPrivate *m;
-
     g_return_if_fail (SLOPE_IS_ITEM (self));
 
     m = SLOPE_ITEM_GET_PRIVATE (self);
-
-    slope_tree_destroy (SLOPE_TREE (m), tree_cleanup);
-}
-
-
-
-static void
-item_draw_tree (SlopeItem *self, cairo_t *cr, const SlopeRect *rect)
-{
-    // TODO
-}
-
-
-void
-slope_item_draw_tree (SlopeItem *self, cairo_t *cr, const SlopeRect *rect)
-{
-    g_return_if_fail (SLOPE_IS_ITEM (self));
-    SLOPE_ITEM_GET_CLASS (self)->draw_tree (self, cr, rect);
+    slope_tree_destroy (SLOPE_TREE (m), tree_node_cleanup);
 }
 
 
 static void
-item_attached_detached (SlopeItem *self, SlopeItem *parent)
+item_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 {
-    SLOPE_UNUSED(self);
-    SLOPE_UNUSED(parent);
+    SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE (self);
+    SlopeTree *child_node = SLOPE_TREE (m)->first;
+
+    /* If this item is not visible, do not draw it nor it's subtrees */
+    if (FALSE == slope_enabled(m->options, ItemVisible)) {
+        return;
+    }
+
+    /* Draw this item's stuff */
+    SLOPE_ITEM_GET_CLASS (self)->draw (self, dc);
+
+    /* Let the child nodes draw themselves */
+    while (child_node != NULL) {
+        SlopeItem *child = SLOPE_ITEM_PRIVATE (child_node)->publ_obj;
+        SLOPE_ITEM_GET_CLASS (child)->draw_tree (child, dc);
+        child_node = child_node->next;
+    }
 }
 
 
@@ -237,6 +202,14 @@ item_draw (SlopeItem *self, const SlopeItemDC *dc)
 {
     SLOPE_UNUSED(self);
     SLOPE_UNUSED(dc);
+}
+
+
+static void
+item_attached_detached (SlopeItem *self, SlopeItem *parent)
+{
+    SLOPE_UNUSED(self);
+    SLOPE_UNUSED(parent);
 }
 
 /* slope/item.c */

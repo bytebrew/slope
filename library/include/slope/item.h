@@ -45,8 +45,8 @@ struct _SlopeItemDC
     SlopeFigure       *figure;
     SlopeItem         *parent;
     cairo_t           *cr;
-    const SlopeRect   *parent_rect;
-    SlopeText         *default_text;
+    SlopeRect          rect;
+    SlopeText         *text;
 };
 
 
@@ -67,7 +67,7 @@ struct _SlopeItemClass
   void (*attached) (SlopeItem *self, SlopeItem *parent);
   void (*detached) (SlopeItem *self, SlopeItem *parent);
   void (*draw) (SlopeItem *self, const SlopeItemDC *dc);
-  void (*draw_tree) (SlopeItem *self, cairo_t *cr, const SlopeRect *rect);
+  void (*draw_tree) (SlopeItem *self, SlopeItemDC *dc);
 
   /* Padding for future expansion */
   void (*_slope_reserved1) (void);
@@ -79,13 +79,9 @@ struct _SlopeItemClass
 
 GType slope_item_get_type (void) G_GNUC_CONST;
 
-SlopeItem* slope_item_new (void);
-
 void slope_item_append (SlopeItem *parent, SlopeItem *child);
 
 void slope_item_destroy_tree (SlopeItem *self);
-
-void slope_item_draw_tree (SlopeItem *self, cairo_t *cr, const SlopeRect *rect);
 
 G_END_DECLS
 

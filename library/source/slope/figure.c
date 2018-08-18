@@ -50,12 +50,12 @@ static GParamSpec *figure_props[PROP_LAST] = { NULL };
 
 
 /* local decls */
-static void slope_figure_finalize (GObject *self);
-static void slope_figure_dispose (GObject *self);
-static void base_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height);
-static void slope_figure_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
-static void slope_figure_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
-static void base_figure_set_root_item (SlopeFigure *self, SlopeItem *item);
+static void figure_finalize (GObject *self);
+static void figure_dispose (GObject *self);
+static void figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height);
+static void figure_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+static void figure_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
+static void figure_set_root_item (SlopeFigure *self, SlopeItem *item);
 
 
 static void
@@ -63,13 +63,13 @@ slope_figure_class_init (SlopeFigureClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-    gobject_class->dispose = slope_figure_dispose;
-    gobject_class->finalize = slope_figure_finalize;
-    gobject_class->set_property = slope_figure_set_property;
-    gobject_class->get_property = slope_figure_get_property;
+    gobject_class->dispose = figure_dispose;
+    gobject_class->finalize = figure_finalize;
+    gobject_class->set_property = figure_set_property;
+    gobject_class->get_property = figure_get_property;
 
-    klass->draw = base_figure_draw;
-    klass->set_root_item = base_figure_set_root_item;
+    klass->draw = figure_draw;
+    klass->set_root_item = figure_set_root_item;
 
     figure_props[PROP_BG_FILL_COLOR] =
           g_param_spec_uint ("bg-fill-color",
@@ -136,7 +136,7 @@ slope_figure_init (SlopeFigure *self)
     m->bg_stroke_color = SLOPE_MAROON;
     m->options = DrawRect | RoundedRect | DrawTitle;
     m->bg_stroke_width = 1.5;
-    m->item_tree = NULL;
+    m->root_item = NULL;
     m->text = slope_text_new ("Monospace 9");
     m->title = g_strdup("Slope");
     m->title_color = SLOPE_BLACK;
@@ -144,10 +144,11 @@ slope_figure_init (SlopeFigure *self)
 
 
 static void
-slope_figure_set_property (GObject *object, guint prop_id,
-                           const GValue *value, GParamSpec *pspec)
+figure_set_property (GObject *object, guint prop_id,
+                     const GValue *value, GParamSpec *pspec)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE(object);
+    SLOPE_UNUSED (pspec);
 
     switch (prop_id) {
         case PROP_BG_FILL_COLOR:
@@ -164,10 +165,11 @@ slope_figure_set_property (GObject *object, guint prop_id,
 
 
 static void
-slope_figure_get_property (GObject *object, guint prop_id,
-                           GValue *value, GParamSpec *pspec)
+figure_get_property (GObject *object, guint prop_id,
+                     GValue *value, GParamSpec *pspec)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE(object);
+    SLOPE_UNUSED (pspec);
 
     switch (prop_id) {
         case PROP_BG_FILL_COLOR:
@@ -182,27 +184,27 @@ slope_figure_get_property (GObject *object, guint prop_id,
     }
 }
 
+
 static void
-slope_figure_dispose (GObject *object)
+figure_dispose (GObject *object)
 {
     SlopeFigure *self = SLOPE_FIGURE (object);
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
-    if (m->item_tree != NULL) {
-        slope_item_destroy_tree (SLOPE_ITEM_PRIVATE (m->item_tree)->publ_obj);
+    if (m->root_item != NULL) {
+        slope_item_destroy_tree (m->root_item);
     }
 
     slope_text_delete (m->text);
-    if (m->title) g_free(m->title);
+    slope_figure_set_title (self, NULL);
 
     G_OBJECT_CLASS (slope_figure_parent_class)->dispose (object);
 }
 
 
 static void
-slope_figure_finalize (GObject *object)
+figure_finalize (GObject *object)
 {
-    // TODO
     G_OBJECT_CLASS (slope_figure_parent_class)->finalize (object);
 }
 
@@ -218,6 +220,12 @@ static void
 figure_draw_rect (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+
+    if (!slope_enabled(m->options, DrawRect) ||
+            (!slope_rgba_is_visible(m->bg_fill_color) &&
+             !slope_rgba_is_visible(m->bg_stroke_color))) {
+        return;
+    }
 
     if (slope_enabled(m->options, RoundedRect)) {
         /* translate cr to account for the area loss */
@@ -236,28 +244,50 @@ figure_draw_rect (SlopeFigure *self, cairo_t *cr, SlopeRect *rect)
 
 
 static void
-figure_draw_items (SlopeFigure *self, SlopeTree *node,
+figure_draw_items (SlopeFigure *self,
                    cairo_t *cr, const SlopeRect *rect)
 {
-    if (FALSE == slope_enabled(SLOPE_ITEM_PRIVATE (node)->options, ItemVisible)) {
-        /* Do not draw invisible items (including their subtrees) */
+    SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+    SlopeItemDC dc;
+
+    if (m->root_item == NULL) {
         return;
     }
 
-    /* Draw the current item node */
-    draw_item_p ((SlopeItemPrivate *) node, cr, rect);
+    dc.cr = cr;
+    dc.figure = self;
+    dc.parent = NULL;
+    dc.rect = *rect;
+    dc.text = m->text;
 
-    /* Recurse to the node subtrees */
-    node = node->first;
-    while (node != NULL) {
-        figure_draw_items(self, node, cr, rect);
-        node = node->next;
-    }
+    SLOPE_ITEM_GET_CLASS (m->root_item)->draw_tree (m->root_item, &dc);
 }
 
 
 static void
-base_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
+figure_draw_title (SlopeFigure *self,
+                   cairo_t *cr, const SlopeRect *rect)
+{
+    SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+    SlopeRect ink, logical;
+
+    if (!slope_enabled(m->options, DrawTitle) ||
+            (m->title == NULL) ||
+            !slope_rgba_is_visible(m->title_color) ||
+            (m->title_color == m->bg_fill_color)) {
+        return;
+    }
+
+    slope_text_set (m->text, m->title);
+    slope_text_get_extents (m->text, &ink, &logical);
+    slope_cairo_set_rgba (cr, m->title_color);
+    cairo_move_to (cr, (rect->width - logical.width) / 2.0, 10.0);
+    slope_text_show (m->text);
+}
+
+
+static void
+figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
 {
     SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
     SlopeRect rect;
@@ -272,30 +302,9 @@ base_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
     rect.width = (double) width;
     rect.height = (double) height;
 
-    /* Draw the figure rectangle if desired */
-    if (slope_enabled(m->options, DrawRect) &&
-            (slope_rgba_is_visible(m->bg_fill_color) ||
-            slope_rgba_is_visible(m->bg_stroke_color))) {
-        figure_draw_rect (self, cr, &rect);
-    }
-
-    /* Draw all the visible ites in this figure */
-    if (m->item_tree != NULL) {
-        figure_draw_items(self, SLOPE_TREE (m->item_tree), cr, &rect);
-    }
-
-    /* Draw the title, if is is visible no the current background color */
-    if (slope_enabled(m->options, DrawTitle) &&
-            (m->title != NULL) &&
-            slope_rgba_is_visible(m->title_color) &&
-            (m->title_color != m->bg_fill_color)) {
-        SlopeRect ink, logical;
-        slope_text_set (m->text, m->title);
-        slope_text_get_extents (m->text, &ink, &logical);
-        slope_cairo_set_rgba (cr, m->title_color);
-        cairo_move_to (cr, (rect.width - logical.width) / 2.0, 10.0);
-        slope_text_show (m->text);
-    }
+    figure_draw_rect (self, cr, &rect);
+    figure_draw_items (self, cr, &rect);
+    figure_draw_title (self, cr, &rect);
 
     /* Give the cairo context back to the user in
      * the same state in which we received it */
@@ -307,7 +316,7 @@ void /* public draw() function*/
 slope_figure_draw (SlopeFigure *self, cairo_t *cr, int width, int height)
 {
     g_return_if_fail (SLOPE_IS_FIGURE (self));
-    SLOPE_FIGURE_GET_CLASS (self)->draw(self, cr, width, height);
+    SLOPE_FIGURE_GET_CLASS (self)->draw (self, cr, width, height);
 }
 
 
@@ -342,7 +351,7 @@ slope_figure_save (SlopeFigure *self, const gchar *file_name,
 }
 
 
-void
+void /* public set_title() */
 slope_figure_set_title (SlopeFigure *self, const gchar *title)
 {
     SlopeFigurePrivate *m;
@@ -350,50 +359,44 @@ slope_figure_set_title (SlopeFigure *self, const gchar *title)
     g_return_if_fail(SLOPE_IS_FIGURE(self));
     m = SLOPE_FIGURE_GET_PRIVATE (self);
 
-    if (m->title) {
-        g_free(m->title);
+    if (m->title != NULL) {
+        g_free (m->title);
         m->title = NULL;
     }
 
-    if (title) {
+    if (title != NULL) {
         m->title = g_strdup(title);
     }
 }
 
 
-const gchar*
+const gchar* /* public get_title() */
 slope_figure_get_title (SlopeFigure *self)
 {
-    g_return_val_if_fail(SLOPE_IS_FIGURE(self), NULL);
+    g_return_val_if_fail (SLOPE_IS_FIGURE (self), NULL);
     return SLOPE_FIGURE_GET_PRIVATE (self)->title;
 }
 
 
 static void
-base_figure_set_root_item (SlopeFigure *self, SlopeItem *item)
+figure_set_root_item (SlopeFigure *self, SlopeItem *item)
 {
-    SlopeItemPrivate *item_p;
-    SlopeFigurePrivate *fig_p;
-    SlopeItemClass *item_class;
+    SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
 
-    fig_p = SLOPE_FIGURE_GET_PRIVATE (self);
-    item_p = SLOPE_ITEM_GET_PRIVATE (item);
-    item_class = SLOPE_ITEM_GET_CLASS (item);
-
-    if (fig_p->item_tree != NULL) {
-        slope_item_destroy_tree (SLOPE_ITEM_PRIVATE (fig_p->item_tree)->publ_obj);
+    /* Clear any current content */
+    if (m->root_item != NULL) {
+        slope_item_destroy_tree (m->root_item);
     }
 
-    item_p->figure = self;
-    fig_p->item_tree = SLOPE_TREE (item_p);
+    m->root_item = item;
+    SLOPE_ITEM_GET_CLASS (item)->attached (item, NULL);
 
-    if (item_class->attached) {
-        item_class->attached (item, NULL);
-    }
+    g_signal_emit_by_name (self, "changed");
 }
 
 
-void slope_figure_set_root_item (SlopeFigure *self, SlopeItem *item) {
+void /* public set_root_item() */
+slope_figure_set_root_item (SlopeFigure *self, SlopeItem *item) {
     g_return_if_fail (SLOPE_IS_FIGURE (self));
     g_return_if_fail (SLOPE_IS_ITEM (item));
     SLOPE_FIGURE_GET_CLASS (self)->set_root_item (self, item);

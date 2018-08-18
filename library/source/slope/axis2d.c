@@ -103,7 +103,6 @@ slope_axis2d_init (SlopeAxis2D *axis)
 static void
 axis2d_dispose (GObject *object)
 {
-    // TODO
     G_OBJECT_CLASS (slope_axis2d_parent_class)->dispose (object);
 }
 
@@ -111,7 +110,6 @@ axis2d_dispose (GObject *object)
 static void
 axis2d_finalize(GObject *object)
 {
-    // TODO
     G_OBJECT_CLASS (slope_axis2d_parent_class)->finalize (object);
 }
 

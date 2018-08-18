@@ -38,7 +38,7 @@ struct _SlopeFigurePrivate
     SlopeRGBA bg_fill_color;
     SlopeRGBA bg_stroke_color;
     double bg_stroke_width;
-    SlopeTree *item_tree;
+    SlopeItem *root_item;
     guint64 options;
     SlopeText *text;
 

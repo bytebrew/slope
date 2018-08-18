@@ -32,10 +32,11 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeView, slope_view, GTK_TYPE_DRAWING_AREA)
 #define SLOPE_VIEW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_VIEW, SlopeViewPrivate))
 
 /* local decls */
-static void slope_view_finalize(GObject *self);
-static void slope_view_dispose (GObject *self);
+static void view_finalize(GObject *self);
+static void view_dispose (GObject *self);
 static gboolean slope_view_draw(GtkWidget *self, cairo_t *cr, gpointer data);
 static void on_figure_change (GObject *figure, gpointer user_data);
+
 
 static void
 slope_view_class_init (SlopeViewClass *klass)
@@ -43,9 +44,10 @@ slope_view_class_init (SlopeViewClass *klass)
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-    gobject_class->dispose = slope_view_dispose;
-    gobject_class->finalize = slope_view_finalize;
+    gobject_class->dispose = view_dispose;
+    gobject_class->finalize = view_finalize;
 }
+
 
 static void
 slope_view_init (SlopeView *view)
@@ -69,14 +71,14 @@ slope_view_init (SlopeView *view)
 
 
 static void
-slope_view_dispose (GObject *object)
+view_dispose (GObject *object)
 {
   SlopeView *self = SLOPE_VIEW (object);
   SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (self);
 
   if (m->figure != NULL) {
-      g_object_unref(G_OBJECT (m->figure));
-      m->figure = NULL;
+    g_object_unref (G_OBJECT (m->figure));
+    m->figure = NULL;
   }
 
   G_OBJECT_CLASS (slope_view_parent_class)->dispose (object);
@@ -84,7 +86,7 @@ slope_view_dispose (GObject *object)
 
 
 static void
-slope_view_finalize(GObject *object)
+view_finalize(GObject *object)
 {
     SlopeView *self = SLOPE_VIEW (object);
     SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (object);
