@@ -54,7 +54,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeAxis2D, slope_axis2d, SLOPE_TYPE_FRAME)
 /* local decls */
 static void axis2d_finalize (GObject *self);
 static void axis2d_dispose (GObject *self);
-static void axis2d_draw (SlopeItem *self, const SlopeItemDC *dc);
+static void axis2d_draw_self (SlopeItem *self, const SlopeItemDC *dc);
 
 
 static void
@@ -66,7 +66,7 @@ slope_axis2d_class_init (SlopeAxis2DClass *klass)
     gobject_class->dispose = axis2d_dispose;
     gobject_class->finalize = axis2d_finalize;
 
-    item_class->draw = axis2d_draw;
+    item_class->draw_self = axis2d_draw_self;
 }
 
 
@@ -136,10 +136,10 @@ slope_axis2d_new (void)
 
 
 static void
-axis2d_draw (SlopeItem *self, const SlopeItemDC *dc)
+axis2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
     /* draw the frame stuff */
-    SLOPE_ITEM_CLASS (slope_axis2d_parent_class)->draw (self, dc);
+    SLOPE_ITEM_CLASS (slope_axis2d_parent_class)->draw_self (self, dc);
 }
 
 /* slope/axis2d.c */

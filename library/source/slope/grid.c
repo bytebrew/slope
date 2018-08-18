@@ -43,7 +43,6 @@ static void
 slope_grid_class_init (SlopeGridClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-    SlopeItemClass *item_class = SLOPE_ITEM_CLASS (klass);
 
     gobject_class->dispose = grid_dispose;
     gobject_class->finalize = grid_finalize;

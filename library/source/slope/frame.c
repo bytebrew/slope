@@ -56,9 +56,9 @@ static GParamSpec *frame_props[PROP_LAST] = { NULL };
 /* local decls */
 static void frame_finalize (GObject *self);
 static void frame_dispose (GObject *self);
-static void frame_draw (SlopeItem *self, const SlopeItemDC *dc);
 static void frame_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void frame_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
+static void frame_draw_self (SlopeItem *self, const SlopeItemDC *dc);
 static void frame_draw_tree (SlopeItem *self, SlopeItemDC *dc);
 
 static void
@@ -72,7 +72,7 @@ slope_frame_class_init (SlopeFrameClass *klass)
     gobject_class->set_property = frame_set_property;
     gobject_class->get_property = frame_get_property;
 
-    item_class->draw = frame_draw;
+    item_class->draw_self = frame_draw_self;
     item_class->draw_tree = frame_draw_tree;
 
     frame_props[PROP_BG_FILL_COLOR] =
@@ -182,9 +182,10 @@ slope_frame_new (void)
 
 
 static void
-frame_draw_rect (SlopeFrame *self, cairo_t *cr, SlopeRect *rect)
+frame_draw_rect (SlopeFrame *self, const SlopeItemDC *dc)
 {
     SlopeFramePrivate *m = SLOPE_FRAME_GET_PRIVATE (self);
+    SlopeRect r = dc->rect;
 
     if (!slope_enabled(m->options, SLOPE_FRAME_DRAW_RECT) ||
             (!slope_rgba_is_visible(m->bg_fill_color) &&
@@ -192,21 +193,28 @@ frame_draw_rect (SlopeFrame *self, cairo_t *cr, SlopeRect *rect)
         return;
     }
 
+    if (slope_rgba_is_visible(m->bg_stroke_color)) {
+        /* avoid rounding stroke from being clipped away */
+        r.x += m->bg_stroke_width / 2;
+        r.y += m->bg_stroke_width / 2;
+        r.width -= 2 * m->bg_stroke_width;
+        r.height -= 2 * m->bg_stroke_width;
+    }
+
     if (slope_enabled(m->options, SLOPE_FRAME_ROUND_RECT)) {
-        slope_cairo_round_rect (cr, rect, 10);
+        slope_cairo_round_rect (dc->cr, &r, 10);
     } else {
-        slope_cairo_rect (cr, rect);
+        slope_cairo_rect (dc->cr, &r);
     }
 
     slope_cairo_draw (
-          cr, m->bg_stroke_width,
+          dc->cr, m->bg_stroke_width,
           m->bg_fill_color, m->bg_stroke_color);
 }
 
 
 static void
-frame_draw_title (SlopeFrame *self,
-                   const SlopeItemDC *dc)
+frame_draw_title (SlopeFrame *self, const SlopeItemDC *dc)
 {
     SlopeFramePrivate *m = SLOPE_FRAME_GET_PRIVATE (self);
     SlopeRect ink, logical;
@@ -228,10 +236,9 @@ frame_draw_title (SlopeFrame *self,
 
 
 static void
-frame_draw (SlopeItem *self, const SlopeItemDC *dc)
+frame_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
-    SlopeRect rec = dc->rect;
-    frame_draw_rect (SLOPE_FRAME (self), dc->cr, &rec);
+    frame_draw_rect (SLOPE_FRAME (self), dc);
     frame_draw_title (SLOPE_FRAME (self), dc);
 }
 
@@ -280,9 +287,7 @@ frame_draw_tree (SlopeItem *self, SlopeItemDC *dc)
         dc->rect.height -= 2 * margin;
     }
 
-    /* leave one extra pixel at each side for border strokes */
-    cairo_rectangle (dc->cr, dc->rect.x - 1, dc->rect.y - 1,
-                     dc->rect.width + 2, dc->rect.height + 2);
+    slope_cairo_rect (dc->cr, &dc->rect);
     cairo_clip (dc->cr);
 
     SLOPE_ITEM_CLASS (slope_frame_parent_class)->draw_tree (self, dc);

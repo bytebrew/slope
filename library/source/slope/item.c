@@ -49,7 +49,8 @@ static void item_dispose (GObject *self);
 static void item_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void item_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 static void item_attached_detached (SlopeItem *self, SlopeItem *parent);
-static void item_draw (SlopeItem *self, const SlopeItemDC *dc);
+static void item_draw_self (SlopeItem *self, const SlopeItemDC *dc);
+static void item_draw_children (SlopeItem *self, SlopeItemDC *dc);
 static void item_draw_tree (SlopeItem *self, SlopeItemDC *dc);
 
 
@@ -63,10 +64,12 @@ slope_item_class_init (SlopeItemClass *klass)
     gobject_class->set_property = item_set_property;
     gobject_class->get_property = item_get_property;
 
+    klass->draw_self = item_draw_self;
+    klass->draw_children = item_draw_children;
     klass->draw_tree = item_draw_tree;
     klass->attached = item_attached_detached;
     klass->detached = item_attached_detached;
-    klass->draw = item_draw;
+
 
     item_props[PROP_VISIBLE] =
           g_param_spec_boolean ("visible",
@@ -175,10 +178,33 @@ slope_item_destroy_tree (SlopeItem *self)
 
 
 static void
+item_draw_self (SlopeItem *self, const SlopeItemDC *dc)
+{
+    /* this is just a base class, nothing to do */
+    SLOPE_UNUSED(self);
+    SLOPE_UNUSED(dc);
+}
+
+
+static void
+item_draw_children (SlopeItem *self, SlopeItemDC *dc)
+{
+    SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE (self);
+    SlopeTree *iter = SLOPE_TREE (m)->first;
+
+    /* Let the child nodes draw themselves */
+    while (iter != NULL) {
+        SlopeItem *child = SLOPE_ITEM_PRIVATE (iter)->publ_obj;
+        SLOPE_ITEM_GET_CLASS (child)->draw_tree (child, dc);
+        iter = iter->next;
+    }
+}
+
+
+static void
 item_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 {
     SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE (self);
-    SlopeTree *child_node = SLOPE_TREE (m)->first;
 
     /* If this item is not visible, do not draw it nor it's subtrees */
     if (FALSE == slope_enabled(m->options, ItemVisible)) {
@@ -186,28 +212,15 @@ item_draw_tree (SlopeItem *self, SlopeItemDC *dc)
     }
 
     /* Draw this item's stuff */
-    SLOPE_ITEM_GET_CLASS (self)->draw (self, dc);
-
-    /* Let the child nodes draw themselves */
-    while (child_node != NULL) {
-        SlopeItem *child = SLOPE_ITEM_PRIVATE (child_node)->publ_obj;
-        SLOPE_ITEM_GET_CLASS (child)->draw_tree (child, dc);
-        child_node = child_node->next;
-    }
-}
-
-
-static void
-item_draw (SlopeItem *self, const SlopeItemDC *dc)
-{
-    SLOPE_UNUSED(self);
-    SLOPE_UNUSED(dc);
+    SLOPE_ITEM_GET_CLASS (self)->draw_self (self, dc);
+    SLOPE_ITEM_GET_CLASS (self)->draw_children (self, dc);
 }
 
 
 static void
 item_attached_detached (SlopeItem *self, SlopeItem *parent)
 {
+    /* this is just a base class, nothing to do */
     SLOPE_UNUSED(self);
     SLOPE_UNUSED(parent);
 }

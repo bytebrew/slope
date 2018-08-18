@@ -66,7 +66,8 @@ struct _SlopeItemClass
 
   void (*attached) (SlopeItem *self, SlopeItem *parent);
   void (*detached) (SlopeItem *self, SlopeItem *parent);
-  void (*draw) (SlopeItem *self, const SlopeItemDC *dc);
+  void (*draw_self) (SlopeItem *self, const SlopeItemDC *dc);
+  void (*draw_children) (SlopeItem *self, SlopeItemDC *dc);
   void (*draw_tree) (SlopeItem *self, SlopeItemDC *dc);
 
   /* Padding for future expansion */
