@@ -18,10 +18,25 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/figure_p.h"
-#include "slope/item_p.h"
+#include "slope/figure.h"
+#include "slope/item.h"
 #include <cairo/cairo-svg.h>
 #include <cairo/cairo-ps.h>
+
+typedef struct _SlopeFigurePrivate SlopeFigurePrivate;
+#define SLOPE_FIGURE_PRIVATE(Addr) ((SlopeFigurePrivate*) (Addr))
+
+struct _SlopeFigurePrivate
+{
+    SlopeItem *root_item;
+    guint64 options;
+    SlopeText *text;
+};
+
+
+#define SLOPE_FIGURE_GET_PRIVATE(obj) \
+    (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
+    SLOPE_TYPE_FIGURE, SlopeFigurePrivate))
 
 
 G_DEFINE_TYPE_WITH_PRIVATE(SlopeFigure, slope_figure, G_TYPE_OBJECT)
@@ -95,7 +110,7 @@ slope_figure_init (SlopeFigure *self)
 
     m->options = 0UL;
     m->root_item = NULL;
-    m->text = slope_text_new ("Monospace 9");
+    m->text = slope_text_new ("Sans 8");
 }
 
 

@@ -19,7 +19,7 @@
  */
 
 #include "slope/grid.h"
-#include "slope/item_p.h"
+#include "slope/item.h"
 
 typedef struct _SlopeGridPrivate SlopeGridPrivate;
 #define SLOPE_GRID_PRIVATE(Addr) ((SlopeGridPrivate*) (Addr))

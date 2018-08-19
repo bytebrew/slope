@@ -18,8 +18,28 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/frame_p.h"
-#include "slope/item_p.h"
+#include "slope/frame.h"
+#include "slope/item.h"
+
+typedef struct _SlopeFramePrivate SlopeFramePrivate;
+#define SLOPE_FRAME_PRIVATE(Addr) ((SlopeFramePrivate*) (Addr))
+
+
+struct _SlopeFramePrivate
+{
+    SlopeRGBA bg_fill_color;
+    SlopeRGBA bg_stroke_color;
+    double bg_stroke_width;
+    int margin;
+    SlopeRGBA title_color;
+    gchar *title;
+    guint32 options;
+};
+
+#define SLOPE_FRAME_GET_PRIVATE(obj) \
+    (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
+    SLOPE_TYPE_FRAME, SlopeFramePrivate))
+
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeFrame, slope_frame, SLOPE_TYPE_ITEM)
 
@@ -275,6 +295,13 @@ frame_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 
     cairo_restore (dc->cr);
     dc->rect = orig_rect;
+}
+
+
+int slope_frame_get_margin (SlopeFrame *self)
+{
+    g_return_val_if_fail (SLOPE_IS_FRAME (self), 0);
+    return SLOPE_FRAME_GET_PRIVATE (self)->margin;
 }
 
 /* slope/frame.c */

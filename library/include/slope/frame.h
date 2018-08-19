@@ -76,6 +76,8 @@ void slope_frame_set_title (SlopeFrame *self, const gchar *title);
 
 const gchar* slope_frame_get_title (SlopeFrame *self);
 
+int slope_frame_get_margin (SlopeFrame *self);
+
 G_END_DECLS
 
 #endif /* _slope_frame_h_ */

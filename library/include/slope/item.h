@@ -25,6 +25,7 @@
 #include <cairo.h>
 #include "slope/drawing.h"
 #include "slope/text.h"
+#include "slope/tree.h"
 
 G_BEGIN_DECLS
 
@@ -83,6 +84,12 @@ GType slope_item_get_type (void) G_GNUC_CONST;
 void slope_item_append (SlopeItem *parent, SlopeItem *child);
 
 void slope_item_destroy_tree (SlopeItem *self);
+
+SlopeTree* slope_item_get_fisrt_child (SlopeItem *self);
+
+SlopeItem* slope_item_get_from_tree_node (SlopeTree *tree_iter);
+
+SlopeItem* slope_item_get_parent (SlopeItem *self);
 
 G_END_DECLS
 

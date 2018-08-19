@@ -18,9 +18,32 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/axis2d_p.h"
-#include "slope/frame_p.h"
-#include "slope/item_p.h"
+#include "slope/axis2d.h"
+#include "slope/frame.h"
+#include "slope/item.h"
+
+typedef struct _SlopeAxis2DPrivate SlopeAxis2DPrivate;
+#define SLOPE_AXIS2D_PRIVATE(Addr) ((SlopeAxis2DPrivate*) (Addr))
+
+
+struct _SlopeAxis2DPrivate
+{
+    double data_margin;
+
+    double fig_x_min, fig_x_max;
+    double fig_y_min, fig_y_max;
+    double fig_width, fig_height;
+
+    double dat_x_min, dat_x_max;
+    double dat_y_min, dat_y_max;
+    double dat_width, dat_height;
+};
+
+
+#define SLOPE_AXIS2D_GET_PRIVATE(obj) \
+    (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
+    SLOPE_TYPE_AXIS2D, SlopeAxis2DPrivate))
+
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeAxis2D, slope_axis2d, SLOPE_TYPE_FRAME)
 
@@ -111,16 +134,13 @@ void
 slope_axis2d_update_scale (SlopeAxis2D *self)
 {
     SlopeAxis2DPrivate *m;
-    SlopeItemPrivate *item_p;
     SlopeTree *iter;
     SlopeItem *item;
     double plt_x_min, plt_x_max;
     double plt_y_min, plt_y_max;
 
     g_return_if_fail (SLOPE_IS_AXIS2D (self));
-
     m = SLOPE_AXIS2D_GET_PRIVATE (self);
-    item_p = SLOPE_ITEM_GET_PRIVATE (self);
 
     /* init values for the 'no child' case */
     m->dat_x_min = 0.0;
@@ -130,13 +150,13 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
     m->dat_width = 1.0;
     m->dat_height = 1.0;
 
-    if (!(iter = SLOPE_TREE (item_p)->first)) {
+    if (!(iter = slope_item_get_fisrt_child (SLOPE_ITEM (self)))) {
         /* no subitems */
         return;
     }
 
     /* init axis extents with the first plot's extents */
-    item = SLOPE_ITEM_PRIVATE (iter)->publ_obj;
+    item = slope_item_get_from_tree_node (iter);
     slope_plot2d_get_data_extents (
                 SLOPE_PLOT2D (item),
                 &plt_x_min, &plt_x_max,
@@ -151,7 +171,7 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
     while (iter != NULL) {
 
         /* update axis extents with the others */
-        item = SLOPE_ITEM_PRIVATE (iter)->publ_obj;
+        item = slope_item_get_from_tree_node (iter);
         slope_plot2d_get_data_extents (
                 SLOPE_PLOT2D (item),
                 &plt_x_min, &plt_x_max,
@@ -198,9 +218,8 @@ void slope_axis2d_unmap (SlopeAxis2D *self, SlopePoint *d, const SlopePoint *f)
 static void
 axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 {
-    SlopeFramePrivate *frame_p = SLOPE_FRAME_GET_PRIVATE (self);
     SlopeAxis2DPrivate *axis_p = SLOPE_AXIS2D_GET_PRIVATE (self);
-    int margin = frame_p->margin;
+    int margin = slope_frame_get_margin (SLOPE_FRAME (self));
     SlopeRect orig_rect = dc->rect;
 
     cairo_save (dc->cr);
@@ -208,7 +227,7 @@ axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc)
     /* If stuff like margins are to be applyed, we need to
      * adjust the rectangle to which subitems will have access to */
     if (margin > 0) {
-        cairo_translate (dc->cr, frame_p->margin, frame_p->margin);
+        cairo_translate (dc->cr, margin, margin);
         dc->rect.width -= 2 * margin;
         dc->rect.height -= 2 * margin;
     }

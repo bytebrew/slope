@@ -20,7 +20,8 @@
 
 #include "slope/series2d.h"
 #include "slope/axis2d.h"
-#include "slope/item_p.h"
+#include "slope/item.h"
+
 
 typedef struct _SlopeSeries2DPrivate SlopeSeries2DPrivate;
 #define SLOPE_SERIES2D_PRIVATE(Addr) ((SlopeSeries2DPrivate*) (Addr))
@@ -109,7 +110,7 @@ series2d_dispose (GObject *object)
 
 
 static void
-series2d_finalize(GObject *object)
+series2d_finalize (GObject *object)
 {
     G_OBJECT_CLASS (slope_series2d_parent_class)->finalize (object);
 }
@@ -177,14 +178,12 @@ series2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
     gulong k, npts;
     SlopePoint *pts, f, d;
     SlopeSeries2DPrivate *m;
-    SlopeItemPrivate *item_p;
     SlopeAxis2D *axis;
 
     g_return_if_fail (SLOPE_IS_SERIES2D (self));
 
     m = SLOPE_SERIES2D_GET_PRIVATE (self);
-    item_p = SLOPE_ITEM_GET_PRIVATE (self);
-    axis = SLOPE_AXIS2D (SLOPE_ITEM_PRIVATE (SLOPE_TREE (item_p)->parent)->publ_obj);
+    axis = SLOPE_AXIS2D (slope_item_get_parent (self));
 
     slope_array2d_get_points (m->array, &npts, &pts);
     if (npts == 0L) return;
@@ -225,7 +224,8 @@ series2d_get_data_extents (SlopePlot2D *self,
 }
 
 
-void slope_series2d_set_data (SlopeSeries2D *self, SlopeArray2D *array, gboolean own)
+void slope_series2d_set_data (SlopeSeries2D *self,
+                              SlopeArray2D *array, gboolean own)
 {
     SlopeSeries2DPrivate *m;
     SlopePoint *pts;

@@ -19,7 +19,7 @@
  */
 
 #include "slope/plot2d.h"
-#include "slope/item_p.h"
+#include "slope/item.h"
 
 typedef struct _SlopePlot2DPrivate SlopePlot2DPrivate;
 #define SLOPE_PLOT2D_PRIVATE(Addr) ((SlopePlot2DPrivate*) (Addr))

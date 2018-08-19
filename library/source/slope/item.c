@@ -18,8 +18,26 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/figure_p.h"
-#include "slope/item_p.h"
+#include "slope/figure.h"
+#include "slope/item.h"
+
+typedef struct _SlopeItemPrivate SlopeItemPrivate;
+#define SLOPE_ITEM_PRIVATE(Addr) ((SlopeItemPrivate *) (Addr))
+
+#define ItemVisible    (1U)
+
+
+struct _SlopeItemPrivate
+{
+    SlopeTree tree_node;
+    SlopeItem *publ_obj;
+    SlopeFigure *figure;
+    guint32 options;
+};
+
+#define SLOPE_ITEM_GET_PRIVATE(obj) \
+    (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
+    SLOPE_TYPE_ITEM, SlopeItemPrivate))
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeItem, slope_item, G_TYPE_OBJECT)
 
@@ -223,6 +241,32 @@ item_attached_detached (SlopeItem *self, SlopeItem *parent)
     /* this is just a base class, nothing to do */
     SLOPE_UNUSED(self);
     SLOPE_UNUSED(parent);
+}
+
+
+SlopeTree* slope_item_get_fisrt_child (SlopeItem *self)
+{
+    g_return_val_if_fail (self != NULL, NULL);
+    return SLOPE_TREE (SLOPE_ITEM_GET_PRIVATE (self))->first;
+}
+
+
+SlopeItem* slope_item_get_from_tree_node (SlopeTree *tree_node)
+{
+    g_return_val_if_fail (tree_node != NULL, NULL);
+    return SLOPE_ITEM_PRIVATE (tree_node)->publ_obj;
+}
+
+
+SlopeItem* slope_item_get_parent (SlopeItem *self)
+{
+    SlopeItemPrivate *m;
+
+    g_return_val_if_fail (self != NULL, NULL);
+
+    m = SLOPE_ITEM_GET_PRIVATE (self);
+    m = SLOPE_ITEM_PRIVATE (SLOPE_TREE (m)->parent);
+    return (m != NULL) ? m->publ_obj : NULL;
 }
 
 /* slope/item.c */
