@@ -55,7 +55,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeAxis2D, slope_axis2d, SLOPE_TYPE_FRAME)
 static void axis2d_finalize (GObject *self);
 static void axis2d_dispose (GObject *self);
 static void axis2d_draw_self (SlopeItem *self, const SlopeItemDC *dc);
-
+static void axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot);
 
 static void
 slope_axis2d_class_init (SlopeAxis2DClass *klass)
@@ -67,6 +67,8 @@ slope_axis2d_class_init (SlopeAxis2DClass *klass)
     gobject_class->finalize = axis2d_finalize;
 
     item_class->draw_self = axis2d_draw_self;
+
+    klass->add_plot = axis2d_add_plot;
 }
 
 
@@ -100,17 +102,7 @@ slope_axis2d_init (SlopeAxis2D *axis)
     m->l[SLOPE_AXIS2D_Y].line_width = 1.0;
     m->l[SLOPE_AXIS2D_Y].options = SLOPE_AXIS2D_DRAW_TICKS;
 
-    m->fig_x_min = 0.0;
-    m->fig_x_max = 1.0;
-
-    m->fig_y_min = 0.0;
-    m->fig_y_max = 1.0;
-
-    m->dat_x_min = 0.0;
-    m->dat_x_max = 1.0;
-
-    m->dat_y_min = 0.0;
-    m->dat_y_max = 1.0;
+    slope_axis2d_update_scale (axis);
 }
 
 
@@ -140,6 +132,81 @@ axis2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
     /* draw the frame stuff */
     SLOPE_ITEM_CLASS (slope_axis2d_parent_class)->draw_self (self, dc);
+}
+
+
+static void
+axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot)
+{
+    slope_item_append (SLOPE_ITEM (self), SLOPE_ITEM (plot));
+    slope_axis2d_update_scale (self);
+}
+
+
+void
+slope_axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot)
+{
+    g_return_if_fail (SLOPE_IS_AXIS2D (self));
+    g_return_if_fail (SLOPE_IS_PLOT2D (plot));
+    SLOPE_AXIS2D_GET_CLASS (self)->add_plot (self, plot);
+}
+
+
+void
+slope_axis2d_update_scale (SlopeAxis2D *self)
+{
+    SlopeAxis2DPrivate *m;
+    SlopeItemPrivate *item_p;
+    SlopeTree *iter;
+    SlopeItem *item;
+    double plt_x_min, plt_x_max;
+    double plt_y_min, plt_y_max;
+
+    g_return_if_fail (SLOPE_IS_AXIS2D (self));
+
+    m = SLOPE_AXIS2D_GET_PRIVATE (self);
+    item_p = SLOPE_ITEM_GET_PRIVATE (self);
+
+    /* init values for the 'no child' case */
+    m->dat_x_min = 0.0;
+    m->dat_x_max = 1.0;
+    m->dat_y_min = 0.0;
+    m->dat_y_max = 1.0;
+
+    if (!(iter = SLOPE_TREE (item_p)->first)) {
+        /* no subitems */
+        return;
+    }
+
+    /* init axis extents with the first plot's extents */
+    item = SLOPE_ITEM_PRIVATE (iter)->publ_obj;
+    slope_plot2d_get_data_extents (
+                SLOPE_PLOT2D (item),
+                &plt_x_min, &plt_x_max,
+                &plt_y_min, &plt_y_max);
+
+    m->dat_x_min = plt_x_min;
+    m->dat_x_max = plt_x_max;
+    m->dat_y_min = plt_y_min;
+    m->dat_y_max = plt_y_max;
+
+    iter = iter->next;
+    while (iter != NULL) {
+
+        /* update axis extents with the others */
+        item = SLOPE_ITEM_PRIVATE (iter)->publ_obj;
+        slope_plot2d_get_data_extents (
+                SLOPE_PLOT2D (item),
+                &plt_x_min, &plt_x_max,
+                &plt_y_min, &plt_y_max);
+
+        if (plt_x_min < m->dat_x_min) m->dat_x_min = plt_x_min;
+        if (plt_x_max > m->dat_x_max) m->dat_x_max = plt_x_max;
+        if (plt_y_min < m->dat_y_min) m->dat_y_min = plt_y_min;
+        if (plt_y_max > m->dat_y_max) m->dat_y_max = plt_y_max;
+
+        iter = iter->next;
+    }
 }
 
 /* slope/axis2d.c */

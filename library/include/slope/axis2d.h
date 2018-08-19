@@ -22,6 +22,7 @@
 #define _slope_axis2d_h_
 
 #include "slope/frame.h"
+#include "slope/plot2d.h"
 
 G_BEGIN_DECLS
 
@@ -69,6 +70,8 @@ struct _SlopeAxis2DClass
 {
     SlopeFrameClass parent_class;
 
+    void (*add_plot) (SlopeAxis2D *self, SlopePlot2D *plot);
+
     /* Padding for future expansion */
     void (*_slope_reserved1) (void);
     void (*_slope_reserved2) (void);
@@ -80,6 +83,10 @@ struct _SlopeAxis2DClass
 GType slope_axis2d_get_type (void) G_GNUC_CONST;
 
 SlopeItem* slope_axis2d_new (void);
+
+void slope_axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot);
+
+void slope_axis2d_update_scale (SlopeAxis2D *self);
 
 G_END_DECLS
 
