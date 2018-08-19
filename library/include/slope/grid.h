@@ -62,7 +62,8 @@ GType slope_grid_get_type (void) G_GNUC_CONST;
 
 SlopeItem* slope_grid_new (void);
 
-void slope_grid_emplace (SlopeGrid *self, SlopeItem *child);
+void slope_grid_emplace (SlopeGrid *self, SlopeItem *child,
+                         int x, int y, int width, int height);
 
 G_END_DECLS
 

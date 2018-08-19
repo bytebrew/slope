@@ -244,6 +244,13 @@ item_attached_detached (SlopeItem *self, SlopeItem *parent)
 }
 
 
+SlopeTree* slope_item_get_tree_node (SlopeItem *self)
+{
+    g_return_val_if_fail (self != NULL, NULL);
+    return SLOPE_TREE (SLOPE_ITEM_GET_PRIVATE (self));
+}
+
+
 SlopeTree* slope_item_get_fisrt_child (SlopeItem *self)
 {
     g_return_val_if_fail (self != NULL, NULL);
@@ -251,7 +258,7 @@ SlopeTree* slope_item_get_fisrt_child (SlopeItem *self)
 }
 
 
-SlopeItem* slope_item_get_from_tree_node (SlopeTree *tree_node)
+SlopeItem* slope_item_from_tree_node (SlopeTree *tree_node)
 {
     g_return_val_if_fail (tree_node != NULL, NULL);
     return SLOPE_ITEM_PRIVATE (tree_node)->publ_obj;

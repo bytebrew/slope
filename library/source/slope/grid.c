@@ -28,6 +28,9 @@ struct _SlopeGridPrivate
 {
     SlopeRGBA lines_color;
     double lines_width;
+
+    int n_rows;
+    int n_cols;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeGrid, slope_grid, SLOPE_TYPE_ITEM)
@@ -80,13 +83,54 @@ slope_grid_new (void)
 }
 
 
+
 void
-slope_grid_emplace (SlopeGrid *self, SlopeItem *child)
+slope_grid_update_layout (SlopeGrid *self)
 {
+    SlopeGridPrivate *m;
+    SlopeTree *node;
+
+    g_return_if_fail (SLOPE_IS_GRID (self));
+    m = SLOPE_GRID_GET_PRIVATE (self);
+    node = slope_item_get_fisrt_child (SLOPE_ITEM (self));
+
+    m->n_rows = m->n_cols = 0;
+
+    while (node != NULL) {
+
+        if ((node->x + node->width) > m->n_cols) {
+            m->n_cols = node->x + node->width;
+        }
+        if ((node->y + node->height) > m->n_rows) {
+            m->n_rows = node->y + node->height;
+        }
+
+        node = node->next;
+    }
+}
+
+
+void
+slope_grid_emplace (SlopeGrid *self, SlopeItem *child,
+                    int x, int y, int width, int height)
+{
+    SlopeTree *node;
+
     g_return_if_fail (SLOPE_IS_GRID (self));
     g_return_if_fail (SLOPE_IS_ITEM (child));
 
+    /* set child layout information */
+    node = slope_item_get_tree_node (child);
+    node->x = x;
+    node->y = y;
+    node->width = width;
+    node->height = height;
+
+    /* Add new child to this item's tree */
     slope_item_append (SLOPE_ITEM (self), child);
+
+    /* make sure the layout boundaries are correct */
+    slope_grid_update_layout (self);
 }
 
 /* slope/grid.c */

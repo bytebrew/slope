@@ -32,6 +32,10 @@ struct _SlopeTree {
     SlopeTree *next;
     SlopeTree *first;
     SlopeTree *last;
+
+    /* layout extra data */
+    int x, y;
+    int width, height;
 };
 
 #define slope_tree_init(Addr) \
@@ -41,6 +45,10 @@ struct _SlopeTree {
         SLOPE_TREE(Addr)->next = NULL; \
         SLOPE_TREE(Addr)->first = NULL; \
         SLOPE_TREE(Addr)->last = NULL; \
+        SLOPE_TREE(Addr)->x = 0; \
+        SLOPE_TREE(Addr)->y = 0; \
+        SLOPE_TREE(Addr)->width = 1; \
+        SLOPE_TREE(Addr)->height = 1; \
     } G_STMT_END
 
 

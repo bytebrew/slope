@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 
     /* Add an axis onto the grid */
     axis = slope_axis2d_new();
-    slope_grid_emplace (SLOPE_GRID (grid), axis);
+    slope_grid_emplace (SLOPE_GRID (grid), axis, 0, 0, 1, 1);
 
     /* create some datasets to plot */
     data1 = slope_array2d_new (20L);

@@ -156,7 +156,7 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
     }
 
     /* init axis extents with the first plot's extents */
-    item = slope_item_get_from_tree_node (iter);
+    item = slope_item_from_tree_node (iter);
     slope_plot2d_get_data_extents (
                 SLOPE_PLOT2D (item),
                 &plt_x_min, &plt_x_max,
@@ -171,7 +171,7 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
     while (iter != NULL) {
 
         /* update axis extents with the others */
-        item = slope_item_get_from_tree_node (iter);
+        item = slope_item_from_tree_node (iter);
         slope_plot2d_get_data_extents (
                 SLOPE_PLOT2D (item),
                 &plt_x_min, &plt_x_max,
