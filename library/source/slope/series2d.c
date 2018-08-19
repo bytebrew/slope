@@ -86,7 +86,9 @@ slope_series2d_init (SlopeSeries2D *axis)
     m->options =
             SLOPE_SERIES2D_OWN_ARRAY |
             SLOPE_SERIES2D_DRAW_LINE |
-            SLOPE_SERIES2D_DRAW_MARKER;
+            SLOPE_SERIES2D_DRAW_MARKER |
+            SLOPE_SERIES2D_LINE_ANTIALIAS |
+            SLOPE_SERIES2D_MARKER_ANTIALIAS;
 
     m->x_min = 0.0;
     m->x_max = 1.0;
@@ -201,7 +203,12 @@ series2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
         cairo_line_to (dc->cr, f.x, f.y);
     }
 
-    cairo_set_antialias (dc->cr, CAIRO_ANTIALIAS_DEFAULT);
+    if (slope_enabled(m->options, SLOPE_SERIES2D_LINE_ANTIALIAS)) {
+        cairo_set_antialias(dc->cr, CAIRO_ANTIALIAS_GOOD);
+    } else {
+        cairo_set_antialias(dc->cr, CAIRO_ANTIALIAS_NONE);
+    }
+
     cairo_set_line_width (dc->cr, m->line_width);
     slope_cairo_set_rgba (dc->cr, m->line_color);
     cairo_stroke (dc->cr);

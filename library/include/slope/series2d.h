@@ -50,7 +50,9 @@ typedef enum {
     SLOPE_SERIES2D_NONE               = (0U),
     SLOPE_SERIES2D_OWN_ARRAY          = (1U),
     SLOPE_SERIES2D_DRAW_LINE          = (1U << 1U),
-    SLOPE_SERIES2D_DRAW_MARKER        = (1U << 2U)
+    SLOPE_SERIES2D_DRAW_MARKER        = (1U << 2U),
+    SLOPE_SERIES2D_LINE_ANTIALIAS     = (1U << 3U),
+    SLOPE_SERIES2D_MARKER_ANTIALIAS   = (1U << 4U),
 } SlopeSeries2DOption;
 
 

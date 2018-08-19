@@ -28,9 +28,6 @@ struct _SlopeGridPrivate
 {
     int n_rows;
     int n_cols;
-
-    int cell_width;
-    int cell_height;
 };
 
 
@@ -145,10 +142,10 @@ grid_draw_tree (SlopeItem *self, SlopeItemDC *dc)
     SlopeGridPrivate *m = SLOPE_GRID_GET_PRIVATE (self);
     SlopeRect rect, orig_rect = dc->rect;
     SlopeTree *node = slope_item_get_fisrt_child (self);
-    int cell_width, cell_height;
+    double cell_width, cell_height;
 
-    cell_width = ((int) orig_rect.width) / m->n_cols;
-    cell_height = ((int) orig_rect.height) / m->n_rows;
+    cell_width = orig_rect.width / m->n_cols;
+    cell_height = orig_rect.height / m->n_rows;
 
     while (node != NULL) {
         SlopeItem *item = slope_item_from_tree_node (node);

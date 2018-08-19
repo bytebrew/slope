@@ -37,9 +37,10 @@ typedef struct _SlopeFrameClass        SlopeFrameClass;
 
 
 typedef enum {
-    SLOPE_FRAME_DRAW_RECT    = (1U),
-    SLOPE_FRAME_DRAW_TITLE   = (1U << 1U),
-    SLOPE_FRAME_ROUND_RECT   = (1U << 2U),
+    SLOPE_FRAME_DRAW_RECT        = (1U),
+    SLOPE_FRAME_DRAW_TITLE       = (1U << 1U),
+    SLOPE_FRAME_ROUND_RECT       = (1U << 2U),
+    SLOPE_FRAME_RECT_ANTIALIAS   = (1U << 3U),
 } SlopeFrameOption;
 
 

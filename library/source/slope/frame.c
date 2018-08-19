@@ -109,7 +109,7 @@ slope_frame_init (SlopeFrame *axis)
     /* Visible frame initialization */
     m->bg_fill_color = SLOPE_WHITE;
     m->bg_stroke_color = SLOPE_MAROON;
-    m->options = SLOPE_FRAME_DRAW_RECT | SLOPE_FRAME_DRAW_TITLE | SLOPE_FRAME_ROUND_RECT;
+    m->options = SLOPE_FRAME_DRAW_RECT | SLOPE_FRAME_DRAW_TITLE;
     m->bg_stroke_width = 1.0;
     m->title = g_strdup("Slope");
     m->title_color = SLOPE_BLACK;
@@ -192,6 +192,12 @@ slope_frame_draw_rect (SlopeFrame *self, const SlopeItemDC *dc)
             (!slope_rgba_is_visible(m->bg_fill_color) &&
              !slope_rgba_is_visible(m->bg_stroke_color))) {
         return;
+    }
+
+    if (slope_enabled(m->options, SLOPE_FRAME_RECT_ANTIALIAS)) {
+        cairo_set_antialias(dc->cr, CAIRO_ANTIALIAS_GOOD);
+    } else {
+        cairo_set_antialias(dc->cr, CAIRO_ANTIALIAS_NONE);
     }
 
     if (slope_rgba_is_visible(m->bg_stroke_color)) {
