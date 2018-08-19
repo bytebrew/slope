@@ -78,6 +78,10 @@ const gchar* slope_frame_get_title (SlopeFrame *self);
 
 int slope_frame_get_margin (SlopeFrame *self);
 
+void slope_frame_draw_rect (SlopeFrame *self, const SlopeItemDC *dc);
+
+void slope_frame_draw_title (SlopeFrame *self, const SlopeItemDC *dc);
+
 G_END_DECLS
 
 #endif /* _slope_frame_h_ */

@@ -82,7 +82,7 @@ struct _SlopeAxis2DClass
 
 GType slope_axis2d_get_type (void) G_GNUC_CONST;
 
-SlopeItem* slope_axis2d_new (void);
+SlopeItem* slope_axis2d_new (const char *title);
 
 void slope_axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot);
 

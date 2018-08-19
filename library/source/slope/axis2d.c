@@ -99,9 +99,11 @@ axis2d_finalize (GObject *object)
 
 
 SlopeItem*
-slope_axis2d_new (void)
+slope_axis2d_new (const char *title)
 {
-    return SLOPE_ITEM (g_object_new (SLOPE_TYPE_AXIS2D, NULL));
+    SlopeItem *self = SLOPE_ITEM (g_object_new (SLOPE_TYPE_AXIS2D, NULL));
+    slope_frame_set_title (SLOPE_FRAME (self), title);
+    return self;
 }
 
 
@@ -243,8 +245,9 @@ axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc)
     axis_p->fig_y_max = dc->rect.y + dc->rect.height - axis_p->data_margin;
     axis_p->fig_height = axis_p->fig_y_max - axis_p->fig_y_min;
 
-    SLOPE_ITEM_GET_CLASS (self)->draw_self (self, dc);
+    slope_frame_draw_rect (SLOPE_FRAME (self), dc);
     SLOPE_ITEM_GET_CLASS (self)->draw_children (self, dc);
+    slope_frame_draw_title (SLOPE_FRAME (self), dc);
 
     cairo_restore (dc->cr);
     dc->rect = orig_rect;

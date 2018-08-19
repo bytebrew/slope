@@ -110,7 +110,7 @@ slope_frame_init (SlopeFrame *axis)
     m->bg_fill_color = SLOPE_WHITE;
     m->bg_stroke_color = SLOPE_MAROON;
     m->options = SLOPE_FRAME_DRAW_RECT | SLOPE_FRAME_DRAW_TITLE | SLOPE_FRAME_ROUND_RECT;
-    m->bg_stroke_width = 2.0;
+    m->bg_stroke_width = 1.0;
     m->title = g_strdup("Slope");
     m->title_color = SLOPE_BLACK;
     m->margin = 4;
@@ -182,8 +182,8 @@ slope_frame_new (void)
 }
 
 
-static void
-frame_draw_rect (SlopeFrame *self, const SlopeItemDC *dc)
+void
+slope_frame_draw_rect (SlopeFrame *self, const SlopeItemDC *dc)
 {
     SlopeFramePrivate *m = SLOPE_FRAME_GET_PRIVATE (self);
     SlopeRect r = dc->rect;
@@ -214,8 +214,8 @@ frame_draw_rect (SlopeFrame *self, const SlopeItemDC *dc)
 }
 
 
-static void
-frame_draw_title (SlopeFrame *self, const SlopeItemDC *dc)
+void
+slope_frame_draw_title (SlopeFrame *self, const SlopeItemDC *dc)
 {
     SlopeFramePrivate *m = SLOPE_FRAME_GET_PRIVATE (self);
     SlopeRect ink, logical;
@@ -231,7 +231,9 @@ frame_draw_title (SlopeFrame *self, const SlopeItemDC *dc)
     slope_text_set (dc->text, m->title);
     slope_text_get_extents (dc->text, &ink, &logical);
     slope_cairo_set_rgba (cr, m->title_color);
-    cairo_move_to (cr, (dc->rect.width - logical.width) / 2.0, 10.0);
+    cairo_move_to (cr,
+        dc->rect.x + (dc->rect.width - logical.width) / 2.0,
+        dc->rect.y + 10.0); /* make this y-offset a property */
     slope_text_show (dc->text);
 }
 
@@ -239,8 +241,8 @@ frame_draw_title (SlopeFrame *self, const SlopeItemDC *dc)
 static void
 frame_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
-    frame_draw_rect (SLOPE_FRAME (self), dc);
-    frame_draw_title (SLOPE_FRAME (self), dc);
+    slope_frame_draw_rect (SLOPE_FRAME (self), dc);
+    slope_frame_draw_title (SLOPE_FRAME (self), dc);
 }
 
 

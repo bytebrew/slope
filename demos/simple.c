@@ -31,9 +31,9 @@ int main(int argc, char *argv[])
     GtkWidget *view;
     SlopeFigure *figure;
     SlopeItem *grid;
-    SlopeItem *axis1, *axis2, *axis3, *axis4;
-    SlopeItem *series1, *series2, *series3, *series4;
-    SlopeArray2D *data1, *data2, *data3, *data4;
+    SlopeItem *axis1, *axis2, *axis3, *axis4, *axis5;
+    SlopeItem *series1, *series2, *series3, *series4, *series5;
+    SlopeArray2D *data1, *data2, *data3, *data4, *data5;
     double x;
     long k;
 
@@ -54,26 +54,30 @@ int main(int argc, char *argv[])
     slope_figure_set_root_item (figure, grid);
 
     /* Add axis onto the grid */
-    axis1 = slope_axis2d_new();
+    axis1 = slope_axis2d_new("COS(X)");
     slope_grid_emplace (SLOPE_GRID (grid), axis1, 0, 0, 10, 10);
 
     /* Add another axis onto the grid */
-    axis2 = slope_axis2d_new();
+    axis2 = slope_axis2d_new("SIN(X)");
     slope_grid_emplace (SLOPE_GRID (grid), axis2, 10, 0, 10, 10);
 
     /* Add another axis onto the grid */
-    axis3 = slope_axis2d_new();
+    axis3 = slope_axis2d_new("LOG(1+X)");
     slope_grid_emplace (SLOPE_GRID (grid), axis3, 0, 10, 10, 10);
 
     /* Add another axis onto the grid */
-    axis4 = slope_axis2d_new();
+    axis4 = slope_axis2d_new("EXP(X)");
     slope_grid_emplace (SLOPE_GRID (grid), axis4, 7, 7, 6, 6);
+
+    axis5 = slope_axis2d_new("SIN(X) x COS(3X)");
+    slope_grid_emplace (SLOPE_GRID (grid), axis5, 10, 10, 10, 10);
 
     /* create some datasets to plot */
     data1 = slope_array2d_new (20L);
     data2 = slope_array2d_new (20L);
     data3 = slope_array2d_new (20L);
     data4 = slope_array2d_new (20L);
+    data5 = slope_array2d_new (20L);
 
     for (k = 0; k < 100; ++k) {
         x = k * 0.1;
@@ -81,6 +85,7 @@ int main(int argc, char *argv[])
         slope_array2d_append (data2, x, cos (x));
         slope_array2d_append (data3, x, log (1.0 + x));
         slope_array2d_append (data4, x, exp (x));
+        slope_array2d_append (data5, x, sin (x) * cos(3*x));
     }
 
     /* Add data axis and put those axis onto the grid */
@@ -99,6 +104,10 @@ int main(int argc, char *argv[])
     series4 = slope_series2d_new_formatted ("g-");
     slope_series2d_set_data (SLOPE_SERIES2D (series4), data4, TRUE);
     slope_axis2d_add_plot (SLOPE_AXIS2D (axis4), SLOPE_PLOT2D (series4));
+
+    series5 = slope_series2d_new_formatted ("b-");
+    slope_series2d_set_data (SLOPE_SERIES2D (series5), data5, TRUE);
+    slope_axis2d_add_plot (SLOPE_AXIS2D (axis5), SLOPE_PLOT2D (series5));
 
     /* Add the figureonto the view */
     slope_view_set_figure (SLOPE_VIEW (view), figure);
