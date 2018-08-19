@@ -108,7 +108,7 @@ slope_frame_init (SlopeFrame *axis)
 
     /* Visible frame initialization */
     m->bg_fill_color = SLOPE_WHITE;
-    m->bg_stroke_color = SLOPE_COLOR_NULL;
+    m->bg_stroke_color = SLOPE_MAROON;
     m->options = SLOPE_FRAME_DRAW_RECT | SLOPE_FRAME_DRAW_TITLE | SLOPE_FRAME_ROUND_RECT;
     m->bg_stroke_width = 2.0;
     m->title = g_strdup("Slope");

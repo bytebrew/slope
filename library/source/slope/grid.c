@@ -26,12 +26,13 @@ typedef struct _SlopeGridPrivate SlopeGridPrivate;
 
 struct _SlopeGridPrivate
 {
-    SlopeRGBA lines_color;
-    double lines_width;
-
     int n_rows;
     int n_cols;
+
+    int cell_width;
+    int cell_height;
 };
+
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeGrid, slope_grid, SLOPE_TYPE_ITEM)
 #define SLOPE_GRID_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_GRID, SlopeGridPrivate))
@@ -40,15 +41,19 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeGrid, slope_grid, SLOPE_TYPE_ITEM)
 /* local decls */
 static void grid_finalize(GObject *self);
 static void grid_dispose (GObject *self);
+static void grid_draw_tree (SlopeItem *self, SlopeItemDC *dc);
 
 
 static void
 slope_grid_class_init (SlopeGridClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+    SlopeItemClass *item_class = SLOPE_ITEM_CLASS (klass);
 
     gobject_class->dispose = grid_dispose;
     gobject_class->finalize = grid_finalize;
+
+    item_class->draw_tree = grid_draw_tree;
 }
 
 
@@ -57,8 +62,8 @@ slope_grid_init (SlopeGrid *grid)
 {
     SlopeGridPrivate *m = SLOPE_GRID_GET_PRIVATE (grid);
 
-    m->lines_color = SLOPE_BLACK;
-    m->lines_width = 1.0;
+    m->n_rows = 1;
+    m->n_cols = 1;
 }
 
 
@@ -131,6 +136,35 @@ slope_grid_emplace (SlopeGrid *self, SlopeItem *child,
 
     /* make sure the layout boundaries are correct */
     slope_grid_update_layout (self);
+}
+
+
+static void
+grid_draw_tree (SlopeItem *self, SlopeItemDC *dc)
+{
+    SlopeGridPrivate *m = SLOPE_GRID_GET_PRIVATE (self);
+    SlopeRect rect, orig_rect = dc->rect;
+    SlopeTree *node = slope_item_get_fisrt_child (self);
+    int cell_width, cell_height;
+
+    cell_width = ((int) orig_rect.width) / m->n_cols;
+    cell_height = ((int) orig_rect.height) / m->n_rows;
+
+    while (node != NULL) {
+        SlopeItem *item = slope_item_from_tree_node (node);
+
+        rect.x = node->x * cell_width;
+        rect.y = node->y * cell_height;
+        rect.width = node->width * cell_width;
+        rect.height = node->height * cell_height;
+
+        dc->rect = rect;
+        SLOPE_ITEM_GET_CLASS (item)->draw_tree (item, dc);
+        node = node->next;
+    }
+
+    /* Give the DC back with the original rect */
+    dc->rect = orig_rect;
 }
 
 /* slope/grid.c */
