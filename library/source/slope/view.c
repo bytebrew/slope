@@ -88,11 +88,6 @@ view_dispose (GObject *object)
 static void
 view_finalize(GObject *object)
 {
-    SlopeView *self = SLOPE_VIEW (object);
-    SlopeViewPrivate *m = SLOPE_VIEW_GET_PRIVATE (object);
-
-    // TODO
-
     G_OBJECT_CLASS (slope_view_parent_class)->finalize (object);
 }
 
@@ -114,8 +109,8 @@ static gboolean slope_view_draw(GtkWidget *self, cairo_t *cr, gpointer data)
         return TRUE;
     }
 
-    gtk_widget_get_allocation(self, &alloc);
-    slope_figure_draw(m->figure, cr, 0, 0, alloc.width, alloc.height);
+    gtk_widget_get_allocation (self, &alloc);
+    slope_figure_draw (m->figure, cr, 0, 0, alloc.width, alloc.height);
 
     return TRUE;
 }

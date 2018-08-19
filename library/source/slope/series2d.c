@@ -34,8 +34,11 @@ struct _SlopeSeries2DPrivate
     SlopeArray2D *array;
 
     guint32 options;
+    guint32 marker;
+    double marker_radius;
 
     SlopeRGBA line_color;
+    SlopeRGBA marker_color;
     double line_width;
 };
 
@@ -81,7 +84,8 @@ slope_series2d_init (SlopeSeries2D *axis)
 
     m->options =
             SLOPE_SERIES2D_OWN_ARRAY |
-            SLOPE_SERIES2D_LINE_ANTIALIAS;
+            SLOPE_SERIES2D_DRAW_LINE |
+            SLOPE_SERIES2D_DRAW_MARKER;
 
     m->x_min = 0.0;
     m->x_max = 1.0;
@@ -89,7 +93,10 @@ slope_series2d_init (SlopeSeries2D *axis)
     m->y_max = 1.0;
 
     m->line_color = SLOPE_BLACK;
-    m->line_width = 1.5;
+    m->line_width = 1.0;
+
+    m->marker = SLOPE_SERIES2D_CIRCLE;
+    m->marker_radius = 3.0;
 }
 
 
@@ -115,6 +122,55 @@ slope_series2d_new (void)
 }
 
 
+void
+slope_series2d_format (SlopeSeries2D *self, const char *format)
+{
+    const char *c = format;
+    SlopeSeries2DPrivate *m;
+    SlopeRGBA color = SLOPE_BLACK;
+
+    g_return_if_fail (SLOPE_IS_SERIES2D (self));
+    m = SLOPE_SERIES2D_GET_PRIVATE (self);
+
+    slope_disable(m->options, SLOPE_SERIES2D_DRAW_LINE);
+    slope_disable(m->options, SLOPE_SERIES2D_DRAW_MARKER);
+
+    for (; *c; ++c) {
+
+        /* get a color */
+        switch (*c) {
+            case 'w': color = SLOPE_WHITE; break;
+            case 'k': color = SLOPE_BLACK; break;
+            case 'r': color = SLOPE_RED; break;
+            case 'g': color = SLOPE_GREEN; break;
+            case 'b': color = SLOPE_BLUE; break;
+
+            case '-': {
+                slope_enable(m->options, SLOPE_SERIES2D_DRAW_LINE);
+                m->line_color = color;
+                break;
+            }
+            case 'o': {
+                slope_enable(m->options, SLOPE_SERIES2D_DRAW_MARKER);
+                m->marker = SLOPE_SERIES2D_CIRCLE;
+                m->marker_color = color;
+                break;
+            }
+        }
+    }
+}
+
+
+SlopeItem*
+slope_series2d_new_formatted (const char *format)
+{
+    SlopeSeries2D *self = g_object_new (SLOPE_TYPE_SERIES2D, NULL);
+
+    slope_series2d_format (self, format);
+    return SLOPE_ITEM (self);
+}
+
+
 static void
 series2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
@@ -128,7 +184,7 @@ series2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 
     m = SLOPE_SERIES2D_GET_PRIVATE (self);
     item_p = SLOPE_ITEM_GET_PRIVATE (self);
-    axis = SLOPE_ITEM_PRIVATE (SLOPE_TREE (item_p)->parent)->publ_obj;
+    axis = SLOPE_AXIS2D (SLOPE_ITEM_PRIVATE (SLOPE_TREE (item_p)->parent)->publ_obj);
 
     slope_array2d_get_points (m->array, &npts, &pts);
     if (npts == 0L) return;
@@ -146,6 +202,8 @@ series2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
         cairo_line_to (dc->cr, f.x, f.y);
     }
 
+    cairo_set_antialias (dc->cr, CAIRO_ANTIALIAS_DEFAULT);
+    cairo_set_line_width (dc->cr, m->line_width);
     slope_cairo_set_rgba (dc->cr, m->line_color);
     cairo_stroke (dc->cr);
 }
@@ -174,8 +232,14 @@ void slope_series2d_set_data (SlopeSeries2D *self, SlopeArray2D *array, gboolean
     gulong k, npts;
 
     g_return_if_fail (SLOPE_IS_SERIES2D (self));
-
     m = SLOPE_SERIES2D_GET_PRIVATE (self);
+
+    /* Default values for no data */
+    m->x_min = 0.0;
+    m->x_max = 1.0;
+    m->y_min = 0.0;
+    m->y_max = 1.0;
+
     if (m->array != NULL && slope_enabled(m->options, SLOPE_SERIES2D_OWN_ARRAY)) {
         slope_array2d_delete (m->array);
     }
@@ -186,14 +250,16 @@ void slope_series2d_set_data (SlopeSeries2D *self, SlopeArray2D *array, gboolean
     if (m->array != NULL) {
         slope_array2d_get_points (m->array, &npts, &pts);
 
-        m->x_min = m->x_max = pts[0].x;
-        m->y_min = m->y_max = pts[0].y;
+        if (npts > 0) {
+            m->x_min = m->x_max = pts[0].x;
+            m->y_min = m->y_max = pts[0].y;
 
-        for (k = 0; k < npts; ++k) {
-            if (pts[k].x < m->x_min) m->x_min = pts[k].x;
-            if (pts[k].x > m->x_max) m->x_max = pts[k].x;
-            if (pts[k].y < m->y_min) m->y_min = pts[k].y;
-            if (pts[k].y > m->y_max) m->y_max = pts[k].y;
+            for (k = 0; k < npts; ++k) {
+                if (pts[k].x < m->x_min) m->x_min = pts[k].x;
+                if (pts[k].x > m->x_max) m->x_max = pts[k].x;
+                if (pts[k].y < m->y_min) m->y_min = pts[k].y;
+                if (pts[k].y > m->y_max) m->y_max = pts[k].y;
+            }
         }
     }
 }

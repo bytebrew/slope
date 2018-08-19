@@ -23,7 +23,7 @@
 #include <slope/axis2d.h>
 #include <slope/series2d.h>
 #include <slope/arrays.h>
-
+#include <math.h>
 
 int main(int argc, char *argv[])
 {
@@ -32,8 +32,10 @@ int main(int argc, char *argv[])
     SlopeFigure *figure;
     SlopeItem *grid;
     SlopeItem *axis;
-    SlopeItem *series;
-    SlopeArray2D *array;
+    SlopeItem *series1, *series2;
+    SlopeArray2D *data1, *data2;
+    double x;
+    long k;
 
     gtk_init(&argc, &argv);
 
@@ -54,17 +56,25 @@ int main(int argc, char *argv[])
     axis = slope_axis2d_new();
     slope_grid_emplace (SLOPE_GRID (grid), axis);
 
-    array = slope_array2d_new (20L);
-    slope_array2d_append (array, 0, 0);
-    slope_array2d_append (array, 1, 1);
-    slope_array2d_append (array, 2, 4);
-    slope_array2d_append (array, 3, 9);
-    slope_array2d_append (array, 4, 16);
+    /* create some datasets to plot */
+    data1 = slope_array2d_new (20L);
+    data2 = slope_array2d_new (20L);
+
+    for (k = 0; k < 100; ++k) {
+        x = k * 0.1;
+        slope_array2d_append (data1, x, sin (x));
+        slope_array2d_append (data2, x, cos (x));
+    }
 
     /* Add data to an axis and put that axis onto the grid */
-    series = slope_series2d_new();
-    slope_series2d_set_data (SLOPE_SERIES2D (series), array, TRUE);
-    slope_axis2d_add_plot (SLOPE_AXIS2D (axis), SLOPE_PLOT2D (series));
+    series1 = slope_series2d_new_formatted ("b-");
+    slope_series2d_set_data (SLOPE_SERIES2D (series1), data1, TRUE);
+
+    series2 = slope_series2d_new_formatted ("r-");
+    slope_series2d_set_data (SLOPE_SERIES2D (series2), data2, TRUE);
+
+    slope_axis2d_add_plot (SLOPE_AXIS2D (axis), SLOPE_PLOT2D (series1));
+    slope_axis2d_add_plot (SLOPE_AXIS2D (axis), SLOPE_PLOT2D (series2));
 
     /* Add the figureonto the view */
     slope_view_set_figure (SLOPE_VIEW (view), figure);

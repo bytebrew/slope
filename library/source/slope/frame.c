@@ -18,29 +18,10 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/frame.h"
+#include "slope/frame_p.h"
 #include "slope/item_p.h"
 
-
-typedef struct _SlopeFramePrivate SlopeFramePrivate;
-#define SLOPE_FRAME_PRIVATE(Addr) ((SlopeFramePrivate*) (Addr))
-
-
-struct _SlopeFramePrivate
-{
-    SlopeRGBA bg_fill_color;
-    SlopeRGBA bg_stroke_color;
-    double bg_stroke_width;
-    int margin;
-    SlopeRGBA title_color;
-    gchar *title;
-    guint32 options;
-};
-
-
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeFrame, slope_frame, SLOPE_TYPE_ITEM)
-#define SLOPE_FRAME_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_FRAME, SlopeFramePrivate))
-
 
 /* properties */
 enum {
@@ -107,7 +88,7 @@ slope_frame_init (SlopeFrame *axis)
 
     /* Visible frame initialization */
     m->bg_fill_color = SLOPE_WHITE;
-    m->bg_stroke_color = SLOPE_MAROON;
+    m->bg_stroke_color = SLOPE_COLOR_NULL;
     m->options = SLOPE_FRAME_DRAW_RECT | SLOPE_FRAME_DRAW_TITLE | SLOPE_FRAME_ROUND_RECT;
     m->bg_stroke_width = 2.0;
     m->title = g_strdup("Slope");

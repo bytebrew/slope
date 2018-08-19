@@ -49,7 +49,8 @@ typedef enum {
 typedef enum {
     SLOPE_SERIES2D_NONE               = (0U),
     SLOPE_SERIES2D_OWN_ARRAY          = (1U),
-    SLOPE_SERIES2D_LINE_ANTIALIAS     = (1U << 1U),
+    SLOPE_SERIES2D_DRAW_LINE          = (1U << 1U),
+    SLOPE_SERIES2D_DRAW_MARKER        = (1U << 2U)
 } SlopeSeries2DOption;
 
 
@@ -81,6 +82,10 @@ struct _SlopeSeries2DClass
 GType slope_series2d_get_type (void) G_GNUC_CONST;
 
 SlopeItem* slope_series2d_new (void);
+
+SlopeItem* slope_series2d_new_formatted (const char *format);
+
+void slope_series2d_format (SlopeSeries2D *self, const char *format);
 
 void slope_series2d_set_data (SlopeSeries2D *self, SlopeArray2D *array, gboolean own);
 

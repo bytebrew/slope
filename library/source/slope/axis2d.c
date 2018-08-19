@@ -18,33 +18,21 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slope/axis2d.h"
+#include "slope/axis2d_p.h"
+#include "slope/frame_p.h"
 #include "slope/item_p.h"
 
-typedef struct _SlopeAxis2DPrivate SlopeAxis2DPrivate;
-#define SLOPE_AXIS2D_PRIVATE(Addr) ((SlopeAxis2DPrivate*) (Addr))
-
-
-struct _SlopeAxis2DPrivate
-{
-    double fig_x_min, fig_x_max;
-    double fig_y_min, fig_y_max;
-    double fig_width, fig_height;
-
-    double dat_x_min, dat_x_max;
-    double dat_y_min, dat_y_max;
-    double dat_width, dat_height;
-};
-
-
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeAxis2D, slope_axis2d, SLOPE_TYPE_FRAME)
-#define SLOPE_AXIS2D_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_AXIS2D, SlopeAxis2DPrivate))
+
 
 /* local decls */
 static void axis2d_finalize (GObject *self);
 static void axis2d_dispose (GObject *self);
 static void axis2d_draw_self (SlopeItem *self, const SlopeItemDC *dc);
 static void axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot);
+static void axis2d_draw_self (SlopeItem *self, const SlopeItemDC *dc);
+static void axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc);
+
 
 static void
 slope_axis2d_class_init (SlopeAxis2DClass *klass)
@@ -56,6 +44,7 @@ slope_axis2d_class_init (SlopeAxis2DClass *klass)
     gobject_class->finalize = axis2d_finalize;
 
     item_class->draw_self = axis2d_draw_self;
+    item_class->draw_tree = axis2d_draw_tree;
 
     klass->add_plot = axis2d_add_plot;
 }
@@ -64,7 +53,11 @@ slope_axis2d_class_init (SlopeAxis2DClass *klass)
 static void
 slope_axis2d_init (SlopeAxis2D *axis)
 {
+    SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (axis);
+
     slope_axis2d_update_scale (axis);
+
+    m->data_margin = 16.0;
 }
 
 
@@ -76,7 +69,7 @@ axis2d_dispose (GObject *object)
 
 
 static void
-axis2d_finalize(GObject *object)
+axis2d_finalize (GObject *object)
 {
     G_OBJECT_CLASS (slope_axis2d_parent_class)->finalize (object);
 }
@@ -199,6 +192,43 @@ void slope_axis2d_unmap (SlopeAxis2D *self, SlopePoint *d, const SlopePoint *f)
 
     d->x = m->dat_x_min + ((f->x - m->fig_x_min) / m->fig_width) * m->dat_width;
     d->y = m->dat_y_min + ((m->fig_y_max - d->y) / m->fig_height) * m->dat_height;
+}
+
+
+static void
+axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc)
+{
+    SlopeFramePrivate *frame_p = SLOPE_FRAME_GET_PRIVATE (self);
+    SlopeAxis2DPrivate *axis_p = SLOPE_AXIS2D_GET_PRIVATE (self);
+    int margin = frame_p->margin;
+    SlopeRect orig_rect = dc->rect;
+
+    cairo_save (dc->cr);
+
+    /* If stuff like margins are to be applyed, we need to
+     * adjust the rectangle to which subitems will have access to */
+    if (margin > 0) {
+        cairo_translate (dc->cr, frame_p->margin, frame_p->margin);
+        dc->rect.width -= 2 * margin;
+        dc->rect.height -= 2 * margin;
+    }
+
+    slope_cairo_rect (dc->cr, &dc->rect);
+    cairo_clip (dc->cr);
+
+    axis_p->fig_x_min = dc->rect.x + axis_p->data_margin;
+    axis_p->fig_x_max = dc->rect.x + dc->rect.width - axis_p->data_margin;
+    axis_p->fig_width = axis_p->fig_x_max - axis_p->fig_x_min;
+
+    axis_p->fig_y_min = dc->rect.y + axis_p->data_margin;
+    axis_p->fig_y_max = dc->rect.y + dc->rect.height - axis_p->data_margin;
+    axis_p->fig_height = axis_p->fig_y_max - axis_p->fig_y_min;
+
+    SLOPE_ITEM_GET_CLASS (self)->draw_self (self, dc);
+    SLOPE_ITEM_GET_CLASS (self)->draw_children (self, dc);
+
+    cairo_restore (dc->cr);
+    dc->rect = orig_rect;
 }
 
 /* slope/axis2d.c */
