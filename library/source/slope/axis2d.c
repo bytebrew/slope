@@ -24,27 +24,16 @@
 typedef struct _SlopeAxis2DPrivate SlopeAxis2DPrivate;
 #define SLOPE_AXIS2D_PRIVATE(Addr) ((SlopeAxis2DPrivate*) (Addr))
 
-typedef struct _AxisLine AxisLine;
-#define AXIS_LINE(Addr) ((AxisLine *) (Addr))
-
-
-struct _AxisLine {
-    SlopeRGBA line_color;
-    double line_width;
-    SlopeOrientation orient;
-    guint32 options;
-};
-
 
 struct _SlopeAxis2DPrivate
 {
-    AxisLine l[6];
-
     double fig_x_min, fig_x_max;
     double fig_y_min, fig_y_max;
+    double fig_width, fig_height;
 
     double dat_x_min, dat_x_max;
     double dat_y_min, dat_y_max;
+    double dat_width, dat_height;
 };
 
 
@@ -75,33 +64,6 @@ slope_axis2d_class_init (SlopeAxis2DClass *klass)
 static void
 slope_axis2d_init (SlopeAxis2D *axis)
 {
-    SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (axis);
-
-    /* metic lines initialization */
-    m->l[SLOPE_AXIS2D_BOTTOM].line_color = SLOPE_BLACK;
-    m->l[SLOPE_AXIS2D_BOTTOM].line_width = 1.0;
-    m->l[SLOPE_AXIS2D_BOTTOM].options = SLOPE_AXIS2D_DRAW_TICKS;
-
-    m->l[SLOPE_AXIS2D_LEFT].line_color = SLOPE_BLACK;
-    m->l[SLOPE_AXIS2D_LEFT].line_width = 1.0;
-    m->l[SLOPE_AXIS2D_LEFT].options = SLOPE_AXIS2D_DRAW_TICKS;
-
-    m->l[SLOPE_AXIS2D_TOP].line_color = SLOPE_BLACK;
-    m->l[SLOPE_AXIS2D_TOP].line_width = 1.0;
-    m->l[SLOPE_AXIS2D_TOP].options = SLOPE_AXIS2D_DRAW_TICKS;
-
-    m->l[SLOPE_AXIS2D_RIGHT].line_color = SLOPE_BLACK;
-    m->l[SLOPE_AXIS2D_RIGHT].line_width = 1.0;
-    m->l[SLOPE_AXIS2D_RIGHT].options = SLOPE_AXIS2D_DRAW_TICKS;
-
-    m->l[SLOPE_AXIS2D_X].line_color = SLOPE_BLACK;
-    m->l[SLOPE_AXIS2D_X].line_width = 1.0;
-    m->l[SLOPE_AXIS2D_X].options = SLOPE_AXIS2D_DRAW_TICKS;
-
-    m->l[SLOPE_AXIS2D_Y].line_color = SLOPE_BLACK;
-    m->l[SLOPE_AXIS2D_Y].line_width = 1.0;
-    m->l[SLOPE_AXIS2D_Y].options = SLOPE_AXIS2D_DRAW_TICKS;
-
     slope_axis2d_update_scale (axis);
 }
 
@@ -172,6 +134,8 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
     m->dat_x_max = 1.0;
     m->dat_y_min = 0.0;
     m->dat_y_max = 1.0;
+    m->dat_width = 1.0;
+    m->dat_height = 1.0;
 
     if (!(iter = SLOPE_TREE (item_p)->first)) {
         /* no subitems */
@@ -207,6 +171,34 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
 
         iter = iter->next;
     }
+
+    m->dat_width = m->dat_x_max - m->dat_x_min;
+    m->dat_height = m->dat_y_max - m->dat_y_min;
+}
+
+
+void slope_axis2d_map (SlopeAxis2D *self, SlopePoint *f, const SlopePoint *d)
+{
+    SlopeAxis2DPrivate *m;
+
+    g_return_if_fail (SLOPE_IS_AXIS2D (self));
+    g_return_if_fail (d != NULL && f != NULL);
+    m = SLOPE_AXIS2D_GET_PRIVATE (self);
+
+    f->x = m->fig_x_min + ((d->x - m->dat_x_min) / m->dat_width) * m->fig_width;
+    f->y = m->fig_y_min + ((m->dat_y_max - d->y) / m->dat_height) * m->fig_height;
+}
+
+void slope_axis2d_unmap (SlopeAxis2D *self, SlopePoint *d, const SlopePoint *f)
+{
+     SlopeAxis2DPrivate *m;
+
+    g_return_if_fail (SLOPE_IS_AXIS2D (self));
+    g_return_if_fail (d != NULL && f != NULL);
+    m = SLOPE_AXIS2D_GET_PRIVATE (self);
+
+    d->x = m->dat_x_min + ((f->x - m->fig_x_min) / m->fig_width) * m->dat_width;
+    d->y = m->dat_y_min + ((m->fig_y_max - d->y) / m->fig_height) * m->dat_height;
 }
 
 /* slope/axis2d.c */

@@ -88,6 +88,10 @@ void slope_axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot);
 
 void slope_axis2d_update_scale (SlopeAxis2D *self);
 
+void slope_axis2d_map (SlopeAxis2D *self, SlopePoint *f, const SlopePoint *d);
+
+void slope_axis2d_unmap (SlopeAxis2D *self, SlopePoint *d, const SlopePoint *f);
+
 G_END_DECLS
 
 #endif /* _slope_axis2d_h_ */

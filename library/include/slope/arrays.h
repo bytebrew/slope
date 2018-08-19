@@ -18,4 +18,26 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* TODO */
+#ifndef _slope_arrays_h_
+#define _slope_arrays_h_
+
+#include "slope/drawing.h"
+
+G_BEGIN_DECLS
+
+typedef struct _SlopeArray2D SlopeArray2D;
+#define SLOPE_ARRAY2D(Addr) ((SlopeArray2D*) (Addr))
+
+SlopeArray2D* slope_array2d_new (unsigned long capacity);
+
+void slope_array2d_delete (SlopeArray2D *self);
+
+void slope_array2d_append (SlopeArray2D *self, double x, double y);
+
+void slope_array2d_get_points (SlopeArray2D *self,
+                               unsigned long *size,
+                               SlopePoint **points);
+
+G_END_DECLS
+
+#endif /* _slope_arrays_h_ */

@@ -27,6 +27,7 @@ typedef struct _SlopePlot2DPrivate SlopePlot2DPrivate;
 
 struct _SlopePlot2DPrivate
 {
+    char _dummy_padding;
 };
 
 

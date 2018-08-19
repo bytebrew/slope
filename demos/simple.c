@@ -21,6 +21,9 @@
 #include <slope/view.h>
 #include <slope/grid.h>
 #include <slope/axis2d.h>
+#include <slope/series2d.h>
+#include <slope/arrays.h>
+
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +32,8 @@ int main(int argc, char *argv[])
     SlopeFigure *figure;
     SlopeItem *grid;
     SlopeItem *axis;
+    SlopeItem *series;
+    SlopeArray2D *array;
 
     gtk_init(&argc, &argv);
 
@@ -49,9 +54,20 @@ int main(int argc, char *argv[])
     axis = slope_axis2d_new();
     slope_grid_emplace (SLOPE_GRID (grid), axis);
 
+    array = slope_array2d_new (20L);
+    slope_array2d_append (array, 0, 0);
+    slope_array2d_append (array, 1, 1);
+    slope_array2d_append (array, 2, 4);
+    slope_array2d_append (array, 3, 9);
+    slope_array2d_append (array, 4, 16);
+
+    /* Add data to an axis and put that axis onto the grid */
+    series = slope_series2d_new();
+    slope_series2d_set_data (SLOPE_SERIES2D (series), array, TRUE);
+    slope_axis2d_add_plot (SLOPE_AXIS2D (axis), SLOPE_PLOT2D (series));
+
     /* Add the figureonto the view */
     slope_view_set_figure (SLOPE_VIEW (view), figure);
-    gtk_window_set_title (GTK_WINDOW (window), slope_frame_get_title (SLOPE_FRAME (axis)));
 
     /* Save to image files */
     slope_figure_save (figure, "Figure.png", 500, 400, "png");
