@@ -59,12 +59,12 @@ slope_view_init (SlopeView *view)
     m->figure = NULL;
 
     /* Minimum width and height to be meaningful */
-    gtk_widget_set_size_request(gtk_widget, 350, 260);
+    gtk_widget_set_size_request (gtk_widget, 250, 200);
 
     /* select the types of events we want to be notified about */
-    gtk_widget_add_events(gtk_widget,
-                          GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK |
-                          GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
+    gtk_widget_add_events (gtk_widget,
+                           GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK |
+                           GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 
     g_signal_connect (view, "draw", G_CALLBACK (slope_view_draw), view);
 }
