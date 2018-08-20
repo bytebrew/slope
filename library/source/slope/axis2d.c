@@ -28,7 +28,8 @@ typedef struct _SlopeAxis2DPrivate SlopeAxis2DPrivate;
 
 struct _SlopeAxis2DPrivate
 {
-    double data_margin;
+    double left_margin, right_margin;
+    double bottom_margin, top_margin;
 
     double fig_x_min, fig_x_max;
     double fig_y_min, fig_y_max;
@@ -80,7 +81,10 @@ slope_axis2d_init (SlopeAxis2D *axis)
 
     slope_axis2d_update_scale (axis);
 
-    m->data_margin = 16.0;
+    m->right_margin = 20.0;
+    m->top_margin = 20.0;
+    m->bottom_margin = 20.0;
+    m->left_margin = 20.0;
 }
 
 
@@ -204,6 +208,7 @@ void slope_axis2d_map (SlopeAxis2D *self, SlopePoint *f, const SlopePoint *d)
     f->y = m->fig_y_min + ((m->dat_y_max - d->y) / m->dat_height) * m->fig_height;
 }
 
+
 void slope_axis2d_unmap (SlopeAxis2D *self, SlopePoint *d, const SlopePoint *f)
 {
      SlopeAxis2DPrivate *m;
@@ -237,12 +242,12 @@ axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc)
     slope_cairo_rect (dc->cr, &dc->rect);
     cairo_clip (dc->cr);
 
-    axis_p->fig_x_min = dc->rect.x + axis_p->data_margin;
-    axis_p->fig_x_max = dc->rect.x + dc->rect.width - axis_p->data_margin;
+    axis_p->fig_x_min = dc->rect.x + axis_p->left_margin;
+    axis_p->fig_x_max = dc->rect.x + dc->rect.width - axis_p->right_margin;
     axis_p->fig_width = axis_p->fig_x_max - axis_p->fig_x_min;
 
-    axis_p->fig_y_min = dc->rect.y + axis_p->data_margin;
-    axis_p->fig_y_max = dc->rect.y + dc->rect.height - axis_p->data_margin;
+    axis_p->fig_y_min = dc->rect.y + axis_p->top_margin;
+    axis_p->fig_y_max = dc->rect.y + dc->rect.height - axis_p->bottom_margin;
     axis_p->fig_height = axis_p->fig_y_max - axis_p->fig_y_min;
 
     slope_frame_draw_rect (SLOPE_FRAME (self), dc);
