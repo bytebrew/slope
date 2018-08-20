@@ -25,17 +25,39 @@
 
 G_BEGIN_DECLS
 
+/*==----------------------------------------------------------------==//
+ * 1D number arrays
+//==----------------------------------------------------------------==*/
+
+typedef struct _SlopeArray1D SlopeArray1D;
+#define SLOPE_ARRAY1D(Addr) ((SlopeArray1D*) (Addr))
+
+SlopeArray1D* slope_array1d_new ();
+
+void slope_array1d_delete (SlopeArray1D *self);
+
+void slope_array1d_append (SlopeArray1D *self, double x);
+
+void slope_array1d_get_points (SlopeArray1D *self,
+                               gulong *size,
+                               double **points);
+
+
+/*==----------------------------------------------------------------==//
+ * 2D point arrays
+//==----------------------------------------------------------------==*/
+
 typedef struct _SlopeArray2D SlopeArray2D;
 #define SLOPE_ARRAY2D(Addr) ((SlopeArray2D*) (Addr))
 
-SlopeArray2D* slope_array2d_new (unsigned long capacity);
+SlopeArray2D* slope_array2d_new ();
 
 void slope_array2d_delete (SlopeArray2D *self);
 
 void slope_array2d_append (SlopeArray2D *self, double x, double y);
 
 void slope_array2d_get_points (SlopeArray2D *self,
-                               unsigned long *size,
+                               gulong *size,
                                SlopePoint **points);
 
 G_END_DECLS

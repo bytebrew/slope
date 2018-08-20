@@ -20,63 +20,171 @@
 
 #include "slope/arrays.h"
 
+typedef enum {
+    VECTOR_IS_VIEW   = 1U,
 
-struct _SlopeArray2D {
-    SlopePoint *points;
-    unsigned long size;
-    unsigned long capacity;
-};
+    VECTOR_FLOAT_1D  = 1U << 1U,
+    VECTOR_FLOAT_2D  = 1U << 2U,
+    VECTOR_FLOAT_3D  = 1U << 3U,
+
+    VECTOR_STRING_1D  = 1U << 4U,
+    VECTOR_STRING_2D  = 1U << 5U,
+    VECTOR_STRING_3D  = 1U << 6U,
+} VectorTraits;
 
 
-SlopeArray2D *slope_array2d_new(unsigned long capacity)
+typedef struct _Vector {
+    gpointer data;
+    gulong size;
+    gulong capacity;
+    gulong element_size;
+    gulong traits;
+} Vector;
+
+
+static Vector *
+vector_new (gulong element_size)
 {
-    SlopeArray2D *self = g_malloc (sizeof (SlopeArray2D));
+    Vector *self;
 
-    self->points = NULL;
+    self = g_new (Vector, 1);
+    self->data = NULL;
     self->size = 0L;
-    self->capacity = capacity;
-
-    if (capacity > 0L) {
-        self->points = g_malloc (self->capacity * sizeof (SlopePoint));
-    }
+    self->capacity = 0L;
+    self->element_size = element_size;
 
     return self;
 }
 
 
-void slope_array2d_delete (SlopeArray2D *self)
+static void
+vector_delete (Vector *self)
 {
-    if (self->points) {
-        g_free (self->points);
+    if (self->data != NULL && self->capacity > 0L) {
+        g_free (self->data);
     }
+
     g_free (self);
 }
 
 
-void slope_array2d_append (SlopeArray2D *self, double x, double y)
+static void
+vector_grow (Vector *self)
 {
-    if (self->size == self->capacity) {
-        if (self->points != NULL) {
-            self->capacity <<= 1L;
-            self->points = g_realloc (self->points, self->capacity * sizeof (SlopePoint));
-        } else {
-            self->capacity = 10L;
-            self->points = g_malloc (self->capacity * sizeof (SlopePoint));
-        }
+    if (self->capacity == 0UL) {
+        self->capacity = 32UL;
+        self->data = g_malloc (self->capacity * self->element_size);
+    } else {
+        self->capacity <<= 1UL;
+        self->data = g_realloc (self->data, self->capacity * self->element_size);
+    }
+}
+
+
+/*==----------------------------------------------------------------==//
+ * 1D number arrays
+//==----------------------------------------------------------------==*/
+
+SlopeArray1D* slope_array1d_new ()
+{
+    Vector *self = vector_new (sizeof (double));
+    self->traits = VECTOR_FLOAT_1D;
+    return  (SlopeArray1D*) self;
+}
+
+
+void slope_array1d_delete (SlopeArray1D *self)
+{
+    vector_delete ((Vector *) self);
+}
+
+
+void slope_array1d_append (SlopeArray1D *self, double x)
+{
+    Vector *vec;
+    double *pts;
+
+    g_return_if_fail (self != NULL);
+
+    vec = (Vector *) self;
+
+    if (vec->size == vec->capacity) {
+        vector_grow (vec);
     }
 
-    self->points[self->size].x = x;
-    self->points[self->size].y = y;
-    self->size += 1L;
+    pts = (double *) vec->data;
+    pts[vec->size] = x;
+    vec->size += 1L;
+}
+
+
+void slope_array1d_get_points (SlopeArray1D *self,
+                               gulong *size,
+                               double **points)
+{
+    Vector *vec;
+
+    g_return_if_fail (self != NULL);
+
+    vec = (Vector *) self;
+
+    *size = vec->size;
+    *points = (double *) vec->data;
+}
+
+/*==----------------------------------------------------------------==//
+ * 2D point arrays
+//==----------------------------------------------------------------==*/
+
+SlopeArray2D*
+slope_array2d_new ()
+{
+    Vector *self = vector_new (sizeof (SlopePoint));
+    self->traits = VECTOR_FLOAT_2D;
+    return  (SlopeArray2D*) self;
+}
+
+
+void
+slope_array2d_delete (SlopeArray2D *self)
+{
+    vector_delete ((Vector *) self);
+}
+
+
+void
+slope_array2d_append (SlopeArray2D *self, double x, double y)
+{
+    Vector *vec;
+    SlopePoint *pts;
+
+    g_return_if_fail (self != NULL);
+
+    vec = (Vector *) self;
+
+    if (vec->size == vec->capacity) {
+        vector_grow (vec);
+    }
+
+    pts = (SlopePoint *) vec->data;
+    pts[vec->size].x = x;
+    pts[vec->size].y = y;
+    vec->size += 1L;
 }
 
 
 void slope_array2d_get_points (SlopeArray2D *self,
-                               unsigned long *size,
+                               gulong *size,
                                SlopePoint **points)
 {
-    *size = self->size;
-    *points = self->points;
+    Vector *vec;
+
+    g_return_if_fail (self != NULL);
+
+    vec = (Vector *) self;
+
+    *size = vec->size;
+    *points = (SlopePoint *) vec->data;
 }
 
 /* slope/arrays.c */

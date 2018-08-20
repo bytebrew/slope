@@ -73,11 +73,11 @@ int main(int argc, char *argv[])
     slope_grid_emplace (SLOPE_GRID (grid), axis5, 10, 10, 10, 10);
 
     /* create some datasets to plot */
-    data1 = slope_array2d_new (20L);
-    data2 = slope_array2d_new (20L);
-    data3 = slope_array2d_new (20L);
-    data4 = slope_array2d_new (20L);
-    data5 = slope_array2d_new (20L);
+    data1 = slope_array2d_new ();
+    data2 = slope_array2d_new ();
+    data3 = slope_array2d_new ();
+    data4 = slope_array2d_new ();
+    data5 = slope_array2d_new ();
 
     for (k = 0; k < 100; ++k) {
         x = k * 0.1;
