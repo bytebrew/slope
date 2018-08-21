@@ -169,8 +169,13 @@ static void
 figure_draw (SlopeFigure *self, cairo_t *cr,
              int x, int y, int width, int height)
 {
-    SlopeFigurePrivate *m = SLOPE_FIGURE_GET_PRIVATE (self);
+    SlopeFigurePrivate *m;
     SlopeRect rect;
+
+    g_return_if_fail (cr != NULL);
+    g_return_if_fail (cairo_status (cr) == CAIRO_STATUS_SUCCESS);
+
+    m = SLOPE_FIGURE_GET_PRIVATE (self);
 
     /* Save the cairo context's state */
     cairo_save (cr);
