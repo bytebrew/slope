@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
 
     gtk_init(&argc, &argv);
 
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
     g_signal_connect(G_OBJECT(window), "destroy",
                      G_CALLBACK(gtk_main_quit), NULL);
 
@@ -85,7 +86,7 @@ int main(int argc, char *argv[])
         slope_array2d_append (data2, x, cos (x));
         slope_array2d_append (data3, x, log (1.0 + x));
         slope_array2d_append (data4, x, exp (x));
-        slope_array2d_append (data5, x, sin (x) * cos(3*x));
+        slope_array2d_append (data5, x, sin (x) * cos (3.0 * x));
     }
 
     /* Add data axis and put those axis onto the grid */
