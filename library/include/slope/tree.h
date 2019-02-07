@@ -34,6 +34,7 @@ struct _SlopeTree {
     SlopeTree *last;
 
     /* layout extra data */
+    /* Currently used only by SlopeGrid */
     int x, y;
     int width, height;
 };
@@ -55,6 +56,8 @@ struct _SlopeTree {
 SlopeTree* slope_tree_append (SlopeTree *parent, SlopeTree *child);
 
 SlopeTree* slope_tree_prepend (SlopeTree *parent, SlopeTree *child);
+
+SlopeTree* slope_tree_detach (SlopeTree *parent, SlopeTree *child);
 
 void slope_tree_destroy (SlopeTree *root, SlopeCB cleanup);
 

@@ -56,19 +56,19 @@ int main(int argc, char *argv[])
     slope_figure_set_root_item (figure, grid);
 
     /* Add axis onto the grid */
-    axis1 = slope_axis2d_new("SIN(X)");
+    axis1 = slope_axis2d_new("Sin(X)");
     slope_grid_emplace (SLOPE_GRID (grid), axis1, 0, 0, 10, 10);
 
     /* Add another axis onto the grid */
-    axis2 = slope_axis2d_new("COS(3X)");
+    axis2 = slope_axis2d_new("Cos(3X)");
     slope_grid_emplace (SLOPE_GRID (grid), axis2, 10, 0, 10, 10);
 
     /* Add another axis onto the grid */
-    axis3 = slope_axis2d_new("SIN(X) + COS(3X)");
+    axis3 = slope_axis2d_new("Sin(X) + Cos(3X)");
     slope_grid_emplace (SLOPE_GRID (grid), axis3, 0, 10, 10, 10);
 
     /* Add another axis onto the grid */
-    axis4 = slope_axis2d_new("SIN(X) * COS(3X)");
+    axis4 = slope_axis2d_new("Sin(X) * Cos(3X)");
     slope_grid_emplace (SLOPE_GRID (grid), axis4, 10, 10, 10, 10);
 
     /* create some datasets to plot */

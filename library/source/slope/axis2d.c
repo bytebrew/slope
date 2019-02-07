@@ -145,7 +145,7 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
     double plt_x_min, plt_x_max;
     double plt_y_min, plt_y_max;
 
-    g_return_if_fail (SLOPE_IS_AXIS2D (self));
+    g_assert (SLOPE_IS_AXIS2D (self));
     m = SLOPE_AXIS2D_GET_PRIVATE (self);
 
     /* init values for the 'no child' case */
@@ -200,8 +200,8 @@ void slope_axis2d_map (SlopeAxis2D *self, SlopePoint *f, const SlopePoint *d)
 {
     SlopeAxis2DPrivate *m;
 
-    g_return_if_fail (SLOPE_IS_AXIS2D (self));
-    g_return_if_fail (d != NULL && f != NULL);
+    g_assert (SLOPE_IS_AXIS2D (self));
+    g_assert (d != NULL && f != NULL);
     m = SLOPE_AXIS2D_GET_PRIVATE (self);
 
     f->x = m->fig_x_min + ((d->x - m->dat_x_min) / m->dat_width) * m->fig_width;
@@ -213,8 +213,8 @@ void slope_axis2d_unmap (SlopeAxis2D *self, SlopePoint *d, const SlopePoint *f)
 {
      SlopeAxis2DPrivate *m;
 
-    g_return_if_fail (SLOPE_IS_AXIS2D (self));
-    g_return_if_fail (d != NULL && f != NULL);
+    g_assert (SLOPE_IS_AXIS2D (self));
+    g_assert (d != NULL && f != NULL);
     m = SLOPE_AXIS2D_GET_PRIVATE (self);
 
     d->x = m->dat_x_min + ((f->x - m->fig_x_min) / m->fig_width) * m->dat_width;

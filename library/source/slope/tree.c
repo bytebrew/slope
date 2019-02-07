@@ -56,9 +56,43 @@ slope_tree_prepend (SlopeTree *parent, SlopeTree *child)
 }
 
 
+SlopeTree* slope_tree_detach (SlopeTree *parent, SlopeTree *child)
+{
+    g_assert(parent);
+    g_assert(child);
+
+    if (parent->first == child) {
+        if (parent->last == child) {
+            /* Child is both the first and last node, so it's the first one */
+            parent->first = NULL;
+            parent->last = NULL;
+        } else {
+            /* child is the first but not the last, so there's another after it */
+            parent->first = child->next;
+            parent->first->prev = NULL;
+        }
+    } else if (parent->last == child) {
+        /* child is the last but not the first, so there's another before it */
+        parent->last = child->prev;
+        parent->last->next = NULL;
+    } else {
+        /* Child is in the middle of a chain */
+        child->prev->next = child->next;
+        child->next->prev = child->prev;
+    }
+
+    child->prev = NULL;
+    child->next = NULL;
+    child->parent = NULL;
+    return child;
+}
+
+
 void
 slope_tree_destroy (SlopeTree *node, SlopeCB cleanup)
 {
+    g_assert(cleanup);
+
     while (node != NULL) {
         SlopeTree *parent = node->parent;
 

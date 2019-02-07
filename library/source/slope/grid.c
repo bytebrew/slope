@@ -118,8 +118,8 @@ slope_grid_emplace (SlopeGrid *self, SlopeItem *child,
 {
     SlopeTree *node;
 
-    g_return_if_fail (SLOPE_IS_GRID (self));
-    g_return_if_fail (SLOPE_IS_ITEM (child));
+    g_assert (SLOPE_IS_GRID (self));
+    g_assert (SLOPE_IS_ITEM (child));
 
     /* set child layout information */
     node = slope_item_get_tree_node (child);

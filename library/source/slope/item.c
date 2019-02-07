@@ -161,8 +161,8 @@ void slope_item_append (SlopeItem *parent, SlopeItem *child)
     SlopeItemPrivate *parent_p;
     SlopeItemPrivate *child_p;
 
-    g_return_if_fail (SLOPE_IS_ITEM (parent));
-    g_return_if_fail (SLOPE_IS_ITEM (child));
+    g_assert (SLOPE_IS_ITEM (parent));
+    g_assert (SLOPE_IS_ITEM (child));
 
     parent_p = SLOPE_ITEM_GET_PRIVATE (parent);
     child_p = SLOPE_ITEM_GET_PRIVATE (child);
@@ -244,32 +244,36 @@ item_attached_detached (SlopeItem *self, SlopeItem *parent)
 }
 
 
-SlopeTree* slope_item_get_tree_node (SlopeItem *self)
+SlopeTree*
+slope_item_get_tree_node (SlopeItem *self)
 {
-    g_return_val_if_fail (self != NULL, NULL);
+    g_assert (self != NULL);
     return SLOPE_TREE (SLOPE_ITEM_GET_PRIVATE (self));
 }
 
 
-SlopeTree* slope_item_get_fisrt_child (SlopeItem *self)
+SlopeTree*
+slope_item_get_fisrt_child (SlopeItem *self)
 {
-    g_return_val_if_fail (self != NULL, NULL);
+    g_assert (self != NULL);
     return SLOPE_TREE (SLOPE_ITEM_GET_PRIVATE (self))->first;
 }
 
 
-SlopeItem* slope_item_from_tree_node (SlopeTree *tree_node)
+SlopeItem*
+slope_item_from_tree_node (SlopeTree *tree_node)
 {
-    g_return_val_if_fail (tree_node != NULL, NULL);
+    g_assert(tree_node != NULL);
     return SLOPE_ITEM_PRIVATE (tree_node)->publ_obj;
 }
 
 
-SlopeItem* slope_item_get_parent (SlopeItem *self)
+SlopeItem*
+slope_item_get_parent (SlopeItem *self)
 {
     SlopeItemPrivate *m;
 
-    g_return_val_if_fail (self != NULL, NULL);
+    g_assert (self != NULL);
 
     m = SLOPE_ITEM_GET_PRIVATE (self);
     m = SLOPE_ITEM_PRIVATE (SLOPE_TREE (m)->parent);

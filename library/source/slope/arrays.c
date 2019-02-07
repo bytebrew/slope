@@ -27,9 +27,6 @@ typedef enum {
     VECTOR_FLOAT_2D  = 1U << 2U,
     VECTOR_FLOAT_3D  = 1U << 3U,
 
-    VECTOR_STRING_1D  = 1U << 4U,
-    VECTOR_STRING_2D  = 1U << 5U,
-    VECTOR_STRING_3D  = 1U << 6U,
 } VectorTraits;
 
 

@@ -252,6 +252,7 @@ slope_frame_draw_title (SlopeFrame *self, const SlopeItemDC *dc)
 static void
 frame_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
+    g_assert (SLOPE_IS_FRAME (self));
     slope_frame_draw_rect (SLOPE_FRAME (self), dc);
     slope_frame_draw_title (SLOPE_FRAME (self), dc);
 }
@@ -262,7 +263,7 @@ slope_frame_set_title (SlopeFrame *self, const gchar *title)
 {
     SlopeFramePrivate *m;
 
-    g_return_if_fail (SLOPE_IS_FRAME (self));
+    g_assert (SLOPE_IS_FRAME (self));
     m = SLOPE_FRAME_GET_PRIVATE (self);
 
     if (m->title != NULL) {
@@ -279,7 +280,7 @@ slope_frame_set_title (SlopeFrame *self, const gchar *title)
 const gchar* /* public get_title() */
 slope_frame_get_title (SlopeFrame *self)
 {
-    g_return_val_if_fail (SLOPE_IS_FRAME (self), NULL);
+    g_assert (SLOPE_IS_FRAME (self));
     return SLOPE_FRAME_GET_PRIVATE (self)->title;
 }
 
@@ -287,6 +288,8 @@ slope_frame_get_title (SlopeFrame *self)
 static void
 frame_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 {
+    g_assert (SLOPE_IS_FRAME (self));
+
     SlopeFramePrivate *m = SLOPE_FRAME_GET_PRIVATE (self);
     int margin = m->margin;
     SlopeRect orig_rect = dc->rect;
