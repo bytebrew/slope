@@ -70,6 +70,8 @@ static void item_attached_detached (SlopeItem *self, SlopeItem *parent);
 static void item_draw_self (SlopeItem *self, const SlopeItemDC *dc);
 static void item_draw_children (SlopeItem *self, SlopeItemDC *dc);
 static void item_draw_tree (SlopeItem *self, SlopeItemDC *dc);
+static void item_add_bottom (SlopeItem *parent, SlopeItem *child);
+static void item_add_top (SlopeItem *parent, SlopeItem *child);
 
 
 static void
@@ -87,6 +89,8 @@ slope_item_class_init (SlopeItemClass *klass)
     klass->draw_tree = item_draw_tree;
     klass->attached = item_attached_detached;
     klass->detached = item_attached_detached;
+    klass->add_top = item_add_top;
+    klass->add_bottom = item_add_bottom;
 
 
     item_props[PROP_VISIBLE] =
@@ -97,6 +101,18 @@ slope_item_class_init (SlopeItemClass *klass)
                                 G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
     g_object_class_install_properties (gobject_class, PROP_LAST, item_props);
+}
+
+
+static void
+slope_item_init (SlopeItem *self)
+{
+    SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE (self);
+
+    m->figure = NULL;
+    slope_tree_init(&m->tree_node);
+    m->publ_obj = self;
+    m->options = ItemVisible;
 }
 
 
@@ -131,18 +147,6 @@ item_get_property (GObject *object, guint prop_id,
 
 
 static void
-slope_item_init (SlopeItem *self)
-{
-    SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE (self);
-
-    m->figure = NULL;
-    slope_tree_init(&m->tree_node);
-    m->publ_obj = self;
-    m->options = ItemVisible;
-}
-
-
-static void
 item_dispose (GObject *object)
 {
     G_OBJECT_CLASS (slope_item_parent_class)->dispose (object);
@@ -156,7 +160,8 @@ item_finalize (GObject *object)
 }
 
 
-void slope_item_append (SlopeItem *parent, SlopeItem *child)
+static void
+item_add_top (SlopeItem *parent, SlopeItem *child)
 {
     SlopeItemPrivate *parent_p;
     SlopeItemPrivate *child_p;
@@ -170,6 +175,42 @@ void slope_item_append (SlopeItem *parent, SlopeItem *child)
     child_p->figure = parent_p->figure;
     slope_tree_append (SLOPE_TREE (parent_p), SLOPE_TREE (child_p));
     SLOPE_ITEM_GET_CLASS (child)->attached (child, parent);
+}
+
+
+static void
+item_add_bottom (SlopeItem *parent, SlopeItem *child)
+{
+    SlopeItemPrivate *parent_p;
+    SlopeItemPrivate *child_p;
+
+    g_assert (SLOPE_IS_ITEM (parent));
+    g_assert (SLOPE_IS_ITEM (child));
+
+    parent_p = SLOPE_ITEM_GET_PRIVATE (parent);
+    child_p = SLOPE_ITEM_GET_PRIVATE (child);
+
+    child_p->figure = parent_p->figure;
+    slope_tree_prepend (SLOPE_TREE (parent_p), SLOPE_TREE (child_p));
+    SLOPE_ITEM_GET_CLASS (child)->attached (child, parent);
+}
+
+
+void
+slope_item_add_top (SlopeItem *parent, SlopeItem *child)
+{
+    g_assert (SLOPE_IS_ITEM (parent));
+    g_assert (SLOPE_IS_ITEM (child));
+    SLOPE_ITEM_GET_CLASS (parent)->add_top (parent, child);
+}
+
+
+void
+slope_item_add_bottom (SlopeItem *parent, SlopeItem *child)
+{
+    g_assert (SLOPE_IS_ITEM (parent));
+    g_assert (SLOPE_IS_ITEM (child));
+    SLOPE_ITEM_GET_CLASS (parent)->add_bottom (parent, child);
 }
 
 

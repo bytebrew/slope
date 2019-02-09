@@ -26,6 +26,17 @@ typedef struct _SlopeAxis2DPrivate SlopeAxis2DPrivate;
 #define SLOPE_AXIS2D_PRIVATE(Addr) ((SlopeAxis2DPrivate*) (Addr))
 
 
+typedef enum {
+    SCALE_BOTTOM,
+    SCALE_LEFT,
+    SCALE_TOP,
+    SCALE_RIGHT,
+    SCALE_X,
+    SCALE_Y,
+    SCALE_COUNT
+} ScaleIndex;
+
+
 struct _SlopeAxis2DPrivate
 {
     double left_margin, right_margin;
@@ -39,12 +50,7 @@ struct _SlopeAxis2DPrivate
     double dat_y_min, dat_y_max;
     double dat_width, dat_height;
 
-    SlopeItem *bottom_scale;
-    SlopeItem *left_scale;
-    SlopeItem *top_scale;
-    SlopeItem *right_scale;
-    SlopeItem *x_scale;
-    SlopeItem *y_scale;
+    SlopeItem *scales[SCALE_COUNT];
 };
 
 
@@ -60,10 +66,12 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeAxis2D, slope_axis2d, SLOPE_TYPE_FRAME)
 static void axis2d_finalize (GObject *self);
 static void axis2d_dispose (GObject *self);
 static void axis2d_draw_self (SlopeItem *self, const SlopeItemDC *dc);
-static void axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot);
 static void axis2d_draw_self (SlopeItem *self, const SlopeItemDC *dc);
 static void axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc);
 static void axis2d_set_scales_position (SlopeAxis2D *self);
+static void axis2d_add_bottom (SlopeItem *parent, SlopeItem *child);
+static void axis2d_add_top (SlopeItem *parent, SlopeItem *child);
+static void base_add_top (SlopeItem *self, SlopeItem *child);
 
 static void
 slope_axis2d_class_init (SlopeAxis2DClass *klass)
@@ -76,8 +84,8 @@ slope_axis2d_class_init (SlopeAxis2DClass *klass)
 
     item_class->draw_self = axis2d_draw_self;
     item_class->draw_tree = axis2d_draw_tree;
-
-    klass->add_plot = axis2d_add_plot;
+    item_class->add_top = axis2d_add_top;
+    item_class->add_bottom = axis2d_add_bottom;
 }
 
 
@@ -85,6 +93,7 @@ static void
 slope_axis2d_init (SlopeAxis2D *self)
 {
     SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
+    guint k;
 
     slope_axis2d_update_scale (self);
 
@@ -93,26 +102,14 @@ slope_axis2d_init (SlopeAxis2D *self)
     m->bottom_margin = 20.0;
     m->left_margin = 20.0;
 
-    m->bottom_scale = slope_scale_new();
-    slope_item_append (SLOPE_ITEM (self), m->bottom_scale);
-
-    m->left_scale = slope_scale_new();
-    slope_item_append (SLOPE_ITEM (self), m->left_scale);
-
-    m->top_scale = slope_scale_new();
-    slope_item_append (SLOPE_ITEM (self), m->top_scale);
-
-    m->right_scale = slope_scale_new();
-    slope_item_append (SLOPE_ITEM (self), m->right_scale);
-
-    m->x_scale = slope_scale_new();
-    slope_item_append (SLOPE_ITEM (self), m->x_scale);
-
-    m->y_scale = slope_scale_new();
-    slope_item_append (SLOPE_ITEM (self), m->y_scale);
+    for (k = 0; k < SCALE_COUNT; ++k) {
+        m->scales[k] = slope_scale_new();
+        base_add_top (SLOPE_ITEM (self), m->scales[k]);
+    }
 
     slope_axis2d_set_scales (SLOPE_AXIS2D (self),
-                             SLOPE_AXIS2D_SCALE_X | SLOPE_AXIS2D_SCALE_Y);
+                             SLOPE_AXIS2D_SCALE_X
+                             |SLOPE_AXIS2D_SCALE_Y);
 }
 
 
@@ -127,6 +124,47 @@ static void
 axis2d_finalize (GObject *object)
 {
     G_OBJECT_CLASS (slope_axis2d_parent_class)->finalize (object);
+}
+
+
+static void
+put_scales_on_top (SlopeAxis2D *self)
+{
+    SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
+    SlopeTree *node, *tree;
+    guint k;
+
+    tree = slope_item_get_tree_node (SLOPE_ITEM (self));
+
+    for (k = 0; k < SCALE_COUNT; ++k) {
+        node = slope_item_get_tree_node (m->scales[k]);
+        slope_tree_append (tree, slope_tree_detach (tree, node));
+    }
+}
+
+
+static void
+base_add_top (SlopeItem *self, SlopeItem *child)
+{
+    SLOPE_ITEM_CLASS (slope_axis2d_parent_class)->add_top (self, child);
+}
+
+
+static void
+axis2d_add_top (SlopeItem *self, SlopeItem *child)
+{
+    SLOPE_ITEM_CLASS (slope_axis2d_parent_class)->add_top (self, child);
+    put_scales_on_top (SLOPE_AXIS2D (self));
+    slope_axis2d_update_scale (SLOPE_AXIS2D (self));
+}
+
+
+static void
+axis2d_add_bottom (SlopeItem *self, SlopeItem *child)
+{
+    SLOPE_ITEM_CLASS (slope_axis2d_parent_class)->add_bottom (self, child);
+    put_scales_on_top (SLOPE_AXIS2D (self));
+    slope_axis2d_update_scale (SLOPE_AXIS2D (self));
 }
 
 
@@ -147,35 +185,18 @@ axis2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 }
 
 
-static void
-axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot)
-{
-    slope_item_append (SLOPE_ITEM (self), SLOPE_ITEM (plot));
-    slope_axis2d_update_scale (self);
-}
-
-
-void
-slope_axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot)
-{
-    g_assert (SLOPE_IS_AXIS2D (self));
-    g_assert (SLOPE_IS_PLOT2D (plot));
-    SLOPE_AXIS2D_GET_CLASS (self)->add_plot (self, plot);
-}
-
-
 SlopeScale* slope_axis2d_get_scale (SlopeAxis2D *self, SlopeAxisScale scale)
 {
     SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
     g_assert (SLOPE_IS_AXIS2D (self));
 
     switch (scale) {
-        case SLOPE_AXIS2D_SCALE_BOTTOM: return SLOPE_SCALE(m->bottom_scale);
-        case SLOPE_AXIS2D_SCALE_LEFT: return SLOPE_SCALE(m->left_scale);
-        case SLOPE_AXIS2D_SCALE_TOP: return SLOPE_SCALE(m->top_scale);
-        case SLOPE_AXIS2D_SCALE_RIGHT: return SLOPE_SCALE(m->right_scale);
-        case SLOPE_AXIS2D_SCALE_X: return SLOPE_SCALE(m->x_scale);
-        case SLOPE_AXIS2D_SCALE_Y: return SLOPE_SCALE(m->y_scale);
+        case SLOPE_AXIS2D_SCALE_BOTTOM: return SLOPE_SCALE(m->scales[SCALE_BOTTOM]);
+        case SLOPE_AXIS2D_SCALE_LEFT: return SLOPE_SCALE(m->scales[SCALE_LEFT]);
+        case SLOPE_AXIS2D_SCALE_TOP: return SLOPE_SCALE(m->scales[SCALE_TOP]);
+        case SLOPE_AXIS2D_SCALE_RIGHT: return SLOPE_SCALE(m->scales[SCALE_RIGHT]);
+        case SLOPE_AXIS2D_SCALE_X: return SLOPE_SCALE(m->scales[SCALE_X]);
+        case SLOPE_AXIS2D_SCALE_Y: return SLOPE_SCALE(m->scales[SCALE_Y]);
     }
 
     g_assert (FALSE);
@@ -196,12 +217,12 @@ void slope_axis2d_set_scales (SlopeAxis2D *self, SlopeAxisScale scales)
                             |SLOPE_AXIS2D_SCALE_X
                             |SLOPE_AXIS2D_SCALE_Y));
 
-    slope_item_set_visible (m->bottom_scale, slope_enabled(scales, SLOPE_AXIS2D_SCALE_BOTTOM));
-    slope_item_set_visible (m->left_scale, slope_enabled(scales, SLOPE_AXIS2D_SCALE_LEFT));
-    slope_item_set_visible (m->top_scale, slope_enabled(scales, SLOPE_AXIS2D_SCALE_TOP));
-    slope_item_set_visible (m->right_scale, slope_enabled(scales, SLOPE_AXIS2D_SCALE_RIGHT));
-    slope_item_set_visible (m->x_scale, slope_enabled(scales, SLOPE_AXIS2D_SCALE_X));
-    slope_item_set_visible (m->y_scale, slope_enabled(scales, SLOPE_AXIS2D_SCALE_Y));
+    slope_item_set_visible (m->scales[SCALE_BOTTOM], slope_enabled(scales, SLOPE_AXIS2D_SCALE_BOTTOM));
+    slope_item_set_visible (m->scales[SCALE_LEFT], slope_enabled(scales, SLOPE_AXIS2D_SCALE_LEFT));
+    slope_item_set_visible (m->scales[SCALE_TOP], slope_enabled(scales, SLOPE_AXIS2D_SCALE_TOP));
+    slope_item_set_visible (m->scales[SCALE_RIGHT], slope_enabled(scales, SLOPE_AXIS2D_SCALE_RIGHT));
+    slope_item_set_visible (m->scales[SCALE_X], slope_enabled(scales, SLOPE_AXIS2D_SCALE_X));
+    slope_item_set_visible (m->scales[SCALE_Y], slope_enabled(scales, SLOPE_AXIS2D_SCALE_Y));
 }
 
 
@@ -311,34 +332,39 @@ axis2d_set_scales_position (SlopeAxis2D *self)
 {
     SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
     SlopePoint fig_p1, fig_p2, zero;
+    SlopeScale *scale;
 
     fig_p1.x = m->fig_x_min;
     fig_p1.y = m->fig_y_max;
     fig_p2.x = m->fig_x_max;
     fig_p2.y = m->fig_y_max;
-    slope_scale_set_figure_position (SLOPE_SCALE (m->bottom_scale), &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (SLOPE_SCALE (m->bottom_scale), m->dat_x_min, m->dat_x_max);
+    scale = SLOPE_SCALE (m->scales[SCALE_BOTTOM]);
+    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
+    slope_scale_set_data_extents (scale, m->dat_x_min, m->dat_x_max);
 
     fig_p1.x = m->fig_x_min;
     fig_p1.y = m->fig_y_max;
     fig_p2.x = m->fig_x_min;
     fig_p2.y = m->fig_y_min;
-    slope_scale_set_figure_position (SLOPE_SCALE (m->left_scale), &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (SLOPE_SCALE (m->left_scale), m->dat_y_min, m->dat_y_max);
+    scale = SLOPE_SCALE (m->scales[SCALE_LEFT]);
+    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
+    slope_scale_set_data_extents (scale, m->dat_y_min, m->dat_y_max);
 
     fig_p1.x = m->fig_x_min;
     fig_p1.y = m->fig_y_min;
     fig_p2.x = m->fig_x_max;
     fig_p2.y = m->fig_y_min;
-    slope_scale_set_figure_position (SLOPE_SCALE (m->top_scale), &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (SLOPE_SCALE (m->top_scale), m->dat_x_min, m->dat_x_max);
+    scale = SLOPE_SCALE (m->scales[SCALE_TOP]);
+    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
+    slope_scale_set_data_extents (scale, m->dat_x_min, m->dat_x_max);
 
     fig_p1.x = m->fig_x_max;
     fig_p1.y = m->fig_y_max;
     fig_p2.x = m->fig_x_max;
     fig_p2.y = m->fig_y_min;
-    slope_scale_set_figure_position (SLOPE_SCALE (m->right_scale), &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (SLOPE_SCALE (m->right_scale), m->dat_y_min, m->dat_y_max);
+    scale = SLOPE_SCALE (m->scales[SCALE_RIGHT]);
+    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
+    slope_scale_set_data_extents (scale, m->dat_y_min, m->dat_y_max);
 
     fig_p2.x = 0;
     fig_p2.y = 0;
@@ -348,16 +374,17 @@ axis2d_set_scales_position (SlopeAxis2D *self)
     fig_p1.y = zero.y;
     fig_p2.x = m->fig_x_max;
     fig_p2.y = zero.y;
-    slope_scale_set_figure_position (SLOPE_SCALE (m->x_scale), &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (SLOPE_SCALE (m->x_scale), m->dat_x_min, m->dat_x_max);
+    scale = SLOPE_SCALE (m->scales[SCALE_X]);
+    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
+    slope_scale_set_data_extents (scale, m->dat_x_min, m->dat_x_max);
 
     fig_p1.x = zero.x;
     fig_p1.y = m->fig_y_max;
     fig_p2.x = zero.x;
     fig_p2.y = m->fig_y_min;
-    slope_scale_set_figure_position (SLOPE_SCALE (m->y_scale), &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (SLOPE_SCALE (m->y_scale), m->dat_y_min, m->dat_y_max);
-
+    scale = SLOPE_SCALE (m->scales[SCALE_Y]);
+    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
+    slope_scale_set_data_extents (scale, m->dat_y_min, m->dat_y_max);
 }
 
 
@@ -386,15 +413,26 @@ axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc)
     m->fig_x_max = dc->rect.x + dc->rect.width - m->right_margin;
     m->fig_width = m->fig_x_max - m->fig_x_min;
 
+    if (0.0 == m->fig_width || 0.0 == m->dat_width) {
+        g_warning("Slope", G_LOG_LEVEL_ERROR, "Axis2D has improper range");
+        goto cleanup;
+    }
+
     m->fig_y_min = dc->rect.y + m->top_margin;
     m->fig_y_max = dc->rect.y + dc->rect.height - m->bottom_margin;
     m->fig_height = m->fig_y_max - m->fig_y_min;
+
+    if (0.0 == m->fig_height || 0.0 == m->dat_height) {
+        g_warning("Slope", G_LOG_LEVEL_ERROR, "Axis2D has improper range");
+        goto cleanup;
+    }
 
     slope_frame_draw_rect (SLOPE_FRAME (self), dc);
     axis2d_set_scales_position (SLOPE_AXIS2D (self));
     SLOPE_ITEM_GET_CLASS (self)->draw_children (self, dc);
     slope_frame_draw_title (SLOPE_FRAME (self), dc);
 
+cleanup:
     cairo_restore (dc->cr);
     dc->rect = orig_rect;
 }

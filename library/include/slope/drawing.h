@@ -44,6 +44,20 @@ _SlopeRect {
 } SlopeRect;
 
 
+#define SLOPE_POINT_DIFF(RES,LHS,RHS) \
+    G_STMT_START {\
+        (RES).x = (LHS).x - (RHS).x; \
+        (RES).y = (LHS).y - (RHS).y; \
+    } G_STMT_END
+
+
+#define SLOPE_POINT_SUM(RES,LHS,RHS) \
+    G_STMT_START {\
+        (RES).x = (LHS).x + (RHS).x; \
+        (RES).y = (LHS).y + (RHS).y; \
+    } G_STMT_END
+
+
 void slope_cairo_set_rgba (cairo_t *cr, SlopeRGBA color);
 
 void slope_cairo_rect (cairo_t *cr, const SlopeRect *rect);

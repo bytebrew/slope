@@ -70,6 +70,8 @@ struct _SlopeItemClass
   void (*draw_self) (SlopeItem *self, const SlopeItemDC *dc);
   void (*draw_children) (SlopeItem *self, SlopeItemDC *dc);
   void (*draw_tree) (SlopeItem *self, SlopeItemDC *dc);
+  void (*add_top) (SlopeItem *parent, SlopeItem *child);
+  void (*add_bottom) (SlopeItem *parent, SlopeItem *child);
 
   /* Padding for future expansion */
   void (*_slope_reserved1) (void);
@@ -81,7 +83,9 @@ struct _SlopeItemClass
 
 GType slope_item_get_type (void) G_GNUC_CONST;
 
-void slope_item_append (SlopeItem *parent, SlopeItem *child);
+void slope_item_add_top (SlopeItem *parent, SlopeItem *child);
+
+void slope_item_add_bottom (SlopeItem *parent, SlopeItem *child);
 
 void slope_item_destroy_tree (SlopeItem *self);
 

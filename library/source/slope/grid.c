@@ -26,8 +26,8 @@ typedef struct _SlopeGridPrivate SlopeGridPrivate;
 
 struct _SlopeGridPrivate
 {
-    int n_rows;
-    int n_cols;
+    gint32 n_rows;
+    gint32 n_cols;
 };
 
 
@@ -102,11 +102,13 @@ slope_grid_update_layout (SlopeGrid *self)
     SlopeGridPrivate *m;
     SlopeTree *node;
 
-    g_return_if_fail (SLOPE_IS_GRID (self));
+    g_assert (SLOPE_IS_GRID (self));
     m = SLOPE_GRID_GET_PRIVATE (self);
+
     node = slope_item_get_fisrt_child (SLOPE_ITEM (self));
 
-    m->n_rows = m->n_cols = 0;
+    m->n_rows = 0;
+    m->n_cols = 0;
 
     while (node != NULL) {
 
@@ -126,10 +128,24 @@ void
 slope_grid_emplace (SlopeGrid *self, SlopeItem *child,
                     int x, int y, int width, int height)
 {
+    slope_item_add_top (SLOPE_ITEM (self), child);
+    slope_grid_set_child_position (self, child, x, y, width, height);
+}
+
+
+void slope_grid_set_child_position (SlopeGrid *self, SlopeItem *child,
+                                    int x, int y, int width, int height)
+
+{
     SlopeTree *node;
 
     g_assert (SLOPE_IS_GRID (self));
     g_assert (SLOPE_IS_ITEM (child));
+
+    g_assert(x >= 0 && y >= 0);
+    g_assert(x <= 1000 && y <= 1000);
+    g_assert(width >= 1 && height >= 1);
+    g_assert(width <= 1000 && height <= 1000);
 
     /* set child layout information */
     node = slope_item_get_tree_node (child);
@@ -137,9 +153,6 @@ slope_grid_emplace (SlopeGrid *self, SlopeItem *child,
     node->y = y;
     node->width = width;
     node->height = height;
-
-    /* Add new child to this item's tree */
-    slope_item_append (SLOPE_ITEM (self), child);
 
     /* make sure the layout boundaries are correct */
     slope_grid_update_layout (self);
@@ -150,7 +163,7 @@ static void
 grid_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
     /* draw the frame stuff */
-  //  SLOPE_ITEM_CLASS (slope_grid_parent_class)->draw_self (self, dc);
+    SLOPE_ITEM_CLASS (slope_grid_parent_class)->draw_self (self, dc);
 }
 
 

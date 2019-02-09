@@ -88,19 +88,19 @@ int main(int argc, char *argv[])
     /* Add data axis and put those axis onto the grid */
     series1 = slope_series2d_new_formatted ("b-");
     slope_series2d_set_data (SLOPE_SERIES2D (series1), data1, TRUE);
-    slope_axis2d_add_plot (SLOPE_AXIS2D (axis1), SLOPE_PLOT2D (series1));
+    slope_item_add_top (axis1, series1);
 
     series2 = slope_series2d_new_formatted ("r-");
     slope_series2d_set_data (SLOPE_SERIES2D (series2), data2, TRUE);
-    slope_axis2d_add_plot (SLOPE_AXIS2D (axis2), SLOPE_PLOT2D (series2));
+    slope_item_add_top (axis2, series2);
 
     series3 = slope_series2d_new_formatted ("k-");
     slope_series2d_set_data (SLOPE_SERIES2D (series3), data3, TRUE);
-    slope_axis2d_add_plot (SLOPE_AXIS2D (axis3), SLOPE_PLOT2D (series3));
+    slope_item_add_top (axis3, series3);
 
     series4 = slope_series2d_new_formatted ("g-");
     slope_series2d_set_data (SLOPE_SERIES2D (series4), data4, TRUE);
-    slope_axis2d_add_plot (SLOPE_AXIS2D (axis4), SLOPE_PLOT2D (series4));
+    slope_item_add_top (axis4, series4);
 
     /* Add the figureonto the view */
     slope_view_set_figure (SLOPE_VIEW (view), figure);

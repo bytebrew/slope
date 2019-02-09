@@ -115,7 +115,9 @@ slope_scale_new ()
 
 
 void
-slope_scale_set_figure_position (SlopeScale *self, const SlopePoint *p1, const SlopePoint *p2)
+slope_scale_set_figure_position (SlopeScale *self,
+                                 const SlopePoint *p1,
+                                 const SlopePoint *p2)
 {
     SlopeScalePrivate *m = SLOPE_SCALE_GET_PRIVATE (self);
 
@@ -145,12 +147,13 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
     SlopeScalePrivate *m = SLOPE_SCALE_GET_PRIVATE (self);
     cairo_antialias_t antialias = CAIRO_ANTIALIAS_GOOD;
-    double fig_dy = m->fig_p2.y - m->fig_p1.y;
-    double fig_dx = m->fig_p2.x - m->fig_p1.x;
+    SlopePoint direc;
+
+    SLOPE_POINT_DIFF(direc, m->fig_p2, m->fig_p1);
 
     if (!m->antialias
-            || slope_float_similar_zero(fig_dx)
-            || slope_float_similar_zero(fig_dy)) {
+            || slope_float_similar_zero(direc.x)
+            || slope_float_similar_zero(direc.y)) {
         antialias = CAIRO_ANTIALIAS_NONE;
     }
 

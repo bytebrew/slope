@@ -81,8 +81,6 @@ struct _SlopeAxis2DClass
 {
     SlopeFrameClass parent_class;
 
-    void (*add_plot) (SlopeAxis2D *self, SlopePlot2D *plot);
-
     /* Padding for future expansion */
     void (*_slope_reserved1) (void);
     void (*_slope_reserved2) (void);
@@ -98,8 +96,6 @@ SlopeItem* slope_axis2d_new (const char *title);
 SlopeScale* slope_axis2d_get_scale (SlopeAxis2D *self, SlopeAxisScale scale);
 
 void slope_axis2d_set_scales (SlopeAxis2D *self, SlopeAxisScale scales);
-
-void slope_axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot);
 
 void slope_axis2d_update_scale (SlopeAxis2D *self);
 

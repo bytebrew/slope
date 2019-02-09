@@ -68,6 +68,9 @@ SlopeItem* slope_grid_new (void);
 void slope_grid_emplace (SlopeGrid *self, SlopeItem *child,
                          int x, int y, int width, int height);
 
+void slope_grid_set_child_position (SlopeGrid *self, SlopeItem *child,
+                                    int x, int y, int width, int height);
+
 G_END_DECLS
 
 #endif /* _slope_grid_h_ */

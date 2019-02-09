@@ -35,8 +35,8 @@ struct _SlopeTree {
 
     /* layout extra data */
     /* Currently used only by SlopeGrid */
-    int x, y;
-    int width, height;
+    gint32 x, y;
+    gint32 width, height;
 };
 
 #define slope_tree_init(Addr) \

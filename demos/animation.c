@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     /* Add data axis and put those axis onto the grid */
     series = slope_series2d_new_formatted ("b-");
     slope_series2d_set_data (SLOPE_SERIES2D (series), data, TRUE);
-    slope_axis2d_add_plot (SLOPE_AXIS2D (axis), SLOPE_PLOT2D (series));
+    slope_item_add_top (axis, series);
 
     /* Add the figureonto the view */
     slope_view_set_figure (SLOPE_VIEW (view), figure);

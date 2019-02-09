@@ -61,6 +61,14 @@ SlopeTree* slope_tree_detach (SlopeTree *parent, SlopeTree *child)
     g_assert(parent);
     g_assert(child);
 
+    if (NULL == child->parent) {
+        g_assert(child->prev == NULL);
+        g_assert(child->next == NULL);
+        return child;
+    }
+
+    g_assert(child->parent == parent);
+
     if (parent->first == child) {
         if (parent->last == child) {
             /* Child is both the first and last node, so it's the first one */
