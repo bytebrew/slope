@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018  Elvis Teixeira
+ * Copyright (C) 2019  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -31,13 +31,18 @@ struct _SlopeGridPrivate
 };
 
 
-G_DEFINE_TYPE_WITH_PRIVATE (SlopeGrid, slope_grid, SLOPE_TYPE_ITEM)
-#define SLOPE_GRID_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_GRID, SlopeGridPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (SlopeGrid, slope_grid, SLOPE_TYPE_FRAME)
+
+
+#define SLOPE_GRID_GET_PRIVATE(obj) \
+    (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
+    SLOPE_TYPE_GRID, SlopeGridPrivate))
 
 
 /* local decls */
 static void grid_finalize(GObject *self);
 static void grid_dispose (GObject *self);
+static void grid_draw_self (SlopeItem *self, const SlopeItemDC *dc);
 static void grid_draw_tree (SlopeItem *self, SlopeItemDC *dc);
 
 
@@ -50,14 +55,19 @@ slope_grid_class_init (SlopeGridClass *klass)
     gobject_class->dispose = grid_dispose;
     gobject_class->finalize = grid_finalize;
 
+    item_class->draw_self = grid_draw_self;
     item_class->draw_tree = grid_draw_tree;
 }
 
 
 static void
-slope_grid_init (SlopeGrid *grid)
+slope_grid_init (SlopeGrid *self)
 {
-    SlopeGridPrivate *m = SLOPE_GRID_GET_PRIVATE (grid);
+    SlopeGridPrivate *m = SLOPE_GRID_GET_PRIVATE (self);
+
+    slope_frame_set_background_fill_color (SLOPE_FRAME (self), SLOPE_COLOR_NULL);
+    slope_frame_set_background_stroke_color (SLOPE_FRAME (self), SLOPE_COLOR_NULL);
+    slope_frame_set_title (SLOPE_FRAME (self), NULL);
 
     m->n_rows = 1;
     m->n_cols = 1;
@@ -137,6 +147,14 @@ slope_grid_emplace (SlopeGrid *self, SlopeItem *child,
 
 
 static void
+grid_draw_self (SlopeItem *self, const SlopeItemDC *dc)
+{
+    /* draw the frame stuff */
+  //  SLOPE_ITEM_CLASS (slope_grid_parent_class)->draw_self (self, dc);
+}
+
+
+static void
 grid_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 {
     SlopeGridPrivate *m = SLOPE_GRID_GET_PRIVATE (self);
@@ -146,6 +164,8 @@ grid_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 
     cell_width = orig_rect.width / m->n_cols;
     cell_height = orig_rect.height / m->n_rows;
+
+    slope_frame_draw_rect (SLOPE_FRAME (self), dc);
 
     while (node != NULL) {
         SlopeItem *item = slope_item_from_tree_node (node);
@@ -162,6 +182,7 @@ grid_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 
     /* Give the DC back with the original rect */
     dc->rect = orig_rect;
+    slope_frame_draw_title (SLOPE_FRAME (self), dc);
 }
 
 /* slope/grid.c */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018  Elvis Teixeira
+ * Copyright (C) 2019  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -76,6 +76,14 @@ SlopeItem* slope_frame_new (void);
 void slope_frame_set_title (SlopeFrame *self, const gchar *title);
 
 const gchar* slope_frame_get_title (SlopeFrame *self);
+
+void slope_frame_set_background_fill_color (SlopeFrame *self, SlopeRGBA rgba);
+
+SlopeRGBA  slope_frame_get_background_fill_color (SlopeFrame *self);
+
+void slope_frame_set_background_stroke_color (SlopeFrame *self, SlopeRGBA rgba);
+
+SlopeRGBA  slope_frame_get_background_stroke_color (SlopeFrame *self);
 
 int slope_frame_get_margin (SlopeFrame *self);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018  Elvis Teixeira
+ * Copyright (C) 2019  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -21,7 +21,7 @@
 #ifndef _slope_grid_h_
 #define _slope_grid_h_
 
-#include "slope/item.h"
+#include "slope/frame.h"
 
 G_BEGIN_DECLS
 
@@ -39,10 +39,13 @@ typedef struct _SlopeGridClass        SlopeGridClass;
 struct _SlopeGrid
 {
   /*< parent object space >*/
-  SlopeItem parent;
+  SlopeFrame parent;
 
   /*< private >*/
-  gpointer dummy;
+  gpointer _slope_reserved1;
+  gpointer _slope_reserved2;
+  gpointer _slope_reserved3;
+  gpointer _slope_reserved4;
 };
 
 

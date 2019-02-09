@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018  Elvis Teixeira
+ * Copyright (C) 2019  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -141,6 +141,14 @@ on_figure_change (GObject *figure, gpointer user_data)
     GtkWidget *view = GTK_WIDGET (user_data);
     SLOPE_UNUSED (figure);
     gtk_widget_queue_draw (view);
+}
+
+
+void
+slope_view_redraw (SlopeView *self)
+{
+    GtkWidget *widget = GTK_WIDGET (self);
+    gtk_widget_queue_draw (widget);
 }
 
 /* slope/view.c */

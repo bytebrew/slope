@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018  Elvis Teixeira
+ * Copyright (C) 2019  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -43,7 +43,10 @@ struct _SlopeView
   GtkDrawingArea parent;
 
   /*< private >*/
-  gpointer dummy;
+  gpointer _slope_reserved1;
+  gpointer _slope_reserved2;
+  gpointer _slope_reserved3;
+  gpointer _slope_reserved4;
 };
 
 
@@ -70,6 +73,9 @@ void slope_view_set_figure (SlopeView *self, SlopeFigure *figure);
 
 GDK_AVAILABLE_IN_ALL
 SlopeFigure* slope_view_get_figure (SlopeView *self);
+
+GDK_AVAILABLE_IN_ALL
+void slope_view_redraw (SlopeView *self);
 
 G_END_DECLS
 

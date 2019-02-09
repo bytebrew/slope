@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018  Elvis Teixeira
+ * Copyright (C) 2019  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -38,8 +38,12 @@ typedef gpointer (*SlopeCB) (gpointer data, gpointer context);
 #define SLOPE_UNUSED(Var) (void) (Var)
 
 typedef enum {
-    SLOPE_VERTICAL     = 1,
-    SLOPE_HORIZONTAL   = 2,
+    SLOPE_VERTICAL     = (1U),
+    SLOPE_HORIZONTAL   = (1U << 1U),
+    SLOPE_BOTTOM       = (1U << 2U) | SLOPE_HORIZONTAL,
+    SLOPE_LEFT         = (1U << 3U) | SLOPE_VERTICAL,
+    SLOPE_TOP          = (1U << 4U) | SLOPE_HORIZONTAL,
+    SLOPE_RIGHT        = (1U << 5U) | SLOPE_VERTICAL,
 } SlopeOrientation;
 
 #endif /* _slope_global_h_ */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018  Elvis Teixeira
+ * Copyright (C) 2019  Elvis Teixeira
  *
  * This source code is free software: you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General
@@ -30,6 +30,7 @@ struct _SlopeFramePrivate
     SlopeRGBA bg_fill_color;
     SlopeRGBA bg_stroke_color;
     double bg_stroke_width;
+    double title_padding;
     int margin;
     SlopeRGBA title_color;
     gchar *title;
@@ -49,6 +50,7 @@ enum {
   PROP_BG_FILL_COLOR,
   PROP_BG_STROKE_COLOR,
   PROP_BG_STROKE_WIDTH,
+  PROP_TITLE_PADDING,
   PROP_LAST
 };
 static GParamSpec *frame_props[PROP_LAST] = { NULL };
@@ -97,6 +99,13 @@ slope_frame_class_init (SlopeFrameClass *klass)
                                0.0, 8.0, 2.0,
                                G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
 
+    frame_props[PROP_TITLE_PADDING] =
+          g_param_spec_double ("title-padding",
+                               "Space on top of the title",
+                               "Specify the title padding",
+                               0.0, 60.0, 4.0,
+                               G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
+
     g_object_class_install_properties (gobject_class, PROP_LAST, frame_props);
 }
 
@@ -110,6 +119,7 @@ slope_frame_init (SlopeFrame *axis)
     m->bg_fill_color = SLOPE_WHITE;
     m->bg_stroke_color = SLOPE_COLOR_NULL;
     m->bg_stroke_width = 1.0;
+    m->title_padding = 4.0;
     m->title = g_strdup("Slope");
     m->title_color = SLOPE_BLACK;
     m->margin = 4;
@@ -155,6 +165,9 @@ frame_set_property (GObject *object, guint prop_id,
         case PROP_BG_STROKE_WIDTH:
             m->bg_stroke_width = g_value_get_double(value);
             break;
+        case PROP_TITLE_PADDING:
+            m->title_padding = g_value_get_double(value);
+            break;
     }
 }
 
@@ -176,7 +189,41 @@ frame_get_property (GObject *object, guint prop_id,
         case PROP_BG_STROKE_WIDTH:
             g_value_set_double(value, m->bg_stroke_width);
             break;
+        case PROP_TITLE_PADDING:
+            g_value_set_double(value, m->title_padding);
+            break;
     }
+}
+
+
+void slope_frame_set_background_fill_color (SlopeFrame *self, SlopeRGBA rgba)
+{
+    SlopeFramePrivate *m = SLOPE_FRAME_GET_PRIVATE(self);
+    m->bg_fill_color = rgba;
+}
+
+
+SlopeRGBA
+slope_frame_get_background_fill_color (SlopeFrame *self)
+{
+    SlopeFramePrivate *m = SLOPE_FRAME_GET_PRIVATE(self);
+    return m->bg_fill_color;
+}
+
+
+void
+slope_frame_set_background_stroke_color (SlopeFrame *self, SlopeRGBA rgba)
+{
+    SlopeFramePrivate *m = SLOPE_FRAME_GET_PRIVATE(self);
+    m->bg_stroke_color = rgba;
+}
+
+
+SlopeRGBA
+slope_frame_get_background_stroke_color (SlopeFrame *self)
+{
+    SlopeFramePrivate *m = SLOPE_FRAME_GET_PRIVATE(self);
+    return m->bg_stroke_color;
 }
 
 
@@ -244,7 +291,7 @@ slope_frame_draw_title (SlopeFrame *self, const SlopeItemDC *dc)
     slope_cairo_set_rgba (cr, m->title_color);
     cairo_move_to (cr,
         dc->rect.x + (dc->rect.width - logical.width) / 2.0,
-        dc->rect.y + 10.0); /* make this y-offset a property */
+        dc->rect.y + m->title_padding);
     slope_text_show (dc->text);
 }
 
