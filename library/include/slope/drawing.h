@@ -24,6 +24,8 @@
 #include "slope/color.h"
 #include <cairo.h>
 
+#define SLOPE_ROUND_COORD(X) (((double) ((long) (X))) + 0.5)
+
 G_BEGIN_DECLS
 
 typedef struct

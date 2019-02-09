@@ -29,18 +29,21 @@ typedef struct _CoordLine CoordLine;
 #define COORD_LINE(Addr) ((CoordLine *) (Addr))
 #define COORD_LINE_VISIBLE(Addr) (COORD_LINE(Addr)->piece_enable != 0U)
 
-#define COORD_LINE_BOTTOM 0
-#define COORD_LINE_LEFT 1
-#define COORD_LINE_TOP 2
-#define COORD_LINE_RIGHT 3
-#define COORD_LINE_X 4
-#define COORD_LINE_Y 5
+#define COORD_LINE_BOTTOM   0
+#define COORD_LINE_LEFT     1
+#define COORD_LINE_TOP      2
+#define COORD_LINE_RIGHT    3
+#define COORD_LINE_X        4
+#define COORD_LINE_Y        5
 
 #define COORD_PIECE_NONE    (0U)
 #define COORD_PIECE_LINE    (1U)
 #define COORD_PIECE_TICKS   (1U << 1U)
 #define COORD_PIECE_LABEL   (1U << 2U)
 #define COORD_PIECE_ALL     (0xFFFFFFFFU)
+
+#define DEFAULT_LINE_COLOR  slope_gray(200)
+#define DEFAULT_LINE_WIDTH  2.0
 
 
 struct _CoordLine {
@@ -119,40 +122,40 @@ slope_axis2d_init (SlopeAxis2D *axis)
     m->left_margin = 20.0;
 
     line = &m->coord_lines[COORD_LINE_BOTTOM];
-    line->line_stroke_color = SLOPE_BLACK;
+    line->line_stroke_color = DEFAULT_LINE_COLOR;
     line->piece_enable = COORD_PIECE_ALL;
     line->orientation = SLOPE_BOTTOM;
-    line->line_width = 1.0;
+    line->line_width = DEFAULT_LINE_WIDTH;
 
     line = &m->coord_lines[COORD_LINE_LEFT];
-    line->line_stroke_color = SLOPE_BLACK;
+    line->line_stroke_color = DEFAULT_LINE_COLOR;
     line->piece_enable = COORD_PIECE_ALL;
     line->orientation = SLOPE_LEFT;
-    line->line_width = 1.0;
+    line->line_width = DEFAULT_LINE_WIDTH;
 
     line = &m->coord_lines[COORD_LINE_TOP];
-    line->line_stroke_color = SLOPE_BLACK;
+    line->line_stroke_color = DEFAULT_LINE_COLOR;
     line->piece_enable = COORD_PIECE_ALL;
     line->orientation = SLOPE_TOP;
-    line->line_width = 1.0;
+    line->line_width = DEFAULT_LINE_WIDTH;
 
     line = &m->coord_lines[COORD_LINE_RIGHT];
-    line->line_stroke_color = SLOPE_BLACK;
+    line->line_stroke_color = DEFAULT_LINE_COLOR;
     line->piece_enable = COORD_PIECE_ALL;
     line->orientation = SLOPE_RIGHT;
-    line->line_width = 1.0;
+    line->line_width = DEFAULT_LINE_WIDTH;
 
     line = &m->coord_lines[COORD_LINE_X];
-    line->line_stroke_color = SLOPE_BLACK;
+    line->line_stroke_color = DEFAULT_LINE_COLOR;
     line->piece_enable = COORD_PIECE_NONE;
     line->orientation = SLOPE_LEFT;
-    line->line_width = 1.0;
+    line->line_width = DEFAULT_LINE_WIDTH;
 
     line = &m->coord_lines[COORD_LINE_Y];
-    line->line_stroke_color = SLOPE_BLACK;
+    line->line_stroke_color = DEFAULT_LINE_COLOR;
     line->piece_enable = COORD_PIECE_NONE;
     line->orientation = SLOPE_BOTTOM;
-    line->line_width = 1.0;
+    line->line_width = DEFAULT_LINE_WIDTH;
 }
 
 
@@ -305,45 +308,45 @@ axis2d_draw_lines (SlopeAxis2D *self, const SlopeItemDC *dc)
      * corner pixel on the frame will not be left blank */
 
     line = &m->coord_lines[COORD_LINE_BOTTOM];
-    line->p1.x = m->fig_x_min;
-    line->p1.y = m->fig_y_max;
-    line->p2.x = m->fig_x_max + 0.5;
-    line->p2.y = m->fig_y_max;
+    line->p1.x = SLOPE_ROUND_COORD(m->fig_x_min);
+    line->p1.y = SLOPE_ROUND_COORD(m->fig_y_max);
+    line->p2.x = SLOPE_ROUND_COORD(m->fig_x_max + 0.5);
+    line->p2.y = SLOPE_ROUND_COORD(m->fig_y_max);
     axis2d_draw_line (self, line, dc);
 
     line = &m->coord_lines[COORD_LINE_LEFT];
-    line->p1.x = m->fig_x_min;
-    line->p1.y = m->fig_y_max;
-    line->p2.x = m->fig_x_min;
-    line->p2.y = m->fig_y_min - 0.5;
+    line->p1.x = SLOPE_ROUND_COORD(m->fig_x_min);
+    line->p1.y = SLOPE_ROUND_COORD(m->fig_y_max);
+    line->p2.x = SLOPE_ROUND_COORD(m->fig_x_min);
+    line->p2.y = SLOPE_ROUND_COORD(m->fig_y_min - 0.5);
     axis2d_draw_line (self, line, dc);
 
     line = &m->coord_lines[COORD_LINE_TOP];
-    line->p1.x = m->fig_x_min;
-    line->p1.y = m->fig_y_min;
-    line->p2.x = m->fig_x_max + 0.5;
-    line->p2.y = m->fig_y_min;
+    line->p1.x = SLOPE_ROUND_COORD(m->fig_x_min);
+    line->p1.y = SLOPE_ROUND_COORD(m->fig_y_min);
+    line->p2.x = SLOPE_ROUND_COORD(m->fig_x_max + 0.5);
+    line->p2.y = SLOPE_ROUND_COORD(m->fig_y_min);
     axis2d_draw_line (self, line, dc);
 
     line = &m->coord_lines[COORD_LINE_RIGHT];
-    line->p1.x = m->fig_x_max;
-    line->p1.y = m->fig_y_max;
-    line->p2.x = m->fig_x_max;
-    line->p2.y = m->fig_y_min - 0.5;
+    line->p1.x = SLOPE_ROUND_COORD(m->fig_x_max);
+    line->p1.y = SLOPE_ROUND_COORD(m->fig_y_max);
+    line->p2.x = SLOPE_ROUND_COORD(m->fig_x_max);
+    line->p2.y = SLOPE_ROUND_COORD(m->fig_y_min - 0.5);
     axis2d_draw_line (self, line, dc);
 
     line = &m->coord_lines[COORD_LINE_X];
-    line->p1.x = m->fig_x_min;
-    line->p1.y = fig_pt.y;
-    line->p2.x = m->fig_x_max + 0.5;
-    line->p2.y = fig_pt.y;
+    line->p1.x = SLOPE_ROUND_COORD(m->fig_x_min);
+    line->p1.y = SLOPE_ROUND_COORD(fig_pt.y);
+    line->p2.x = SLOPE_ROUND_COORD(m->fig_x_max + 0.5);
+    line->p2.y = SLOPE_ROUND_COORD(fig_pt.y);
     axis2d_draw_line (self, line, dc);
 
     line = &m->coord_lines[COORD_LINE_Y];
-    line->p1.x = fig_pt.x;
-    line->p1.y = m->fig_y_max;
-    line->p2.x = fig_pt.x;
-    line->p2.y = m->fig_y_min - 0.5;
+    line->p1.x = SLOPE_ROUND_COORD(fig_pt.x);
+    line->p1.y = SLOPE_ROUND_COORD(m->fig_y_max);
+    line->p2.x = SLOPE_ROUND_COORD(fig_pt.x);
+    line->p2.y = SLOPE_ROUND_COORD(m->fig_y_min - 0.5);
     axis2d_draw_line (self, line, dc);
 }
 
