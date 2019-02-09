@@ -85,7 +85,7 @@ void slope_frame_set_background_stroke_color (SlopeFrame *self, SlopeRGBA rgba);
 
 SlopeRGBA  slope_frame_get_background_stroke_color (SlopeFrame *self);
 
-int slope_frame_get_margin (SlopeFrame *self);
+double slope_frame_get_margin (SlopeFrame *self);
 
 void slope_frame_draw_rect (SlopeFrame *self, const SlopeItemDC *dc);
 

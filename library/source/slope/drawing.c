@@ -57,15 +57,15 @@ void slope_cairo_round_rect (cairo_t *cr, const SlopeRect *rec, double radius)
 void slope_cairo_draw (cairo_t *cr, double stroke_width,
                  SlopeRGBA fill_color, SlopeRGBA stroke_color)
 {
-    if (slope_rgba_is_visible(stroke_color)) {
-        if (slope_rgba_is_visible(fill_color)) {
+    if (slope_color_is_visible(stroke_color)) {
+        if (slope_color_is_visible(fill_color)) {
             slope_cairo_set_rgba (cr, fill_color);
             cairo_fill_preserve (cr);
         }
         cairo_set_line_width (cr, stroke_width);
         slope_cairo_set_rgba (cr, stroke_color);
         cairo_stroke (cr);
-    } else if (slope_rgba_is_visible(fill_color)) {
+    } else if (slope_color_is_visible(fill_color)) {
         slope_cairo_set_rgba (cr, fill_color);
         cairo_fill (cr);
     }

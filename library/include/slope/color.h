@@ -79,7 +79,7 @@ typedef guint32 SlopeRGBA;
 #define slope_gray(x) ((((x) & 0xFFU) << 24U) | (((x) & 0xFFU) << 16U) | (((x) & 0xFFU) << 8U) | 0xFFU)
 
 /*! \brief Returns TRUE if Color is visible */
-#define slope_rgba_is_visible(Color) (slope_get_alpha(Color) > 0U)
+#define slope_color_is_visible(Color) (slope_get_alpha(Color) > 0U)
 
 G_END_DECLS
 

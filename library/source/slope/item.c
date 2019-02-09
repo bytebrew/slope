@@ -198,9 +198,14 @@ slope_item_destroy_tree (SlopeItem *self)
 static void
 item_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
+    SlopeItemPrivate *m = SLOPE_ITEM_GET_PRIVATE (self);
+
+    g_assert(slope_enabled(m->options, ItemVisible));
+
     /* this is just a base class, nothing to do */
     SLOPE_UNUSED(self);
     SLOPE_UNUSED(dc);
+    SLOPE_UNUSED(m);
 }
 
 
@@ -247,8 +252,24 @@ item_attached_detached (SlopeItem *self, SlopeItem *parent)
 SlopeTree*
 slope_item_get_tree_node (SlopeItem *self)
 {
-    g_assert (self != NULL);
+    g_assert (SLOPE_IS_ITEM (self));
     return SLOPE_TREE (SLOPE_ITEM_GET_PRIVATE (self));
+}
+
+
+gboolean
+slope_item_get_visible (SlopeItem *self)
+{
+    g_assert (SLOPE_IS_ITEM (self));
+    return slope_enabled(SLOPE_ITEM_GET_PRIVATE (self)->options, ItemVisible);
+}
+
+
+void
+slope_item_set_visible (SlopeItem *self, gboolean visible)
+{
+    g_assert (SLOPE_IS_ITEM (self));
+    slope_enable_if(SLOPE_ITEM_GET_PRIVATE (self)->options, visible, ItemVisible);
 }
 
 

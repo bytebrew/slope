@@ -85,6 +85,10 @@ void slope_item_append (SlopeItem *parent, SlopeItem *child);
 
 void slope_item_destroy_tree (SlopeItem *self);
 
+gboolean slope_item_get_visible (SlopeItem *self);
+
+void slope_item_set_visible (SlopeItem *self, gboolean visible);
+
 SlopeTree* slope_item_get_tree_node (SlopeItem *self);
 
 SlopeTree* slope_item_get_fisrt_child (SlopeItem *self);

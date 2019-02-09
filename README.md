@@ -5,7 +5,7 @@
 
 Slope is a free (LGPL) **C** data visualization library for the Gtk+ toolkit.
 
-![](https://github.com/bytebrew/slope/blob/master/demos/screenshot.png)
+![](https://github.com/bytebrew/slope/blob/devel/demos/Figure.png)
 
 Slope integrates with **Gtk+ 3.X** and all the drawing is made with **cairo**, so it doesn't
 depend on nothing outside the Gtk stack.

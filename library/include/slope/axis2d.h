@@ -23,6 +23,7 @@
 
 #include "slope/frame.h"
 #include "slope/plot2d.h"
+#include "slope/scale.h"
 
 G_BEGIN_DECLS
 
@@ -45,6 +46,16 @@ typedef enum {
     SLOPE_AXIS2D_X          = 4,
     SLOPE_AXIS2D_Y          = 5,
 } SlopeAxisID;
+
+
+typedef enum {
+    SLOPE_AXIS2D_SCALE_BOTTOM     = (1U),
+    SLOPE_AXIS2D_SCALE_LEFT       = (1U << 1U),
+    SLOPE_AXIS2D_SCALE_TOP        = (1U << 2U),
+    SLOPE_AXIS2D_SCALE_RIGHT      = (1U << 3U),
+    SLOPE_AXIS2D_SCALE_X          = (1U << 4U),
+    SLOPE_AXIS2D_SCALE_Y          = (1U << 5U),
+} SlopeAxisScale;
 
 
 typedef enum {
@@ -83,6 +94,10 @@ struct _SlopeAxis2DClass
 GType slope_axis2d_get_type (void) G_GNUC_CONST;
 
 SlopeItem* slope_axis2d_new (const char *title);
+
+SlopeScale* slope_axis2d_get_scale (SlopeAxis2D *self, SlopeAxisScale scale);
+
+void slope_axis2d_set_scales (SlopeAxis2D *self, SlopeAxisScale scales);
 
 void slope_axis2d_add_plot (SlopeAxis2D *self, SlopePlot2D *plot);
 

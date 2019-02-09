@@ -31,7 +31,7 @@ struct _SlopeFramePrivate
     SlopeRGBA bg_stroke_color;
     double bg_stroke_width;
     double title_padding;
-    int margin;
+    double margin;
     SlopeRGBA title_color;
     gchar *title;
     guint32 options;
@@ -241,8 +241,8 @@ slope_frame_draw_rect (SlopeFrame *self, const SlopeItemDC *dc)
     SlopeRect r = dc->rect;
 
     if (!slope_enabled(m->options, SLOPE_FRAME_DRAW_RECT) ||
-            (!slope_rgba_is_visible(m->bg_fill_color) &&
-             !slope_rgba_is_visible(m->bg_stroke_color))) {
+            (!slope_color_is_visible(m->bg_fill_color) &&
+             !slope_color_is_visible(m->bg_stroke_color))) {
         return;
     }
 
@@ -252,7 +252,7 @@ slope_frame_draw_rect (SlopeFrame *self, const SlopeItemDC *dc)
         cairo_set_antialias(dc->cr, CAIRO_ANTIALIAS_NONE);
     }
 
-    if (slope_rgba_is_visible(m->bg_stroke_color)) {
+    if (slope_color_is_visible(m->bg_stroke_color)) {
         /* avoid rounding stroke from being clipped away */
         r.x += m->bg_stroke_width / 2;
         r.y += m->bg_stroke_width / 2;
@@ -281,7 +281,7 @@ slope_frame_draw_title (SlopeFrame *self, const SlopeItemDC *dc)
 
     if (!slope_enabled(m->options, SLOPE_FRAME_DRAW_TITLE) ||
             (m->title == NULL) ||
-            !slope_rgba_is_visible(m->title_color) ||
+            !slope_color_is_visible(m->title_color) ||
             (m->title_color == m->bg_fill_color)) {
         return;
     }
@@ -361,9 +361,9 @@ frame_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 }
 
 
-int slope_frame_get_margin (SlopeFrame *self)
+double slope_frame_get_margin (SlopeFrame *self)
 {
-    g_return_val_if_fail (SLOPE_IS_FRAME (self), 0);
+    g_assert (SLOPE_IS_FRAME (self));
     return SLOPE_FRAME_GET_PRIVATE (self)->margin;
 }
 

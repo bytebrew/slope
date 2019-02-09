@@ -46,4 +46,8 @@ typedef enum {
     SLOPE_RIGHT        = (1U << 5U) | SLOPE_VERTICAL,
 } SlopeOrientation;
 
+
+gboolean slope_float_similar_zero(double x);
+gboolean slope_float_similar(double x, double y);
+
 #endif /* _slope_global_h_ */
