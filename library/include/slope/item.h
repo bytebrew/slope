@@ -72,6 +72,7 @@ struct _SlopeItemClass
   void (*draw_tree) (SlopeItem *self, SlopeItemDC *dc);
   void (*add_top) (SlopeItem *parent, SlopeItem *child);
   void (*add_bottom) (SlopeItem *parent, SlopeItem *child);
+  void (*toggle_highlight) (SlopeItem *self);
 
   /* Padding for future expansion */
   void (*_slope_reserved1) (void);
@@ -92,6 +93,8 @@ void slope_item_destroy_tree (SlopeItem *self);
 gboolean slope_item_get_visible (SlopeItem *self);
 
 void slope_item_set_visible (SlopeItem *self, gboolean visible);
+
+void slope_item_toggle_highlight (SlopeItem *self);
 
 SlopeTree* slope_item_get_tree_node (SlopeItem *self);
 

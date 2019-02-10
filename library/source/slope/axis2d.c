@@ -110,7 +110,7 @@ slope_axis2d_init (SlopeAxis2D *self)
     slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_LEFT]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
     slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_Y]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
     slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_TOP]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
-    slope_axis2d_set_scales (SLOPE_AXIS2D (self), SLOPE_AXIS2D_SCALE_FRAMED);
+    slope_axis2d_set_scales (SLOPE_AXIS2D (self), SLOPE_AXIS2D_SCALE_ZERO);
 }
 
 

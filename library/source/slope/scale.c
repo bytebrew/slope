@@ -38,6 +38,7 @@ struct _SlopeScalePrivate
     SlopeRGBA line_color_selected;
     double line_width;
     double line_width_selected;
+    double tick_length;
 
     SlopeSampler sampler;
 
@@ -57,6 +58,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeScale, slope_scale, SLOPE_TYPE_ITEM)
 static void scale_finalize (GObject *self);
 static void scale_dispose (GObject *self);
 static void scale_draw_self (SlopeItem *self, const SlopeItemDC *dc);
+static void axis2d_toggle_highlight (SlopeItem *self);
 
 
 static void
@@ -69,6 +71,7 @@ slope_scale_class_init (SlopeScaleClass *klass)
     gobject_class->finalize = scale_finalize;
 
     item_class->draw_self = scale_draw_self;
+    item_class->toggle_highlight = axis2d_toggle_highlight;
 }
 
 
@@ -77,13 +80,14 @@ slope_scale_init (SlopeScale *scale)
 {
     SlopeScalePrivate *m = SLOPE_SCALE_GET_PRIVATE (scale);
 
-    m->line_color = slope_gray(200);
-    m->line_width = 1.0;
-    m->line_color_selected = SLOPE_BLUE;
-    m->line_width_selected = 2.0;
+    m->line_color = slope_gray(210);
+    m->line_width = 2.0;
+    m->line_color_selected = SLOPE_CADETBLUE;
+    m->line_width_selected = 4.0;
     m->traits = SLOPE_SCALE_ANTIALIAS;
     m->data_min = 0.0;
     m->data_max = 1.0;
+    m->tick_length = 7.0;
 
     slope_sampler_init(&m->sampler);
 }
@@ -134,6 +138,26 @@ slope_scale_get_traits (SlopeScale *self)
     m = SLOPE_SCALE_GET_PRIVATE (self);
 
     return (SlopeScaleTrait) m->traits;
+}
+
+
+static void
+axis2d_toggle_highlight (SlopeItem *self)
+{
+    SlopeScalePrivate *m;
+    SlopeRGBA tmpcolor;
+    double tmpfloat;
+
+    g_assert (SLOPE_IS_SCALE (self));
+    m = SLOPE_SCALE_GET_PRIVATE (self);
+
+    tmpcolor = m->line_color;
+    m->line_color = m->line_color_selected;
+    m->line_color_selected = tmpcolor;
+
+    tmpfloat = m->line_width;
+    m->line_width = m->line_width_selected;
+    m->line_width_selected = tmpfloat;
 }
 
 
@@ -208,7 +232,7 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
         gulong k, n = m->sampler.size;
         step = length / n;
 
-        slope_point_move(p2, 5, ortog);
+        slope_point_move(p2, m->tick_length, ortog);
 
         for (k = 0; k < n; ++k) {
             cairo_move_to(dc->cr, p1.x, p1.y);

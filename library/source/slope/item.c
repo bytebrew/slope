@@ -72,6 +72,7 @@ static void item_draw_children (SlopeItem *self, SlopeItemDC *dc);
 static void item_draw_tree (SlopeItem *self, SlopeItemDC *dc);
 static void item_add_bottom (SlopeItem *parent, SlopeItem *child);
 static void item_add_top (SlopeItem *parent, SlopeItem *child);
+static void item_toggle_highlight (SlopeItem *self);
 
 
 static void
@@ -91,6 +92,7 @@ slope_item_class_init (SlopeItemClass *klass)
     klass->detached = item_attached_detached;
     klass->add_top = item_add_top;
     klass->add_bottom = item_add_bottom;
+    klass->toggle_highlight = item_toggle_highlight;
 
 
     item_props[PROP_VISIBLE] =
@@ -311,6 +313,21 @@ slope_item_set_visible (SlopeItem *self, gboolean visible)
 {
     g_assert (SLOPE_IS_ITEM (self));
     slope_enable_if(SLOPE_ITEM_GET_PRIVATE (self)->options, visible, ItemVisible);
+}
+
+
+static void
+item_toggle_highlight (SlopeItem *self)
+{
+    SLOPE_UNUSED(self);
+}
+
+
+void
+slope_item_toggle_highlight (SlopeItem *self)
+{
+    g_assert (SLOPE_IS_ITEM (self));
+    SLOPE_ITEM_GET_CLASS (self)->toggle_highlight(self);
 }
 
 
