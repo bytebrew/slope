@@ -99,9 +99,9 @@ void slope_axis2d_set_scales (SlopeAxis2D *self, SlopeAxisScale scales);
 
 void slope_axis2d_update_scale (SlopeAxis2D *self);
 
-void slope_axis2d_map (SlopeAxis2D *self, SlopePoint *f, const SlopePoint *d);
+void slope_axis2d_map (SlopeAxis2D *self, SlopePoint *figpos, const SlopePoint *datapos);
 
-void slope_axis2d_unmap (SlopeAxis2D *self, SlopePoint *d, const SlopePoint *f);
+void slope_axis2d_unmap (SlopeAxis2D *self, SlopePoint *datapos, const SlopePoint *figpos);
 
 G_END_DECLS
 

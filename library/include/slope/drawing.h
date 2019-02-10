@@ -44,17 +44,47 @@ _SlopeRect {
 } SlopeRect;
 
 
-#define SLOPE_POINT_DIFF(RES,LHS,RHS) \
+#define slope_point_get_diff(RES,LHS,RHS) \
     G_STMT_START {\
         (RES).x = (LHS).x - (RHS).x; \
         (RES).y = (LHS).y - (RHS).y; \
     } G_STMT_END
 
 
-#define SLOPE_POINT_SUM(RES,LHS,RHS) \
+#define slope_point_get_sum(RES,LHS,RHS) \
     G_STMT_START {\
         (RES).x = (LHS).x + (RHS).x; \
         (RES).y = (LHS).y + (RHS).y; \
+    } G_STMT_END
+
+
+#define slope_point_get_ortogonal(R,P) \
+    G_STMT_START {\
+        (R).x = (P).y; \
+        (R).y = -(P).x; \
+    } G_STMT_END
+
+
+#define slope_point_dotprod(LHS,RHS) \
+    ((LHS).x * (RHS).x + (LHS).y * (RHS).y)
+
+
+#define slope_point_length(V) \
+    sqrt(slope_point_dotprod(V,V))
+
+
+#define slope_point_get_normalized(N,V) \
+    G_STMT_START {\
+        double len = slope_point_length(V); \
+        (N).x = (V).x / len; \
+        (N).y = (V).y / len; \
+    } G_STMT_END
+
+
+#define slope_move(Pt, Dist, Direc) \
+    G_STMT_START {\
+        (Pt).x += (Dist) * (Direc).x; \
+        (Pt).y += (Dist) * (Direc).y; \
     } G_STMT_END
 
 

@@ -31,8 +31,13 @@ struct _SlopePlot2DPrivate
 };
 
 
+#define SLOPE_PLOT2D_GET_PRIVATE(obj) \
+    (G_TYPE_INSTANCE_GET_PRIVATE((obj), \
+    SLOPE_TYPE_PLOT2D, SlopePlot2DPrivate))
+
+
 G_DEFINE_TYPE_WITH_PRIVATE (SlopePlot2D, slope_plot2d, SLOPE_TYPE_ITEM)
-#define SLOPE_PLOT2D_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_TYPE_PLOT2D, SlopePlot2DPrivate))
+
 
 /* local decls */
 static void plot2d_finalize (GObject *self);
@@ -84,6 +89,7 @@ plot2d_get_data_extents (SlopePlot2D *self,
                          double *x_min, double *x_max,
                          double *y_min, double *y_max)
 {
+    SLOPE_UNUSED(self);
     *x_min = *y_min = 0.0;
     *x_max = *y_max = 1.0;
 }
@@ -94,6 +100,7 @@ slope_plot2d_get_data_extents (SlopePlot2D *self,
                                double *x_min, double *x_max,
                                double *y_min, double *y_max)
 {
+    g_assert (SLOPE_IS_PLOT2D (self));
     SLOPE_PLOT2D_GET_CLASS (self)->get_data_extents (
                 self, x_min, x_max, y_min, y_max);
 }
@@ -102,7 +109,6 @@ slope_plot2d_get_data_extents (SlopePlot2D *self,
 static void
 plot2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
-    /* draw the frame stuff */
     SLOPE_ITEM_CLASS (slope_plot2d_parent_class)->draw_self (self, dc);
 }
 

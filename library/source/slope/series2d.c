@@ -132,7 +132,7 @@ slope_series2d_format (SlopeSeries2D *self, const char *format)
     SlopeSeries2DPrivate *m;
     SlopeRGBA color = SLOPE_BLACK;
 
-    g_return_if_fail (SLOPE_IS_SERIES2D (self));
+    g_assert (SLOPE_IS_SERIES2D (self));
     m = SLOPE_SERIES2D_GET_PRIVATE (self);
 
     slope_disable(m->options, SLOPE_SERIES2D_DRAW_LINE);
@@ -182,8 +182,7 @@ series2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
     SlopeSeries2DPrivate *m;
     SlopeAxis2D *axis;
 
-    g_return_if_fail (SLOPE_IS_SERIES2D (self));
-
+    g_assert (SLOPE_IS_SERIES2D (self));
     m = SLOPE_SERIES2D_GET_PRIVATE (self);
     axis = SLOPE_AXIS2D (slope_item_get_parent (self));
 
@@ -221,9 +220,10 @@ series2d_get_data_extents (SlopePlot2D *self,
                            double *y_min, double *y_max)
 {
     SlopeSeries2DPrivate *m;
-    g_return_if_fail (SLOPE_IS_SERIES2D (self));
 
+    g_assert (SLOPE_IS_SERIES2D (self));
     m = SLOPE_SERIES2D_GET_PRIVATE (self);
+
     *x_min = m->x_min;
     *x_max = m->x_max;
     *y_min = m->y_min;
@@ -238,7 +238,7 @@ void slope_series2d_set_data (SlopeSeries2D *self,
     SlopePoint *pts;
     gulong k, npts;
 
-    g_return_if_fail (SLOPE_IS_SERIES2D (self));
+    g_assert (SLOPE_IS_SERIES2D (self));
     m = SLOPE_SERIES2D_GET_PRIVATE (self);
 
     /* Default values for no data */
@@ -267,6 +267,11 @@ void slope_series2d_set_data (SlopeSeries2D *self,
                 if (pts[k].y < m->y_min) m->y_min = pts[k].y;
                 if (pts[k].y > m->y_max) m->y_max = pts[k].y;
             }
+        }
+
+        if ((m->x_max <= m->x_min) || (m->y_max <= m->y_min)) {
+            g_warning("Slope", G_LOG_LEVEL_ERROR,
+                      "Series2D has improper data range");
         }
     }
 }

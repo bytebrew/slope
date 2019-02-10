@@ -21,6 +21,7 @@
 #include "slope/scale.h"
 #include "slope/color.h"
 #include "slope/sampler.h"
+#include "math.h"
 
 typedef struct _SlopeScalePrivate SlopeScalePrivate;
 #define SLOPE_SCALE_PRIVATE(Addr) ((SlopeScalePrivate*) (Addr))
@@ -139,6 +140,8 @@ slope_scale_set_data_extents (SlopeScale *self, double min, double max)
 
     m->data_min = min;
     m->data_max = max;
+
+    slope_sampler_auto_sample_decimal(&m->sampler, m->data_min, m->data_max, 1.0);
 }
 
 
@@ -147,9 +150,13 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 {
     SlopeScalePrivate *m = SLOPE_SCALE_GET_PRIVATE (self);
     cairo_antialias_t antialias = CAIRO_ANTIALIAS_GOOD;
-    SlopePoint direc;
+    SlopePoint line, direc, ortog;
+    double length, step;
 
-    SLOPE_POINT_DIFF(direc, m->fig_p2, m->fig_p1);
+    slope_point_get_diff(line, m->fig_p2, m->fig_p1);
+    slope_point_get_normalized(direc, line);
+    slope_point_get_ortogonal(ortog, direc);
+    length = slope_point_length(line);
 
     if (!m->antialias
             || slope_float_similar_zero(direc.x)
@@ -157,6 +164,7 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
         antialias = CAIRO_ANTIALIAS_NONE;
     }
 
+    /* main line */
     if (slope_color_is_visible(m->line_color)) {
         slope_cairo_set_rgba (dc->cr, m->line_color);
         cairo_set_antialias (dc->cr, antialias);
@@ -164,6 +172,25 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
         cairo_move_to (dc->cr, m->fig_p1.x, m->fig_p1.y);
         cairo_line_to (dc->cr, m->fig_p2.x, m->fig_p2.y);
         cairo_stroke (dc->cr);
+    }
+
+    /* sample ticks */
+    if (0 < m->sampler.size) {
+        SlopePoint p1 = m->fig_p1;
+        SlopePoint p2 = p1;
+        gulong k, n = m->sampler.size;
+        step = length / n;
+
+        slope_move(p2, 5, ortog);
+
+        for (k = 0; k < n; ++k) {
+            cairo_move_to(dc->cr, p1.x, p1.y);
+            cairo_line_to(dc->cr, p2.x, p2.y);
+            cairo_stroke(dc->cr);
+
+            slope_move(p1, step, direc);
+            slope_move(p2, step, direc);
+        }
     }
 }
 

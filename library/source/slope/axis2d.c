@@ -153,7 +153,7 @@ base_add_top (SlopeItem *self, SlopeItem *child)
 static void
 axis2d_add_top (SlopeItem *self, SlopeItem *child)
 {
-    SLOPE_ITEM_CLASS (slope_axis2d_parent_class)->add_top (self, child);
+    base_add_top (self, child);
     put_scales_on_top (SLOPE_AXIS2D (self));
     slope_axis2d_update_scale (SLOPE_AXIS2D (self));
 }
@@ -162,7 +162,7 @@ axis2d_add_top (SlopeItem *self, SlopeItem *child)
 static void
 axis2d_add_bottom (SlopeItem *self, SlopeItem *child)
 {
-    SLOPE_ITEM_CLASS (slope_axis2d_parent_class)->add_bottom (self, child);
+    base_add_top (self, child);
     put_scales_on_top (SLOPE_AXIS2D (self));
     slope_axis2d_update_scale (SLOPE_AXIS2D (self));
 }
@@ -252,9 +252,7 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
     }
 
     /* Init axis extents with the first plot's extents */
-    item = slope_item_from_tree_node (iter);
-    while (iter != NULL) {
-
+    for (; iter != NULL; iter = iter->next) {
         item = slope_item_from_tree_node (iter);
         if (SLOPE_IS_PLOT2D(item)) {
 
@@ -270,13 +268,10 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
             iter = iter->next;
             break;
         }
-
-        iter = iter->next;
     }
 
     /* Update axis extents with the others */
-    while (iter != NULL) {
-
+    for (; iter != NULL; iter = iter->next) {
         item = slope_item_from_tree_node (iter);
         if (SLOPE_IS_PLOT2D(item)) {
 
@@ -290,8 +285,6 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
             if (plt_y_min < m->dat_y_min) m->dat_y_min = plt_y_min;
             if (plt_y_max > m->dat_y_max) m->dat_y_max = plt_y_max;
         }
-
-        iter = iter->next;
     }
 
     m->dat_width = m->dat_x_max - m->dat_x_min;
@@ -334,57 +327,29 @@ axis2d_set_scales_position (SlopeAxis2D *self)
     SlopePoint fig_p1, fig_p2, zero;
     SlopeScale *scale;
 
-    fig_p1.x = m->fig_x_min;
-    fig_p1.y = m->fig_y_max;
-    fig_p2.x = m->fig_x_max;
-    fig_p2.y = m->fig_y_max;
-    scale = SLOPE_SCALE (m->scales[SCALE_BOTTOM]);
-    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (scale, m->dat_x_min, m->dat_x_max);
-
-    fig_p1.x = m->fig_x_min;
-    fig_p1.y = m->fig_y_max;
-    fig_p2.x = m->fig_x_min;
-    fig_p2.y = m->fig_y_min;
-    scale = SLOPE_SCALE (m->scales[SCALE_LEFT]);
-    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (scale, m->dat_y_min, m->dat_y_max);
-
-    fig_p1.x = m->fig_x_min;
-    fig_p1.y = m->fig_y_min;
-    fig_p2.x = m->fig_x_max;
-    fig_p2.y = m->fig_y_min;
-    scale = SLOPE_SCALE (m->scales[SCALE_TOP]);
-    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (scale, m->dat_x_min, m->dat_x_max);
-
-    fig_p1.x = m->fig_x_max;
-    fig_p1.y = m->fig_y_max;
-    fig_p2.x = m->fig_x_max;
-    fig_p2.y = m->fig_y_min;
-    scale = SLOPE_SCALE (m->scales[SCALE_RIGHT]);
-    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (scale, m->dat_y_min, m->dat_y_max);
-
     fig_p2.x = 0;
     fig_p2.y = 0;
     slope_axis2d_map (self, &zero, &fig_p2);
 
-    fig_p1.x = m->fig_x_min;
-    fig_p1.y = zero.y;
-    fig_p2.x = m->fig_x_max;
-    fig_p2.y = zero.y;
-    scale = SLOPE_SCALE (m->scales[SCALE_X]);
-    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (scale, m->dat_x_min, m->dat_x_max);
+#define SET_POS(LABEL,X1,Y1,X2,Y2,MIN,MAX) \
+    G_STMT_START { \
+        fig_p1.x = X1; \
+        fig_p1.y = Y1; \
+        fig_p2.x = X2; \
+        fig_p2.y = Y2; \
+        scale = SLOPE_SCALE (m->scales[SCALE_##LABEL]); \
+        slope_scale_set_figure_position (scale, &fig_p1, &fig_p2); \
+        slope_scale_set_data_extents (scale, MIN, MAX); \
+    } G_STMT_END
 
-    fig_p1.x = zero.x;
-    fig_p1.y = m->fig_y_max;
-    fig_p2.x = zero.x;
-    fig_p2.y = m->fig_y_min;
-    scale = SLOPE_SCALE (m->scales[SCALE_Y]);
-    slope_scale_set_figure_position (scale, &fig_p1, &fig_p2);
-    slope_scale_set_data_extents (scale, m->dat_y_min, m->dat_y_max);
+    SET_POS(BOTTOM, m->fig_x_min, m->fig_y_max, m->fig_x_max, m->fig_y_max, m->dat_x_min, m->dat_x_max);
+    SET_POS(LEFT, m->fig_x_min, m->fig_y_max, m->fig_x_min, m->fig_y_min, m->dat_y_min, m->dat_y_max);
+    SET_POS(TOP, m->fig_x_min, m->fig_y_min, m->fig_x_max, m->fig_y_min, m->dat_x_min, m->dat_x_max);
+    SET_POS(RIGHT, m->fig_x_max, m->fig_y_max, m->fig_x_max, m->fig_y_min, m->dat_y_min, m->dat_y_max);
+    SET_POS(X, m->fig_x_min, zero.y, m->fig_x_max, zero.y, m->dat_x_min, m->dat_x_max);
+    SET_POS(Y, zero.x, m->fig_y_max, zero.x, m->fig_y_min, m->dat_y_min, m->dat_y_max);
+
+#undef SET_POS
 }
 
 
