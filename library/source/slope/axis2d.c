@@ -22,9 +22,11 @@
 #include "slope/frame.h"
 #include "slope/sampler.h"
 
+#define MIN_PIXLEN 10.0
+
+
 typedef struct _SlopeAxis2DPrivate SlopeAxis2DPrivate;
 #define SLOPE_AXIS2D_PRIVATE(Addr) ((SlopeAxis2DPrivate*) (Addr))
-
 
 typedef enum {
     SCALE_BOTTOM,
@@ -72,6 +74,7 @@ static void axis2d_set_scales_position (SlopeAxis2D *self);
 static void axis2d_add_bottom (SlopeItem *parent, SlopeItem *child);
 static void axis2d_add_top (SlopeItem *parent, SlopeItem *child);
 static void base_add_top (SlopeItem *self, SlopeItem *child);
+static void base_add_bottom (SlopeItem *self, SlopeItem *child);
 
 static void
 slope_axis2d_class_init (SlopeAxis2DClass *klass)
@@ -152,6 +155,13 @@ base_add_top (SlopeItem *self, SlopeItem *child)
 
 
 static void
+base_add_bottom (SlopeItem *self, SlopeItem *child)
+{
+    SLOPE_ITEM_CLASS (slope_axis2d_parent_class)->add_bottom (self, child);
+}
+
+
+static void
 axis2d_add_top (SlopeItem *self, SlopeItem *child)
 {
     base_add_top (self, child);
@@ -163,7 +173,7 @@ axis2d_add_top (SlopeItem *self, SlopeItem *child)
 static void
 axis2d_add_bottom (SlopeItem *self, SlopeItem *child)
 {
-    base_add_top (self, child);
+    base_add_bottom (self, child);
     put_scales_on_top (SLOPE_AXIS2D (self));
     slope_axis2d_update_scale (SLOPE_AXIS2D (self));
 }
@@ -247,7 +257,7 @@ slope_axis2d_update_scale (SlopeAxis2D *self)
     m->dat_width = 1.0;
     m->dat_height = 1.0;
 
-    if (!(iter = slope_item_get_fisrt_child (SLOPE_ITEM (self)))) {
+    if (NULL == (iter = slope_item_get_fisrt_child (SLOPE_ITEM (self)))) {
         /* no subitems */
         return;
     }
@@ -343,12 +353,12 @@ axis2d_set_scales_position (SlopeAxis2D *self)
         slope_scale_set_data_extents (scale, MIN, MAX); \
     } G_STMT_END
 
-    SET_POS(BOTTOM, m->fig_x_min, m->fig_y_max, m->fig_x_max, m->fig_y_max, m->dat_x_min, m->dat_x_max);
-    SET_POS(LEFT, m->fig_x_min, m->fig_y_max, m->fig_x_min, m->fig_y_min, m->dat_y_min, m->dat_y_max);
-    SET_POS(TOP, m->fig_x_min, m->fig_y_min, m->fig_x_max, m->fig_y_min, m->dat_x_min, m->dat_x_max);
-    SET_POS(RIGHT, m->fig_x_max, m->fig_y_max, m->fig_x_max, m->fig_y_min, m->dat_y_min, m->dat_y_max);
-    SET_POS(X, m->fig_x_min, zero.y, m->fig_x_max, zero.y, m->dat_x_min, m->dat_x_max);
-    SET_POS(Y, zero.x, m->fig_y_max, zero.x, m->fig_y_min, m->dat_y_min, m->dat_y_max);
+    SET_POS (BOTTOM, m->fig_x_min, m->fig_y_max, m->fig_x_max, m->fig_y_max, m->dat_x_min, m->dat_x_max);
+    SET_POS (LEFT, m->fig_x_min, m->fig_y_max, m->fig_x_min, m->fig_y_min, m->dat_y_min, m->dat_y_max);
+    SET_POS (TOP, m->fig_x_min, m->fig_y_min, m->fig_x_max, m->fig_y_min, m->dat_x_min, m->dat_x_max);
+    SET_POS (RIGHT, m->fig_x_max, m->fig_y_max, m->fig_x_max, m->fig_y_min, m->dat_y_min, m->dat_y_max);
+    SET_POS (X, m->fig_x_min, zero.y, m->fig_x_max, zero.y, m->dat_x_min, m->dat_x_max);
+    SET_POS (Y, zero.x, m->fig_y_max, zero.x, m->fig_y_min, m->dat_y_min, m->dat_y_max);
 
 #undef SET_POS
 }
@@ -358,18 +368,18 @@ static void
 axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 {
     SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
-    double margin = slope_frame_get_margin (SLOPE_FRAME (self));
+    double frame_margin = slope_frame_get_margin (SLOPE_FRAME (self));
     SlopeRect orig_rect = dc->rect;
 
     cairo_save (dc->cr);
 
     /* If stuff like margins are to be applyed, we need to
      * adjust the rectangle to which subitems will have access to */
-    if (margin > 0) {
-        dc->rect.x += margin;
-        dc->rect.y += margin;
-        dc->rect.width -= 2 * margin;
-        dc->rect.height -= 2 * margin;
+    if (frame_margin > 0) {
+        dc->rect.x += frame_margin;
+        dc->rect.y += frame_margin;
+        dc->rect.width -= 2 * frame_margin;
+        dc->rect.height -= 2 * frame_margin;
     }
 
     slope_cairo_rect (dc->cr, &dc->rect);
@@ -379,7 +389,7 @@ axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc)
     m->fig_x_max = dc->rect.x + dc->rect.width - m->right_margin;
     m->fig_width = m->fig_x_max - m->fig_x_min;
 
-    if (0.0 == m->fig_width || 0.0 == m->dat_width) {
+    if (MIN_PIXLEN > m->fig_width) {
         g_warning("Slope", G_LOG_LEVEL_ERROR, "Axis2D has improper range");
         goto cleanup;
     }
@@ -388,7 +398,7 @@ axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc)
     m->fig_y_max = dc->rect.y + dc->rect.height - m->bottom_margin;
     m->fig_height = m->fig_y_max - m->fig_y_min;
 
-    if (0.0 == m->fig_height || 0.0 == m->dat_height) {
+    if (MIN_PIXLEN > m->fig_height) {
         g_warning("Slope", G_LOG_LEVEL_ERROR, "Axis2D has improper range");
         goto cleanup;
     }

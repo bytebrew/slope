@@ -54,10 +54,7 @@ struct _SlopePlot2DClass
 {
     SlopeItemClass parent_class;
 
-
-    void (*get_data_extents) (SlopePlot2D *self,
-                              double *x_min, double *x_max,
-                              double *y_min, double *y_max);
+    void (*get_data_rect) (SlopePlot2D *self, SlopeRect *rect);
 
     /* Padding for future expansion */
     void (*_slope_reserved1) (void);
@@ -68,6 +65,9 @@ struct _SlopePlot2DClass
 
 
 GType slope_plot2d_get_type (void) G_GNUC_CONST;
+
+
+void slope_plot2d_get_data_rect (SlopePlot2D *self, SlopeRect *rect);
 
 void slope_plot2d_get_data_extents (SlopePlot2D *self,
                                     double *x_min, double *x_max,

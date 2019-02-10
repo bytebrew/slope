@@ -36,6 +36,8 @@ struct _SlopeScalePrivate
 
     SlopeRGBA line_color;
     SlopeRGBA line_color_selected;
+    SlopeRGBA label_color;
+    SlopeRGBA label_color_selected;
     double line_width;
     double line_width_selected;
     double tick_length;
@@ -84,6 +86,8 @@ slope_scale_init (SlopeScale *scale)
     m->line_width = 2.0;
     m->line_color_selected = SLOPE_CADETBLUE;
     m->line_width_selected = 4.0;
+    m->label_color = slope_gray(100);
+    m->label_color_selected = slope_gray(100);
     m->traits = SLOPE_SCALE_ANTIALIAS;
     m->data_min = 0.0;
     m->data_max = 1.0;
@@ -155,6 +159,10 @@ axis2d_toggle_highlight (SlopeItem *self)
     m->line_color = m->line_color_selected;
     m->line_color_selected = tmpcolor;
 
+    tmpcolor = m->label_color;
+    m->label_color = m->label_color_selected;
+    m->label_color_selected = tmpcolor;
+
     tmpfloat = m->line_width;
     m->line_width = m->line_width_selected;
     m->line_width_selected = tmpfloat;
@@ -166,11 +174,12 @@ slope_scale_set_figure_position (SlopeScale *self,
                                  const SlopePoint *p1,
                                  const SlopePoint *p2)
 {
-    SlopeScalePrivate *m = SLOPE_SCALE_GET_PRIVATE (self);
+    SlopeScalePrivate *m;
 
     g_assert (SLOPE_IS_SCALE (self));
     g_assert (p1 && p2);
 
+    m = SLOPE_SCALE_GET_PRIVATE (self);
     m->fig_p1 = *p1;
     m->fig_p2 = *p2;
 }
@@ -179,15 +188,16 @@ slope_scale_set_figure_position (SlopeScale *self,
 void
 slope_scale_set_data_extents (SlopeScale *self, double min, double max)
 {
-    SlopeScalePrivate *m = SLOPE_SCALE_GET_PRIVATE (self);
+    SlopeScalePrivate *m;
 
     g_assert (SLOPE_IS_SCALE (self));
     g_assert (min < max);
 
+    m = SLOPE_SCALE_GET_PRIVATE (self);
     m->data_min = min;
     m->data_max = max;
 
-    slope_sampler_auto_sample_decimal(&m->sampler, m->data_min, m->data_max, 1.0);
+    slope_sampler_auto_sample_decimal(&m->sampler, m->data_min, m->data_max, 4.0);
 }
 
 
@@ -230,14 +240,24 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
         SlopePoint p1 = m->fig_p1;
         SlopePoint p2 = p1;
         gulong k, n = m->sampler.size;
+        SlopeSample *samples = m->sampler.samples;
         step = length / n;
 
         slope_point_move(p2, m->tick_length, ortog);
 
         for (k = 0; k < n; ++k) {
+            SlopeRect ink, logical;
+
+            slope_cairo_set_rgba (dc->cr, m->line_color);
             cairo_move_to(dc->cr, p1.x, p1.y);
             cairo_line_to(dc->cr, p2.x, p2.y);
             cairo_stroke(dc->cr);
+
+            slope_cairo_set_rgba (dc->cr, m->label_color);
+            slope_text_set (dc->text, samples[k].label);
+            slope_text_get_extents (dc->text, &ink, &logical);
+            cairo_move_to (dc->cr, p1.x - ink.width/2.0, p1.y + 4.0);
+            slope_text_show (dc->text);
 
             slope_point_move(p1, step, direc);
             slope_point_move(p2, step, direc);

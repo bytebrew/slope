@@ -55,9 +55,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopeSeries2D, slope_series2d, SLOPE_TYPE_PLOT2D)
 static void series2d_finalize (GObject *self);
 static void series2d_dispose (GObject *self);
 static void series2d_draw_self (SlopeItem *self, const SlopeItemDC *dc);
-static void series2d_get_data_extents (SlopePlot2D *self,
-                                       double *x_min, double *x_max,
-                                       double *y_min, double *y_max);
+static void series2d_get_data_rect (SlopePlot2D *self, SlopeRect *rect);
 
 
 static void
@@ -72,7 +70,7 @@ slope_series2d_class_init (SlopeSeries2DClass *klass)
 
     item_class->draw_self = series2d_draw_self;
 
-    plt2d_class->get_data_extents = series2d_get_data_extents;
+    plt2d_class->get_data_rect = series2d_get_data_rect;
 }
 
 
@@ -215,19 +213,14 @@ series2d_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 
 
 static void
-series2d_get_data_extents (SlopePlot2D *self,
-                           double *x_min, double *x_max,
-                           double *y_min, double *y_max)
+series2d_get_data_rect (SlopePlot2D *self, SlopeRect *rect)
 {
-    SlopeSeries2DPrivate *m;
+    SlopeSeries2DPrivate *m = SLOPE_SERIES2D_GET_PRIVATE (self);
 
-    g_assert (SLOPE_IS_SERIES2D (self));
-    m = SLOPE_SERIES2D_GET_PRIVATE (self);
-
-    *x_min = m->x_min;
-    *x_max = m->x_max;
-    *y_min = m->y_min;
-    *y_max = m->y_max;
+    rect->x = m->x_min;
+    rect->y = m->y_min;
+    rect->width = m->x_max - m->x_min;
+    rect->height = m->y_max - m->y_min;
 }
 
 
@@ -261,7 +254,7 @@ void slope_series2d_set_data (SlopeSeries2D *self,
             m->x_min = m->x_max = pts[0].x;
             m->y_min = m->y_max = pts[0].y;
 
-            for (k = 0; k < npts; ++k) {
+            for (k = 1; k < npts; ++k) {
                 if (pts[k].x < m->x_min) m->x_min = pts[k].x;
                 if (pts[k].x > m->x_max) m->x_max = pts[k].x;
                 if (pts[k].y < m->y_min) m->y_min = pts[k].y;

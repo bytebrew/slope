@@ -33,7 +33,6 @@ int main(int argc, char *argv[])
     SlopeItem *grid;
     SlopeItem *axis1, *axis2, *axis3, *axis4;
     SlopeItem *series1, *series2, *series3, *series4;
-    SlopeScale *scale;
     SlopeArray2D *data1, *data2, *data3, *data4;
     double x;
     long k;
@@ -59,8 +58,6 @@ int main(int argc, char *argv[])
     /* Add axis onto the grid */
     axis1 = slope_axis2d_new("Sin(X)");
     slope_grid_emplace (SLOPE_GRID (grid), axis1, 0, 0, 10, 10);
-    scale = slope_axis2d_get_scale (SLOPE_AXIS2D (axis1), SLOPE_AXIS2D_SCALE_X);
-    slope_item_toggle_highlight (SLOPE_ITEM (scale));
 
     /* Add another axis onto the grid */
     axis2 = slope_axis2d_new("Cos(3X)");

@@ -70,8 +70,9 @@ void slope_sampler_auto_sample_decimal(SlopeSampler *self, double min, double ma
     self->min  = min;
     self->max  = max;
     self->hint = hint;
+    v_diff     = max - min;
+    g_assert(v_diff > 0.0);
 
-    v_diff    = max - min;
     pow_diff  = round(log10(v_diff));
     samp_spac = pow(10.0, pow_diff - 1.0);
 
@@ -103,7 +104,9 @@ void slope_sampler_auto_sample_decimal(SlopeSampler *self, double min, double ma
         }
 
         /* if numbers are too extreme use power of ten notation */
-        if (coord > 1e4 || coord < -1e4) format_idx = 1;
+        if (coord > 1.0e4 || coord < -1.0e4 || fabs(coord) < 1.0e-3) {
+            format_idx = 1;
+        }
 
         sprintf(sample.label, format[format_idx], coord);
         sample.value = coord;

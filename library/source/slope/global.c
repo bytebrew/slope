@@ -20,7 +20,7 @@
 
 #include "slope/global.h"
 
-#define ALMOST_ZERO 1.0e-8
+#define ALMOST_ZERO 1.0e-10
 
 gboolean slope_float_similar_zero(double x)
 {

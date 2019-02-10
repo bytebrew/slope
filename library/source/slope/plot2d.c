@@ -43,9 +43,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (SlopePlot2D, slope_plot2d, SLOPE_TYPE_ITEM)
 static void plot2d_finalize (GObject *self);
 static void plot2d_dispose (GObject *self);
 static void plot2d_draw_self (SlopeItem *self, const SlopeItemDC *dc);
-static void plot2d_get_data_extents (SlopePlot2D *self,
-                                     double *x_min, double *x_max,
-                                     double *y_min, double *y_max);
+static void plot2d_get_data_rect (SlopePlot2D *self, SlopeRect *rect);
 
 
 static void
@@ -59,7 +57,7 @@ slope_plot2d_class_init (SlopePlot2DClass *klass)
 
     item_class->draw_self = plot2d_draw_self;
 
-    klass->get_data_extents = plot2d_get_data_extents;
+    klass->get_data_rect = plot2d_get_data_rect;
 }
 
 
@@ -84,14 +82,23 @@ plot2d_finalize(GObject *object)
 }
 
 
-void
-plot2d_get_data_extents (SlopePlot2D *self,
-                         double *x_min, double *x_max,
-                         double *y_min, double *y_max)
+static void
+plot2d_get_data_rect (SlopePlot2D *self, SlopeRect *rect)
 {
     SLOPE_UNUSED(self);
-    *x_min = *y_min = 0.0;
-    *x_max = *y_max = 1.0;
+    rect->x = 0.0;
+    rect->y = 0.0;
+    rect->width = 1.0;
+    rect->height = 1.0;
+}
+
+
+void
+slope_plot2d_get_data_rect (SlopePlot2D *self, SlopeRect *rect)
+{
+    g_assert (SLOPE_IS_PLOT2D (self));
+    g_assert (rect);
+    SLOPE_PLOT2D_GET_CLASS (self)->get_data_rect (self, rect);
 }
 
 
@@ -100,9 +107,18 @@ slope_plot2d_get_data_extents (SlopePlot2D *self,
                                double *x_min, double *x_max,
                                double *y_min, double *y_max)
 {
+    SlopeRect rect;
+
     g_assert (SLOPE_IS_PLOT2D (self));
-    SLOPE_PLOT2D_GET_CLASS (self)->get_data_extents (
-                self, x_min, x_max, y_min, y_max);
+    g_assert (x_min && x_max);
+    g_assert (y_min && y_max);
+
+    slope_plot2d_get_data_rect(self, &rect);
+
+    *x_min = rect.x;
+    *y_min = rect.y;
+    *x_max = rect.x + rect.width;
+    *y_max = rect.y + rect.height;
 }
 
 
