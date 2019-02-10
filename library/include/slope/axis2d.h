@@ -55,6 +55,14 @@ typedef enum {
     SLOPE_AXIS2D_SCALE_RIGHT      = (1U << 3U),
     SLOPE_AXIS2D_SCALE_X          = (1U << 4U),
     SLOPE_AXIS2D_SCALE_Y          = (1U << 5U),
+
+    SLOPE_AXIS2D_SCALE_FRAMED     = SLOPE_AXIS2D_SCALE_BOTTOM
+                                    |SLOPE_AXIS2D_SCALE_LEFT
+                                    |SLOPE_AXIS2D_SCALE_TOP
+                                    |SLOPE_AXIS2D_SCALE_RIGHT,
+
+    SLOPE_AXIS2D_SCALE_ZERO       = SLOPE_AXIS2D_SCALE_X
+                                    |SLOPE_AXIS2D_SCALE_Y
 } SlopeAxisScale;
 
 

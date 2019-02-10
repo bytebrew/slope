@@ -103,13 +103,14 @@ slope_axis2d_init (SlopeAxis2D *self)
     m->left_margin = 20.0;
 
     for (k = 0; k < SCALE_COUNT; ++k) {
-        m->scales[k] = slope_scale_new();
+        m->scales[k] = slope_scale_new(SLOPE_SCALE_ANTIALIAS);
         base_add_top (SLOPE_ITEM (self), m->scales[k]);
     }
 
-    slope_axis2d_set_scales (SLOPE_AXIS2D (self),
-                             SLOPE_AXIS2D_SCALE_X
-                             |SLOPE_AXIS2D_SCALE_Y);
+    slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_LEFT]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
+    slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_Y]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
+    slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_TOP]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
+    slope_axis2d_set_scales (SLOPE_AXIS2D (self), SLOPE_AXIS2D_SCALE_FRAMED);
 }
 
 

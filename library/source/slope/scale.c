@@ -41,9 +41,7 @@ struct _SlopeScalePrivate
 
     SlopeSampler sampler;
 
-    gulong show_ticks : 1;
-    gulong reverse_ticks : 1;
-    gulong antialias : 1;
+    gulong traits;
 };
 
 
@@ -83,9 +81,7 @@ slope_scale_init (SlopeScale *scale)
     m->line_width = 1.0;
     m->line_color_selected = SLOPE_BLUE;
     m->line_width_selected = 2.0;
-    m->show_ticks = TRUE;
-    m->reverse_ticks = FALSE;
-    m->antialias = TRUE;
+    m->traits = SLOPE_SCALE_ANTIALIAS;
     m->data_min = 0.0;
     m->data_max = 1.0;
 
@@ -108,10 +104,36 @@ scale_finalize (GObject *object)
 
 
 SlopeItem*
-slope_scale_new ()
+slope_scale_new (SlopeScaleTrait traits)
 {
     SlopeItem *self = SLOPE_ITEM (g_object_new (SLOPE_TYPE_SCALE, NULL));
+    SlopeScalePrivate *m = SLOPE_SCALE_GET_PRIVATE (self);
+    m->traits = traits;
     return self;
+}
+
+
+void
+slope_scale_set_trait (SlopeScale *self, SlopeScaleTrait trait, gboolean toggle)
+{
+    SlopeScalePrivate *m;
+
+    g_assert (SLOPE_IS_SCALE (self));
+    m = SLOPE_SCALE_GET_PRIVATE (self);
+
+    slope_enable_if(m->traits, toggle, trait);
+}
+
+
+SlopeScaleTrait
+slope_scale_get_traits (SlopeScale *self)
+{
+    SlopeScalePrivate *m;
+
+    g_assert (SLOPE_IS_SCALE (self));
+    m = SLOPE_SCALE_GET_PRIVATE (self);
+
+    return (SlopeScaleTrait) m->traits;
 }
 
 
@@ -155,10 +177,15 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 
     slope_point_get_diff(line, m->fig_p2, m->fig_p1);
     slope_point_get_normalized(direc, line);
-    slope_point_get_ortogonal(ortog, direc);
     length = slope_point_length(line);
 
-    if (!m->antialias
+    if (slope_enabled(m->traits, SLOPE_SCALE_REVERSE_TICKS)) {
+        slope_point_get_clock_ortogonal(ortog, direc);
+    } else {
+        slope_point_get_anticlock_ortogonal(ortog, direc);
+    }
+
+    if (FALSE == slope_enabled(m->traits, SLOPE_SCALE_ANTIALIAS)
             || slope_float_similar_zero(direc.x)
             || slope_float_similar_zero(direc.y)) {
         antialias = CAIRO_ANTIALIAS_NONE;
@@ -181,15 +208,15 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
         gulong k, n = m->sampler.size;
         step = length / n;
 
-        slope_move(p2, 5, ortog);
+        slope_point_move(p2, 5, ortog);
 
         for (k = 0; k < n; ++k) {
             cairo_move_to(dc->cr, p1.x, p1.y);
             cairo_line_to(dc->cr, p2.x, p2.y);
             cairo_stroke(dc->cr);
 
-            slope_move(p1, step, direc);
-            slope_move(p2, step, direc);
+            slope_point_move(p1, step, direc);
+            slope_point_move(p2, step, direc);
         }
     }
 }

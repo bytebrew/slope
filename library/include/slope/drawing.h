@@ -24,8 +24,6 @@
 #include "slope/color.h"
 #include <cairo.h>
 
-#define SLOPE_ROUND_COORD(X) (((double) ((long) (X))) + 0.5)
-
 G_BEGIN_DECLS
 
 typedef struct
@@ -44,6 +42,10 @@ _SlopeRect {
 } SlopeRect;
 
 
+#define slope_point_round(X) \
+    (((double) ((long) (X))) + 0.5)
+
+
 #define slope_point_get_diff(RES,LHS,RHS) \
     G_STMT_START {\
         (RES).x = (LHS).x - (RHS).x; \
@@ -58,7 +60,14 @@ _SlopeRect {
     } G_STMT_END
 
 
-#define slope_point_get_ortogonal(R,P) \
+#define slope_point_get_clock_ortogonal(R,P) \
+    G_STMT_START {\
+        (R).x = -(P).y; \
+        (R).y = (P).x; \
+    } G_STMT_END
+
+
+#define slope_point_get_anticlock_ortogonal(R,P) \
     G_STMT_START {\
         (R).x = (P).y; \
         (R).y = -(P).x; \
@@ -81,7 +90,7 @@ _SlopeRect {
     } G_STMT_END
 
 
-#define slope_move(Pt, Dist, Direc) \
+#define slope_point_move(Pt, Dist, Direc) \
     G_STMT_START {\
         (Pt).x += (Dist) * (Direc).x; \
         (Pt).y += (Dist) * (Direc).y; \

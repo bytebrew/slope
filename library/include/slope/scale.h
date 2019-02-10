@@ -36,6 +36,12 @@ typedef struct _SlopeScale             SlopeScale;
 typedef struct _SlopeScaleClass        SlopeScaleClass;
 
 
+typedef enum _SlopeScaleTrait {
+    SLOPE_SCALE_REVERSE_TICKS = (1U),
+    SLOPE_SCALE_ANTIALIAS     = (1U << 1UL),
+} SlopeScaleTrait;
+
+
 struct _SlopeScale
 {
     /*< parent object space >*/
@@ -63,7 +69,11 @@ struct _SlopeScaleClass
 
 GType slope_scale_get_type (void) G_GNUC_CONST;
 
-SlopeItem* slope_scale_new (void);
+SlopeItem* slope_scale_new (SlopeScaleTrait traits);
+
+void slope_scale_set_trait (SlopeScale *self, SlopeScaleTrait trait, gboolean toggle);
+
+SlopeScaleTrait slope_scale_get_traits (SlopeScale *self);
 
 void slope_scale_set_figure_position (SlopeScale *self, const SlopePoint *p1, const SlopePoint *p2);
 
