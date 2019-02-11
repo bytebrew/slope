@@ -196,8 +196,6 @@ slope_scale_set_data_extents (SlopeScale *self, double min, double max)
     m = SLOPE_SCALE_GET_PRIVATE (self);
     m->data_min = min;
     m->data_max = max;
-
-    slope_sampler_auto_sample_decimal(&m->sampler, m->data_min, m->data_max, 4.0);
 }
 
 

@@ -55,8 +55,6 @@ void slope_sampler_add_sample (SlopeSampler *self, const SlopeSample *sample);
 
 void slope_sampler_clear (SlopeSampler *self);
 
-void slope_sampler_auto_sample_decimal(SlopeSampler *self, double min, double max, double hint);
-
 G_END_DECLS
 
 #endif /* _slope_sampler_h_ */

@@ -75,6 +75,9 @@ static void axis2d_add_bottom (SlopeItem *parent, SlopeItem *child);
 static void axis2d_add_top (SlopeItem *parent, SlopeItem *child);
 static void base_add_top (SlopeItem *self, SlopeItem *child);
 static void base_add_bottom (SlopeItem *self, SlopeItem *child);
+static void axis2d_set_x_scale_samples (SlopeAxis2D *self, SlopeScale *scale);
+static void axis2d_set_y_scale_samples (SlopeAxis2D *self, SlopeScale *scale);
+
 
 static void
 slope_axis2d_class_init (SlopeAxis2DClass *klass)
@@ -113,7 +116,7 @@ slope_axis2d_init (SlopeAxis2D *self)
     slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_LEFT]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
     slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_Y]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
     slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_TOP]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
-    slope_axis2d_set_scales (SLOPE_AXIS2D (self), SLOPE_AXIS2D_SCALE_ZERO);
+    slope_axis2d_set_scales (SLOPE_AXIS2D (self), SLOPE_AXIS2D_SCALE_ALL);
 }
 
 
@@ -342,7 +345,7 @@ axis2d_set_scales_position (SlopeAxis2D *self)
     fig_p2.y = 0;
     slope_axis2d_map (self, &zero, &fig_p2);
 
-#define SET_POS(LABEL,X1,Y1,X2,Y2,MIN,MAX) \
+#define SETUP_SCALE_DRAW(LABEL,ORIENT,X1,Y1,X2,Y2,MIN,MAX) \
     G_STMT_START { \
         fig_p1.x = X1; \
         fig_p1.y = Y1; \
@@ -351,16 +354,41 @@ axis2d_set_scales_position (SlopeAxis2D *self)
         scale = SLOPE_SCALE (m->scales[SCALE_##LABEL]); \
         slope_scale_set_figure_position (scale, &fig_p1, &fig_p2); \
         slope_scale_set_data_extents (scale, MIN, MAX); \
+        axis2d_set_##ORIENT##_scale_samples (self, \
+                             SLOPE_SCALE(m->scales[SCALE_##LABEL])); \
     } G_STMT_END
 
-    SET_POS (BOTTOM, m->fig_x_min, m->fig_y_max, m->fig_x_max, m->fig_y_max, m->dat_x_min, m->dat_x_max);
-    SET_POS (LEFT, m->fig_x_min, m->fig_y_max, m->fig_x_min, m->fig_y_min, m->dat_y_min, m->dat_y_max);
-    SET_POS (TOP, m->fig_x_min, m->fig_y_min, m->fig_x_max, m->fig_y_min, m->dat_x_min, m->dat_x_max);
-    SET_POS (RIGHT, m->fig_x_max, m->fig_y_max, m->fig_x_max, m->fig_y_min, m->dat_y_min, m->dat_y_max);
-    SET_POS (X, m->fig_x_min, zero.y, m->fig_x_max, zero.y, m->dat_x_min, m->dat_x_max);
-    SET_POS (Y, zero.x, m->fig_y_max, zero.x, m->fig_y_min, m->dat_y_min, m->dat_y_max);
-
-#undef SET_POS
+    SETUP_SCALE_DRAW (
+        BOTTOM, x,                   /* Location and orientation */
+        m->fig_x_min, m->fig_y_max,  /* Initial point (x1,y1) */
+        m->fig_x_max, m->fig_y_max,  /* Terminal point (x2,y2) */
+        m->dat_x_min, m->dat_x_max); /* Minimum and maximum coordinates (X,Y) */
+    SETUP_SCALE_DRAW (
+        LEFT, y,                     /* Location and orientation */
+        m->fig_x_min, m->fig_y_max,  /* Initial point (x1,y1) */
+        m->fig_x_min, m->fig_y_min,  /* Terminal point (x2,y2) */
+        m->dat_y_min, m->dat_y_max); /* Minimum and maximum coordinates (X,Y)*/
+    SETUP_SCALE_DRAW (
+        TOP, x,                      /* Location and orientation */
+        m->fig_x_min, m->fig_y_min,  /* Initial point (x1,y1) */
+        m->fig_x_max, m->fig_y_min,  /* Terminal point (x2,y2) */
+        m->dat_x_min, m->dat_x_max); /* Minimum and maximum coordinates (X,Y) */
+    SETUP_SCALE_DRAW (
+        RIGHT, y,                    /* Location and orientation */
+        m->fig_x_max, m->fig_y_max,  /* Initial point (x1,y1) */
+        m->fig_x_max, m->fig_y_min,  /* Terminal point (x2,y2) */
+        m->dat_y_min, m->dat_y_max); /* Minimum and maximum coordinates (X,Y) */
+    SETUP_SCALE_DRAW (
+        X, x,                        /* Location and orientation */
+        m->fig_x_min, zero.y,        /* Initial point (x1,y1) */
+        m->fig_x_max, zero.y,        /* Terminal point (x2,y2) */
+        m->dat_x_min, m->dat_x_max); /* Minimum and maximum coordinates (X,Y) */
+    SETUP_SCALE_DRAW (
+        Y, y,                        /* Location and orientation */
+        zero.x, m->fig_y_max,        /* Initial point (x1,y1) */
+        zero.x, m->fig_y_min,        /* Terminal point (x2,y2) */
+        m->dat_y_min, m->dat_y_max); /* Minimum and maximum coordinates (X,Y) */
+#undef SETUP_SCALE_DRAW
 }
 
 
@@ -411,6 +439,20 @@ axis2d_draw_tree (SlopeItem *self, SlopeItemDC *dc)
 cleanup:
     cairo_restore (dc->cr);
     dc->rect = orig_rect;
+}
+
+
+static void
+axis2d_set_x_scale_samples (SlopeAxis2D *self, SlopeScale *scale)
+{
+
+}
+
+
+static void
+axis2d_set_y_scale_samples (SlopeAxis2D *self, SlopeScale *scale)
+{
+
 }
 
 /* slope/axis2d.c */
