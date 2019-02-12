@@ -89,7 +89,7 @@ slope_scale_init (SlopeScale *scale)
     m->label_color = SLOPE_BLACK;
     m->label_color_selected = SLOPE_BLACK;
     m->traits = SLOPE_SCALE_ANTIALIAS;
-    m->tick_length = 7.0;
+    m->tick_length = 6.0;
     m->tickpos = SLOPE_SCALE_TICKS_DOWN;
 
     slope_sampler_init(&m->sampler);
@@ -200,7 +200,9 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
     SlopeScalePrivate *m = SLOPE_SCALE_GET_PRIVATE (self);
     cairo_antialias_t antialias = CAIRO_ANTIALIAS_GOOD;
     SlopePoint line, direc, ortog;
-    double length, step;
+    SlopePoint p10 = m->fig_p1;
+    SlopePoint p20 = p10;
+    double length;
 
     slope_point_get_diff(line, m->fig_p2, m->fig_p1);
     slope_point_get_normalized(direc, line);
@@ -212,16 +214,19 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
         slope_point_get_anticlock_ortogonal(ortog, direc);
     }
 
+    slope_point_move(p20, m->tick_length, ortog);
+
     if (FALSE == slope_enabled(m->traits, SLOPE_SCALE_ANTIALIAS)
             || slope_float_similar_zero(direc.x)
             || slope_float_similar_zero(direc.y)) {
         antialias = CAIRO_ANTIALIAS_NONE;
     }
 
+    cairo_set_antialias (dc->cr, antialias);
+
     /* main line */
     if (slope_color_is_visible(m->line_color)) {
         slope_cairo_set_rgba (dc->cr, m->line_color);
-        cairo_set_antialias (dc->cr, antialias);
         cairo_set_line_width (dc->cr, m->line_width);
         cairo_move_to (dc->cr, m->fig_p1.x, m->fig_p1.y);
         cairo_line_to (dc->cr, m->fig_p2.x, m->fig_p2.y);
@@ -230,24 +235,23 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
 
     /* sample ticks */
     if (0 < m->sampler.size) {
-        SlopePoint p1 = m->fig_p1;
-        SlopePoint p2 = p1;
         gulong k, n = m->sampler.size;
         SlopeSample *samples = m->sampler.samples;
-        step = length / n;
-
-        slope_point_move(p2, m->tick_length, ortog);
 
         for (k = 0; k < n; ++k) {
+            SlopePoint p1 = p10;
+            SlopePoint p2 = p20;
+            double a = samples[k].value * length;
+
+            slope_point_move(p1, a, direc);
+            slope_point_move(p2, a, direc);
+
             slope_cairo_set_rgba (dc->cr, m->line_color);
             cairo_move_to(dc->cr, p1.x, p1.y);
             cairo_line_to(dc->cr, p2.x, p2.y);
             cairo_stroke(dc->cr);
 
             scale_draw_tick (self, &p1, &samples[k], dc);
-
-            slope_point_move(p1, step, direc);
-            slope_point_move(p2, step, direc);
         }
     }
 }

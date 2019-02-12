@@ -446,7 +446,7 @@ axis2d_set_x_scale_samples (SlopeAxis2D *self, SlopeScale *scale)
     double min = m->dat_x_min;
     double max = m->dat_x_max;
     double divs = m->fig_width / 80.0;
-    double fig_step, dat_step;
+    double dat_step;
     guint k = 0;
     SlopePoint f, d;
     SlopeSample sample;
@@ -458,21 +458,14 @@ axis2d_set_x_scale_samples (SlopeAxis2D *self, SlopeScale *scale)
     d.x = min;
     d.y = 0.0;
     slope_axis2d_map (self, &f, &d);
-    fig_step = f.x;
 
-    d.x = max;
-    d.y = 0.0;
-    slope_axis2d_map (self, &f, &d);
-
-    fig_step = f.x - fig_step;
     dat_step = (max - min) / divs;
     d.x = min;
 
     for (k = 0; k < divs; ++k) {
-        sample.value = f.x / m->fig_width;
+        sample.value = (d.x - m->dat_x_min) / m->dat_width;
         sprintf (sample.label, TICK_FORMAT[0], d.x);
         slope_sampler_add_sample (sampler, &sample);
-        f.x += fig_step;
         d.x += dat_step;
     }
 }
@@ -509,7 +502,7 @@ axis2d_set_y_scale_samples (SlopeAxis2D *self, SlopeScale *scale)
     d.y = min;
 
     for (k = 0; k < divs; ++k) {
-        sample.value = f.y / m->fig_width;
+        sample.value = (d.y - m->dat_y_min) / m->dat_height;
         sprintf (sample.label, TICK_FORMAT[0], d.y);
         slope_sampler_add_sample (sampler, &sample);
         f.x += fig_step;
