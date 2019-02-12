@@ -48,3 +48,37 @@ void slope_sampler_clear (SlopeSampler *self)
     g_assert(self);
     self->size = 0UL;
 }
+
+
+void slope_sample_guess_decimal_spacing (double *min, double *max, double *cut_count)
+{
+    double diff, pow_diff, samp_spac;
+    double hint, first_tick;
+
+    g_assert(min && max && cut_count);
+    g_assert(*max > *min);
+
+    diff = *max - *min;
+    pow_diff = round(log10(diff));
+    samp_spac = pow(10.0, pow_diff - 1.0);
+
+    /* HACK: Possibly adjusts the spacing to avoid cases in which only
+     * one or two divisions */
+    hint = *cut_count;
+    if (hint > 1.0 && hint < 20.0) {
+        if ((diff / samp_spac) > (hint + 5.0)) samp_spac *= 2.0;
+        if ((diff / samp_spac) < (hint - 5.0)) samp_spac /= 2.0;
+        if ((diff / samp_spac) > (hint + 5.0)) samp_spac *= 2.0;
+        if ((diff / samp_spac) < (hint - 5.0)) samp_spac /= 2.0;
+    }
+
+    if (*min < 0.0) {
+        first_tick = -floor(fabs(*min) / samp_spac) * samp_spac;
+    } else {
+        first_tick = floor(fabs(*min) / samp_spac + 1.0) * samp_spac;
+    }
+
+   *cut_count = diff / samp_spac;
+   *min = first_tick;
+   *max = *min + (*cut_count) * samp_spac;
+}

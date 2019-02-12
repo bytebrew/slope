@@ -110,7 +110,7 @@ slope_figure_init (SlopeFigure *self)
 
     m->options = 0UL;
     m->root_item = NULL;
-    m->text = slope_text_new ("Monospace 9");
+    m->text = slope_text_new ("Sans 9");
 }
 
 

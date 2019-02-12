@@ -31,19 +31,18 @@ struct _SlopeScalePrivate
 {
     SlopePoint fig_p1;
     SlopePoint fig_p2;
-    double data_min;
-    double data_max;
 
     SlopeRGBA line_color;
     SlopeRGBA line_color_selected;
     SlopeRGBA label_color;
     SlopeRGBA label_color_selected;
+
     double line_width;
     double line_width_selected;
+
     double tick_length;
-
     SlopeSampler sampler;
-
+    gulong tickpos;
     gulong traits;
 };
 
@@ -61,7 +60,8 @@ static void scale_finalize (GObject *self);
 static void scale_dispose (GObject *self);
 static void scale_draw_self (SlopeItem *self, const SlopeItemDC *dc);
 static void axis2d_toggle_highlight (SlopeItem *self);
-
+static void scale_draw_tick (SlopeItem *self, const SlopePoint *pos,
+                             const SlopeSample *sample, const SlopeItemDC *dc);
 
 static void
 slope_scale_class_init (SlopeScaleClass *klass)
@@ -86,12 +86,11 @@ slope_scale_init (SlopeScale *scale)
     m->line_width = 2.0;
     m->line_color_selected = SLOPE_CADETBLUE;
     m->line_width_selected = 4.0;
-    m->label_color = slope_gray(100);
-    m->label_color_selected = slope_gray(100);
+    m->label_color = SLOPE_BLACK;
+    m->label_color_selected = SLOPE_BLACK;
     m->traits = SLOPE_SCALE_ANTIALIAS;
-    m->data_min = 0.0;
-    m->data_max = 1.0;
     m->tick_length = 7.0;
+    m->tickpos = SLOPE_SCALE_TICKS_DOWN;
 
     slope_sampler_init(&m->sampler);
 }
@@ -185,17 +184,13 @@ slope_scale_set_figure_position (SlopeScale *self,
 }
 
 
-void
-slope_scale_set_data_extents (SlopeScale *self, double min, double max)
+SlopeSampler*slope_scale_get_sampler (SlopeScale *self)
 {
     SlopeScalePrivate *m;
 
     g_assert (SLOPE_IS_SCALE (self));
-    g_assert (min < max);
-
     m = SLOPE_SCALE_GET_PRIVATE (self);
-    m->data_min = min;
-    m->data_max = max;
+    return &m->sampler;
 }
 
 
@@ -211,7 +206,7 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
     slope_point_get_normalized(direc, line);
     length = slope_point_length(line);
 
-    if (slope_enabled(m->traits, SLOPE_SCALE_REVERSE_TICKS)) {
+    if (slope_enabled(m->traits, SLOPE_SCALE_REVERSE)) {
         slope_point_get_clock_ortogonal(ortog, direc);
     } else {
         slope_point_get_anticlock_ortogonal(ortog, direc);
@@ -244,23 +239,38 @@ scale_draw_self (SlopeItem *self, const SlopeItemDC *dc)
         slope_point_move(p2, m->tick_length, ortog);
 
         for (k = 0; k < n; ++k) {
-            SlopeRect ink, logical;
-
             slope_cairo_set_rgba (dc->cr, m->line_color);
             cairo_move_to(dc->cr, p1.x, p1.y);
             cairo_line_to(dc->cr, p2.x, p2.y);
             cairo_stroke(dc->cr);
 
-            slope_cairo_set_rgba (dc->cr, m->label_color);
-            slope_text_set (dc->text, samples[k].label);
-            slope_text_get_extents (dc->text, &ink, &logical);
-            cairo_move_to (dc->cr, p1.x - ink.width/2.0, p1.y + 4.0);
-            slope_text_show (dc->text);
+            scale_draw_tick (self, &p1, &samples[k], dc);
 
             slope_point_move(p1, step, direc);
             slope_point_move(p2, step, direc);
         }
     }
+}
+
+
+static void
+scale_draw_tick (SlopeItem *self, const SlopePoint *pos,
+                 const SlopeSample *sample, const SlopeItemDC *dc)
+{
+    SlopeScalePrivate *m = SLOPE_SCALE_GET_PRIVATE (self);
+    SlopeRect ink, logical;
+
+    slope_cairo_set_rgba (dc->cr, m->label_color);
+    slope_text_set (dc->text, sample->label);
+    slope_text_get_extents (dc->text, &ink, &logical);
+
+    if (m->tickpos == SLOPE_SCALE_TICKS_DOWN) {
+        cairo_move_to (dc->cr, pos->x - ink.width/2.0, pos->y + 4.0);
+    } else if (m->tickpos == SLOPE_SCALE_TICKS_UP) {
+        cairo_move_to (dc->cr, pos->x - ink.width/2.0, pos->y - ink.height - 4.0);
+    }
+
+    slope_text_show (dc->text);
 }
 
 /* slope/scale.c */

@@ -22,6 +22,7 @@
 #define _slope_scale_h_
 
 #include "slope/item.h"
+#include "slope/sampler.h"
 
 G_BEGIN_DECLS
 
@@ -37,9 +38,17 @@ typedef struct _SlopeScaleClass        SlopeScaleClass;
 
 
 typedef enum _SlopeScaleTrait {
-    SLOPE_SCALE_REVERSE_TICKS = (1U),
-    SLOPE_SCALE_ANTIALIAS     = (1U << 1UL),
+    SLOPE_SCALE_ANTIALIAS     = (1U),
+    SLOPE_SCALE_REVERSE       = (1U << 1U),
 } SlopeScaleTrait;
+
+
+typedef enum _SlopeScaleTickPos {
+    SLOPE_SCALE_TICKS_DOWN      = 1,
+    SLOPE_SCALE_TICKS_UP        = 2,
+    SLOPE_SCALE_TICKS_LEFT      = 3,
+    SLOPE_SCALE_TICKS_RIGHT     = 4,
+} SlopeScaleTickPos;
 
 
 struct _SlopeScale
@@ -77,7 +86,7 @@ SlopeScaleTrait slope_scale_get_traits (SlopeScale *self);
 
 void slope_scale_set_figure_position (SlopeScale *self, const SlopePoint *p1, const SlopePoint *p2);
 
-void slope_scale_set_data_extents (SlopeScale *self, double min, double max);
+SlopeSampler* slope_scale_get_sampler (SlopeScale *self);
 
 G_END_DECLS
 

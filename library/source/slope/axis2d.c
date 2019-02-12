@@ -21,6 +21,7 @@
 #include "slope/axis2d.h"
 #include "slope/frame.h"
 #include "slope/sampler.h"
+#include <stdio.h>
 
 #define MIN_PIXLEN 10.0
 
@@ -113,9 +114,9 @@ slope_axis2d_init (SlopeAxis2D *self)
         base_add_top (SLOPE_ITEM (self), m->scales[k]);
     }
 
-    slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_LEFT]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
-    slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_Y]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
-    slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_TOP]), SLOPE_SCALE_REVERSE_TICKS, TRUE);
+    slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_LEFT]), SLOPE_SCALE_REVERSE, TRUE);
+    slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_Y]), SLOPE_SCALE_REVERSE, TRUE);
+    slope_scale_set_trait (SLOPE_SCALE (m->scales[SCALE_TOP]), SLOPE_SCALE_REVERSE, TRUE);
     slope_axis2d_set_scales (SLOPE_AXIS2D (self), SLOPE_AXIS2D_SCALE_ALL);
 }
 
@@ -345,7 +346,7 @@ axis2d_set_scales_position (SlopeAxis2D *self)
     fig_p2.y = 0;
     slope_axis2d_map (self, &zero, &fig_p2);
 
-#define SETUP_SCALE_DRAW(LABEL,ORIENT,X1,Y1,X2,Y2,MIN,MAX) \
+#define SETUP_SCALE_DRAW(LABEL,ORIENT,X1,Y1,X2,Y2) \
     G_STMT_START { \
         fig_p1.x = X1; \
         fig_p1.y = Y1; \
@@ -353,41 +354,33 @@ axis2d_set_scales_position (SlopeAxis2D *self)
         fig_p2.y = Y2; \
         scale = SLOPE_SCALE (m->scales[SCALE_##LABEL]); \
         slope_scale_set_figure_position (scale, &fig_p1, &fig_p2); \
-        slope_scale_set_data_extents (scale, MIN, MAX); \
-        axis2d_set_##ORIENT##_scale_samples (self, \
-                             SLOPE_SCALE(m->scales[SCALE_##LABEL])); \
+        axis2d_set_##ORIENT##_scale_samples (self, scale); \
     } G_STMT_END
 
     SETUP_SCALE_DRAW (
         BOTTOM, x,                   /* Location and orientation */
         m->fig_x_min, m->fig_y_max,  /* Initial point (x1,y1) */
-        m->fig_x_max, m->fig_y_max,  /* Terminal point (x2,y2) */
-        m->dat_x_min, m->dat_x_max); /* Minimum and maximum coordinates (X,Y) */
+        m->fig_x_max, m->fig_y_max); /* Terminal point (x2,y2) */
     SETUP_SCALE_DRAW (
         LEFT, y,                     /* Location and orientation */
         m->fig_x_min, m->fig_y_max,  /* Initial point (x1,y1) */
-        m->fig_x_min, m->fig_y_min,  /* Terminal point (x2,y2) */
-        m->dat_y_min, m->dat_y_max); /* Minimum and maximum coordinates (X,Y)*/
+        m->fig_x_min, m->fig_y_min); /* Terminal point (x2,y2) */
     SETUP_SCALE_DRAW (
         TOP, x,                      /* Location and orientation */
         m->fig_x_min, m->fig_y_min,  /* Initial point (x1,y1) */
-        m->fig_x_max, m->fig_y_min,  /* Terminal point (x2,y2) */
-        m->dat_x_min, m->dat_x_max); /* Minimum and maximum coordinates (X,Y) */
+        m->fig_x_max, m->fig_y_min); /* Terminal point (x2,y2) */
     SETUP_SCALE_DRAW (
         RIGHT, y,                    /* Location and orientation */
         m->fig_x_max, m->fig_y_max,  /* Initial point (x1,y1) */
-        m->fig_x_max, m->fig_y_min,  /* Terminal point (x2,y2) */
-        m->dat_y_min, m->dat_y_max); /* Minimum and maximum coordinates (X,Y) */
+        m->fig_x_max, m->fig_y_min); /* Terminal point (x2,y2) */
     SETUP_SCALE_DRAW (
         X, x,                        /* Location and orientation */
         m->fig_x_min, zero.y,        /* Initial point (x1,y1) */
-        m->fig_x_max, zero.y,        /* Terminal point (x2,y2) */
-        m->dat_x_min, m->dat_x_max); /* Minimum and maximum coordinates (X,Y) */
+        m->fig_x_max, zero.y);       /* Terminal point (x2,y2) */
     SETUP_SCALE_DRAW (
         Y, y,                        /* Location and orientation */
         zero.x, m->fig_y_max,        /* Initial point (x1,y1) */
-        zero.x, m->fig_y_min,        /* Terminal point (x2,y2) */
-        m->dat_y_min, m->dat_y_max); /* Minimum and maximum coordinates (X,Y) */
+        zero.x, m->fig_y_min);       /* Terminal point (x2,y2) */
 #undef SETUP_SCALE_DRAW
 }
 
@@ -442,17 +435,86 @@ cleanup:
 }
 
 
+static const char *const TICK_FORMAT[] = {"%2.1f", "%2.1e"};
+
+
 static void
 axis2d_set_x_scale_samples (SlopeAxis2D *self, SlopeScale *scale)
 {
+    SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
+    SlopeSampler *sampler;
+    double min = m->dat_x_min;
+    double max = m->dat_x_max;
+    double divs = m->fig_width / 80.0;
+    double fig_step, dat_step;
+    guint k = 0;
+    SlopePoint f, d;
+    SlopeSample sample;
 
+    slope_sample_guess_decimal_spacing (&min, &max, &divs);
+    sampler = slope_scale_get_sampler (scale);
+    slope_sampler_clear (sampler);
+
+    d.x = min;
+    d.y = 0.0;
+    slope_axis2d_map (self, &f, &d);
+    fig_step = f.x;
+
+    d.x = max;
+    d.y = 0.0;
+    slope_axis2d_map (self, &f, &d);
+
+    fig_step = f.x - fig_step;
+    dat_step = (max - min) / divs;
+    d.x = min;
+
+    for (k = 0; k < divs; ++k) {
+        sample.value = f.x / m->fig_width;
+        sprintf (sample.label, TICK_FORMAT[0], d.x);
+        slope_sampler_add_sample (sampler, &sample);
+        f.x += fig_step;
+        d.x += dat_step;
+    }
 }
 
 
 static void
 axis2d_set_y_scale_samples (SlopeAxis2D *self, SlopeScale *scale)
 {
+    SlopeAxis2DPrivate *m = SLOPE_AXIS2D_GET_PRIVATE (self);
+    SlopeSampler *sampler;
+    double min = m->dat_y_min;
+    double max = m->dat_y_max;
+    double divs = m->fig_height / 80.0;
+    double fig_step, dat_step;
+    guint k = 0;
+    SlopePoint f, d;
+    SlopeSample sample;
 
+    slope_sample_guess_decimal_spacing (&min, &max, &divs);
+    sampler = slope_scale_get_sampler (scale);
+    slope_sampler_clear (sampler);
+
+    d.x = 0.0;
+    d.y = min;
+    slope_axis2d_map (self, &f, &d);
+    fig_step = f.y;
+
+    d.x = 0.0;
+    d.y = max;
+    slope_axis2d_map (self, &f, &d);
+
+    fig_step = f.y - fig_step;
+    dat_step = (max - min) / divs;
+    d.y = min;
+
+    for (k = 0; k < divs; ++k) {
+        sample.value = f.y / m->fig_width;
+        sprintf (sample.label, TICK_FORMAT[0], d.y);
+        slope_sampler_add_sample (sampler, &sample);
+        f.x += fig_step;
+        d.y += dat_step;
+    }
 }
 
 /* slope/axis2d.c */
