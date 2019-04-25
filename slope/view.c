@@ -1,4 +1,7 @@
 #include "slope/view.h"
+#include "slope/figure.h"
+#include "slope/color.h"
+#include "slope/drawing.h"
 
 typedef struct {
   SlopeFigure *figure;
@@ -6,6 +9,8 @@ typedef struct {
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeView, slope_view, GTK_TYPE_DRAWING_AREA)
+
+static gboolean on__draw (GtkWidget *widget, cairo_t *cr, gpointer data);
 
 
 static void
@@ -18,6 +23,8 @@ static void
 slope_view_init (SlopeView *self)
 {
   SlopeViewPrivate *priv = slope_view_get_instance_private (self);
+
+  g_signal_connect (G_OBJECT (self), "draw", G_CALLBACK (on__draw), NULL);
 
   priv->figure = slope_figure_new();
 }
@@ -50,4 +57,27 @@ GtkWidget *slope_view_new (void) {
 SlopeFigure *slope_view_get_figure (SlopeView *self) {
     SlopeViewPrivate *priv = slope_view_get_instance_private (self);
     return priv->figure;
+}
+
+
+static gboolean on__draw (GtkWidget *widget, cairo_t *cr, gpointer data) {
+    SlopeViewPrivate *priv = slope_view_get_instance_private (SLOPE_VIEW (widget));
+    GtkAllocation alloc;
+    SlopeRect rect;
+    SlopeDC dc;
+    (void) data;
+
+    gtk_widget_get_allocation(widget, &alloc);
+    rect.x = 0.0;
+    rect.y = 0.0;
+    rect.width = (double) alloc.width;
+    rect.height = (double) alloc.height;
+    dc.cr = cr;
+
+    if (rect.width < 2.0 || rect.height < 2.0) {
+        return FALSE;
+    }
+
+    slope_figure_draw (priv->figure, &dc, &rect);
+    return FALSE;
 }

@@ -23,6 +23,11 @@ typedef guint32 SlopeRGBA;
 #define slope_rgba_B(C) (((C) >> 8) & 0xFF)
 #define slope_rgba_A(C) ((C) & 0xFF)
 
+#define slope_rgba_Rf(C) (((double) slope_rgba_R(C)) / 255.0)
+#define slope_rgba_Gf(C) (((double) slope_rgba_G(C)) / 255.0)
+#define slope_rgba_Bf(C) (((double) slope_rgba_B(C)) / 255.0)
+#define slope_rgba_Af(C) (((double) slope_rgba_A(C)) / 255.0)
+
 #define slope_rgba_visible(C) (slope_rgba_A(C) > 0UL)
 
 G_END_DECLS
