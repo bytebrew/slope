@@ -17,4 +17,5 @@ HEADERS += \
     slope/slope.h \
     slope/view.h \
     slope/figure.h \
-    slope/drawing.h
+    slope/drawing.h \
+    slope/figure_p.h

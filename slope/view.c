@@ -3,6 +3,7 @@
 #include "slope/color.h"
 #include "slope/drawing.h"
 
+
 typedef struct {
   SlopeFigure *figure;
 } SlopeViewPrivate;
@@ -10,42 +11,37 @@ typedef struct {
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeView, slope_view, GTK_TYPE_DRAWING_AREA)
 
-static gboolean on__draw (GtkWidget *widget, cairo_t *cr, gpointer data);
+static gboolean view_on_draw (GtkWidget *widget, cairo_t *cr, gpointer data);
+static void view_dispose (GObject *gobject);
 
 
 static void
-slope_view_class_init (SlopeViewClass *klass)
-{
+slope_view_class_init (SlopeViewClass *klass) {
+    GObjectClass *object_klass = G_OBJECT_CLASS(klass);
+    object_klass->dispose = view_dispose;
 }
 
 
 static void
-slope_view_init (SlopeView *self)
-{
+slope_view_init (SlopeView *self) {
   SlopeViewPrivate *priv = slope_view_get_instance_private (self);
 
-  g_signal_connect (G_OBJECT (self), "draw", G_CALLBACK (on__draw), NULL);
+  g_signal_connect (G_OBJECT (self), "draw", G_CALLBACK (view_on_draw), NULL);
 
   priv->figure = slope_figure_new();
 }
 
 
 static void
-slope_view_dispose (GObject *gobject)
-{
+view_dispose (GObject *gobject) {
   SlopeViewPrivate *priv = slope_view_get_instance_private (SLOPE_VIEW (gobject));
+  if (!priv->figure)
+      return;
 
   g_object_unref (G_OBJECT (priv->figure));
+  priv->figure = NULL;
 
   G_OBJECT_CLASS (slope_view_parent_class)->dispose (gobject);
-}
-
-
-static void
-slope_view_finalize (GObject *gobject)
-{
-  SlopeViewPrivate *priv = slope_view_get_instance_private (SLOPE_VIEW (gobject));
-  G_OBJECT_CLASS (slope_view_parent_class)->finalize (gobject);
 }
 
 
@@ -60,24 +56,20 @@ SlopeFigure *slope_view_get_figure (SlopeView *self) {
 }
 
 
-static gboolean on__draw (GtkWidget *widget, cairo_t *cr, gpointer data) {
+static gboolean view_on_draw (GtkWidget *widget, cairo_t *cr, gpointer data) {
     SlopeViewPrivate *priv = slope_view_get_instance_private (SLOPE_VIEW (widget));
-    GtkAllocation alloc;
     SlopeRect rect;
-    SlopeDC dc;
     (void) data;
 
-    gtk_widget_get_allocation(widget, &alloc);
     rect.x = 0.0;
     rect.y = 0.0;
-    rect.width = (double) alloc.width;
-    rect.height = (double) alloc.height;
-    dc.cr = cr;
+    rect.width = (double) gtk_widget_get_allocated_width (widget);
+    rect.height = (double) gtk_widget_get_allocated_height (widget);
 
     if (rect.width < 2.0 || rect.height < 2.0) {
         return FALSE;
     }
 
-    slope_figure_draw (priv->figure, &dc, &rect);
+    slope_figure_draw (priv->figure, cr, &rect);
     return FALSE;
 }
