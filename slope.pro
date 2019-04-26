@@ -9,7 +9,9 @@ SOURCES += \
     slope/global.c \
     slope/view.c \
     slope/figure.c \
-    slope/drawing.c
+    slope/drawing.c \
+    slope/item.c \
+    slope/tree.c
 
 HEADERS += \
     slope/global.h \
@@ -18,4 +20,7 @@ HEADERS += \
     slope/view.h \
     slope/figure.h \
     slope/drawing.h \
-    slope/figure_p.h
+    slope/figure_p.h \
+    slope/tree.h \
+    slope/item.h \
+    slope/item_p.h

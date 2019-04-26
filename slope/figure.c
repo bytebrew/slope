@@ -1,3 +1,23 @@
+/*
+ * Copyright (C) 2019  Elvis Teixeira
+ *
+ * This source code is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This source code is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this program.
+ * If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "slope/figure_p.h"
 #include "slope/color.h"
 #include "slope/drawing.h"
@@ -11,8 +31,8 @@ typedef struct {
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeFigure, slope_figure, G_TYPE_OBJECT)
 
 static void figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
+static void figure_draw_bg (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
 static void figure_dispose (GObject *gobject);
-static void figure_init_dc (SlopeFigure *self, SlopeDC *dc, cairo_t *cr);
 
 static void
 slope_figure_class_init (SlopeFigureClass *klass) {
@@ -45,19 +65,21 @@ slope_figure_new(void) {
 
 
 static void
-figure_init_dc (SlopeFigure *self, SlopeDC *dc, cairo_t *cr) {
-    dc->cr = cr;
+figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect) {
+
+    /* Drawing context to be used by items */
+    SlopeDC dc;
+    dc.cr = cr;
+    dc.parent_rect = *rect;
+
+    figure_draw_bg (self, cr, rect);
 }
 
 
 static void
-figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect) {
+figure_draw_bg (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect) {
     SlopeFigurePrivate *priv = slope_figure_get_instance_private (SLOPE_FIGURE (self));
 
-    SlopeDC dc;
-    figure_init_dc(self, &dc, cr);
-
-    /* fill background */
     if (slope_rgba_visible(priv->back_color)) {
         slope_set_color(cr, priv->back_color);
         slope_rect(cr, rect);
