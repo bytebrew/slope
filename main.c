@@ -24,9 +24,12 @@
 static void activate(GtkApplication* app, gpointer user_data) {
     GtkWidget *window;
     GtkWidget *view;
+    SlopeFigure *figure;
 
     window = gtk_application_window_new (app);
     view = slope_view_new();
+    figure = slope_figure_new();
+    slope_view_set_figure (SLOPE_VIEW (view), figure, TRUE);
     gtk_window_set_title (GTK_WINDOW (window), "Slope");
     gtk_window_set_default_size (GTK_WINDOW (window), 500, 400);
     gtk_container_add(GTK_CONTAINER (window), view);

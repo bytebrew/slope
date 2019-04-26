@@ -48,6 +48,8 @@ SlopeFigure *slope_figure_new (void);
 
 void slope_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
 
+void slope_figure_add_item (SlopeFigure *self, SlopeItem *item, gboolean own);
+
 G_END_DECLS
 
 #endif /* SLOPE_FIGURE_H */

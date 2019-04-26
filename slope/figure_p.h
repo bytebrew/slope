@@ -25,6 +25,21 @@
 #error "You should not include Slope internal headers."
 #endif
 
+#include <slope/view.h>
 #include <slope/figure.h>
+#include <slope/item.h>
+#include <slope/tree.h>
+
+
+typedef struct {
+  SlopeRGBA back_color;
+  SlopeView *view;
+  SlopeList root_items;
+} SlopeFigurePrivate;
+
+
+SlopeFigurePrivate*
+figure_get_private (SlopeFigure *self);
+
 
 #endif /* SLOPE_FIGURE_P_H */

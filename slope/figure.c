@@ -19,20 +19,19 @@
  */
 
 #include "slope/figure_p.h"
+#include "slope/view_p.h"
+#include "slope/item_p.h"
 #include "slope/color.h"
 #include "slope/drawing.h"
 
 
-typedef struct {
-  SlopeRGBA back_color;
-} SlopeFigurePrivate;
-
-
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeFigure, slope_figure, G_TYPE_OBJECT)
+
 
 static void figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
 static void figure_draw_bg (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect);
 static void figure_dispose (GObject *gobject);
+
 
 static void
 slope_figure_class_init (SlopeFigureClass *klass) {
@@ -47,13 +46,13 @@ slope_figure_init (SlopeFigure *self) {
   SlopeFigurePrivate *priv = slope_figure_get_instance_private (self);
 
   priv->back_color = SLOPE_WHITE;
+  priv->view = NULL;
+  SLOPE_LIST_INIT(&priv->root_items);
 }
 
 
 static void
-figure_dispose (GObject *gobject)
-{
-  /* SlopeFigurePrivate *priv = slope_figure_get_instance_private (SLOPE_FIGURE (gobject)); */
+figure_dispose (GObject *gobject) {
   G_OBJECT_CLASS (slope_figure_parent_class)->dispose (gobject);
 }
 
@@ -91,4 +90,16 @@ figure_draw_bg (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect) {
 void
 slope_figure_draw (SlopeFigure *self, cairo_t *cr, const SlopeRect *rect) {
     SLOPE_FIGURE_GET_CLASS(self)->draw(self, cr, rect);
+}
+
+
+SlopeFigurePrivate*
+figure_get_private (SlopeFigure *self) {
+    return slope_figure_get_instance_private (SLOPE_FIGURE (self));
+}
+
+
+void
+slope_figure_add_item (SlopeFigure *self, SlopeItem *item, gboolean own) {
+// TODO
 }

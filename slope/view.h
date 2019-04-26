@@ -47,6 +47,8 @@ GtkWidget *slope_view_new (void);
 
 SlopeFigure *slope_view_get_figure (SlopeView *self);
 
+void slope_view_set_figure (SlopeView *self, SlopeFigure *figure, gboolean own);
+
 G_END_DECLS
 
 #endif /* SLOPE_VIEW_H */

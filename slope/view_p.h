@@ -18,8 +18,8 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLOPE_ITEM_P_H
-#define SLOPE_ITEM_P_H
+#ifndef SLOPE_VIEW_P_H
+#define SLOPE_VIEW_P_H
 
 #if !defined (SLOPE_COMPILATION)
 #error "You should not include Slope internal headers."
@@ -28,24 +28,14 @@
 #include <slope/view.h>
 #include <slope/figure.h>
 #include <slope/item.h>
-#include <slope/tree.h>
-
-
-typedef enum {
-    ITEM_VISIBLE
-} ItemFlag;
 
 
 typedef struct {
-    SlopeTree tree_node;
-    SlopeItem *item;
-    SlopeFigure *figure;
-    SlopeView *view;
-    ItemFlag flags;
-} SlopeItemPrivate;
+  SlopeFigure *figure;
+} SlopeViewPrivate;
 
 
-SlopeItemPrivate*
-item_get_private (SlopeItem *self);
+SlopeViewPrivate*
+view_get_private (SlopeView *self);
 
-#endif /* SLOPE_ITEME_P_H */
+#endif /* SLOPE_VIEW_P_H */

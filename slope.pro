@@ -23,4 +23,5 @@ HEADERS += \
     slope/figure_p.h \
     slope/tree.h \
     slope/item.h \
-    slope/item_p.h
+    slope/item_p.h \
+    slope/view_p.h

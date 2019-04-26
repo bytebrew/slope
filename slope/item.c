@@ -18,12 +18,19 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "slope/figure_p.h"
+#include "slope/view_p.h"
 #include "slope/item_p.h"
+#include "slope/color.h"
+#include "slope/drawing.h"
+
 
 G_DEFINE_TYPE_WITH_PRIVATE (SlopeItem, slope_item, G_TYPE_OBJECT)
 
+
 static void item_draw (SlopeItem *self, SlopeDC *dc);
 static void item_dispose (GObject *gobject);
+
 
 static void
 slope_item_class_init (SlopeItemClass *klass) {
@@ -40,6 +47,8 @@ slope_item_init (SlopeItem *self) {
   SLOPE_TREE_INIT (SLOPE_TREE (priv));
   priv->flags = ITEM_VISIBLE;
   priv->item = self;
+  priv->figure = NULL;
+  priv->view = NULL;
 }
 
 
@@ -70,4 +79,10 @@ slope_item_append (SlopeItem *self, SlopeItem *child) {
 
     slope_tree_append (SLOPE_TREE (priv), SLOPE_TREE (child_priv));
     return child;
+}
+
+
+SlopeItemPrivate*
+item_get_private (SlopeItem *self) {
+    return slope_item_get_instance_private (self);
 }
