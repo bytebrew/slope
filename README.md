@@ -22,13 +22,21 @@ sudo apt-get install build-essential cmake libgtk-3-dev
 sudo dnf install gcc cmake gtk3-devel
 ```
 
-Compile and install slope:
+Compile and install slope with cmake:
 ```bash
 mkdir build
 cd build
 cmake ..
 make
 sudo make install
+```
+
+compile and install slope with autotools:
+```bash
+autoreconf -i
+./configure --prefix=<installdir>
+make
+make install
 ```
 
 ## Using the library
