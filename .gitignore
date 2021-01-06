@@ -17,3 +17,17 @@ doc
 *.dev
 *.win
 *.user
+
+Makefile.in
+aclocal.m4
+ar-lib
+autom4te.cache
+compile
+config.guess
+config.h.in
+config.sub
+configure
+install-sh
+ltmain.sh
+*.m4
+missing
