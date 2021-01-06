@@ -17,16 +17,14 @@
 # Public License along with this program.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-slope_major_v=2
-slope_minor_v=6
-slope_patch_v=0
 
-AC_INIT([slope], [${slope_major_v}.${slope_minor_v}.${slope_patch_v}])
+m4_define([slope_major_version], [2])
+m4_define([slope_minor_version], [6])
+m4_define([slope_patch_version], [0])
+m4_define([slope_version],
+      [slope_major_version.slope_minor_version.slope_patch_version])
 
-AC_SUBST(SLOPE_MAJOR_VERSION, [${slope_major_v}])
-AC_SUBST(SLOPE_MINOR_VERSION, [${slope_minor_v}])
-AC_SUBST(SLOPE_PATCH_VERSION, [${slope_patch_v}])
-AC_SUBST(SLOPE_VERSION_STRING, ["${slope_major_v}.${slope_minor_v}.${slope_patch_v}"])
+AC_INIT([slope], [slope_version])
 
 # Will be generated
 AC_CONFIG_HEADERS([config.h])
@@ -39,11 +37,25 @@ AM_PROG_CC_C_O
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
+# define version via command line
+AX_APPEND_FLAG(
+   [-DSLOPE_MAJOR_VERSION=slope_major_version])
+AX_APPEND_FLAG(
+   [-DSLOPE_MINOR_VERSION=slope_minor_version])
+AX_APPEND_FLAG(
+   [-DSLOPE_PATCH_VERSION=slope_patch_version])
+AX_APPEND_FLAG(
+   [-DSLOPE_VERSION_STRING=slope_version])
+
 # check for gtk
 PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.0])
 
 AC_CONFIG_FILES([Makefile])
-#AC_CONFIG_FILES([slope/Makefile])
-#AC_CONFIG_FILES([demos/Makefile])
+AC_CONFIG_FILES([slope/Makefile])
+AC_CONFIG_FILES([slope/source/Makefile])
+AC_CONFIG_FILES([slope/source/slope/Makefile])
+AC_CONFIG_FILES([slope/include/Makefile])
+AC_CONFIG_FILES([slope/include/slope/Makefile])
+AC_CONFIG_FILES([demos/Makefile])
 
 AC_OUTPUT
