@@ -44,6 +44,23 @@ typedef struct _SlopeXyAxisPrivate
 #define SLOPE_XYAXIS_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE((obj), SLOPE_XYAXIS_TYPE, SlopeXyAxisPrivate))
 
+const unsigned int SLOPE_XYAXIS_LINE          = 0x00000001;
+const unsigned int SLOPE_XYAXIS_TICKS_UP      = 0x00000002;
+const unsigned int SLOPE_XYAXIS_TICKS_DOWN    = 0x00000004;
+const unsigned int SLOPE_XYAXIS_TITLE         = 0x00000008;
+const unsigned int SLOPE_XYAXIS_GRID          = 0x00000010;
+const unsigned int SLOPE_XYAXIS_ALL_COMPONENT = 0xFFFFFFFF;
+
+const unsigned int SLOPE_XYAXIS_DEFAULT_DOWN =
+                       SLOPE_XYAXIS_LINE | SLOPE_XYAXIS_TICKS_DOWN | SLOPE_XYAXIS_TITLE;
+
+const unsigned int SLOPE_XYAXIS_DEFAULT_UP =
+                       SLOPE_XYAXIS_LINE | SLOPE_XYAXIS_TICKS_UP | SLOPE_XYAXIS_TITLE;
+
+const unsigned int SLOPE_XYAXIS_DEFAULT_UP_GRID = SLOPE_XYAXIS_DEFAULT_UP | SLOPE_XYAXIS_GRID;
+
+const unsigned int SLOPE_XYAXIS_DEFAULT_DOWN_GRID = SLOPE_XYAXIS_DEFAULT_DOWN | SLOPE_XYAXIS_GRID;
+
 G_DEFINE_TYPE_WITH_PRIVATE(SlopeXyAxis, slope_xyaxis, SLOPE_ITEM_TYPE)
 
 static void _xyaxis_finalize(GObject *self);
